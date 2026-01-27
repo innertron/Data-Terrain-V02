@@ -1,18 +1,18 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const gridSegments = pgTable("grid_segments", {
+  id: serial("id").primaryKey(),
+  xIndex: integer("x_index").notNull(), // 0-24
+  zIndex: integer("z_index").notNull(), // 0-24
+  xLabel: text("x_label").notNull(),    // Political Domain
+  zLabel: text("z_label").notNull(),    // Income/Educational Level
+  value: integer("value").notNull(),    // Y-axis: Amount of people
+  description: text("description"),      // Optional details
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
-});
+export const insertGridSegmentSchema = createInsertSchema(gridSegments).omit({ id: true });
 
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
+export type GridSegment = typeof gridSegments.$inferSelect;
+export type InsertGridSegment = z.infer<typeof insertGridSegmentSchema>;
