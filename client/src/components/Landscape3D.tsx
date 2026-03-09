@@ -133,8 +133,8 @@ function AxisLabels() {
         const xPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
         const zPos = (GRID_SIZE / 2) * (BAR_SIZE + GAP) + 2.5;
         const t = i / 24;
-        const r = Math.round(255 * (1 - t));
-        const b = Math.round(255 * t);
+        const r = Math.round(255 * t);
+        const b = Math.round(255 * (1 - t));
         const color = `rgb(${r}, 80, ${b})`;
         return (
           <Billboard key={i} position={[xPos, 0.5, zPos]}>
