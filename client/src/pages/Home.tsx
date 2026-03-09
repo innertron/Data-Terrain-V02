@@ -22,6 +22,22 @@ type GridSegment = {
   description: string | null;
 };
 
+const X_LABELS = [
+  'DEM-4','DEM-3','DEM-2','DEM-1','DEM 0',
+  'DEM+1','DEM+2','DEM+3','DEM+4','Swng/z',
+  'Swng/y','Swng/x','Swng 0','Swng\\x','Swng\\y',
+  'Swng\\z','GOP+4','GOP+3','GOP+2','GOP+1',
+  'GOP 0','GOP-1','GOP-2','GOP-3','GOP-4'
+];
+
+const Z_LABELS = [
+  '<$34K GED','$35K GED','$40K GED','$45K AS','$50K BA1',
+  '$55K BA2','$60K BAMS','$65K Trade1','$70K Trade2','$77K BAPhD',
+  '$80K BS1','$90K BS2','$100K Trade3','$120K BSMS','$150K BSPhD1',
+  '$175K BSPhD2','$200K BSJD1','$250K BSJD2','$300K MD1','$400K MD2',
+  '$500K MDPhD1','$1M MDPhD2','$50M MDPhD3','$1B Luck1','$20B+ Luck2'
+];
+
 export default function Home() {
   const [selectedSegment, setSelectedSegment] = useState<GridSegment | null>(null);
   const [editValue, setEditValue] = useState<string>("");
@@ -100,14 +116,14 @@ export default function Home() {
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
                     Political Domain (X)
                   </Label>
-                  <div className="text-lg font-medium">{selectedSegment.xLabel}</div>
+                  <div className="text-lg font-medium">{X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}</div>
                 </div>
 
                 <div className="bg-muted/30 p-4 rounded-xl border border-white/5">
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
                     Income / Education (Z)
                   </Label>
-                  <div className="text-lg font-medium">{selectedSegment.zLabel}</div>
+                  <div className="text-lg font-medium">{Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}</div>
                 </div>
 
                 <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-4 rounded-xl border border-primary/20">
