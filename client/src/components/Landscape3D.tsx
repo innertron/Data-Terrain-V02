@@ -132,20 +132,11 @@ function AxisLabels() {
   const labelOffset = 2.5;
 
   useFrame(({ camera }) => {
-    const azimuth = Math.atan2(camera.position.x, camera.position.z);
-    const deg = THREE.MathUtils.radToDeg(azimuth);
+    const camX = camera.position.x;
+    const camZ = camera.position.z;
 
-    if (deg >= 0 && deg < 180) {
-      setXLabelSide('front');
-    } else {
-      setXLabelSide('back');
-    }
-
-    if (deg >= -90 && deg < 90) {
-      setZLabelSide('right');
-    } else {
-      setZLabelSide('left');
-    }
+    setXLabelSide(camZ > 0 ? 'front' : 'back');
+    setZLabelSide(camX > 0 ? 'right' : 'left');
   });
 
   const xZ = xLabelSide === 'front' ? edge + labelOffset : -(edge + labelOffset);
