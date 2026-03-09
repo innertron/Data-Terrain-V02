@@ -109,35 +109,59 @@ function Bar({
 }
 
 function AxisLabels() {
-  // We place labels at the edges of the grid
   const offset = (GRID_SIZE / 2) * (BAR_SIZE + GAP) + 2;
+
+  const xLabels = [
+    'DEM-4','DEM-3','DEM-2','DEM-1','DEM 0',
+    'DEM+1','DEM+2','DEM+3','DEM+4','Swng/z',
+    'Swng/y','Swng/x','Swng 0','Swng\\x','Swng\\y',
+    'Swng\\z','GOP+4','GOP+3','GOP+2','GOP+1',
+    'GOP 0','GOP-1','GOP-2','GOP-3','GOP-4'
+  ];
 
   return (
     <group>
-      {/* X-Axis Label: Political Domain */}
-      <Billboard position={[0, 0, offset]}>
-        <Text fontSize={1.5} color="white" anchorX="center" anchorY="top">
+      {/* X-Axis Title */}
+      <Billboard position={[0, -0.5, offset + 2]}>
+        <Text fontSize={0.8} color="white" anchorX="center" anchorY="top">
           POLITICAL DOMAIN (X)
         </Text>
       </Billboard>
 
+      {/* Individual X-Axis Labels */}
+      {xLabels.map((label, i) => {
+        const xPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
+        const zPos = (GRID_SIZE / 2) * (BAR_SIZE + GAP) + 1;
+        const t = i / 24;
+        const r = Math.round(255 * (1 - t));
+        const b = Math.round(255 * t);
+        const color = `rgb(${r}, 80, ${b})`;
+        return (
+          <Billboard key={i} position={[xPos, -0.3, zPos]}>
+            <Text fontSize={0.35} color={color} anchorX="center" anchorY="top">
+              {label}
+            </Text>
+          </Billboard>
+        );
+      })}
+
       {/* Z-Axis Label: Income/Education */}
-      <Billboard position={[offset, 0, 0]}>
-        <Text fontSize={1.5} color="white" rotation={[0, -Math.PI / 2, 0]} anchorX="left" anchorY="middle">
-           INCOME / EDUCATION (Z)
+      <Billboard position={[offset + 2, -0.5, 0]}>
+        <Text fontSize={0.8} color="white" anchorX="center" anchorY="middle">
+          INCOME / EDUCATION (Z)
         </Text>
       </Billboard>
 
       {/* Origin/Start Labels */}
       <Billboard position={[-offset + 2, 0, offset]}>
-        <Text fontSize={0.8} color="#aaa">Left / Low</Text>
+        <Text fontSize={0.5} color="#aaa">Left / Low</Text>
       </Billboard>
       <Billboard position={[offset - 2, 0, offset]}>
-        <Text fontSize={0.8} color="#aaa">Right / Low</Text>
+        <Text fontSize={0.5} color="#aaa">Right / Low</Text>
       </Billboard>
       
-       <Billboard position={[offset, 0, -offset + 2]}>
-        <Text fontSize={0.8} color="#aaa">High</Text>
+      <Billboard position={[offset, 0, -offset + 2]}>
+        <Text fontSize={0.5} color="#aaa">High</Text>
       </Billboard>
     </group>
   );
