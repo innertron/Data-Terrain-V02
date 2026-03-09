@@ -156,10 +156,8 @@ function AxisLabels() {
       {/* Individual X-Axis Labels */}
       {X_LABELS.map((label, i) => {
         const xPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
-        const t = i / 24;
-        const r = Math.round(255 * t);
-        const b = Math.round(255 * (1 - t));
-        const color = `rgb(${r}, 80, ${b})`;
+        const hue = THREE.MathUtils.lerp(240, 0, i / 24);
+        const color = `hsl(${hue}, 90%, 60%)`;
         return (
           <Billboard key={`x-${i}`} position={[xPos, 0.5, xZ]}>
             <Text fontSize={0.45} color={color} anchorX="center" anchorY="middle">
@@ -179,12 +177,9 @@ function AxisLabels() {
       {/* Individual Z-Axis Labels */}
       {Z_LABELS.map((label, i) => {
         const zPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
-        const t = i / 24;
-        const g = Math.round(100 + 155 * t);
-        const color = `rgb(${g}, ${g}, 80)`;
         return (
           <Billboard key={`z-${i}`} position={[zX, 0.5, zPos]}>
-            <Text fontSize={0.35} color={color} anchorX={zLabelSide === 'right' ? 'left' : 'right'} anchorY="middle">
+            <Text fontSize={0.35} color="#e6c040" anchorX={zLabelSide === 'right' ? 'left' : 'right'} anchorY="middle">
               {label}
             </Text>
           </Billboard>

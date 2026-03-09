@@ -172,14 +172,24 @@ export default function Home() {
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
                     Political Domain (X)
                   </Label>
-                  <div className="text-lg font-medium">{X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}: {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}</div>
+                  <div className="text-lg font-medium">
+                    <span style={{ color: `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` }}>
+                      {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
+                    </span>
+                    : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
+                  </div>
                 </div>
 
                 <div className="bg-muted/30 p-4 rounded-xl border border-white/5">
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
                     Income / Education (Z)
                   </Label>
-                  <div className="text-lg font-medium">{Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}: {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}</div>
+                  <div className="text-lg font-medium">
+                    <span style={{ color: '#e6c040' }}>
+                      {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
+                    </span>
+                    : {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
+                  </div>
                 </div>
 
                 <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-4 rounded-xl border border-primary/20">
