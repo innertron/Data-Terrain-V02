@@ -151,14 +151,6 @@ function AxisLabels() {
         </Text>
       </Billboard>
 
-      {/* Origin/Start Labels */}
-      <Billboard position={[-offset + 2, 0, offset]}>
-        <Text fontSize={0.5} color="#aaa">Left / Low</Text>
-      </Billboard>
-      <Billboard position={[offset - 2, 0, offset]}>
-        <Text fontSize={0.5} color="#aaa">Right / Low</Text>
-      </Billboard>
-      
       <Billboard position={[offset, 0, -offset + 2]}>
         <Text fontSize={0.5} color="#aaa">High</Text>
       </Billboard>
