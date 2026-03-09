@@ -172,16 +172,14 @@ export default function Home() {
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
                     Political Domain (X)
                   </Label>
-                  <div className="text-lg font-medium">{X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}</div>
-                  <div className="text-xs text-muted-foreground mt-1 font-mono">{X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}</div>
+                  <div className="text-lg font-medium">{X_MIDDLE_NAMES[selectedSegment.xIndex] || selectedSegment.xLabel}</div>
                 </div>
 
                 <div className="bg-muted/30 p-4 rounded-xl border border-white/5">
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
                     Income / Education (Z)
                   </Label>
-                  <div className="text-lg font-medium">{Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}</div>
-                  <div className="text-xs text-muted-foreground mt-1 font-mono">{Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}</div>
+                  <div className="text-lg font-medium">{Z_MIDDLE_NAMES[selectedSegment.zIndex] || selectedSegment.zLabel}</div>
                 </div>
 
                 <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-4 rounded-xl border border-primary/20">
