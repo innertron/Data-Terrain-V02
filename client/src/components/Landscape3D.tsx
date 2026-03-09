@@ -29,8 +29,7 @@ const MAX_HEIGHT = 10; // Maximum visual height for the highest value
 function getBarColor(value: number, maxValue: number, xIndex: number) {
   const intensity = Math.min(value / maxValue, 1);
   
-  // Base hues: Left (0) = Red/Orange, Center (12) = Purple, Right (24) = Blue/Cyan
-  const hue = THREE.MathUtils.lerp(0, 240, xIndex / 24); 
+  const hue = THREE.MathUtils.lerp(240, 0, xIndex / 24); 
   const saturation = 80 + intensity * 20; // More intense values = more saturated
   const lightness = 30 + intensity * 40;  // Higher values = brighter
 
