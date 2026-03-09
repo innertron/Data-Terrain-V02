@@ -66,6 +66,34 @@ const Z_LABELS = [
   '$500K MDPhD1','$1M MDPhD2','$50M MDPhD3','$1B Luck1','$20B+ Luck2'
 ];
 
+const Z_MIDDLE_NAMES = [
+  'GED, n/a',
+  'n/a, GED, AS, BA',
+  'GED, AS, BA, Trade',
+  'ITTrade, Trade, AS, BA',
+  'BA, AS, ITTrade, Trade',
+  'BA, AS, Trade, ITTrade',
+  'BA, ITTrade, AS, Trade',
+  'Trade, ITTrade, BA, AS',
+  'BA, Trade, BA, ITTrade, BAJD',
+  'BA, Trade, BAJD, ITTrade',
+  'ITTrade, BSN, BAfin, BA| BS',
+  'BAMS, MSN, ITTrade, BS',
+  'ITTrade, BS, PhDmath, finMBA, BSMS, PhDmath',
+  'DNP, ITTrade, PharmD, BSMS, BSMS, finMBA',
+  'Barch, BSMS, BSMS, BSMS',
+  'BAJD, BSPhD, BSMS, BSJD',
+  'BAJD, BSPhD, DVM/VDM, DDS/DMD',
+  'BSJD, MD, DVM/VDM, MDPhD',
+  'MD, MDPhD, MDPhD',
+  'MDPhD, DDS/DMD, BAJD, MD, BSJD',
+  'MD, MDPhD',
+  'MD, MDPhD',
+  'MDPhD, BAJD, BSJD',
+  'Luck',
+  'Luck'
+];
+
 export default function Home() {
   const [selectedSegment, setSelectedSegment] = useState<GridSegment | null>(null);
   const [editValue, setEditValue] = useState<string>("");
@@ -153,6 +181,7 @@ export default function Home() {
                     Income / Education (Z)
                   </Label>
                   <div className="text-lg font-medium">{Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}</div>
+                  <div className="text-xs text-muted-foreground mt-1 font-mono">{Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}</div>
                 </div>
 
                 <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-4 rounded-xl border border-primary/20">
