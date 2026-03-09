@@ -107,44 +107,70 @@ function Bar({
   );
 }
 
+const X_LABELS = [
+  'DEM-4','DEM-3','DEM-2','DEM-1','DEM 0',
+  'DEM+1','DEM+2','DEM+3','DEM+4','Swng/z',
+  'Swng/y','Swng/x','Swng 0','Swng\\x','Swng\\y',
+  'Swng\\z','GOP+4','GOP+3','GOP+2','GOP+1',
+  'GOP 0','GOP-1','GOP-2','GOP-3','GOP-4'
+];
+
+const Z_LABELS = [
+  '<$34K GED','$35K GED','$40K GED','$45K AS','$50K BA1',
+  '$55K BA2','$60K BAMS','$65K Trade1','$70K Trade2','$77K BAPhD',
+  '$80K BS1','$90K BS2','$100K Trade3','$120K BSMS','$150K BSPhD1',
+  '$175K BSPhD2','$200K BSJD1','$250K BSJD2','$300K MD1','$400K MD2',
+  '$500K MDPhD1','$1M MDPhD2','$50M MDPhD3','$1B Luck1','$20B+ Luck2'
+];
+
 function AxisLabels() {
-  const offset = (GRID_SIZE / 2) * (BAR_SIZE + GAP) + 2;
+  const groupRef = useRef<THREE.Group>(null);
+  const [xLabelSide, setXLabelSide] = useState<'front' | 'back'>('front');
+  const [zLabelSide, setZLabelSide] = useState<'right' | 'left'>('right');
 
-  const xLabels = [
-    'DEM-4','DEM-3','DEM-2','DEM-1','DEM 0',
-    'DEM+1','DEM+2','DEM+3','DEM+4','Swng/z',
-    'Swng/y','Swng/x','Swng 0','Swng\\x','Swng\\y',
-    'Swng\\z','GOP+4','GOP+3','GOP+2','GOP+1',
-    'GOP 0','GOP-1','GOP-2','GOP-3','GOP-4'
-  ];
+  const edge = (GRID_SIZE / 2) * (BAR_SIZE + GAP);
+  const labelOffset = 2.5;
 
-  const zLabels = [
-    '<$34K GED','$35K GED','$40K GED','$45K AS','$50K BA1',
-    '$55K BA2','$60K BAMS','$65K Trade1','$70K Trade2','$77K BAPhD',
-    '$80K BS1','$90K BS2','$100K Trade3','$120K BSMS','$150K BSPhD1',
-    '$175K BSPhD2','$200K BSJD1','$250K BSJD2','$300K MD1','$400K MD2',
-    '$500K MDPhD1','$1M MDPhD2','$50M MDPhD3','$1B Luck1','$20B+ Luck2'
-  ];
+  useFrame(({ camera }) => {
+    const azimuth = Math.atan2(camera.position.x, camera.position.z);
+    const deg = THREE.MathUtils.radToDeg(azimuth);
+
+    if (deg >= 0 && deg < 180) {
+      setXLabelSide('front');
+    } else {
+      setXLabelSide('back');
+    }
+
+    if (deg >= -90 && deg < 90) {
+      setZLabelSide('right');
+    } else {
+      setZLabelSide('left');
+    }
+  });
+
+  const xZ = xLabelSide === 'front' ? edge + labelOffset : -(edge + labelOffset);
+  const zX = zLabelSide === 'right' ? edge + labelOffset : -(edge + labelOffset);
+  const xTitleZ = xLabelSide === 'front' ? edge + labelOffset + 2 : -(edge + labelOffset + 2);
+  const zTitleX = zLabelSide === 'right' ? edge + labelOffset + 4 : -(edge + labelOffset + 4);
 
   return (
-    <group>
+    <group ref={groupRef}>
       {/* X-Axis Title */}
-      <Billboard position={[0, 1.5, offset + 4]}>
+      <Billboard position={[0, 1.5, xTitleZ]}>
         <Text fontSize={0.9} color="white" anchorX="center" anchorY="middle">
           POLITICAL DOMAIN (X)
         </Text>
       </Billboard>
 
       {/* Individual X-Axis Labels */}
-      {xLabels.map((label, i) => {
+      {X_LABELS.map((label, i) => {
         const xPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
-        const zPos = (GRID_SIZE / 2) * (BAR_SIZE + GAP) + 2.5;
         const t = i / 24;
         const r = Math.round(255 * t);
         const b = Math.round(255 * (1 - t));
         const color = `rgb(${r}, 80, ${b})`;
         return (
-          <Billboard key={i} position={[xPos, 0.5, zPos]}>
+          <Billboard key={`x-${i}`} position={[xPos, 0.5, xZ]}>
             <Text fontSize={0.45} color={color} anchorX="center" anchorY="middle">
               {label}
             </Text>
@@ -153,22 +179,21 @@ function AxisLabels() {
       })}
 
       {/* Z-Axis Title */}
-      <Billboard position={[offset + 5, 1.5, 0]}>
+      <Billboard position={[zTitleX, 1.5, 0]}>
         <Text fontSize={0.9} color="white" anchorX="center" anchorY="middle">
           INCOME / EDUCATION (Z)
         </Text>
       </Billboard>
 
       {/* Individual Z-Axis Labels */}
-      {zLabels.map((label, i) => {
-        const xPos = (GRID_SIZE / 2) * (BAR_SIZE + GAP) + 2.5;
+      {Z_LABELS.map((label, i) => {
         const zPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
         const t = i / 24;
         const g = Math.round(100 + 155 * t);
         const color = `rgb(${g}, ${g}, 80)`;
         return (
-          <Billboard key={`z-${i}`} position={[xPos, 0.5, zPos]}>
-            <Text fontSize={0.35} color={color} anchorX="left" anchorY="middle">
+          <Billboard key={`z-${i}`} position={[zX, 0.5, zPos]}>
+            <Text fontSize={0.35} color={color} anchorX={zLabelSide === 'right' ? 'left' : 'right'} anchorY="middle">
               {label}
             </Text>
           </Billboard>
