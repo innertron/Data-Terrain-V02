@@ -30,6 +30,34 @@ const X_LABELS = [
   'GOP 0','GOP-1','GOP-2','GOP-3','GOP-4'
 ];
 
+const X_MIDDLE_NAMES = [
+  '+bttry,bttry,hamas,t',
+  'bttry,hamas,trnsK12',
+  'hamas,trnsK12,trans',
+  'trnsK12,transSpt,C',
+  'transSpt,CRT,DEI,s',
+  'CRT,DEI,socilst,ope',
+  'DEI,socilst,openBrd',
+  'socilst,openBrdr,prc',
+  'openBrdr,progDem,',
+  'progDem,cncrSoc,m',
+  'cncrSoc,modDem,u',
+  'modDem,usFlag,isra',
+  'usFlag,israel,lawFar',
+  'israel,lawFare,china',
+  'lawFare,china,vtrID',
+  'china,vtrID,MSM,mr',
+  'vtrID,MSM,mrtocrc',
+  'MSM,mrtocrcry,mod',
+  'mrtocrcry,modRep,lv',
+  'modRep,lwHamas,ji',
+  'lwHamas,jdoChrst,2',
+  'jdoChrst,2020,gvtAc',
+  '2020,gvtAcbty,proJa',
+  'gvtAcbty,proJan6,qa',
+  'proJan6,qanon,bttry'
+];
+
 const Z_LABELS = [
   '<$34K GED','$35K GED','$40K GED','$45K AS','$50K BA1',
   '$55K BA2','$60K BAMS','$65K Trade1','$70K Trade2','$77K BAPhD',
@@ -117,6 +145,7 @@ export default function Home() {
                     Political Domain (X)
                   </Label>
                   <div className="text-lg font-medium">{X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}</div>
+                  <div className="text-xs text-muted-foreground mt-1 font-mono">{X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}</div>
                 </div>
 
                 <div className="bg-muted/30 p-4 rounded-xl border border-white/5">
