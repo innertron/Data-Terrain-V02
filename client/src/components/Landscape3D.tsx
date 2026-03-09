@@ -122,8 +122,8 @@ function AxisLabels() {
   return (
     <group>
       {/* X-Axis Title */}
-      <Billboard position={[0, -0.5, offset + 2]}>
-        <Text fontSize={0.8} color="white" anchorX="center" anchorY="top">
+      <Billboard position={[0, 1.5, offset + 4]}>
+        <Text fontSize={0.9} color="white" anchorX="center" anchorY="middle">
           POLITICAL DOMAIN (X)
         </Text>
       </Billboard>
@@ -131,14 +131,14 @@ function AxisLabels() {
       {/* Individual X-Axis Labels */}
       {xLabels.map((label, i) => {
         const xPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
-        const zPos = (GRID_SIZE / 2) * (BAR_SIZE + GAP) + 1;
+        const zPos = (GRID_SIZE / 2) * (BAR_SIZE + GAP) + 2.5;
         const t = i / 24;
         const r = Math.round(255 * (1 - t));
         const b = Math.round(255 * t);
         const color = `rgb(${r}, 80, ${b})`;
         return (
-          <Billboard key={i} position={[xPos, -0.3, zPos]}>
-            <Text fontSize={0.35} color={color} anchorX="center" anchorY="top">
+          <Billboard key={i} position={[xPos, 0.5, zPos]}>
+            <Text fontSize={0.45} color={color} anchorX="center" anchorY="middle">
               {label}
             </Text>
           </Billboard>
@@ -146,8 +146,8 @@ function AxisLabels() {
       })}
 
       {/* Z-Axis Label: Income/Education */}
-      <Billboard position={[offset + 2, -0.5, 0]}>
-        <Text fontSize={0.8} color="white" anchorX="center" anchorY="middle">
+      <Billboard position={[offset + 3, 1.5, 0]}>
+        <Text fontSize={0.9} color="white" anchorX="center" anchorY="middle">
           INCOME / EDUCATION (Z)
         </Text>
       </Billboard>
@@ -221,7 +221,7 @@ export function Landscape3D({ onSelectSegment }: { onSelectSegment: (s: GridSegm
         className="canvas-container"
       >
         <color attach="background" args={['#050505']} />
-        <fog attach="fog" args={['#050505', 20, 80]} />
+        <fog attach="fog" args={['#050505', 30, 120]} />
         
         {/* Lights */}
         <ambientLight intensity={0.5} />
