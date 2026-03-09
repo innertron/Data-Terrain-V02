@@ -118,6 +118,14 @@ function AxisLabels() {
     'GOP 0','GOP-1','GOP-2','GOP-3','GOP-4'
   ];
 
+  const zLabels = [
+    '<$34K GED','$35K GED','$40K GED','$45K AS','$50K BA1',
+    '$55K BA2','$60K BAMS','$65K Trade1','$70K Trade2','$77K BAPhD',
+    '$80K BS1','$90K BS2','$100K Trade3','$120K BSMS','$150K BSPhD1',
+    '$175K BSPhD2','$200K BSJD1','$250K BSJD2','$300K MD1','$400K MD2',
+    '$500K MDPhD1','$1M MDPhD2','$50M MDPhD3','$1B Luck1','$20B+ Luck2'
+  ];
+
   return (
     <group>
       {/* X-Axis Title */}
@@ -144,16 +152,28 @@ function AxisLabels() {
         );
       })}
 
-      {/* Z-Axis Label: Income/Education */}
-      <Billboard position={[offset + 3, 1.5, 0]}>
+      {/* Z-Axis Title */}
+      <Billboard position={[offset + 5, 1.5, 0]}>
         <Text fontSize={0.9} color="white" anchorX="center" anchorY="middle">
           INCOME / EDUCATION (Z)
         </Text>
       </Billboard>
 
-      <Billboard position={[offset, 0, -offset + 2]}>
-        <Text fontSize={0.5} color="#aaa">High</Text>
-      </Billboard>
+      {/* Individual Z-Axis Labels */}
+      {zLabels.map((label, i) => {
+        const xPos = (GRID_SIZE / 2) * (BAR_SIZE + GAP) + 2.5;
+        const zPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
+        const t = i / 24;
+        const g = Math.round(100 + 155 * t);
+        const color = `rgb(${g}, ${g}, 80)`;
+        return (
+          <Billboard key={`z-${i}`} position={[xPos, 0.5, zPos]}>
+            <Text fontSize={0.35} color={color} anchorX="left" anchorY="middle">
+              {label}
+            </Text>
+          </Billboard>
+        );
+      })}
     </group>
   );
 }
