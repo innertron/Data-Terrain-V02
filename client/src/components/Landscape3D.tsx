@@ -195,20 +195,20 @@ function AxisLabels() {
 }
 
 function FloatingLabel({ data }: { data: GridSegment }) {
-  // Use HTML for the tooltip so it's crisp and always on top
-  // Position it slightly above the bar
-  const height = (data.value / 100) * MAX_HEIGHT; // Approximate height ref
   const xPos = (data.xIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const zPos = (data.zIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   
+  const domainLabel = X_LABELS[data.xIndex] || data.xLabel;
+  const incomeLabel = Z_LABELS[data.zIndex] || data.zLabel;
+
   return (
     <Html position={[xPos, MAX_HEIGHT + 2, zPos]} center style={{ pointerEvents: 'none' }}>
-      <div className="bg-black/80 backdrop-blur-md border border-primary/50 p-3 rounded-lg shadow-2xl min-w-[200px] transform transition-all duration-200">
+      <div className="bg-black/80 backdrop-blur-md border border-primary/50 p-3 rounded-lg shadow-2xl min-w-[220px] transform transition-all duration-200">
         <h4 className="text-primary font-bold text-lg font-display mb-1">{data.value.toLocaleString()} People</h4>
         <div className="text-xs text-muted-foreground space-y-1 font-mono">
-          <p><span className="text-white">Domain:</span> {data.xLabel}</p>
-          <p><span className="text-white">Level:</span> {data.zLabel}</p>
-          {data.description && <p className="italic border-t border-white/10 pt-1 mt-1">{data.description}</p>}
+          <p><span className="text-white">Domain:</span> {domainLabel}</p>
+          <p><span className="text-white">Income/Edu:</span> {incomeLabel}</p>
+          <p className="italic border-t border-white/10 pt-1 mt-1 text-white/40">Segment [{data.xIndex},{data.zIndex}]</p>
         </div>
       </div>
     </Html>
