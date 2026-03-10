@@ -26,14 +26,19 @@ const MAX_HEIGHT = 10; // Maximum visual height for the highest value
 
 // --- Helper: Color Gradient ---
 // Returns a color based on value intensity and X-axis position (Political domain)
-function getBarColor(value: number, maxValue: number, xIndex: number) {
+function getBarColor(value: number, maxValue: number, xIndex: number, isDark: boolean) {
   const intensity = Math.min(value / maxValue, 1);
   
   const hue = THREE.MathUtils.lerp(240, 0, xIndex / 24); 
-  const saturation = 80 + intensity * 20; // More intense values = more saturated
-  const lightness = 30 + intensity * 40;  // Higher values = brighter
-
-  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  if (isDark) {
+    const saturation = 80 + intensity * 20;
+    const lightness = 30 + intensity * 40;
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  } else {
+    const saturation = 100;
+    const lightness = 40 + intensity * 15;
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  }
 }
 
 // --- Components ---
@@ -42,12 +47,14 @@ function Bar({
   data, 
   maxValue, 
   onHover, 
-  isSelected 
+  isSelected,
+  isDark = true
 }: { 
   data: GridSegment; 
   maxValue: number; 
   onHover: (data: GridSegment | null) => void;
   isSelected: boolean;
+  isDark?: boolean;
 }) {
   const ref = useRef<THREE.Mesh>(null);
   const [hovered, setHover] = useState(false);
@@ -63,7 +70,7 @@ function Bar({
   // Y position: BoxGeometry is centered, so we need to lift it up by height/2
   const yPos = height / 2;
 
-  const color = useMemo(() => getBarColor(data.value, maxValue, data.xIndex), [data.value, maxValue, data.xIndex]);
+  const color = useMemo(() => getBarColor(data.value, maxValue, data.xIndex, isDark), [data.value, maxValue, data.xIndex, isDark]);
 
   useFrame((state) => {
     if (!ref.current) return;
@@ -99,9 +106,9 @@ function Bar({
       <meshStandardMaterial 
         color={isSelected ? "#ffffff" : color} 
         emissive={color}
-        emissiveIntensity={isSelected ? 0.8 : hovered ? 0.5 : 0.2}
-        roughness={0.2}
-        metalness={0.8}
+        emissiveIntensity={isDark ? (isSelected ? 0.8 : hovered ? 0.5 : 0.2) : (isSelected ? 0.3 : hovered ? 0.1 : 0)}
+        roughness={isDark ? 0.2 : 0.6}
+        metalness={isDark ? 0.8 : 0.1}
       />
     </mesh>
   );
@@ -274,6 +281,7 @@ export function Landscape3D({ onSelectSegment, isDark = true }: { onSelectSegmen
                 if (s) onSelectSegment(s);
               }}
               isSelected={hoveredSegment?.id === seg.id}
+              isDark={isDark}
             />
           ))}
           <AxisLabels isDark={isDark} />
