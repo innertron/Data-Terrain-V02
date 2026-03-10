@@ -148,7 +148,7 @@ function AxisLabels({ isDark = true }: { isDark?: boolean }) {
     <group ref={groupRef}>
       {/* X-Axis Title */}
       <Billboard position={[0, 1.5, xTitleZ]}>
-        <Text fontSize={0.9} color={isDark ? 'white' : '#333333'} anchorX="center" anchorY="middle">
+        <Text fontSize={0.9} color={isDark ? 'white' : '#aaaaaa'} anchorX="center" anchorY="middle">
           POLITICAL DOMAIN (X)
         </Text>
       </Billboard>
@@ -169,7 +169,7 @@ function AxisLabels({ isDark = true }: { isDark?: boolean }) {
 
       {/* Z-Axis Title */}
       <Billboard position={[zTitleX, 1.5, 0]}>
-        <Text fontSize={0.9} color={isDark ? 'white' : '#333333'} anchorX="center" anchorY="middle">
+        <Text fontSize={0.9} color={isDark ? 'white' : '#aaaaaa'} anchorX="center" anchorY="middle">
           INCOME / EDUCATION (Z)
         </Text>
       </Billboard>
