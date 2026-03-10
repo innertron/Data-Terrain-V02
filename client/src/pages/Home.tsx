@@ -217,7 +217,7 @@ export default function Home() {
                     Political Domain (X)
                   </Label>
                   <div className="text-lg font-medium">
-                    <span style={{ color: `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` }}>
+                    <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
                       {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
                     </span>
                     : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
@@ -229,7 +229,7 @@ export default function Home() {
                     Income / Education (Z)
                   </Label>
                   <div className="text-lg font-medium">
-                    <span style={{ color: '#e6c040' }}>
+                    <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
                       {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
                     </span>
                     : {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
