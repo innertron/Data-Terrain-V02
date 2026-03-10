@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useUpdateSegment } from "@/hooks/use-segments";
-import { Loader2, Save, Info, RefreshCw } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
+import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 
@@ -97,8 +98,10 @@ const Z_MIDDLE_NAMES = [
 export default function Home() {
   const [selectedSegment, setSelectedSegment] = useState<GridSegment | null>(null);
   const [editValue, setEditValue] = useState<string>("");
+  const [showSettings, setShowSettings] = useState(false);
   const updateMutation = useUpdateSegment();
   const queryClient = useQueryClient();
+  const { theme, setTheme } = useTheme();
 
   // Handle selection from 3D view
   const handleSelect = (segment: GridSegment) => {
@@ -142,11 +145,52 @@ export default function Home() {
 
       {/* Sidebar Control Panel */}
       <div className="w-full md:w-[350px] lg:w-[400px] h-full bg-card border-l border-border flex flex-col shadow-2xl z-20 order-1 md:order-2">
-        <div className="p-6 border-b border-border bg-black/20">
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Info className="w-5 h-5 text-primary" />
-            Inspector
-          </h2>
+        <div className="p-6 border-b border-border bg-black/20 relative">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold flex items-center gap-2">
+              <Info className="w-5 h-5 text-primary" />
+              Inspector
+            </h2>
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                data-testid="button-settings"
+                className="h-8 w-8"
+                onClick={() => setShowSettings(!showSettings)}
+              >
+                <Settings className="w-4 h-4" />
+              </Button>
+              {showSettings && (
+                <div className="absolute right-0 top-10 z-50 bg-card border border-border rounded-lg shadow-2xl p-3 min-w-[180px] animate-in fade-in slide-in-from-top-2 duration-200">
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2 px-1">Theme</p>
+                  <div className="space-y-1">
+                    <button
+                      data-testid="button-theme-dark"
+                      className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${theme === 'dark' ? 'bg-primary/20 text-primary' : 'hover:bg-muted/50'}`}
+                      onClick={() => { setTheme('dark'); setShowSettings(false); }}
+                    >
+                      <Moon className="w-4 h-4" /> Dark
+                    </button>
+                    <button
+                      data-testid="button-theme-light"
+                      className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${theme === 'light' ? 'bg-primary/20 text-primary' : 'hover:bg-muted/50'}`}
+                      onClick={() => { setTheme('light'); setShowSettings(false); }}
+                    >
+                      <Sun className="w-4 h-4" /> Light
+                    </button>
+                    <button
+                      data-testid="button-theme-system"
+                      className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${theme === 'system' ? 'bg-primary/20 text-primary' : 'hover:bg-muted/50'}`}
+                      onClick={() => { setTheme('system'); setShowSettings(false); }}
+                    >
+                      <Monitor className="w-4 h-4" /> System
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
           <p className="text-sm text-muted-foreground mt-1">
             Hover or click a data node to view details.
           </p>
