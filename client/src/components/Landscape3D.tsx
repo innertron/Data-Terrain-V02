@@ -157,7 +157,7 @@ function AxisLabels({ isDark = true }: { isDark?: boolean }) {
       {X_LABELS.map((label, i) => {
         const xPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
         const hue = THREE.MathUtils.lerp(240, 0, i / 24);
-        const color = `hsl(${hue}, 90%, 60%)`;
+        const color = isDark ? `hsl(${hue}, 90%, 60%)` : 'black';
         return (
           <Billboard key={`x-${i}`} position={[xPos, 0.5, xZ]}>
             <Text fontSize={0.45} color={color} anchorX="center" anchorY="middle">
@@ -179,7 +179,7 @@ function AxisLabels({ isDark = true }: { isDark?: boolean }) {
         const zPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
         return (
           <Billboard key={`z-${i}`} position={[zX, 0.5, zPos]}>
-            <Text fontSize={0.35} color={isDark ? '#e6c040' : '#8B7000'} anchorX={zLabelSide === 'right' ? 'left' : 'right'} anchorY="middle">
+            <Text fontSize={0.35} color={isDark ? '#e6c040' : 'black'} anchorX={zLabelSide === 'right' ? 'left' : 'right'} anchorY="middle">
               {label}
             </Text>
           </Billboard>
