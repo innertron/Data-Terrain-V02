@@ -123,7 +123,7 @@ const Z_LABELS = [
   '$500K MDPhD1','$1M MDPhD2','$50M MDPhD3','$1B Luck1','$20B+ Luck2'
 ];
 
-function AxisLabels() {
+function AxisLabels({ isDark = true }: { isDark?: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const [xLabelSide, setXLabelSide] = useState<'front' | 'back'>('front');
   const [zLabelSide, setZLabelSide] = useState<'right' | 'left'>('right');
@@ -148,7 +148,7 @@ function AxisLabels() {
     <group ref={groupRef}>
       {/* X-Axis Title */}
       <Billboard position={[0, 1.5, xTitleZ]}>
-        <Text fontSize={0.9} color="white" anchorX="center" anchorY="middle">
+        <Text fontSize={0.9} color={isDark ? 'white' : '#333333'} anchorX="center" anchorY="middle">
           POLITICAL DOMAIN (X)
         </Text>
       </Billboard>
@@ -169,7 +169,7 @@ function AxisLabels() {
 
       {/* Z-Axis Title */}
       <Billboard position={[zTitleX, 1.5, 0]}>
-        <Text fontSize={0.9} color="white" anchorX="center" anchorY="middle">
+        <Text fontSize={0.9} color={isDark ? 'white' : '#333333'} anchorX="center" anchorY="middle">
           INCOME / EDUCATION (Z)
         </Text>
       </Billboard>
@@ -179,7 +179,7 @@ function AxisLabels() {
         const zPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
         return (
           <Billboard key={`z-${i}`} position={[zX, 0.5, zPos]}>
-            <Text fontSize={0.35} color="#e6c040" anchorX={zLabelSide === 'right' ? 'left' : 'right'} anchorY="middle">
+            <Text fontSize={0.35} color={isDark ? '#e6c040' : '#8B7000'} anchorX={zLabelSide === 'right' ? 'left' : 'right'} anchorY="middle">
               {label}
             </Text>
           </Billboard>
@@ -210,7 +210,7 @@ function FloatingLabel({ data }: { data: GridSegment }) {
   );
 }
 
-export function Landscape3D({ onSelectSegment }: { onSelectSegment: (s: GridSegment) => void }) {
+export function Landscape3D({ onSelectSegment, isDark = true }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; }) {
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
 
@@ -240,27 +240,27 @@ export function Landscape3D({ onSelectSegment }: { onSelectSegment: (s: GridSegm
       <Canvas 
         shadows 
         camera={{ position: [25, 20, 25], fov: 45 }}
-        className="canvas-container"
+        className={isDark ? "canvas-container" : "canvas-container-light"}
       >
-        <color attach="background" args={['#050505']} />
-        <fog attach="fog" args={['#050505', 30, 120]} />
+        <color attach="background" args={[isDark ? '#050505' : '#f5f5f5']} />
+        <fog attach="fog" args={[isDark ? '#050505' : '#f5f5f5', 30, 120]} />
         
         {/* Lights */}
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={isDark ? 0.5 : 0.8} />
         <directionalLight 
           position={[10, 20, 10]} 
-          intensity={1} 
+          intensity={isDark ? 1 : 1.5} 
           castShadow 
           shadow-mapSize={[2048, 2048]}
         />
-        <pointLight position={[-10, 10, -10]} color="#f0f" intensity={0.5} />
-        <pointLight position={[10, 10, 10]} color="#0ff" intensity={0.5} />
+        {isDark && <pointLight position={[-10, 10, -10]} color="#f0f" intensity={0.5} />}
+        {isDark && <pointLight position={[10, 10, 10]} color="#0ff" intensity={0.5} />}
 
         {/* Environment */}
-        <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+        {isDark && <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />}
         
         {/* Helper Grid on floor */}
-        <gridHelper args={[GRID_SIZE * 1.5, GRID_SIZE, 0x333333, 0x111111]} position={[0, -0.1, 0]} />
+        <gridHelper args={[GRID_SIZE * 1.5, GRID_SIZE, isDark ? 0x333333 : 0xcccccc, isDark ? 0x111111 : 0xe0e0e0]} position={[0, -0.1, 0]} />
 
         {/* The Data Landscape */}
         <group>
@@ -276,7 +276,7 @@ export function Landscape3D({ onSelectSegment }: { onSelectSegment: (s: GridSegm
               isSelected={hoveredSegment?.id === seg.id}
             />
           ))}
-          <AxisLabels />
+          <AxisLabels isDark={isDark} />
         </group>
 
         {/* Hover Label */}

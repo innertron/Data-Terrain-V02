@@ -130,7 +130,7 @@ export default function Home() {
       
       {/* 3D Viewport - Takes dominant space */}
       <div className="flex-1 relative h-[60vh] md:h-auto order-2 md:order-1">
-        <Landscape3D onSelectSegment={handleSelect} />
+        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} />
         
         {/* Header Overlay */}
         <div className="absolute top-6 left-6 z-10 pointer-events-none">

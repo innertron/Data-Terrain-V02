@@ -100,3 +100,9 @@
   height: 100%;
   background: radial-gradient(circle at center, #1a2035 0%, #0f1219 100%);
 }
+
+.canvas-container-light {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #ffffff 0%, #e8e8e8 100%);
+}
