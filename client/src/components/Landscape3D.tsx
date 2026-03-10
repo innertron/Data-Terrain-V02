@@ -253,10 +253,10 @@ export function Landscape3D({ onSelectSegment, isDark = true }: { onSelectSegmen
         <fog attach="fog" args={[isDark ? '#050505' : '#f5f5f5', 30, 120]} />
         
         {/* Lights */}
-        <ambientLight intensity={isDark ? 0.5 : 0.8} />
+        <ambientLight intensity={isDark ? 0.5 : 0.4} />
         <directionalLight 
           position={[10, 20, 10]} 
-          intensity={isDark ? 1 : 1.5} 
+          intensity={isDark ? 1 : 2} 
           castShadow 
           shadow-mapSize={[2048, 2048]}
         />
