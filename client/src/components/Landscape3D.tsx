@@ -196,7 +196,7 @@ function AxisLabels({ isDark = true }: { isDark?: boolean }) {
   );
 }
 
-function FloatingLabel({ data }: { data: GridSegment }) {
+function FloatingLabel({ data, isDark = true }: { data: GridSegment; isDark?: boolean }) {
   const xPos = (data.xIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const zPos = (data.zIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   
@@ -205,12 +205,12 @@ function FloatingLabel({ data }: { data: GridSegment }) {
 
   return (
     <Html position={[xPos, MAX_HEIGHT + 2, zPos]} center style={{ pointerEvents: 'none' }}>
-      <div className="bg-black/80 backdrop-blur-md border border-primary/50 p-3 rounded-lg shadow-2xl min-w-[220px] transform transition-all duration-200">
-        <h4 className="text-primary font-bold text-lg font-display mb-1">{data.value.toLocaleString()} People</h4>
-        <div className="text-xs text-muted-foreground space-y-1 font-mono">
-          <p><span className="text-white">Domain:</span> {domainLabel}</p>
-          <p><span className="text-white">Income/Edu:</span> {incomeLabel}</p>
-          <p className="italic border-t border-white/10 pt-1 mt-1 text-white/40">Segment [{data.xIndex},{data.zIndex}]</p>
+      <div className={`backdrop-blur-md p-3 rounded-lg shadow-2xl min-w-[220px] transform transition-all duration-200 ${isDark ? 'bg-black/80 border border-primary/50' : 'bg-white/90 border border-gray-300'}`}>
+        <h4 className={`font-bold text-lg font-display mb-1 ${isDark ? 'text-primary' : 'text-purple-700'}`}>{data.value.toLocaleString()} People</h4>
+        <div className={`text-xs space-y-1 font-mono ${isDark ? 'text-muted-foreground' : 'text-gray-600'}`}>
+          <p><span className={isDark ? 'text-white' : 'text-black font-bold'}>Domain:</span> {domainLabel}</p>
+          <p><span className={isDark ? 'text-white' : 'text-black font-bold'}>Income/Edu:</span> {incomeLabel}</p>
+          <p className={`italic pt-1 mt-1 ${isDark ? 'border-t border-white/10 text-white/40' : 'border-t border-gray-300 text-gray-400'}`}>Segment [{data.xIndex},{data.zIndex}]</p>
         </div>
       </div>
     </Html>
@@ -288,7 +288,7 @@ export function Landscape3D({ onSelectSegment, isDark = true }: { onSelectSegmen
         </group>
 
         {/* Hover Label */}
-        {hoveredSegment && <FloatingLabel data={hoveredSegment} />}
+        {hoveredSegment && <FloatingLabel data={hoveredSegment} isDark={isDark} />}
 
         <OrbitControls 
           enableDamping 
