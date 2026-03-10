@@ -212,7 +212,7 @@ export default function Home() {
 
               {/* Data Display */}
               <div className="space-y-4">
-                <div className="bg-muted/30 p-4 rounded-xl border border-white/5">
+                <div className="bg-muted p-4 rounded-xl border border-border">
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
                     Political Domain (X)
                   </Label>
@@ -224,7 +224,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="bg-muted/30 p-4 rounded-xl border border-white/5">
+                <div className="bg-muted p-4 rounded-xl border border-border">
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
                     Income / Education (Z)
                   </Label>
