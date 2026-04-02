@@ -60,39 +60,39 @@ const X_MIDDLE_NAMES = [
 ];
 
 const Z_LABELS = [
-  '<$34K GED','$35K GED','$40K GED','$45K AS','$50K BA1',
-  '$55K BA2','$60K BAMS','$65K Trade1','$70K Trade2','$77K BAPhD',
-  '$80K BS1','$90K BS2','$100K Trade3','$120K BSMS','$150K BSPhD1',
-  '$175K BSPhD2','$200K BSJD1','$250K BSJD2','$300K MD1','$400K MD2',
-  '$500K MDPhD1','$1M MDPhD2','$50M MDPhD3','$1B Luck1','$20B+ Luck2'
+  '$20B+ Luck2','$1B Luck1','$50M MDPhD3','$1M MDPhD2','$500K MDPhD1',
+  '$400K MD2','$300K MD1','$250K BSJD2','$200K BSJD1','$175K BSPhD2',
+  '$150K BSPhD1','$120K BSMS','$100K Trade3','$90K BS2','$80K BS1',
+  '$77K BAPhD','$70K Trade2','$65K Trade1','$60K BAMS','$55K BA2',
+  '$50K BA1','$45K AS','$40K GED','$35K GED','<$34K GED'
 ];
 
 const Z_MIDDLE_NAMES = [
-  'GED, n/a',
-  'n/a, GED, AS, BA',
-  'GED, AS, BA, Trade',
-  'ITTrade, Trade, AS, BA',
-  'BA, AS, ITTrade, Trade',
-  'BA, AS, Trade, ITTrade',
-  'BA, ITTrade, AS, Trade',
-  'Trade, ITTrade, BA, AS',
-  'BA, Trade, BA, ITTrade, BAJD',
-  'BA, Trade, BAJD, ITTrade',
-  'ITTrade, BSN, BAfin, BA| BS',
-  'BAMS, MSN, ITTrade, BS',
-  'ITTrade, BS, PhDmath, finMBA, BSMS, PhDmath',
-  'DNP, ITTrade, PharmD, BSMS, BSMS, finMBA',
-  'Barch, BSMS, BSMS, BSMS',
-  'BAJD, BSPhD, BSMS, BSJD',
-  'BAJD, BSPhD, DVM/VDM, DDS/DMD',
-  'BSJD, MD, DVM/VDM, MDPhD',
-  'MD, MDPhD, MDPhD',
-  'MDPhD, DDS/DMD, BAJD, MD, BSJD',
-  'MD, MDPhD',
-  'MD, MDPhD',
-  'MDPhD, BAJD, BSJD',
   'Luck',
-  'Luck'
+  'Luck',
+  'MDPhD, BAJD, BSJD',
+  'MD, MDPhD',
+  'MD, MDPhD',
+  'MDPhD, DDS/DMD, BAJD, MD, BSJD',
+  'MD, MDPhD, MDPhD',
+  'BSJD, MD, DVM/VDM, MDPhD',
+  'BAJD, BSPhD, DVM/VDM, DDS/DMD',
+  'BAJD, BSPhD, BSMS, BSJD',
+  'Barch, BSMS, BSMS, BSMS',
+  'DNP, ITTrade, PharmD, BSMS, BSMS, finMBA',
+  'ITTrade, BS, PhDmath, finMBA, BSMS, PhDmath',
+  'BAMS, MSN, ITTrade, BS',
+  'ITTrade, BSN, BAfin, BA| BS',
+  'BA, Trade, BAJD, ITTrade',
+  'BA, Trade, BA, ITTrade, BAJD',
+  'Trade, ITTrade, BA, AS',
+  'BA, ITTrade, AS, Trade',
+  'BA, AS, Trade, ITTrade',
+  'BA, AS, ITTrade, Trade',
+  'ITTrade, Trade, AS, BA',
+  'GED, AS, BA, Trade',
+  'n/a, GED, AS, BA',
+  'GED, n/a'
 ];
 
 export default function Home() {

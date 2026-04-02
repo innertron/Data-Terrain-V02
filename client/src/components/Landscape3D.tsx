@@ -123,11 +123,11 @@ const X_LABELS = [
 ];
 
 const Z_LABELS = [
-  '<$34K GED','$35K GED','$40K GED','$45K AS','$50K BA1',
-  '$55K BA2','$60K BAMS','$65K Trade1','$70K Trade2','$77K BAPhD',
-  '$80K BS1','$90K BS2','$100K Trade3','$120K BSMS','$150K BSPhD1',
-  '$175K BSPhD2','$200K BSJD1','$250K BSJD2','$300K MD1','$400K MD2',
-  '$500K MDPhD1','$1M MDPhD2','$50M MDPhD3','$1B Luck1','$20B+ Luck2'
+  '$20B+ Luck2','$1B Luck1','$50M MDPhD3','$1M MDPhD2','$500K MDPhD1',
+  '$400K MD2','$300K MD1','$250K BSJD2','$200K BSJD1','$175K BSPhD2',
+  '$150K BSPhD1','$120K BSMS','$100K Trade3','$90K BS2','$80K BS1',
+  '$77K BAPhD','$70K Trade2','$65K Trade1','$60K BAMS','$55K BA2',
+  '$50K BA1','$45K AS','$40K GED','$35K GED','<$34K GED'
 ];
 
 function AxisLabels({ isDark = true }: { isDark?: boolean }) {
