@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Landscape3D } from "@/components/Landscape3D";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,9 +8,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useUpdateSegment } from "@/hooks/use-segments";
 import { useTheme } from "@/hooks/use-theme";
-import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2 } from "lucide-react";
+import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { api } from "@shared/routes";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 // --- Types ---
 type GridSegment = {
@@ -102,6 +104,64 @@ export default function Home() {
   const updateMutation = useUpdateSegment();
   const queryClient = useQueryClient();
   const { theme, setTheme } = useTheme();
+  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Fetch this segment's dedicated dataset
+  const segmentDataQuery = useQuery<{ segmentId: number; rows: { response_category: string; count: number }[]; total: number }>({
+    queryKey: ['/api/segments', selectedSegment?.id, 'data'],
+    enabled: !!selectedSegment,
+  });
+
+  // Upload CSV data mutation
+  const uploadDataMutation = useMutation({
+    mutationFn: async (rows: { response_category: string; count: number }[]) => {
+      if (!selectedSegment) throw new Error("No segment selected");
+      return apiRequest("POST", `/api/segments/${selectedSegment.id}/data`, { rows });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/segments', selectedSegment?.id, 'data'] });
+      queryClient.invalidateQueries({ queryKey: [api.segments.list.path] });
+      toast({ title: "Dataset uploaded", description: `Block ${selectedSegment?.id} data updated successfully.` });
+    },
+    onError: () => {
+      toast({ title: "Upload failed", description: "Could not save the dataset. Check CSV format.", variant: "destructive" });
+    },
+  });
+
+  // Parse a CSV file into rows
+  const parseCSV = (text: string): { response_category: string; count: number }[] => {
+    const lines = text.trim().split(/\r?\n/);
+    const rows: { response_category: string; count: number }[] = [];
+    for (const line of lines) {
+      if (!line.trim() || line.startsWith('#')) continue;
+      const parts = line.split(',');
+      if (parts.length < 2) continue;
+      const count = parseInt(parts[parts.length - 1].trim(), 10);
+      const response_category = parts.slice(0, parts.length - 1).join(',').trim();
+      if (response_category && !isNaN(count)) {
+        rows.push({ response_category, count });
+      }
+    }
+    return rows;
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      const rows = parseCSV(text);
+      if (rows.length === 0) {
+        toast({ title: "No data found", description: "CSV must have rows like: category name, count", variant: "destructive" });
+        return;
+      }
+      uploadDataMutation.mutate(rows);
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
 
   // Handle selection from 3D view
   const handleSelect = (segment: GridSegment) => {
@@ -117,10 +177,7 @@ export default function Home() {
     updateMutation.mutate(
       { id: selectedSegment.id, value: newValue },
       {
-        onSuccess: () => {
-          // Optimistic update locally for immediate feedback if needed, 
-          // but react-query invalidation handles it mostly.
-        }
+        onSuccess: () => {}
       }
     );
   };
@@ -268,6 +325,72 @@ export default function Home() {
                     </Button>
                   </div>
                 </div>
+              </div>
+
+              <Separator className="bg-border/50" />
+
+              {/* Dataset Upload */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Database className="w-4 h-4 text-primary" />
+                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">Dataset — Block {selectedSegment.id}</Label>
+                </div>
+
+                {/* CSV Upload Button */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".csv,.txt"
+                  className="hidden"
+                  data-testid="input-csv-upload"
+                  onChange={handleFileUpload}
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full border-dashed border-primary/40 hover:border-primary hover:bg-primary/5"
+                  data-testid="button-upload-csv"
+                  disabled={uploadDataMutation.isPending}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {uploadDataMutation.isPending ? (
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Uploading...</>
+                  ) : (
+                    <><Upload className="w-4 h-4 mr-2" />Upload CSV for Block {selectedSegment.id}</>
+                  )}
+                </Button>
+                <p className="text-xs text-muted-foreground font-mono">
+                  CSV format: <span className="text-primary">category name, count</span> (one per line)
+                </p>
+
+                {/* Display current dataset */}
+                {segmentDataQuery.isLoading && (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Loader2 className="w-3 h-3 animate-spin" />Loading dataset...
+                  </div>
+                )}
+                {segmentDataQuery.data && segmentDataQuery.data.rows.length > 0 && (
+                  <div className="bg-muted/30 rounded-lg border border-border overflow-hidden">
+                    <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-muted/50">
+                      <span className="text-xs font-mono text-muted-foreground">Current Dataset</span>
+                      <div className="flex items-center gap-1 text-xs text-green-500">
+                        <CheckCircle2 className="w-3 h-3" />
+                        Total: {segmentDataQuery.data.total.toLocaleString()}
+                      </div>
+                    </div>
+                    <div className="max-h-40 overflow-y-auto">
+                      {segmentDataQuery.data.rows.map((row, i) => (
+                        <div key={i} className="flex items-center justify-between px-3 py-1.5 border-b border-border/50 last:border-0 hover:bg-muted/40">
+                          <span className="text-xs text-foreground truncate flex-1 mr-2">{row.response_category}</span>
+                          <span className="text-xs font-mono font-bold text-primary shrink-0">{row.count.toLocaleString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {segmentDataQuery.data && segmentDataQuery.data.rows.length === 0 && (
+                  <p className="text-xs text-muted-foreground text-center py-2 italic">No data uploaded yet for this block.</p>
+                )}
               </div>
 
               <Separator className="bg-border/50" />

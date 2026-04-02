@@ -3,12 +3,25 @@ import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
+import { initializeSegmentTables, getSegmentData, setSegmentData, getSegmentTotal } from "./segmentDb";
+
+const segmentDataRowSchema = z.object({
+  response_category: z.string().min(1),
+  count: z.number().int().min(0),
+});
+
+const uploadDataSchema = z.object({
+  rows: z.array(segmentDataRowSchema).min(1),
+});
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
   
+  // Initialize all 625 segment data tables
+  await initializeSegmentTables();
+
   // Seeding logic
   const existingSegments = await storage.getGridSegments();
   if (existingSegments.length === 0) {
@@ -36,11 +49,9 @@ export async function registerRoutes(
 
     for (let x = 0; x < gridSize; x++) {
       for (let z = 0; z < gridSize; z++) {
-        // Create an interesting topography: peaks at centers, valleys at extremes
         const dx = x - 12;
         const dz = z - 12;
         const dist = Math.sqrt(dx * dx + dz * dz);
-        // Gaussian-ish peak + noise
         const baseValue = Math.max(10, 100 * Math.exp(-(dist * dist) / 50)); 
         const randomValue = Math.floor(Math.random() * 20);
         
@@ -58,11 +69,13 @@ export async function registerRoutes(
     console.log("DemoScape grid seeded!");
   }
 
+  // GET all segments (for the landscape)
   app.get(api.segments.list.path, async (req, res) => {
     const segments = await storage.getGridSegments();
     res.json(segments);
   });
 
+  // PUT update a segment's value manually
   app.put(api.segments.update.path, async (req, res) => {
     try {
       const input = api.segments.update.input.parse(req.body);
@@ -76,6 +89,43 @@ export async function registerRoutes(
         });
       }
       res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // GET data rows for a specific segment's dedicated table
+  app.get("/api/segments/:id/data", async (req, res) => {
+    try {
+      const segmentId = Number(req.params.id);
+      if (isNaN(segmentId) || segmentId < 1 || segmentId > 625) {
+        return res.status(400).json({ message: "Invalid segment ID (must be 1–625)" });
+      }
+      const rows = await getSegmentData(segmentId);
+      const total = rows.reduce((sum, r) => sum + r.count, 0);
+      res.json({ segmentId, rows, total });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to fetch segment data" });
+    }
+  });
+
+  // POST upload CSV data (as JSON rows) to a segment's dedicated table
+  app.post("/api/segments/:id/data", async (req, res) => {
+    try {
+      const segmentId = Number(req.params.id);
+      if (isNaN(segmentId) || segmentId < 1 || segmentId > 625) {
+        return res.status(400).json({ message: "Invalid segment ID (must be 1–625)" });
+      }
+      const { rows } = uploadDataSchema.parse(req.body);
+      const total = await setSegmentData(segmentId, rows);
+      // Update the grid_segments.value so bar height reflects the new data
+      await storage.updateGridSegment(segmentId, { value: total });
+      res.json({ segmentId, total, rowCount: rows.length });
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: err.errors[0].message });
+      }
+      console.error(err);
+      res.status(500).json({ message: "Failed to upload segment data" });
     }
   });
 
