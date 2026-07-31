@@ -295,7 +295,7 @@ export default function Home() {
                     <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">
                       Political Domain (X)
                     </Label>
-                    <div className="text-sm font-medium leading-snug">
+                    <div className="text-xs font-medium leading-snug">
                       <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
                         {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
                       </span>
@@ -307,59 +307,33 @@ export default function Home() {
                     <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">
                       Income / Education (Z)
                     </Label>
-                    <div className="text-sm font-medium leading-snug">
+                    <div className="text-xs font-medium leading-snug">
                       <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
                         {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
                       </span>
                       : {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
                     </div>
                   </div>
-
-                  <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-3 rounded-lg border border-primary/20">
-                    <Label className="text-[10px] uppercase tracking-wider text-primary mb-0.5 block">
-                      Population Density (Y)
-                    </Label>
-                    <div className="flex items-center gap-3 mt-1.5">
-                      <Input 
-                        type="number" 
-                        value={editValue} 
-                        onChange={(e) => setEditValue(e.target.value)}
-                        className="text-lg font-bold font-mono h-9 bg-background/50 border-primary/30 focus:border-primary"
-                      />
-                    </div>
-                    <div className="mt-2.5 flex justify-end">
-                      <Button 
-                        onClick={handleSave} 
-                        disabled={updateMutation.isPending || editValue === String(selectedSegment.value)}
-                        size="sm"
-                        className="w-full bg-primary hover:bg-primary/80 text-white shadow-lg shadow-primary/25"
-                      >
-                        {updateMutation.isPending ? (
-                          <>
-                            <Loader2 className="w-3 h-3 mr-1.5 animate-spin" />
-                            Updating...
-                          </>
-                        ) : (
-                          <>
-                            <Save className="w-3 h-3 mr-1.5" />
-                            Update Value
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </div>
                 </div>
               </div>{/* end fixed cards */}
 
-              <Separator className="bg-border/50" />
-
-              {/* Results — flex-1 fills all remaining space */}
-              <div className="bg-muted p-3 rounded-lg border border-border flex-1 flex flex-col min-h-0">
-                <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 block shrink-0">
-                  Results
-                </Label>
-                <div className="text-xs text-muted-foreground italic">
-                  — no results yet —
+              {/* Population Density + Results — merged purple box, fills remaining space */}
+              <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-3 rounded-lg border border-primary/20 flex-1 flex flex-col min-h-0">
+                <div className="flex items-center justify-between shrink-0 mb-2">
+                  <Label className="text-[10px] uppercase tracking-wider text-primary">
+                    Population Density (Y)
+                  </Label>
+                  <span className="text-sm font-bold font-mono text-primary">
+                    {selectedSegment.value}
+                  </span>
+                </div>
+                <div className="border-t border-primary/20 pt-2 flex-1 flex flex-col min-h-0">
+                  <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">
+                    Results
+                  </Label>
+                  <div className="text-xs text-muted-foreground italic">
+                    — no results yet —
+                  </div>
                 </div>
               </div>
 

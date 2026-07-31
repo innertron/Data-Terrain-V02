@@ -226,14 +226,9 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }
         const height = seg ? (seg.value / maxValue) * MAX_HEIGHT : 0;
         positions[vi * 3 + 2] = height;
 
-        const hue = THREE.MathUtils.lerp(240, 0, xi / 24);
-        const intensity = seg ? seg.value / maxValue : 0;
-        const color = new THREE.Color();
-        if (isDark) {
-          color.setHSL(hue / 360, 0.8 + intensity * 0.2, 0.3 + intensity * 0.4);
-        } else {
-          color.setHSL(hue / 360, 1.0, 0.4 + intensity * 0.15);
-        }
+        // Use same color formula as bars so surf matches bar gradient exactly
+        const cssColor = getBarColor(seg?.value ?? 0, maxValue, xi, isDark);
+        const color = new THREE.Color(cssColor);
         colorArr[vi * 3] = color.r;
         colorArr[vi * 3 + 1] = color.g;
         colorArr[vi * 3 + 2] = color.b;
