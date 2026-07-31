@@ -196,7 +196,15 @@ function AxisLabels({ isDark = true }: { isDark?: boolean }) {
   );
 }
 
-function SurfaceTerrain({ segments, maxValue, isDark }: { segments: GridSegment[]; maxValue: number; isDark: boolean }) {
+function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }: {
+  segments: GridSegment[];
+  maxValue: number;
+  isDark: boolean;
+  onHover: (s: GridSegment | null) => void;
+  onSelectSegment: (s: GridSegment) => void;
+}) {
+  const segMap = useMemo(() => new Map(segments.map(s => [`${s.xIndex},${s.zIndex}`, s])), [segments]);
+
   const geometry = useMemo(() => {
     const geo = new THREE.PlaneGeometry(
       GRID_SIZE * (BAR_SIZE + GAP),
@@ -207,18 +215,15 @@ function SurfaceTerrain({ segments, maxValue, isDark }: { segments: GridSegment[
 
     const positions = geo.attributes.position.array as Float32Array;
     const colorArr = new Float32Array(positions.length);
-    const segMap = new Map(segments.map(s => [`${s.xIndex},${s.zIndex}`, s]));
 
     for (let row = 0; row < GRID_SIZE; row++) {
       for (let col = 0; col < GRID_SIZE; col++) {
         const vi = row * GRID_SIZE + col;
-        // PlaneGeometry rows go from top (+Y local) to bottom (-Y local)
-        // xi = col (0..24), zi = GRID_SIZE-1-row (because plane rows are inverted)
         const xi = col;
-        const zi = GRID_SIZE - 1 - row;
+        // row=0 = top of plane (local +Y) → world -Z = back of grid = zi=0
+        const zi = row;
         const seg = segMap.get(`${xi},${zi}`);
         const height = seg ? (seg.value / maxValue) * MAX_HEIGHT : 0;
-        // local Z becomes world Y after -PI/2 X rotation
         positions[vi * 3 + 2] = height;
 
         const hue = THREE.MathUtils.lerp(240, 0, xi / 24);
@@ -239,10 +244,32 @@ function SurfaceTerrain({ segments, maxValue, isDark }: { segments: GridSegment[
     geo.attributes.position.needsUpdate = true;
     geo.computeVertexNormals();
     return geo;
-  }, [segments, maxValue, isDark]);
+  }, [segments, maxValue, isDark, segMap]);
+
+  const getSegFromPoint = (point: THREE.Vector3) => {
+    const xi = Math.max(0, Math.min(24, Math.round(point.x / (BAR_SIZE + GAP) + GRID_SIZE / 2)));
+    const zi = Math.max(0, Math.min(24, Math.round(point.z / (BAR_SIZE + GAP) + GRID_SIZE / 2)));
+    return segMap.get(`${xi},${zi}`) || null;
+  };
 
   return (
-    <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]} receiveShadow castShadow>
+    <mesh
+      geometry={geometry}
+      rotation={[-Math.PI / 2, 0, 0]}
+      receiveShadow
+      castShadow
+      onPointerMove={(e) => {
+        e.stopPropagation();
+        const seg = getSegFromPoint(e.point);
+        onHover(seg);
+      }}
+      onPointerOut={() => onHover(null)}
+      onClick={(e) => {
+        e.stopPropagation();
+        const seg = getSegFromPoint(e.point);
+        if (seg) onSelectSegment(seg);
+      }}
+    >
       <meshStandardMaterial
         vertexColors
         roughness={isDark ? 0.3 : 0.5}
@@ -328,7 +355,16 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false }
         {/* The Data Landscape */}
         <group>
           {surfMode ? (
-            <SurfaceTerrain segments={segments} maxValue={maxValue} isDark={isDark} />
+            <SurfaceTerrain
+              segments={segments}
+              maxValue={maxValue}
+              isDark={isDark}
+              onHover={(s) => {
+                setHoveredSegment(s);
+                if (s) onSelectSegment(s);
+              }}
+              onSelectSegment={onSelectSegment}
+            />
           ) : (
             segments.map((seg) => (
               <Bar
