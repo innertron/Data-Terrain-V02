@@ -247,7 +247,6 @@ function SurfaceTerrain({ segments, maxValue, isDark }: { segments: GridSegment[
         vertexColors
         roughness={isDark ? 0.3 : 0.5}
         metalness={isDark ? 0.3 : 0.05}
-        side={THREE.DoubleSide}
       />
     </mesh>
   );
@@ -323,8 +322,8 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false }
         {/* Environment */}
         {isDark && <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />}
         
-        {/* Helper Grid on floor */}
-        <gridHelper args={[GRID_SIZE * 1.5, GRID_SIZE, isDark ? 0x333333 : 0xcccccc, isDark ? 0x111111 : 0xe0e0e0]} position={[0, -0.1, 0]} />
+        {/* Helper Grid on floor — hidden in surf mode to prevent z-fighting */}
+        {!surfMode && <gridHelper args={[GRID_SIZE * 1.5, GRID_SIZE, isDark ? 0x333333 : 0xcccccc, isDark ? 0x111111 : 0xe0e0e0]} position={[0, -0.1, 0]} />}
 
         {/* The Data Landscape */}
         <group>
