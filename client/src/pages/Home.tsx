@@ -210,10 +210,10 @@ export default function Home() {
 
       {/* Sidebar Control Panel */}
       <div className="w-full md:w-[350px] lg:w-[400px] h-full bg-card border-l border-border flex flex-col shadow-2xl z-20 order-1 md:order-2">
-        <div className="p-6 border-b border-border bg-black/20 relative">
+        <div className="p-4 border-b border-border bg-black/20 relative">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <Info className="w-5 h-5 text-primary" />
+            <h2 className="text-base font-bold flex items-center gap-2">
+              <Info className="w-4 h-4 text-primary" />
               Inspector
             </h2>
             <div className="relative">
@@ -268,14 +268,14 @@ export default function Home() {
               )}
             </div>
           </div>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-xs text-muted-foreground mt-0.5">
             Hover or click a data node to view details.
           </p>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {selectedSegment ? (
-            <div className="animate-in slide-in-from-right-4 duration-300 space-y-6">
+            <div className="animate-in slide-in-from-right-4 duration-300 space-y-4">
               
               {/* Coordinates Badge */}
               <div className="flex items-center justify-between">
@@ -289,11 +289,11 @@ export default function Home() {
 
               {/* Data Display */}
               <div className="space-y-4">
-                <div className="bg-muted p-4 rounded-xl border border-border">
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
+                <div className="bg-muted p-3 rounded-lg border border-border">
+                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">
                     Political Domain (X)
                   </Label>
-                  <div className="text-lg font-medium">
+                  <div className="text-sm font-medium leading-snug">
                     <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
                       {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
                     </span>
@@ -301,11 +301,11 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="bg-muted p-4 rounded-xl border border-border">
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
+                <div className="bg-muted p-3 rounded-lg border border-border">
+                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">
                     Income / Education (Z)
                   </Label>
-                  <div className="text-lg font-medium">
+                  <div className="text-sm font-medium leading-snug">
                     <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
                       {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
                     </span>
@@ -313,32 +313,33 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-4 rounded-xl border border-primary/20">
-                   <Label className="text-xs uppercase tracking-wider text-primary mb-1 block">
+                <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-3 rounded-lg border border-primary/20">
+                  <Label className="text-[10px] uppercase tracking-wider text-primary mb-0.5 block">
                     Population Density (Y)
                   </Label>
-                  <div className="flex items-center gap-4 mt-2">
+                  <div className="flex items-center gap-3 mt-1.5">
                     <Input 
                       type="number" 
                       value={editValue} 
                       onChange={(e) => setEditValue(e.target.value)}
-                      className="text-2xl font-bold font-mono h-12 bg-background/50 border-primary/30 focus:border-primary"
+                      className="text-lg font-bold font-mono h-9 bg-background/50 border-primary/30 focus:border-primary"
                     />
                   </div>
-                   <div className="mt-4 flex justify-end">
+                  <div className="mt-2.5 flex justify-end">
                     <Button 
                       onClick={handleSave} 
                       disabled={updateMutation.isPending || editValue === String(selectedSegment.value)}
+                      size="sm"
                       className="w-full bg-primary hover:bg-primary/80 text-white shadow-lg shadow-primary/25"
                     >
                       {updateMutation.isPending ? (
                         <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          <Loader2 className="w-3 h-3 mr-1.5 animate-spin" />
                           Updating...
                         </>
                       ) : (
                         <>
-                          <Save className="w-4 h-4 mr-2" />
+                          <Save className="w-3 h-3 mr-1.5" />
                           Update Value
                         </>
                       )}
@@ -350,10 +351,10 @@ export default function Home() {
               <Separator className="bg-border/50" />
 
               {/* Dataset Upload */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <Database className="w-4 h-4 text-primary" />
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">Dataset — Block {selectedSegment.id}</Label>
+              <div className="space-y-2">
+                <div className="flex items-center gap-1.5">
+                  <Database className="w-3 h-3 text-primary" />
+                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground">Dataset — Block {selectedSegment.id}</Label>
                 </div>
 
                 {/* CSV Upload Button */}
@@ -417,7 +418,7 @@ export default function Home() {
 
               {/* Meta Info */}
               {selectedSegment.description && (
-                <div className="text-sm text-muted-foreground italic bg-muted/20 p-3 rounded-lg border border-white/5">
+                <div className="text-xs text-muted-foreground italic bg-muted/20 p-2 rounded-lg border border-white/5">
                   "{selectedSegment.description}"
                 </div>
               )}
