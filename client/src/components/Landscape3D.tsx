@@ -246,6 +246,8 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }
     return geo;
   }, [segments, maxValue, isDark, segMap]);
 
+  const [hoverPos, setHoverPos] = useState<THREE.Vector3 | null>(null);
+
   const getSegFromPoint = (point: THREE.Vector3) => {
     const xi = Math.max(0, Math.min(24, Math.round(point.x / (BAR_SIZE + GAP) + GRID_SIZE / 2)));
     const zi = Math.max(0, Math.min(24, Math.round(point.z / (BAR_SIZE + GAP) + GRID_SIZE / 2)));
@@ -253,29 +255,49 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }
   };
 
   return (
-    <mesh
-      geometry={geometry}
-      rotation={[-Math.PI / 2, 0, 0]}
-      receiveShadow
-      castShadow
-      onPointerMove={(e) => {
-        e.stopPropagation();
-        const seg = getSegFromPoint(e.point);
-        onHover(seg);
-      }}
-      onPointerOut={() => onHover(null)}
-      onClick={(e) => {
-        e.stopPropagation();
-        const seg = getSegFromPoint(e.point);
-        if (seg) onSelectSegment(seg);
-      }}
-    >
-      <meshStandardMaterial
-        vertexColors
-        roughness={isDark ? 0.3 : 0.5}
-        metalness={isDark ? 0.3 : 0.05}
-      />
-    </mesh>
+    <group>
+      <mesh
+        geometry={geometry}
+        rotation={[-Math.PI / 2, 0, 0]}
+        receiveShadow
+        castShadow
+        onPointerMove={(e) => {
+          e.stopPropagation();
+          setHoverPos(e.point.clone());
+          const seg = getSegFromPoint(e.point);
+          onHover(seg);
+        }}
+        onPointerOut={() => {
+          setHoverPos(null);
+          onHover(null);
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          const seg = getSegFromPoint(e.point);
+          if (seg) onSelectSegment(seg);
+        }}
+      >
+        <meshStandardMaterial
+          vertexColors
+          roughness={isDark ? 0.3 : 0.5}
+          metalness={isDark ? 0.3 : 0.05}
+        />
+      </mesh>
+
+      {/* Hover locator marker */}
+      {hoverPos && (
+        <mesh position={[hoverPos.x, hoverPos.y + 0.3, hoverPos.z]}>
+          <sphereGeometry args={[0.25, 16, 16]} />
+          <meshStandardMaterial
+            color="white"
+            emissive="white"
+            emissiveIntensity={2}
+            transparent
+            opacity={0.9}
+          />
+        </mesh>
+      )}
+    </group>
   );
 }
 
