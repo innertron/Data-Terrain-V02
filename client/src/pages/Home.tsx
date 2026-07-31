@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useUpdateSegment } from "@/hooks/use-segments";
 import { useTheme } from "@/hooks/use-theme";
-import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2 } from "lucide-react";
+import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers } from "lucide-react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { apiRequest } from "@/lib/queryClient";
@@ -101,6 +101,7 @@ export default function Home() {
   const [selectedSegment, setSelectedSegment] = useState<GridSegment | null>(null);
   const [editValue, setEditValue] = useState<string>("");
   const [showSettings, setShowSettings] = useState(false);
+  const [surfMode, setSurfMode] = useState(false);
   const updateMutation = useUpdateSegment();
   const queryClient = useQueryClient();
   const { theme, setTheme } = useTheme();
@@ -187,14 +188,22 @@ export default function Home() {
       
       {/* 3D Viewport - Takes dominant space */}
       <div className="flex-1 relative h-[60vh] md:h-auto order-2 md:order-1">
-        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} />
+        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} />
         
-        {/* Header Overlay */}
+        {/* Header Overlay — minedICE logo */}
         <div className="absolute top-6 left-6 z-10 pointer-events-none">
-          <h1 className="text-4xl md:text-5xl font-bold font-display text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent drop-shadow-lg">
-            DemoScape 4.0
-          </h1>
-          <p className="text-muted-foreground font-mono mt-2 text-sm bg-black/40 backdrop-blur-sm px-2 py-1 rounded inline-block border border-white/5">
+          <div className="flex items-baseline gap-0 leading-none">
+            <span className={`text-3xl md:text-4xl font-bold tracking-tight ${theme === 'light' ? 'text-gray-800' : 'text-white'}`}>
+              mined
+            </span>
+            <span className="relative mx-1">
+              <span className="text-xs font-bold text-primary" style={{ position: 'relative', top: '-6px' }}>v</span>
+            </span>
+            <span className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
+              ICE
+            </span>
+          </div>
+          <p className={`font-mono mt-1 text-xs tracking-widest uppercase ${theme === 'light' ? 'text-gray-500' : 'text-white/50'}`}>
             Module Interaction & Visualization
           </p>
         </div>
@@ -242,6 +251,18 @@ export default function Home() {
                       onClick={() => { setTheme('system'); setShowSettings(false); }}
                     >
                       <Monitor className="w-4 h-4" /> System
+                    </button>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-border">
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2 px-1">View</p>
+                    <button
+                      className="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm hover:bg-muted/50 transition-colors"
+                      onClick={() => setSurfMode(v => !v)}
+                    >
+                      <span className="flex items-center gap-2"><Layers className="w-4 h-4" /> Surf Mode</span>
+                      <span className={`w-10 h-5 rounded-full transition-colors flex items-center px-0.5 ${surfMode ? 'bg-primary' : 'bg-muted'}`}>
+                        <span className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${surfMode ? 'translate-x-5' : 'translate-x-0'}`} />
+                      </span>
                     </button>
                   </div>
                 </div>

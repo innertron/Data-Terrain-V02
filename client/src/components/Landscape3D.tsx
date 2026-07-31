@@ -196,6 +196,63 @@ function AxisLabels({ isDark = true }: { isDark?: boolean }) {
   );
 }
 
+function SurfaceTerrain({ segments, maxValue, isDark }: { segments: GridSegment[]; maxValue: number; isDark: boolean }) {
+  const geometry = useMemo(() => {
+    const geo = new THREE.PlaneGeometry(
+      GRID_SIZE * (BAR_SIZE + GAP),
+      GRID_SIZE * (BAR_SIZE + GAP),
+      GRID_SIZE - 1,
+      GRID_SIZE - 1
+    );
+
+    const positions = geo.attributes.position.array as Float32Array;
+    const colorArr = new Float32Array(positions.length);
+    const segMap = new Map(segments.map(s => [`${s.xIndex},${s.zIndex}`, s]));
+
+    for (let row = 0; row < GRID_SIZE; row++) {
+      for (let col = 0; col < GRID_SIZE; col++) {
+        const vi = row * GRID_SIZE + col;
+        // PlaneGeometry rows go from top (+Y local) to bottom (-Y local)
+        // xi = col (0..24), zi = GRID_SIZE-1-row (because plane rows are inverted)
+        const xi = col;
+        const zi = GRID_SIZE - 1 - row;
+        const seg = segMap.get(`${xi},${zi}`);
+        const height = seg ? (seg.value / maxValue) * MAX_HEIGHT : 0;
+        // local Z becomes world Y after -PI/2 X rotation
+        positions[vi * 3 + 2] = height;
+
+        const hue = THREE.MathUtils.lerp(240, 0, xi / 24);
+        const intensity = seg ? seg.value / maxValue : 0;
+        const color = new THREE.Color();
+        if (isDark) {
+          color.setHSL(hue / 360, 0.8 + intensity * 0.2, 0.3 + intensity * 0.4);
+        } else {
+          color.setHSL(hue / 360, 1.0, 0.4 + intensity * 0.15);
+        }
+        colorArr[vi * 3] = color.r;
+        colorArr[vi * 3 + 1] = color.g;
+        colorArr[vi * 3 + 2] = color.b;
+      }
+    }
+
+    geo.setAttribute('color', new THREE.BufferAttribute(colorArr, 3));
+    geo.attributes.position.needsUpdate = true;
+    geo.computeVertexNormals();
+    return geo;
+  }, [segments, maxValue, isDark]);
+
+  return (
+    <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]} receiveShadow castShadow>
+      <meshStandardMaterial
+        vertexColors
+        roughness={isDark ? 0.3 : 0.5}
+        metalness={isDark ? 0.3 : 0.05}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
+  );
+}
+
 function FloatingLabel({ data, isDark = true }: { data: GridSegment; isDark?: boolean }) {
   const xPos = (data.xIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const zPos = (data.zIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
@@ -217,7 +274,7 @@ function FloatingLabel({ data, isDark = true }: { data: GridSegment; isDark?: bo
   );
 }
 
-export function Landscape3D({ onSelectSegment, isDark = true }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; }) {
+export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; }) {
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
 
@@ -225,7 +282,7 @@ export function Landscape3D({ onSelectSegment, isDark = true }: { onSelectSegmen
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-background/50 backdrop-blur-sm animate-in fade-in">
         <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
-        <p className="text-muted-foreground font-mono animate-pulse">Initializing DemoScape 4.0...</p>
+        <p className="text-muted-foreground font-mono animate-pulse">Initializing minedICE Terrain...</p>
       </div>
     );
   }
@@ -271,19 +328,23 @@ export function Landscape3D({ onSelectSegment, isDark = true }: { onSelectSegmen
 
         {/* The Data Landscape */}
         <group>
-          {segments.map((seg) => (
-            <Bar 
-              key={seg.id} 
-              data={seg} 
-              maxValue={maxValue} 
-              onHover={(s) => {
-                setHoveredSegment(s);
-                if (s) onSelectSegment(s);
-              }}
-              isSelected={hoveredSegment?.id === seg.id}
-              isDark={isDark}
-            />
-          ))}
+          {surfMode ? (
+            <SurfaceTerrain segments={segments} maxValue={maxValue} isDark={isDark} />
+          ) : (
+            segments.map((seg) => (
+              <Bar
+                key={seg.id}
+                data={seg}
+                maxValue={maxValue}
+                onHover={(s) => {
+                  setHoveredSegment(s);
+                  if (s) onSelectSegment(s);
+                }}
+                isSelected={hoveredSegment?.id === seg.id}
+                isDark={isDark}
+              />
+            ))
+          )}
           <AxisLabels isDark={isDark} />
         </group>
 
