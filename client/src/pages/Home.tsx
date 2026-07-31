@@ -191,18 +191,17 @@ export default function Home() {
         <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} />
         
         {/* Header Overlay — minedICE logo */}
-        <div className="absolute top-6 left-6 z-10 pointer-events-none">
-          <div className="flex items-baseline gap-0 leading-none">
-            <span className={`text-3xl md:text-4xl font-bold tracking-tight ${theme === 'light' ? 'text-gray-800' : 'text-white'}`}>
-              mined
-            </span>
-            <span className="relative mx-1">
-              <span className="text-xs font-bold text-primary" style={{ position: 'relative', top: '-6px' }}>v</span>
-            </span>
-            <span className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
-              ICE
-            </span>
-          </div>
+        <div className="absolute top-4 left-6 z-10 pointer-events-none">
+          {(() => {
+            const isDarkMode = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            return (
+              <img
+                src={isDarkMode ? '/minedice-logo-dark.png' : '/minedice-logo-light.png'}
+                alt="minedICE"
+                className="h-12 md:h-16 w-auto object-contain"
+              />
+            );
+          })()}
           <p className={`font-mono mt-1 text-xs tracking-widest uppercase ${theme === 'light' ? 'text-gray-500' : 'text-white/50'}`}>
             Module Interaction & Visualization
           </p>
