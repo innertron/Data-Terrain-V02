@@ -280,11 +280,14 @@ export default function Home() {
               {/* Fixed cards */}
               <div className="flex flex-col gap-3 shrink-0">
                 {/* Coordinates Badge */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5 flex-wrap">
                   <Badge variant="outline" className="font-mono text-xs">
                     ID: {selectedSegment.id}
                   </Badge>
-                  <Badge className="bg-primary/20 text-primary border-primary/50 hover:bg-primary/30">
+                  <Badge className="bg-primary/20 text-primary border-primary/50 font-mono text-xs">
+                    PopDensity: {selectedSegment.value}
+                  </Badge>
+                  <Badge variant="outline" className="font-mono text-xs">
                     POS: [{selectedSegment.xIndex}, {selectedSegment.zIndex}]
                   </Badge>
                 </div>
@@ -317,23 +320,13 @@ export default function Home() {
                 </div>
               </div>{/* end fixed cards */}
 
-              {/* Population Density + Results — merged purple box, fills remaining space */}
+              {/* Results — purple box, fills remaining space */}
               <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-3 rounded-lg border border-primary/20 flex-1 flex flex-col min-h-0">
-                <div className="flex items-center justify-between shrink-0 mb-2">
-                  <Label className="text-[10px] uppercase tracking-wider text-primary">
-                    Population Density (Y)
-                  </Label>
-                  <span className="text-sm font-bold font-mono text-primary">
-                    {selectedSegment.value}
-                  </span>
-                </div>
-                <div className="border-t border-primary/20 pt-2 flex-1 flex flex-col min-h-0">
-                  <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">
-                    Results
-                  </Label>
-                  <div className="text-xs text-muted-foreground italic">
-                    — no results yet —
-                  </div>
+                <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">
+                  Results
+                </Label>
+                <div className="text-xs text-muted-foreground italic">
+                  — no results yet —
                 </div>
               </div>
 
