@@ -246,12 +246,37 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }
     return geo;
   }, [segments, maxValue, isDark, segMap]);
 
-  const [hoverPos, setHoverPos] = useState<THREE.Vector3 | null>(null);
+  const faceGeoRef = useRef<THREE.BufferGeometry>(null!);
+  const [showFace, setShowFace] = useState(false);
 
   const getSegFromPoint = (point: THREE.Vector3) => {
     const xi = Math.max(0, Math.min(24, Math.round(point.x / (BAR_SIZE + GAP) + GRID_SIZE / 2)));
     const zi = Math.max(0, Math.min(24, Math.round(point.z / (BAR_SIZE + GAP) + GRID_SIZE / 2)));
     return segMap.get(`${xi},${zi}`) || null;
+  };
+
+  const updateFaceHighlight = (faceIndex: number) => {
+    if (!faceGeoRef.current) return;
+    const pos = geometry.attributes.position;
+    const wSeg = GRID_SIZE - 1;
+    const qi = Math.floor(faceIndex / 2);
+    const row = Math.floor(qi / wSeg);
+    const col = qi % wSeg;
+    const v0i = row * (wSeg + 1) + col;
+    const v1i = row * (wSeg + 1) + col + 1;
+    const v2i = (row + 1) * (wSeg + 1) + col;
+    const v3i = (row + 1) * (wSeg + 1) + col + 1;
+    const lift = 0.08;
+    const v0 = new THREE.Vector3().fromBufferAttribute(pos, v0i); v0.z += lift;
+    const v1 = new THREE.Vector3().fromBufferAttribute(pos, v1i); v1.z += lift;
+    const v2 = new THREE.Vector3().fromBufferAttribute(pos, v2i); v2.z += lift;
+    const v3 = new THREE.Vector3().fromBufferAttribute(pos, v3i); v3.z += lift;
+    const arr = new Float32Array([
+      v0.x, v0.y, v0.z,  v1.x, v1.y, v1.z,  v2.x, v2.y, v2.z,
+      v1.x, v1.y, v1.z,  v3.x, v3.y, v3.z,  v2.x, v2.y, v2.z,
+    ]);
+    faceGeoRef.current.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+    faceGeoRef.current.computeVertexNormals();
   };
 
   return (
@@ -263,12 +288,15 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }
         castShadow
         onPointerMove={(e) => {
           e.stopPropagation();
-          setHoverPos(e.point.clone());
           const seg = getSegFromPoint(e.point);
           onHover(seg);
+          if (e.faceIndex != null) {
+            updateFaceHighlight(e.faceIndex);
+            setShowFace(true);
+          }
         }}
         onPointerOut={() => {
-          setHoverPos(null);
+          setShowFace(false);
           onHover(null);
         }}
         onClick={(e) => {
@@ -284,19 +312,17 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }
         />
       </mesh>
 
-      {/* Hover locator marker */}
-      {hoverPos && (
-        <mesh position={[hoverPos.x, hoverPos.y + 0.3, hoverPos.z]}>
-          <sphereGeometry args={[0.25, 16, 16]} />
-          <meshStandardMaterial
-            color="white"
-            emissive="white"
-            emissiveIntensity={2}
-            transparent
-            opacity={0.9}
-          />
-        </mesh>
-      )}
+      {/* Hover face highlight — uses actual terrain quad geometry */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} visible={showFace} renderOrder={1}>
+        <bufferGeometry ref={faceGeoRef} />
+        <meshBasicMaterial
+          color="white"
+          transparent
+          opacity={isDark ? 0.55 : 0.7}
+          side={THREE.DoubleSide}
+          depthTest={false}
+        />
+      </mesh>
     </group>
   );
 }
