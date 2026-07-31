@@ -198,7 +198,7 @@ export default function Home() {
               <img
                 src={isDarkMode ? '/minedice-logo-dark.png' : '/minedice-logo-light.png'}
                 alt="minedICE"
-                className="h-12 md:h-16 w-auto object-contain"
+                className="h-6 md:h-8 w-auto object-contain"
               />
             );
           })()}
