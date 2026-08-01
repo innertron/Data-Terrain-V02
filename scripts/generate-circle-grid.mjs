@@ -20,19 +20,27 @@ const sub = n => String(n).split('').map(d => SUB[+d]).join('');
 
 // Build value map — inside circle = 10, outside = 9
 const values = [];
-const csvRows = ['x_index,z_index,value'];
+// grid[svgRow][svgCol] = value
+const grid = [];
 
 for (let svgRow = 0; svgRow < ROWS; svgRow++) {
+  grid[svgRow] = [];
   for (let svgCol = 0; svgCol < COLS; svgCol++) {
     const dist = Math.sqrt((svgCol - CX) ** 2 + (svgRow - CZ) ** 2);
     const val = dist <= RADIUS ? 10 : 9;
+    grid[svgRow][svgCol] = val;
     values.push({ svgRow, svgCol, val });
-
-    // CSV uses user coords: x1-x25, z1-z25 (z1=bottom=svgRow24)
-    const xIndex = svgCol;       // 0-indexed x
-    const zIndex = 24 - svgRow;  // 0-indexed z (flip so z0=bottom)
-    csvRows.push(`${xIndex},${zIndex},${val}`);
   }
+}
+
+// CSV: 25 rows × 25 columns matrix
+// Row 0 (top) = z25, Row 24 (bottom) = z1
+// Col 0 (left) = x1, Col 24 (right) = x25
+// Header row: x1,x2,...,x25
+const header = Array.from({length: 25}, (_, i) => `x${i+1}`).join(',');
+const csvRows = [header];
+for (let svgRow = 0; svgRow < ROWS; svgRow++) {
+  csvRows.push(grid[svgRow].join(','));
 }
 
 // Write CSV
