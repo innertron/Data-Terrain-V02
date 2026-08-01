@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Download Grid</title>
+<style>
+  body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #111; color: #fff; gap: 16px; }
+  button { font-size: 18px; padding: 14px 32px; border-radius: 8px; border: none; background: #4f8ef7; color: #fff; cursor: pointer; }
+  button:hover { background: #2563eb; }
+  p { color: #aaa; font-size: 13px; }
+</style>
+</head>
+<body>
+<h2>Grid Template — PNG Download</h2>
+<p>Renders the 25×25 grid to a high-res PNG and downloads it automatically.</p>
+<button id="btn">Download PNG</button>
+<p id="status"></p>
+<script>
+document.getElementById('btn').addEventListener('click', async () => {
+  const status = document.getElementById('status');
+  status.textContent = 'Rendering…';
+
+  const svgUrl = '/grid-template.svg';
+  const res = await fetch(svgUrl);
+  const svgText = await res.text();
+
+  const blob = new Blob([svgText], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    URL.revokeObjectURL(url);
+
+    canvas.toBlob(pngBlob => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(pngBlob);
+      a.download = 'demoscape-grid-25x25.png';
+      a.click();
+      status.textContent = 'Done — check your Downloads folder.';
+    }, 'image/png');
+  };
+  img.src = url;
+});
+</script>
+</body>
+</html>

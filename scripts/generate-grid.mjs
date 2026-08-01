@@ -2,7 +2,7 @@ import { writeFileSync } from 'fs';
 
 const COLS = 25;
 const ROWS = 25;
-const CELL = 110;          // px per cell
+const CELL = 180;          // px per cell
 const LINE = 2;            // uniform line thickness
 const PAD = LINE / 2;
 
@@ -61,7 +61,8 @@ ${lines}  </g>
 
   <!-- Coordinates — small, centred in each cell -->
   <g font-family="DejaVu Sans, Helvetica, Arial, sans-serif"
-     font-size="22"
+     font-size="44"
+     font-weight="bold"
      text-anchor="middle"
      dominant-baseline="middle"
      fill="#aaa">
