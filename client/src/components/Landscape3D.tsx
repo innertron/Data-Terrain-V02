@@ -48,29 +48,27 @@ function Bar({
   maxValue, 
   onHover, 
   isSelected,
-  isDark = true
+  isDark = true,
+  overrideValue,
 }: { 
   data: GridSegment; 
   maxValue: number; 
   onHover: (data: GridSegment | null) => void;
   isSelected: boolean;
   isDark?: boolean;
+  overrideValue?: number;
 }) {
   const ref = useRef<THREE.Mesh>(null);
   const [hovered, setHover] = useState(false);
 
-  // Normalize height: Avoid 0 height for visibility
-  const height = Math.max((data.value / maxValue) * MAX_HEIGHT, 0.1); 
+  const effectiveVal = overrideValue ?? data.value;
+  const height = Math.max((effectiveVal / maxValue) * MAX_HEIGHT, 0.1); 
   
-  // Calculate position: Center the grid around (0,0,0)
-  // xIndex 0..24 -> -12..12
   const xPos = (data.xIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const zPos = (data.zIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
-  
-  // Y position: BoxGeometry is centered, so we need to lift it up by height/2
   const yPos = height / 2;
 
-  const color = useMemo(() => getBarColor(data.value, maxValue, data.xIndex, isDark), [data.value, maxValue, data.xIndex, isDark]);
+  const color = useMemo(() => getBarColor(effectiveVal, maxValue, data.xIndex, isDark), [effectiveVal, maxValue, data.xIndex, isDark]);
 
   useFrame((state) => {
     if (!ref.current) return;
@@ -196,12 +194,13 @@ function AxisLabels({ isDark = true }: { isDark?: boolean }) {
   );
 }
 
-function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }: {
+function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, effectiveValues }: {
   segments: GridSegment[];
   maxValue: number;
   isDark: boolean;
   onHover: (s: GridSegment | null) => void;
   onSelectSegment: (s: GridSegment) => void;
+  effectiveValues?: Map<string, number>;
 }) {
   const segMap = useMemo(() => new Map(segments.map(s => [`${s.xIndex},${s.zIndex}`, s])), [segments]);
 
@@ -220,14 +219,15 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }
       for (let col = 0; col < GRID_SIZE; col++) {
         const vi = row * GRID_SIZE + col;
         const xi = col;
-        // row=0 = top of plane (local +Y) → world -Z = back of grid = zi=0
         const zi = row;
         const seg = segMap.get(`${xi},${zi}`);
-        const height = seg ? (seg.value / maxValue) * MAX_HEIGHT : 0;
+        const effectiveVal = effectiveValues
+          ? (effectiveValues.get(`${xi},${zi}`) ?? 0)
+          : (seg?.value ?? 0);
+        const height = (effectiveVal / maxValue) * MAX_HEIGHT;
         positions[vi * 3 + 2] = height;
 
-        // Use same color formula as bars so surf matches bar gradient exactly
-        const cssColor = getBarColor(seg?.value ?? 0, maxValue, xi, isDark);
+        const cssColor = getBarColor(effectiveVal, maxValue, xi, isDark);
         const color = new THREE.Color(cssColor);
         colorArr[vi * 3] = color.r;
         colorArr[vi * 3 + 1] = color.g;
@@ -239,7 +239,7 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }
     geo.attributes.position.needsUpdate = true;
     geo.computeVertexNormals();
     return geo;
-  }, [segments, maxValue, isDark, segMap]);
+  }, [segments, maxValue, isDark, segMap, effectiveValues]);
 
   const faceGeoRef = useRef<THREE.BufferGeometry>(null!);
   const [showFace, setShowFace] = useState(false);
@@ -322,10 +322,11 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }
   );
 }
 
-function FloatingLabel({ data, maxValue, isDark = true }: { data: GridSegment; maxValue: number; isDark?: boolean }) {
+function FloatingLabel({ data, maxValue, isDark = true, displayValue }: { data: GridSegment; maxValue: number; isDark?: boolean; displayValue?: number }) {
   const xPos = (data.xIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const zPos = (data.zIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
-  const barHeight = Math.max((data.value / maxValue) * MAX_HEIGHT, 0.1);
+  const effectiveVal = displayValue ?? data.value;
+  const barHeight = Math.max((effectiveVal / maxValue) * MAX_HEIGHT, 0.1);
   const yPos = barHeight + 6;
 
   const domainLabel = X_LABELS[data.xIndex] || data.xLabel;
@@ -337,7 +338,7 @@ function FloatingLabel({ data, maxValue, isDark = true }: { data: GridSegment; m
         <div className={`space-y-0.5 font-mono ${isDark ? 'text-muted-foreground' : 'text-gray-600'}`} style={{ fontSize: '11px' }}>
           <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Domain:</span><span>{domainLabel}</span></div>
           <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Income/Edu:</span><span>{incomeLabel}</span></div>
-          <div className="flex justify-between gap-4"><span className={isDark ? 'text-primary font-bold' : 'text-purple-700 font-bold'}>PopDensity:</span><span>{data.value.toLocaleString()}</span></div>
+          <div className="flex justify-between gap-4"><span className={isDark ? 'text-primary font-bold' : 'text-purple-700 font-bold'}>PopDensity:</span><span>{effectiveVal.toLocaleString()}</span></div>
           <div className={`flex justify-between gap-4 italic pt-1 mt-1 ${isDark ? 'border-t border-white/10 text-white/40' : 'border-t border-gray-300 text-gray-400'}`}><span>Segment</span><span>[{data.xIndex},{data.zIndex}]</span></div>
         </div>
       </div>
@@ -345,7 +346,7 @@ function FloatingLabel({ data, maxValue, isDark = true }: { data: GridSegment; m
   );
 }
 
-export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; }) {
+export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; }) {
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
 
@@ -368,7 +369,9 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false }
     );
   }
 
-  const maxValue = Math.max(...segments.map(s => s.value), 1);
+  const maxValue = effectiveValues
+    ? Math.max(...Array.from(effectiveValues.values()), 1)
+    : Math.max(...segments.map(s => s.value), 1);
 
   return (
     <div className="w-full h-full relative group">
@@ -409,6 +412,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false }
                 if (s) onSelectSegment(s);
               }}
               onSelectSegment={onSelectSegment}
+              effectiveValues={effectiveValues}
             />
           ) : (
             segments.map((seg) => (
@@ -422,6 +426,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false }
                 }}
                 isSelected={hoveredSegment?.id === seg.id}
                 isDark={isDark}
+                overrideValue={effectiveValues?.get(`${seg.xIndex},${seg.zIndex}`)}
               />
             ))
           )}
@@ -429,7 +434,14 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false }
         </group>
 
         {/* Hover Label */}
-        {hoveredSegment && <FloatingLabel data={hoveredSegment} maxValue={maxValue} isDark={isDark} />}
+        {hoveredSegment && (
+          <FloatingLabel
+            data={hoveredSegment}
+            maxValue={maxValue}
+            isDark={isDark}
+            displayValue={effectiveValues?.get(`${hoveredSegment.xIndex},${hoveredSegment.zIndex}`)}
+          />
+        )}
 
         <OrbitControls 
           enableDamping 
