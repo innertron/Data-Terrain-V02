@@ -1,0 +1,1323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="3002" height="3002"
+     viewBox="0 0 3002 3002">
+
+  <rect width="3002" height="3002" fill="white"/>
+
+  <!-- Grid lines -->
+  <g stroke="#ccc" stroke-width="2" stroke-linecap="square">
+<line x1="1" y1="1" x2="1" y2="3001"/>
+<line x1="121" y1="1" x2="121" y2="3001"/>
+<line x1="241" y1="1" x2="241" y2="3001"/>
+<line x1="361" y1="1" x2="361" y2="3001"/>
+<line x1="481" y1="1" x2="481" y2="3001"/>
+<line x1="601" y1="1" x2="601" y2="3001"/>
+<line x1="721" y1="1" x2="721" y2="3001"/>
+<line x1="841" y1="1" x2="841" y2="3001"/>
+<line x1="961" y1="1" x2="961" y2="3001"/>
+<line x1="1081" y1="1" x2="1081" y2="3001"/>
+<line x1="1201" y1="1" x2="1201" y2="3001"/>
+<line x1="1321" y1="1" x2="1321" y2="3001"/>
+<line x1="1441" y1="1" x2="1441" y2="3001"/>
+<line x1="1561" y1="1" x2="1561" y2="3001"/>
+<line x1="1681" y1="1" x2="1681" y2="3001"/>
+<line x1="1801" y1="1" x2="1801" y2="3001"/>
+<line x1="1921" y1="1" x2="1921" y2="3001"/>
+<line x1="2041" y1="1" x2="2041" y2="3001"/>
+<line x1="2161" y1="1" x2="2161" y2="3001"/>
+<line x1="2281" y1="1" x2="2281" y2="3001"/>
+<line x1="2401" y1="1" x2="2401" y2="3001"/>
+<line x1="2521" y1="1" x2="2521" y2="3001"/>
+<line x1="2641" y1="1" x2="2641" y2="3001"/>
+<line x1="2761" y1="1" x2="2761" y2="3001"/>
+<line x1="2881" y1="1" x2="2881" y2="3001"/>
+<line x1="3001" y1="1" x2="3001" y2="3001"/>
+<line x1="1" y1="1" x2="3001" y2="1"/>
+<line x1="1" y1="121" x2="3001" y2="121"/>
+<line x1="1" y1="241" x2="3001" y2="241"/>
+<line x1="1" y1="361" x2="3001" y2="361"/>
+<line x1="1" y1="481" x2="3001" y2="481"/>
+<line x1="1" y1="601" x2="3001" y2="601"/>
+<line x1="1" y1="721" x2="3001" y2="721"/>
+<line x1="1" y1="841" x2="3001" y2="841"/>
+<line x1="1" y1="961" x2="3001" y2="961"/>
+<line x1="1" y1="1081" x2="3001" y2="1081"/>
+<line x1="1" y1="1201" x2="3001" y2="1201"/>
+<line x1="1" y1="1321" x2="3001" y2="1321"/>
+<line x1="1" y1="1441" x2="3001" y2="1441"/>
+<line x1="1" y1="1561" x2="3001" y2="1561"/>
+<line x1="1" y1="1681" x2="3001" y2="1681"/>
+<line x1="1" y1="1801" x2="3001" y2="1801"/>
+<line x1="1" y1="1921" x2="3001" y2="1921"/>
+<line x1="1" y1="2041" x2="3001" y2="2041"/>
+<line x1="1" y1="2161" x2="3001" y2="2161"/>
+<line x1="1" y1="2281" x2="3001" y2="2281"/>
+<line x1="1" y1="2401" x2="3001" y2="2401"/>
+<line x1="1" y1="2521" x2="3001" y2="2521"/>
+<line x1="1" y1="2641" x2="3001" y2="2641"/>
+<line x1="1" y1="2761" x2="3001" y2="2761"/>
+<line x1="1" y1="2881" x2="3001" y2="2881"/>
+<line x1="1" y1="3001" x2="3001" y2="3001"/>
+  </g>
+
+  <!-- Cell values + coords -->
+  <g text-anchor="middle" dominant-baseline="middle"
+     font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<text x="61" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="83" font-size="13" fill="#bbb">x₁,z₂₅</text>
+<text x="181" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="83" font-size="13" fill="#bbb">x₂,z₂₅</text>
+<text x="301" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="83" font-size="13" fill="#bbb">x₃,z₂₅</text>
+<text x="421" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="83" font-size="13" fill="#bbb">x₄,z₂₅</text>
+<text x="541" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="83" font-size="13" fill="#bbb">x₅,z₂₅</text>
+<text x="661" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="83" font-size="13" fill="#bbb">x₆,z₂₅</text>
+<text x="781" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="83" font-size="13" fill="#bbb">x₇,z₂₅</text>
+<text x="901" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="83" font-size="13" fill="#bbb">x₈,z₂₅</text>
+<text x="1021" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="83" font-size="13" fill="#bbb">x₉,z₂₅</text>
+<text x="1141" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="83" font-size="13" fill="#bbb">x₁₀,z₂₅</text>
+<text x="1261" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="83" font-size="13" fill="#bbb">x₁₁,z₂₅</text>
+<text x="1381" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="83" font-size="13" fill="#bbb">x₁₂,z₂₅</text>
+<text x="1501" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1501" y="83" font-size="13" fill="#bbb">x₁₃,z₂₅</text>
+<text x="1621" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="83" font-size="13" fill="#bbb">x₁₄,z₂₅</text>
+<text x="1741" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="83" font-size="13" fill="#bbb">x₁₅,z₂₅</text>
+<text x="1861" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="83" font-size="13" fill="#bbb">x₁₆,z₂₅</text>
+<text x="1981" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="83" font-size="13" fill="#bbb">x₁₇,z₂₅</text>
+<text x="2101" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="83" font-size="13" fill="#bbb">x₁₈,z₂₅</text>
+<text x="2221" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="83" font-size="13" fill="#bbb">x₁₉,z₂₅</text>
+<text x="2341" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="83" font-size="13" fill="#bbb">x₂₀,z₂₅</text>
+<text x="2461" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="83" font-size="13" fill="#bbb">x₂₁,z₂₅</text>
+<text x="2581" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="83" font-size="13" fill="#bbb">x₂₂,z₂₅</text>
+<text x="2701" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="83" font-size="13" fill="#bbb">x₂₃,z₂₅</text>
+<text x="2821" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="83" font-size="13" fill="#bbb">x₂₄,z₂₅</text>
+<text x="2941" y="51" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="83" font-size="13" fill="#bbb">x₂₅,z₂₅</text>
+<text x="61" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="203" font-size="13" fill="#bbb">x₁,z₂₄</text>
+<text x="181" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="203" font-size="13" fill="#bbb">x₂,z₂₄</text>
+<text x="301" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="203" font-size="13" fill="#bbb">x₃,z₂₄</text>
+<text x="421" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="203" font-size="13" fill="#bbb">x₄,z₂₄</text>
+<text x="541" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="203" font-size="13" fill="#bbb">x₅,z₂₄</text>
+<text x="661" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="203" font-size="13" fill="#bbb">x₆,z₂₄</text>
+<text x="781" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="203" font-size="13" fill="#bbb">x₇,z₂₄</text>
+<text x="901" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="203" font-size="13" fill="#bbb">x₈,z₂₄</text>
+<text x="1021" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="203" font-size="13" fill="#bbb">x₉,z₂₄</text>
+<text x="1141" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="203" font-size="13" fill="#bbb">x₁₀,z₂₄</text>
+<text x="1261" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="203" font-size="13" fill="#bbb">x₁₁,z₂₄</text>
+<text x="1381" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="203" font-size="13" fill="#bbb">x₁₂,z₂₄</text>
+<text x="1501" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1501" y="203" font-size="13" fill="#bbb">x₁₃,z₂₄</text>
+<text x="1621" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="203" font-size="13" fill="#bbb">x₁₄,z₂₄</text>
+<text x="1741" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="203" font-size="13" fill="#bbb">x₁₅,z₂₄</text>
+<text x="1861" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="203" font-size="13" fill="#bbb">x₁₆,z₂₄</text>
+<text x="1981" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="203" font-size="13" fill="#bbb">x₁₇,z₂₄</text>
+<text x="2101" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="203" font-size="13" fill="#bbb">x₁₈,z₂₄</text>
+<text x="2221" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="203" font-size="13" fill="#bbb">x₁₉,z₂₄</text>
+<text x="2341" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="203" font-size="13" fill="#bbb">x₂₀,z₂₄</text>
+<text x="2461" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="203" font-size="13" fill="#bbb">x₂₁,z₂₄</text>
+<text x="2581" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="203" font-size="13" fill="#bbb">x₂₂,z₂₄</text>
+<text x="2701" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="203" font-size="13" fill="#bbb">x₂₃,z₂₄</text>
+<text x="2821" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="203" font-size="13" fill="#bbb">x₂₄,z₂₄</text>
+<text x="2941" y="171" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="203" font-size="13" fill="#bbb">x₂₅,z₂₄</text>
+<text x="61" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="323" font-size="13" fill="#bbb">x₁,z₂₃</text>
+<text x="181" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="323" font-size="13" fill="#bbb">x₂,z₂₃</text>
+<text x="301" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="323" font-size="13" fill="#bbb">x₃,z₂₃</text>
+<text x="421" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="323" font-size="13" fill="#bbb">x₄,z₂₃</text>
+<text x="541" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="323" font-size="13" fill="#bbb">x₅,z₂₃</text>
+<text x="661" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="323" font-size="13" fill="#bbb">x₆,z₂₃</text>
+<text x="781" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="323" font-size="13" fill="#bbb">x₇,z₂₃</text>
+<text x="901" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="323" font-size="13" fill="#bbb">x₈,z₂₃</text>
+<text x="1021" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="323" font-size="13" fill="#bbb">x₉,z₂₃</text>
+<text x="1141" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="323" font-size="13" fill="#bbb">x₁₀,z₂₃</text>
+<text x="1261" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="323" font-size="13" fill="#bbb">x₁₁,z₂₃</text>
+<text x="1381" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="323" font-size="13" fill="#bbb">x₁₂,z₂₃</text>
+<text x="1501" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1501" y="323" font-size="13" fill="#bbb">x₁₃,z₂₃</text>
+<text x="1621" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="323" font-size="13" fill="#bbb">x₁₄,z₂₃</text>
+<text x="1741" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="323" font-size="13" fill="#bbb">x₁₅,z₂₃</text>
+<text x="1861" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="323" font-size="13" fill="#bbb">x₁₆,z₂₃</text>
+<text x="1981" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="323" font-size="13" fill="#bbb">x₁₇,z₂₃</text>
+<text x="2101" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="323" font-size="13" fill="#bbb">x₁₈,z₂₃</text>
+<text x="2221" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="323" font-size="13" fill="#bbb">x₁₉,z₂₃</text>
+<text x="2341" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="323" font-size="13" fill="#bbb">x₂₀,z₂₃</text>
+<text x="2461" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="323" font-size="13" fill="#bbb">x₂₁,z₂₃</text>
+<text x="2581" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="323" font-size="13" fill="#bbb">x₂₂,z₂₃</text>
+<text x="2701" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="323" font-size="13" fill="#bbb">x₂₃,z₂₃</text>
+<text x="2821" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="323" font-size="13" fill="#bbb">x₂₄,z₂₃</text>
+<text x="2941" y="291" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="323" font-size="13" fill="#bbb">x₂₅,z₂₃</text>
+<text x="61" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="443" font-size="13" fill="#bbb">x₁,z₂₂</text>
+<text x="181" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="443" font-size="13" fill="#bbb">x₂,z₂₂</text>
+<text x="301" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="443" font-size="13" fill="#bbb">x₃,z₂₂</text>
+<text x="421" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="443" font-size="13" fill="#bbb">x₄,z₂₂</text>
+<text x="541" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="443" font-size="13" fill="#bbb">x₅,z₂₂</text>
+<text x="661" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="443" font-size="13" fill="#bbb">x₆,z₂₂</text>
+<text x="781" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="443" font-size="13" fill="#bbb">x₇,z₂₂</text>
+<text x="901" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="443" font-size="13" fill="#bbb">x₈,z₂₂</text>
+<text x="1021" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="443" font-size="13" fill="#bbb">x₉,z₂₂</text>
+<text x="1141" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="443" font-size="13" fill="#bbb">x₁₀,z₂₂</text>
+<text x="1261" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="443" font-size="13" fill="#bbb">x₁₁,z₂₂</text>
+<text x="1381" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="443" font-size="13" fill="#bbb">x₁₂,z₂₂</text>
+<text x="1501" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1501" y="443" font-size="13" fill="#bbb">x₁₃,z₂₂</text>
+<text x="1621" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="443" font-size="13" fill="#bbb">x₁₄,z₂₂</text>
+<text x="1741" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="443" font-size="13" fill="#bbb">x₁₅,z₂₂</text>
+<text x="1861" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="443" font-size="13" fill="#bbb">x₁₆,z₂₂</text>
+<text x="1981" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="443" font-size="13" fill="#bbb">x₁₇,z₂₂</text>
+<text x="2101" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="443" font-size="13" fill="#bbb">x₁₈,z₂₂</text>
+<text x="2221" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="443" font-size="13" fill="#bbb">x₁₉,z₂₂</text>
+<text x="2341" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="443" font-size="13" fill="#bbb">x₂₀,z₂₂</text>
+<text x="2461" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="443" font-size="13" fill="#bbb">x₂₁,z₂₂</text>
+<text x="2581" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="443" font-size="13" fill="#bbb">x₂₂,z₂₂</text>
+<text x="2701" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="443" font-size="13" fill="#bbb">x₂₃,z₂₂</text>
+<text x="2821" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="443" font-size="13" fill="#bbb">x₂₄,z₂₂</text>
+<text x="2941" y="411" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="443" font-size="13" fill="#bbb">x₂₅,z₂₂</text>
+<text x="61" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="563" font-size="13" fill="#bbb">x₁,z₂₁</text>
+<text x="181" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="563" font-size="13" fill="#bbb">x₂,z₂₁</text>
+<text x="301" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="563" font-size="13" fill="#bbb">x₃,z₂₁</text>
+<text x="421" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="563" font-size="13" fill="#bbb">x₄,z₂₁</text>
+<text x="541" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="563" font-size="13" fill="#bbb">x₅,z₂₁</text>
+<text x="661" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="563" font-size="13" fill="#bbb">x₆,z₂₁</text>
+<text x="781" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="563" font-size="13" fill="#bbb">x₇,z₂₁</text>
+<text x="901" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="563" font-size="13" fill="#bbb">x₈,z₂₁</text>
+<text x="1021" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="563" font-size="13" fill="#bbb">x₉,z₂₁</text>
+<text x="1141" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="563" font-size="13" fill="#bbb">x₁₀,z₂₁</text>
+<text x="1261" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="563" font-size="13" fill="#bbb">x₁₁,z₂₁</text>
+<text x="1381" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="563" font-size="13" fill="#bbb">x₁₂,z₂₁</text>
+<text x="1501" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1501" y="563" font-size="13" fill="#bbb">x₁₃,z₂₁</text>
+<text x="1621" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="563" font-size="13" fill="#bbb">x₁₄,z₂₁</text>
+<text x="1741" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="563" font-size="13" fill="#bbb">x₁₅,z₂₁</text>
+<text x="1861" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="563" font-size="13" fill="#bbb">x₁₆,z₂₁</text>
+<text x="1981" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="563" font-size="13" fill="#bbb">x₁₇,z₂₁</text>
+<text x="2101" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="563" font-size="13" fill="#bbb">x₁₈,z₂₁</text>
+<text x="2221" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="563" font-size="13" fill="#bbb">x₁₉,z₂₁</text>
+<text x="2341" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="563" font-size="13" fill="#bbb">x₂₀,z₂₁</text>
+<text x="2461" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="563" font-size="13" fill="#bbb">x₂₁,z₂₁</text>
+<text x="2581" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="563" font-size="13" fill="#bbb">x₂₂,z₂₁</text>
+<text x="2701" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="563" font-size="13" fill="#bbb">x₂₃,z₂₁</text>
+<text x="2821" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="563" font-size="13" fill="#bbb">x₂₄,z₂₁</text>
+<text x="2941" y="531" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="563" font-size="13" fill="#bbb">x₂₅,z₂₁</text>
+<text x="61" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="683" font-size="13" fill="#bbb">x₁,z₂₀</text>
+<text x="181" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="683" font-size="13" fill="#bbb">x₂,z₂₀</text>
+<text x="301" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="683" font-size="13" fill="#bbb">x₃,z₂₀</text>
+<text x="421" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="683" font-size="13" fill="#bbb">x₄,z₂₀</text>
+<text x="541" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="683" font-size="13" fill="#bbb">x₅,z₂₀</text>
+<text x="661" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="683" font-size="13" fill="#bbb">x₆,z₂₀</text>
+<text x="781" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="683" font-size="13" fill="#bbb">x₇,z₂₀</text>
+<text x="901" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="683" font-size="13" fill="#bbb">x₈,z₂₀</text>
+<text x="1021" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="683" font-size="13" fill="#bbb">x₉,z₂₀</text>
+<text x="1141" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="683" font-size="13" fill="#bbb">x₁₀,z₂₀</text>
+<text x="1261" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="683" font-size="13" fill="#bbb">x₁₁,z₂₀</text>
+<text x="1381" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="683" font-size="13" fill="#bbb">x₁₂,z₂₀</text>
+<text x="1501" y="651" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="683" font-size="13" fill="#bbb">x₁₃,z₂₀</text>
+<text x="1621" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="683" font-size="13" fill="#bbb">x₁₄,z₂₀</text>
+<text x="1741" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="683" font-size="13" fill="#bbb">x₁₅,z₂₀</text>
+<text x="1861" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="683" font-size="13" fill="#bbb">x₁₆,z₂₀</text>
+<text x="1981" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="683" font-size="13" fill="#bbb">x₁₇,z₂₀</text>
+<text x="2101" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="683" font-size="13" fill="#bbb">x₁₈,z₂₀</text>
+<text x="2221" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="683" font-size="13" fill="#bbb">x₁₉,z₂₀</text>
+<text x="2341" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="683" font-size="13" fill="#bbb">x₂₀,z₂₀</text>
+<text x="2461" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="683" font-size="13" fill="#bbb">x₂₁,z₂₀</text>
+<text x="2581" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="683" font-size="13" fill="#bbb">x₂₂,z₂₀</text>
+<text x="2701" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="683" font-size="13" fill="#bbb">x₂₃,z₂₀</text>
+<text x="2821" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="683" font-size="13" fill="#bbb">x₂₄,z₂₀</text>
+<text x="2941" y="651" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="683" font-size="13" fill="#bbb">x₂₅,z₂₀</text>
+<text x="61" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="803" font-size="13" fill="#bbb">x₁,z₁₉</text>
+<text x="181" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="803" font-size="13" fill="#bbb">x₂,z₁₉</text>
+<text x="301" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="803" font-size="13" fill="#bbb">x₃,z₁₉</text>
+<text x="421" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="803" font-size="13" fill="#bbb">x₄,z₁₉</text>
+<text x="541" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="803" font-size="13" fill="#bbb">x₅,z₁₉</text>
+<text x="661" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="803" font-size="13" fill="#bbb">x₆,z₁₉</text>
+<text x="781" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="803" font-size="13" fill="#bbb">x₇,z₁₉</text>
+<text x="901" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="803" font-size="13" fill="#bbb">x₈,z₁₉</text>
+<text x="1021" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="803" font-size="13" fill="#bbb">x₉,z₁₉</text>
+<text x="1141" y="771" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="803" font-size="13" fill="#bbb">x₁₀,z₁₉</text>
+<text x="1261" y="771" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="803" font-size="13" fill="#bbb">x₁₁,z₁₉</text>
+<text x="1381" y="771" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="803" font-size="13" fill="#bbb">x₁₂,z₁₉</text>
+<text x="1501" y="771" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="803" font-size="13" fill="#bbb">x₁₃,z₁₉</text>
+<text x="1621" y="771" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="803" font-size="13" fill="#bbb">x₁₄,z₁₉</text>
+<text x="1741" y="771" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="803" font-size="13" fill="#bbb">x₁₅,z₁₉</text>
+<text x="1861" y="771" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="803" font-size="13" fill="#bbb">x₁₆,z₁₉</text>
+<text x="1981" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="803" font-size="13" fill="#bbb">x₁₇,z₁₉</text>
+<text x="2101" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="803" font-size="13" fill="#bbb">x₁₈,z₁₉</text>
+<text x="2221" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="803" font-size="13" fill="#bbb">x₁₉,z₁₉</text>
+<text x="2341" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="803" font-size="13" fill="#bbb">x₂₀,z₁₉</text>
+<text x="2461" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="803" font-size="13" fill="#bbb">x₂₁,z₁₉</text>
+<text x="2581" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="803" font-size="13" fill="#bbb">x₂₂,z₁₉</text>
+<text x="2701" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="803" font-size="13" fill="#bbb">x₂₃,z₁₉</text>
+<text x="2821" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="803" font-size="13" fill="#bbb">x₂₄,z₁₉</text>
+<text x="2941" y="771" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="803" font-size="13" fill="#bbb">x₂₅,z₁₉</text>
+<text x="61" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="923" font-size="13" fill="#bbb">x₁,z₁₈</text>
+<text x="181" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="923" font-size="13" fill="#bbb">x₂,z₁₈</text>
+<text x="301" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="923" font-size="13" fill="#bbb">x₃,z₁₈</text>
+<text x="421" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="923" font-size="13" fill="#bbb">x₄,z₁₈</text>
+<text x="541" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="923" font-size="13" fill="#bbb">x₅,z₁₈</text>
+<text x="661" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="923" font-size="13" fill="#bbb">x₆,z₁₈</text>
+<text x="781" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="923" font-size="13" fill="#bbb">x₇,z₁₈</text>
+<text x="901" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="923" font-size="13" fill="#bbb">x₈,z₁₈</text>
+<text x="1021" y="891" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="923" font-size="13" fill="#bbb">x₉,z₁₈</text>
+<text x="1141" y="891" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="923" font-size="13" fill="#bbb">x₁₀,z₁₈</text>
+<text x="1261" y="891" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="923" font-size="13" fill="#bbb">x₁₁,z₁₈</text>
+<text x="1381" y="891" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="923" font-size="13" fill="#bbb">x₁₂,z₁₈</text>
+<text x="1501" y="891" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="923" font-size="13" fill="#bbb">x₁₃,z₁₈</text>
+<text x="1621" y="891" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="923" font-size="13" fill="#bbb">x₁₄,z₁₈</text>
+<text x="1741" y="891" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="923" font-size="13" fill="#bbb">x₁₅,z₁₈</text>
+<text x="1861" y="891" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="923" font-size="13" fill="#bbb">x₁₆,z₁₈</text>
+<text x="1981" y="891" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="923" font-size="13" fill="#bbb">x₁₇,z₁₈</text>
+<text x="2101" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="923" font-size="13" fill="#bbb">x₁₈,z₁₈</text>
+<text x="2221" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="923" font-size="13" fill="#bbb">x₁₉,z₁₈</text>
+<text x="2341" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="923" font-size="13" fill="#bbb">x₂₀,z₁₈</text>
+<text x="2461" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="923" font-size="13" fill="#bbb">x₂₁,z₁₈</text>
+<text x="2581" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="923" font-size="13" fill="#bbb">x₂₂,z₁₈</text>
+<text x="2701" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="923" font-size="13" fill="#bbb">x₂₃,z₁₈</text>
+<text x="2821" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="923" font-size="13" fill="#bbb">x₂₄,z₁₈</text>
+<text x="2941" y="891" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="923" font-size="13" fill="#bbb">x₂₅,z₁₈</text>
+<text x="61" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="1043" font-size="13" fill="#bbb">x₁,z₁₇</text>
+<text x="181" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="1043" font-size="13" fill="#bbb">x₂,z₁₇</text>
+<text x="301" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="1043" font-size="13" fill="#bbb">x₃,z₁₇</text>
+<text x="421" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="1043" font-size="13" fill="#bbb">x₄,z₁₇</text>
+<text x="541" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="1043" font-size="13" fill="#bbb">x₅,z₁₇</text>
+<text x="661" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="1043" font-size="13" fill="#bbb">x₆,z₁₇</text>
+<text x="781" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="1043" font-size="13" fill="#bbb">x₇,z₁₇</text>
+<text x="901" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="901" y="1043" font-size="13" fill="#bbb">x₈,z₁₇</text>
+<text x="1021" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="1043" font-size="13" fill="#bbb">x₉,z₁₇</text>
+<text x="1141" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="1043" font-size="13" fill="#bbb">x₁₀,z₁₇</text>
+<text x="1261" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="1043" font-size="13" fill="#bbb">x₁₁,z₁₇</text>
+<text x="1381" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="1043" font-size="13" fill="#bbb">x₁₂,z₁₇</text>
+<text x="1501" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="1043" font-size="13" fill="#bbb">x₁₃,z₁₇</text>
+<text x="1621" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="1043" font-size="13" fill="#bbb">x₁₄,z₁₇</text>
+<text x="1741" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="1043" font-size="13" fill="#bbb">x₁₅,z₁₇</text>
+<text x="1861" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="1043" font-size="13" fill="#bbb">x₁₆,z₁₇</text>
+<text x="1981" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="1043" font-size="13" fill="#bbb">x₁₇,z₁₇</text>
+<text x="2101" y="1011" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2101" y="1043" font-size="13" fill="#bbb">x₁₈,z₁₇</text>
+<text x="2221" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="1043" font-size="13" fill="#bbb">x₁₉,z₁₇</text>
+<text x="2341" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="1043" font-size="13" fill="#bbb">x₂₀,z₁₇</text>
+<text x="2461" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="1043" font-size="13" fill="#bbb">x₂₁,z₁₇</text>
+<text x="2581" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="1043" font-size="13" fill="#bbb">x₂₂,z₁₇</text>
+<text x="2701" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="1043" font-size="13" fill="#bbb">x₂₃,z₁₇</text>
+<text x="2821" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="1043" font-size="13" fill="#bbb">x₂₄,z₁₇</text>
+<text x="2941" y="1011" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="1043" font-size="13" fill="#bbb">x₂₅,z₁₇</text>
+<text x="61" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="1163" font-size="13" fill="#bbb">x₁,z₁₆</text>
+<text x="181" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="1163" font-size="13" fill="#bbb">x₂,z₁₆</text>
+<text x="301" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="1163" font-size="13" fill="#bbb">x₃,z₁₆</text>
+<text x="421" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="1163" font-size="13" fill="#bbb">x₄,z₁₆</text>
+<text x="541" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="1163" font-size="13" fill="#bbb">x₅,z₁₆</text>
+<text x="661" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="1163" font-size="13" fill="#bbb">x₆,z₁₆</text>
+<text x="781" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="781" y="1163" font-size="13" fill="#bbb">x₇,z₁₆</text>
+<text x="901" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="901" y="1163" font-size="13" fill="#bbb">x₈,z₁₆</text>
+<text x="1021" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="1163" font-size="13" fill="#bbb">x₉,z₁₆</text>
+<text x="1141" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="1163" font-size="13" fill="#bbb">x₁₀,z₁₆</text>
+<text x="1261" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="1163" font-size="13" fill="#bbb">x₁₁,z₁₆</text>
+<text x="1381" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="1163" font-size="13" fill="#bbb">x₁₂,z₁₆</text>
+<text x="1501" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="1163" font-size="13" fill="#bbb">x₁₃,z₁₆</text>
+<text x="1621" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="1163" font-size="13" fill="#bbb">x₁₄,z₁₆</text>
+<text x="1741" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="1163" font-size="13" fill="#bbb">x₁₅,z₁₆</text>
+<text x="1861" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="1163" font-size="13" fill="#bbb">x₁₆,z₁₆</text>
+<text x="1981" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="1163" font-size="13" fill="#bbb">x₁₇,z₁₆</text>
+<text x="2101" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2101" y="1163" font-size="13" fill="#bbb">x₁₈,z₁₆</text>
+<text x="2221" y="1131" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2221" y="1163" font-size="13" fill="#bbb">x₁₉,z₁₆</text>
+<text x="2341" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="1163" font-size="13" fill="#bbb">x₂₀,z₁₆</text>
+<text x="2461" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="1163" font-size="13" fill="#bbb">x₂₁,z₁₆</text>
+<text x="2581" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="1163" font-size="13" fill="#bbb">x₂₂,z₁₆</text>
+<text x="2701" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="1163" font-size="13" fill="#bbb">x₂₃,z₁₆</text>
+<text x="2821" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="1163" font-size="13" fill="#bbb">x₂₄,z₁₆</text>
+<text x="2941" y="1131" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="1163" font-size="13" fill="#bbb">x₂₅,z₁₆</text>
+<text x="61" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="1283" font-size="13" fill="#bbb">x₁,z₁₅</text>
+<text x="181" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="1283" font-size="13" fill="#bbb">x₂,z₁₅</text>
+<text x="301" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="1283" font-size="13" fill="#bbb">x₃,z₁₅</text>
+<text x="421" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="1283" font-size="13" fill="#bbb">x₄,z₁₅</text>
+<text x="541" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="1283" font-size="13" fill="#bbb">x₅,z₁₅</text>
+<text x="661" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="1283" font-size="13" fill="#bbb">x₆,z₁₅</text>
+<text x="781" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="781" y="1283" font-size="13" fill="#bbb">x₇,z₁₅</text>
+<text x="901" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="901" y="1283" font-size="13" fill="#bbb">x₈,z₁₅</text>
+<text x="1021" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="1283" font-size="13" fill="#bbb">x₉,z₁₅</text>
+<text x="1141" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="1283" font-size="13" fill="#bbb">x₁₀,z₁₅</text>
+<text x="1261" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="1283" font-size="13" fill="#bbb">x₁₁,z₁₅</text>
+<text x="1381" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="1283" font-size="13" fill="#bbb">x₁₂,z₁₅</text>
+<text x="1501" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="1283" font-size="13" fill="#bbb">x₁₃,z₁₅</text>
+<text x="1621" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="1283" font-size="13" fill="#bbb">x₁₄,z₁₅</text>
+<text x="1741" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="1283" font-size="13" fill="#bbb">x₁₅,z₁₅</text>
+<text x="1861" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="1283" font-size="13" fill="#bbb">x₁₆,z₁₅</text>
+<text x="1981" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="1283" font-size="13" fill="#bbb">x₁₇,z₁₅</text>
+<text x="2101" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2101" y="1283" font-size="13" fill="#bbb">x₁₈,z₁₅</text>
+<text x="2221" y="1251" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2221" y="1283" font-size="13" fill="#bbb">x₁₉,z₁₅</text>
+<text x="2341" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="1283" font-size="13" fill="#bbb">x₂₀,z₁₅</text>
+<text x="2461" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="1283" font-size="13" fill="#bbb">x₂₁,z₁₅</text>
+<text x="2581" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="1283" font-size="13" fill="#bbb">x₂₂,z₁₅</text>
+<text x="2701" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="1283" font-size="13" fill="#bbb">x₂₃,z₁₅</text>
+<text x="2821" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="1283" font-size="13" fill="#bbb">x₂₄,z₁₅</text>
+<text x="2941" y="1251" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="1283" font-size="13" fill="#bbb">x₂₅,z₁₅</text>
+<text x="61" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="1403" font-size="13" fill="#bbb">x₁,z₁₄</text>
+<text x="181" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="1403" font-size="13" fill="#bbb">x₂,z₁₄</text>
+<text x="301" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="1403" font-size="13" fill="#bbb">x₃,z₁₄</text>
+<text x="421" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="1403" font-size="13" fill="#bbb">x₄,z₁₄</text>
+<text x="541" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="1403" font-size="13" fill="#bbb">x₅,z₁₄</text>
+<text x="661" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="1403" font-size="13" fill="#bbb">x₆,z₁₄</text>
+<text x="781" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="781" y="1403" font-size="13" fill="#bbb">x₇,z₁₄</text>
+<text x="901" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="901" y="1403" font-size="13" fill="#bbb">x₈,z₁₄</text>
+<text x="1021" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="1403" font-size="13" fill="#bbb">x₉,z₁₄</text>
+<text x="1141" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="1403" font-size="13" fill="#bbb">x₁₀,z₁₄</text>
+<text x="1261" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="1403" font-size="13" fill="#bbb">x₁₁,z₁₄</text>
+<text x="1381" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="1403" font-size="13" fill="#bbb">x₁₂,z₁₄</text>
+<text x="1501" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="1403" font-size="13" fill="#bbb">x₁₃,z₁₄</text>
+<text x="1621" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="1403" font-size="13" fill="#bbb">x₁₄,z₁₄</text>
+<text x="1741" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="1403" font-size="13" fill="#bbb">x₁₅,z₁₄</text>
+<text x="1861" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="1403" font-size="13" fill="#bbb">x₁₆,z₁₄</text>
+<text x="1981" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="1403" font-size="13" fill="#bbb">x₁₇,z₁₄</text>
+<text x="2101" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2101" y="1403" font-size="13" fill="#bbb">x₁₈,z₁₄</text>
+<text x="2221" y="1371" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2221" y="1403" font-size="13" fill="#bbb">x₁₉,z₁₄</text>
+<text x="2341" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="1403" font-size="13" fill="#bbb">x₂₀,z₁₄</text>
+<text x="2461" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="1403" font-size="13" fill="#bbb">x₂₁,z₁₄</text>
+<text x="2581" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="1403" font-size="13" fill="#bbb">x₂₂,z₁₄</text>
+<text x="2701" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="1403" font-size="13" fill="#bbb">x₂₃,z₁₄</text>
+<text x="2821" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="1403" font-size="13" fill="#bbb">x₂₄,z₁₄</text>
+<text x="2941" y="1371" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="1403" font-size="13" fill="#bbb">x₂₅,z₁₄</text>
+<text x="61" y="1491" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="1523" font-size="13" fill="#bbb">x₁,z₁₃</text>
+<text x="181" y="1491" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="1523" font-size="13" fill="#bbb">x₂,z₁₃</text>
+<text x="301" y="1491" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="1523" font-size="13" fill="#bbb">x₃,z₁₃</text>
+<text x="421" y="1491" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="1523" font-size="13" fill="#bbb">x₄,z₁₃</text>
+<text x="541" y="1491" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="1523" font-size="13" fill="#bbb">x₅,z₁₃</text>
+<text x="661" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="661" y="1523" font-size="13" fill="#bbb">x₆,z₁₃</text>
+<text x="781" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="781" y="1523" font-size="13" fill="#bbb">x₇,z₁₃</text>
+<text x="901" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="901" y="1523" font-size="13" fill="#bbb">x₈,z₁₃</text>
+<text x="1021" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="1523" font-size="13" fill="#bbb">x₉,z₁₃</text>
+<text x="1141" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="1523" font-size="13" fill="#bbb">x₁₀,z₁₃</text>
+<text x="1261" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="1523" font-size="13" fill="#bbb">x₁₁,z₁₃</text>
+<text x="1381" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="1523" font-size="13" fill="#bbb">x₁₂,z₁₃</text>
+<text x="1501" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="1523" font-size="13" fill="#bbb">x₁₃,z₁₃</text>
+<text x="1621" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="1523" font-size="13" fill="#bbb">x₁₄,z₁₃</text>
+<text x="1741" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="1523" font-size="13" fill="#bbb">x₁₅,z₁₃</text>
+<text x="1861" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="1523" font-size="13" fill="#bbb">x₁₆,z₁₃</text>
+<text x="1981" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="1523" font-size="13" fill="#bbb">x₁₇,z₁₃</text>
+<text x="2101" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2101" y="1523" font-size="13" fill="#bbb">x₁₈,z₁₃</text>
+<text x="2221" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2221" y="1523" font-size="13" fill="#bbb">x₁₉,z₁₃</text>
+<text x="2341" y="1491" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2341" y="1523" font-size="13" fill="#bbb">x₂₀,z₁₃</text>
+<text x="2461" y="1491" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="1523" font-size="13" fill="#bbb">x₂₁,z₁₃</text>
+<text x="2581" y="1491" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="1523" font-size="13" fill="#bbb">x₂₂,z₁₃</text>
+<text x="2701" y="1491" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="1523" font-size="13" fill="#bbb">x₂₃,z₁₃</text>
+<text x="2821" y="1491" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="1523" font-size="13" fill="#bbb">x₂₄,z₁₃</text>
+<text x="2941" y="1491" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="1523" font-size="13" fill="#bbb">x₂₅,z₁₃</text>
+<text x="61" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="1643" font-size="13" fill="#bbb">x₁,z₁₂</text>
+<text x="181" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="1643" font-size="13" fill="#bbb">x₂,z₁₂</text>
+<text x="301" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="1643" font-size="13" fill="#bbb">x₃,z₁₂</text>
+<text x="421" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="1643" font-size="13" fill="#bbb">x₄,z₁₂</text>
+<text x="541" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="1643" font-size="13" fill="#bbb">x₅,z₁₂</text>
+<text x="661" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="1643" font-size="13" fill="#bbb">x₆,z₁₂</text>
+<text x="781" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="781" y="1643" font-size="13" fill="#bbb">x₇,z₁₂</text>
+<text x="901" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="901" y="1643" font-size="13" fill="#bbb">x₈,z₁₂</text>
+<text x="1021" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="1643" font-size="13" fill="#bbb">x₉,z₁₂</text>
+<text x="1141" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="1643" font-size="13" fill="#bbb">x₁₀,z₁₂</text>
+<text x="1261" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="1643" font-size="13" fill="#bbb">x₁₁,z₁₂</text>
+<text x="1381" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="1643" font-size="13" fill="#bbb">x₁₂,z₁₂</text>
+<text x="1501" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="1643" font-size="13" fill="#bbb">x₁₃,z₁₂</text>
+<text x="1621" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="1643" font-size="13" fill="#bbb">x₁₄,z₁₂</text>
+<text x="1741" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="1643" font-size="13" fill="#bbb">x₁₅,z₁₂</text>
+<text x="1861" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="1643" font-size="13" fill="#bbb">x₁₆,z₁₂</text>
+<text x="1981" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="1643" font-size="13" fill="#bbb">x₁₇,z₁₂</text>
+<text x="2101" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2101" y="1643" font-size="13" fill="#bbb">x₁₈,z₁₂</text>
+<text x="2221" y="1611" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2221" y="1643" font-size="13" fill="#bbb">x₁₉,z₁₂</text>
+<text x="2341" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="1643" font-size="13" fill="#bbb">x₂₀,z₁₂</text>
+<text x="2461" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="1643" font-size="13" fill="#bbb">x₂₁,z₁₂</text>
+<text x="2581" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="1643" font-size="13" fill="#bbb">x₂₂,z₁₂</text>
+<text x="2701" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="1643" font-size="13" fill="#bbb">x₂₃,z₁₂</text>
+<text x="2821" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="1643" font-size="13" fill="#bbb">x₂₄,z₁₂</text>
+<text x="2941" y="1611" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="1643" font-size="13" fill="#bbb">x₂₅,z₁₂</text>
+<text x="61" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="1763" font-size="13" fill="#bbb">x₁,z₁₁</text>
+<text x="181" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="1763" font-size="13" fill="#bbb">x₂,z₁₁</text>
+<text x="301" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="1763" font-size="13" fill="#bbb">x₃,z₁₁</text>
+<text x="421" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="1763" font-size="13" fill="#bbb">x₄,z₁₁</text>
+<text x="541" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="1763" font-size="13" fill="#bbb">x₅,z₁₁</text>
+<text x="661" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="1763" font-size="13" fill="#bbb">x₆,z₁₁</text>
+<text x="781" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="781" y="1763" font-size="13" fill="#bbb">x₇,z₁₁</text>
+<text x="901" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="901" y="1763" font-size="13" fill="#bbb">x₈,z₁₁</text>
+<text x="1021" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="1763" font-size="13" fill="#bbb">x₉,z₁₁</text>
+<text x="1141" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="1763" font-size="13" fill="#bbb">x₁₀,z₁₁</text>
+<text x="1261" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="1763" font-size="13" fill="#bbb">x₁₁,z₁₁</text>
+<text x="1381" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="1763" font-size="13" fill="#bbb">x₁₂,z₁₁</text>
+<text x="1501" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="1763" font-size="13" fill="#bbb">x₁₃,z₁₁</text>
+<text x="1621" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="1763" font-size="13" fill="#bbb">x₁₄,z₁₁</text>
+<text x="1741" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="1763" font-size="13" fill="#bbb">x₁₅,z₁₁</text>
+<text x="1861" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="1763" font-size="13" fill="#bbb">x₁₆,z₁₁</text>
+<text x="1981" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="1763" font-size="13" fill="#bbb">x₁₇,z₁₁</text>
+<text x="2101" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2101" y="1763" font-size="13" fill="#bbb">x₁₈,z₁₁</text>
+<text x="2221" y="1731" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2221" y="1763" font-size="13" fill="#bbb">x₁₉,z₁₁</text>
+<text x="2341" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="1763" font-size="13" fill="#bbb">x₂₀,z₁₁</text>
+<text x="2461" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="1763" font-size="13" fill="#bbb">x₂₁,z₁₁</text>
+<text x="2581" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="1763" font-size="13" fill="#bbb">x₂₂,z₁₁</text>
+<text x="2701" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="1763" font-size="13" fill="#bbb">x₂₃,z₁₁</text>
+<text x="2821" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="1763" font-size="13" fill="#bbb">x₂₄,z₁₁</text>
+<text x="2941" y="1731" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="1763" font-size="13" fill="#bbb">x₂₅,z₁₁</text>
+<text x="61" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="1883" font-size="13" fill="#bbb">x₁,z₁₀</text>
+<text x="181" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="1883" font-size="13" fill="#bbb">x₂,z₁₀</text>
+<text x="301" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="1883" font-size="13" fill="#bbb">x₃,z₁₀</text>
+<text x="421" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="1883" font-size="13" fill="#bbb">x₄,z₁₀</text>
+<text x="541" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="1883" font-size="13" fill="#bbb">x₅,z₁₀</text>
+<text x="661" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="1883" font-size="13" fill="#bbb">x₆,z₁₀</text>
+<text x="781" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="781" y="1883" font-size="13" fill="#bbb">x₇,z₁₀</text>
+<text x="901" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="901" y="1883" font-size="13" fill="#bbb">x₈,z₁₀</text>
+<text x="1021" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="1883" font-size="13" fill="#bbb">x₉,z₁₀</text>
+<text x="1141" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="1883" font-size="13" fill="#bbb">x₁₀,z₁₀</text>
+<text x="1261" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="1883" font-size="13" fill="#bbb">x₁₁,z₁₀</text>
+<text x="1381" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="1883" font-size="13" fill="#bbb">x₁₂,z₁₀</text>
+<text x="1501" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="1883" font-size="13" fill="#bbb">x₁₃,z₁₀</text>
+<text x="1621" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="1883" font-size="13" fill="#bbb">x₁₄,z₁₀</text>
+<text x="1741" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="1883" font-size="13" fill="#bbb">x₁₅,z₁₀</text>
+<text x="1861" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="1883" font-size="13" fill="#bbb">x₁₆,z₁₀</text>
+<text x="1981" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="1883" font-size="13" fill="#bbb">x₁₇,z₁₀</text>
+<text x="2101" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2101" y="1883" font-size="13" fill="#bbb">x₁₈,z₁₀</text>
+<text x="2221" y="1851" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2221" y="1883" font-size="13" fill="#bbb">x₁₉,z₁₀</text>
+<text x="2341" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="1883" font-size="13" fill="#bbb">x₂₀,z₁₀</text>
+<text x="2461" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="1883" font-size="13" fill="#bbb">x₂₁,z₁₀</text>
+<text x="2581" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="1883" font-size="13" fill="#bbb">x₂₂,z₁₀</text>
+<text x="2701" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="1883" font-size="13" fill="#bbb">x₂₃,z₁₀</text>
+<text x="2821" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="1883" font-size="13" fill="#bbb">x₂₄,z₁₀</text>
+<text x="2941" y="1851" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="1883" font-size="13" fill="#bbb">x₂₅,z₁₀</text>
+<text x="61" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="2003" font-size="13" fill="#bbb">x₁,z₉</text>
+<text x="181" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="2003" font-size="13" fill="#bbb">x₂,z₉</text>
+<text x="301" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="2003" font-size="13" fill="#bbb">x₃,z₉</text>
+<text x="421" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="2003" font-size="13" fill="#bbb">x₄,z₉</text>
+<text x="541" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="2003" font-size="13" fill="#bbb">x₅,z₉</text>
+<text x="661" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="2003" font-size="13" fill="#bbb">x₆,z₉</text>
+<text x="781" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="2003" font-size="13" fill="#bbb">x₇,z₉</text>
+<text x="901" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="901" y="2003" font-size="13" fill="#bbb">x₈,z₉</text>
+<text x="1021" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="2003" font-size="13" fill="#bbb">x₉,z₉</text>
+<text x="1141" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="2003" font-size="13" fill="#bbb">x₁₀,z₉</text>
+<text x="1261" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="2003" font-size="13" fill="#bbb">x₁₁,z₉</text>
+<text x="1381" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="2003" font-size="13" fill="#bbb">x₁₂,z₉</text>
+<text x="1501" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="2003" font-size="13" fill="#bbb">x₁₃,z₉</text>
+<text x="1621" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="2003" font-size="13" fill="#bbb">x₁₄,z₉</text>
+<text x="1741" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="2003" font-size="13" fill="#bbb">x₁₅,z₉</text>
+<text x="1861" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="2003" font-size="13" fill="#bbb">x₁₆,z₉</text>
+<text x="1981" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="2003" font-size="13" fill="#bbb">x₁₇,z₉</text>
+<text x="2101" y="1971" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="2101" y="2003" font-size="13" fill="#bbb">x₁₈,z₉</text>
+<text x="2221" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="2003" font-size="13" fill="#bbb">x₁₉,z₉</text>
+<text x="2341" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="2003" font-size="13" fill="#bbb">x₂₀,z₉</text>
+<text x="2461" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="2003" font-size="13" fill="#bbb">x₂₁,z₉</text>
+<text x="2581" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="2003" font-size="13" fill="#bbb">x₂₂,z₉</text>
+<text x="2701" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="2003" font-size="13" fill="#bbb">x₂₃,z₉</text>
+<text x="2821" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="2003" font-size="13" fill="#bbb">x₂₄,z₉</text>
+<text x="2941" y="1971" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="2003" font-size="13" fill="#bbb">x₂₅,z₉</text>
+<text x="61" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="2123" font-size="13" fill="#bbb">x₁,z₈</text>
+<text x="181" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="2123" font-size="13" fill="#bbb">x₂,z₈</text>
+<text x="301" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="2123" font-size="13" fill="#bbb">x₃,z₈</text>
+<text x="421" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="2123" font-size="13" fill="#bbb">x₄,z₈</text>
+<text x="541" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="2123" font-size="13" fill="#bbb">x₅,z₈</text>
+<text x="661" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="2123" font-size="13" fill="#bbb">x₆,z₈</text>
+<text x="781" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="2123" font-size="13" fill="#bbb">x₇,z₈</text>
+<text x="901" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="2123" font-size="13" fill="#bbb">x₈,z₈</text>
+<text x="1021" y="2091" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1021" y="2123" font-size="13" fill="#bbb">x₉,z₈</text>
+<text x="1141" y="2091" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="2123" font-size="13" fill="#bbb">x₁₀,z₈</text>
+<text x="1261" y="2091" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="2123" font-size="13" fill="#bbb">x₁₁,z₈</text>
+<text x="1381" y="2091" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="2123" font-size="13" fill="#bbb">x₁₂,z₈</text>
+<text x="1501" y="2091" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="2123" font-size="13" fill="#bbb">x₁₃,z₈</text>
+<text x="1621" y="2091" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="2123" font-size="13" fill="#bbb">x₁₄,z₈</text>
+<text x="1741" y="2091" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="2123" font-size="13" fill="#bbb">x₁₅,z₈</text>
+<text x="1861" y="2091" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="2123" font-size="13" fill="#bbb">x₁₆,z₈</text>
+<text x="1981" y="2091" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1981" y="2123" font-size="13" fill="#bbb">x₁₇,z₈</text>
+<text x="2101" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="2123" font-size="13" fill="#bbb">x₁₈,z₈</text>
+<text x="2221" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="2123" font-size="13" fill="#bbb">x₁₉,z₈</text>
+<text x="2341" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="2123" font-size="13" fill="#bbb">x₂₀,z₈</text>
+<text x="2461" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="2123" font-size="13" fill="#bbb">x₂₁,z₈</text>
+<text x="2581" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="2123" font-size="13" fill="#bbb">x₂₂,z₈</text>
+<text x="2701" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="2123" font-size="13" fill="#bbb">x₂₃,z₈</text>
+<text x="2821" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="2123" font-size="13" fill="#bbb">x₂₄,z₈</text>
+<text x="2941" y="2091" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="2123" font-size="13" fill="#bbb">x₂₅,z₈</text>
+<text x="61" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="2243" font-size="13" fill="#bbb">x₁,z₇</text>
+<text x="181" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="2243" font-size="13" fill="#bbb">x₂,z₇</text>
+<text x="301" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="2243" font-size="13" fill="#bbb">x₃,z₇</text>
+<text x="421" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="2243" font-size="13" fill="#bbb">x₄,z₇</text>
+<text x="541" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="2243" font-size="13" fill="#bbb">x₅,z₇</text>
+<text x="661" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="2243" font-size="13" fill="#bbb">x₆,z₇</text>
+<text x="781" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="2243" font-size="13" fill="#bbb">x₇,z₇</text>
+<text x="901" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="2243" font-size="13" fill="#bbb">x₈,z₇</text>
+<text x="1021" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="2243" font-size="13" fill="#bbb">x₉,z₇</text>
+<text x="1141" y="2211" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1141" y="2243" font-size="13" fill="#bbb">x₁₀,z₇</text>
+<text x="1261" y="2211" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1261" y="2243" font-size="13" fill="#bbb">x₁₁,z₇</text>
+<text x="1381" y="2211" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1381" y="2243" font-size="13" fill="#bbb">x₁₂,z₇</text>
+<text x="1501" y="2211" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="2243" font-size="13" fill="#bbb">x₁₃,z₇</text>
+<text x="1621" y="2211" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1621" y="2243" font-size="13" fill="#bbb">x₁₄,z₇</text>
+<text x="1741" y="2211" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1741" y="2243" font-size="13" fill="#bbb">x₁₅,z₇</text>
+<text x="1861" y="2211" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1861" y="2243" font-size="13" fill="#bbb">x₁₆,z₇</text>
+<text x="1981" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="2243" font-size="13" fill="#bbb">x₁₇,z₇</text>
+<text x="2101" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="2243" font-size="13" fill="#bbb">x₁₈,z₇</text>
+<text x="2221" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="2243" font-size="13" fill="#bbb">x₁₉,z₇</text>
+<text x="2341" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="2243" font-size="13" fill="#bbb">x₂₀,z₇</text>
+<text x="2461" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="2243" font-size="13" fill="#bbb">x₂₁,z₇</text>
+<text x="2581" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="2243" font-size="13" fill="#bbb">x₂₂,z₇</text>
+<text x="2701" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="2243" font-size="13" fill="#bbb">x₂₃,z₇</text>
+<text x="2821" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="2243" font-size="13" fill="#bbb">x₂₄,z₇</text>
+<text x="2941" y="2211" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="2243" font-size="13" fill="#bbb">x₂₅,z₇</text>
+<text x="61" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="2363" font-size="13" fill="#bbb">x₁,z₆</text>
+<text x="181" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="2363" font-size="13" fill="#bbb">x₂,z₆</text>
+<text x="301" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="2363" font-size="13" fill="#bbb">x₃,z₆</text>
+<text x="421" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="2363" font-size="13" fill="#bbb">x₄,z₆</text>
+<text x="541" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="2363" font-size="13" fill="#bbb">x₅,z₆</text>
+<text x="661" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="2363" font-size="13" fill="#bbb">x₆,z₆</text>
+<text x="781" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="2363" font-size="13" fill="#bbb">x₇,z₆</text>
+<text x="901" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="2363" font-size="13" fill="#bbb">x₈,z₆</text>
+<text x="1021" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="2363" font-size="13" fill="#bbb">x₉,z₆</text>
+<text x="1141" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="2363" font-size="13" fill="#bbb">x₁₀,z₆</text>
+<text x="1261" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="2363" font-size="13" fill="#bbb">x₁₁,z₆</text>
+<text x="1381" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="2363" font-size="13" fill="#bbb">x₁₂,z₆</text>
+<text x="1501" y="2331" font-size="32" font-weight="bold" fill="#111">10</text>
+<text x="1501" y="2363" font-size="13" fill="#bbb">x₁₃,z₆</text>
+<text x="1621" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="2363" font-size="13" fill="#bbb">x₁₄,z₆</text>
+<text x="1741" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="2363" font-size="13" fill="#bbb">x₁₅,z₆</text>
+<text x="1861" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="2363" font-size="13" fill="#bbb">x₁₆,z₆</text>
+<text x="1981" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="2363" font-size="13" fill="#bbb">x₁₇,z₆</text>
+<text x="2101" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="2363" font-size="13" fill="#bbb">x₁₈,z₆</text>
+<text x="2221" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="2363" font-size="13" fill="#bbb">x₁₉,z₆</text>
+<text x="2341" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="2363" font-size="13" fill="#bbb">x₂₀,z₆</text>
+<text x="2461" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="2363" font-size="13" fill="#bbb">x₂₁,z₆</text>
+<text x="2581" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="2363" font-size="13" fill="#bbb">x₂₂,z₆</text>
+<text x="2701" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="2363" font-size="13" fill="#bbb">x₂₃,z₆</text>
+<text x="2821" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="2363" font-size="13" fill="#bbb">x₂₄,z₆</text>
+<text x="2941" y="2331" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="2363" font-size="13" fill="#bbb">x₂₅,z₆</text>
+<text x="61" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="2483" font-size="13" fill="#bbb">x₁,z₅</text>
+<text x="181" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="2483" font-size="13" fill="#bbb">x₂,z₅</text>
+<text x="301" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="2483" font-size="13" fill="#bbb">x₃,z₅</text>
+<text x="421" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="2483" font-size="13" fill="#bbb">x₄,z₅</text>
+<text x="541" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="2483" font-size="13" fill="#bbb">x₅,z₅</text>
+<text x="661" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="2483" font-size="13" fill="#bbb">x₆,z₅</text>
+<text x="781" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="2483" font-size="13" fill="#bbb">x₇,z₅</text>
+<text x="901" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="2483" font-size="13" fill="#bbb">x₈,z₅</text>
+<text x="1021" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="2483" font-size="13" fill="#bbb">x₉,z₅</text>
+<text x="1141" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="2483" font-size="13" fill="#bbb">x₁₀,z₅</text>
+<text x="1261" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="2483" font-size="13" fill="#bbb">x₁₁,z₅</text>
+<text x="1381" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="2483" font-size="13" fill="#bbb">x₁₂,z₅</text>
+<text x="1501" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1501" y="2483" font-size="13" fill="#bbb">x₁₃,z₅</text>
+<text x="1621" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="2483" font-size="13" fill="#bbb">x₁₄,z₅</text>
+<text x="1741" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="2483" font-size="13" fill="#bbb">x₁₅,z₅</text>
+<text x="1861" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="2483" font-size="13" fill="#bbb">x₁₆,z₅</text>
+<text x="1981" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="2483" font-size="13" fill="#bbb">x₁₇,z₅</text>
+<text x="2101" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="2483" font-size="13" fill="#bbb">x₁₈,z₅</text>
+<text x="2221" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="2483" font-size="13" fill="#bbb">x₁₉,z₅</text>
+<text x="2341" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="2483" font-size="13" fill="#bbb">x₂₀,z₅</text>
+<text x="2461" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="2483" font-size="13" fill="#bbb">x₂₁,z₅</text>
+<text x="2581" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="2483" font-size="13" fill="#bbb">x₂₂,z₅</text>
+<text x="2701" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="2483" font-size="13" fill="#bbb">x₂₃,z₅</text>
+<text x="2821" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="2483" font-size="13" fill="#bbb">x₂₄,z₅</text>
+<text x="2941" y="2451" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="2483" font-size="13" fill="#bbb">x₂₅,z₅</text>
+<text x="61" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="2603" font-size="13" fill="#bbb">x₁,z₄</text>
+<text x="181" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="2603" font-size="13" fill="#bbb">x₂,z₄</text>
+<text x="301" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="2603" font-size="13" fill="#bbb">x₃,z₄</text>
+<text x="421" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="2603" font-size="13" fill="#bbb">x₄,z₄</text>
+<text x="541" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="2603" font-size="13" fill="#bbb">x₅,z₄</text>
+<text x="661" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="2603" font-size="13" fill="#bbb">x₆,z₄</text>
+<text x="781" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="2603" font-size="13" fill="#bbb">x₇,z₄</text>
+<text x="901" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="2603" font-size="13" fill="#bbb">x₈,z₄</text>
+<text x="1021" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="2603" font-size="13" fill="#bbb">x₉,z₄</text>
+<text x="1141" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="2603" font-size="13" fill="#bbb">x₁₀,z₄</text>
+<text x="1261" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="2603" font-size="13" fill="#bbb">x₁₁,z₄</text>
+<text x="1381" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="2603" font-size="13" fill="#bbb">x₁₂,z₄</text>
+<text x="1501" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1501" y="2603" font-size="13" fill="#bbb">x₁₃,z₄</text>
+<text x="1621" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="2603" font-size="13" fill="#bbb">x₁₄,z₄</text>
+<text x="1741" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="2603" font-size="13" fill="#bbb">x₁₅,z₄</text>
+<text x="1861" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="2603" font-size="13" fill="#bbb">x₁₆,z₄</text>
+<text x="1981" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="2603" font-size="13" fill="#bbb">x₁₇,z₄</text>
+<text x="2101" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="2603" font-size="13" fill="#bbb">x₁₈,z₄</text>
+<text x="2221" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="2603" font-size="13" fill="#bbb">x₁₉,z₄</text>
+<text x="2341" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="2603" font-size="13" fill="#bbb">x₂₀,z₄</text>
+<text x="2461" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="2603" font-size="13" fill="#bbb">x₂₁,z₄</text>
+<text x="2581" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="2603" font-size="13" fill="#bbb">x₂₂,z₄</text>
+<text x="2701" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="2603" font-size="13" fill="#bbb">x₂₃,z₄</text>
+<text x="2821" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="2603" font-size="13" fill="#bbb">x₂₄,z₄</text>
+<text x="2941" y="2571" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="2603" font-size="13" fill="#bbb">x₂₅,z₄</text>
+<text x="61" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="2723" font-size="13" fill="#bbb">x₁,z₃</text>
+<text x="181" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="2723" font-size="13" fill="#bbb">x₂,z₃</text>
+<text x="301" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="2723" font-size="13" fill="#bbb">x₃,z₃</text>
+<text x="421" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="2723" font-size="13" fill="#bbb">x₄,z₃</text>
+<text x="541" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="2723" font-size="13" fill="#bbb">x₅,z₃</text>
+<text x="661" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="2723" font-size="13" fill="#bbb">x₆,z₃</text>
+<text x="781" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="2723" font-size="13" fill="#bbb">x₇,z₃</text>
+<text x="901" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="2723" font-size="13" fill="#bbb">x₈,z₃</text>
+<text x="1021" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="2723" font-size="13" fill="#bbb">x₉,z₃</text>
+<text x="1141" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="2723" font-size="13" fill="#bbb">x₁₀,z₃</text>
+<text x="1261" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="2723" font-size="13" fill="#bbb">x₁₁,z₃</text>
+<text x="1381" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="2723" font-size="13" fill="#bbb">x₁₂,z₃</text>
+<text x="1501" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1501" y="2723" font-size="13" fill="#bbb">x₁₃,z₃</text>
+<text x="1621" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="2723" font-size="13" fill="#bbb">x₁₄,z₃</text>
+<text x="1741" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="2723" font-size="13" fill="#bbb">x₁₅,z₃</text>
+<text x="1861" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="2723" font-size="13" fill="#bbb">x₁₆,z₃</text>
+<text x="1981" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="2723" font-size="13" fill="#bbb">x₁₇,z₃</text>
+<text x="2101" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="2723" font-size="13" fill="#bbb">x₁₈,z₃</text>
+<text x="2221" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="2723" font-size="13" fill="#bbb">x₁₉,z₃</text>
+<text x="2341" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="2723" font-size="13" fill="#bbb">x₂₀,z₃</text>
+<text x="2461" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="2723" font-size="13" fill="#bbb">x₂₁,z₃</text>
+<text x="2581" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="2723" font-size="13" fill="#bbb">x₂₂,z₃</text>
+<text x="2701" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="2723" font-size="13" fill="#bbb">x₂₃,z₃</text>
+<text x="2821" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="2723" font-size="13" fill="#bbb">x₂₄,z₃</text>
+<text x="2941" y="2691" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="2723" font-size="13" fill="#bbb">x₂₅,z₃</text>
+<text x="61" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="2843" font-size="13" fill="#bbb">x₁,z₂</text>
+<text x="181" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="2843" font-size="13" fill="#bbb">x₂,z₂</text>
+<text x="301" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="2843" font-size="13" fill="#bbb">x₃,z₂</text>
+<text x="421" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="2843" font-size="13" fill="#bbb">x₄,z₂</text>
+<text x="541" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="2843" font-size="13" fill="#bbb">x₅,z₂</text>
+<text x="661" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="2843" font-size="13" fill="#bbb">x₆,z₂</text>
+<text x="781" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="2843" font-size="13" fill="#bbb">x₇,z₂</text>
+<text x="901" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="2843" font-size="13" fill="#bbb">x₈,z₂</text>
+<text x="1021" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="2843" font-size="13" fill="#bbb">x₉,z₂</text>
+<text x="1141" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="2843" font-size="13" fill="#bbb">x₁₀,z₂</text>
+<text x="1261" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="2843" font-size="13" fill="#bbb">x₁₁,z₂</text>
+<text x="1381" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="2843" font-size="13" fill="#bbb">x₁₂,z₂</text>
+<text x="1501" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1501" y="2843" font-size="13" fill="#bbb">x₁₃,z₂</text>
+<text x="1621" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="2843" font-size="13" fill="#bbb">x₁₄,z₂</text>
+<text x="1741" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="2843" font-size="13" fill="#bbb">x₁₅,z₂</text>
+<text x="1861" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="2843" font-size="13" fill="#bbb">x₁₆,z₂</text>
+<text x="1981" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="2843" font-size="13" fill="#bbb">x₁₇,z₂</text>
+<text x="2101" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="2843" font-size="13" fill="#bbb">x₁₈,z₂</text>
+<text x="2221" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="2843" font-size="13" fill="#bbb">x₁₉,z₂</text>
+<text x="2341" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="2843" font-size="13" fill="#bbb">x₂₀,z₂</text>
+<text x="2461" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="2843" font-size="13" fill="#bbb">x₂₁,z₂</text>
+<text x="2581" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="2843" font-size="13" fill="#bbb">x₂₂,z₂</text>
+<text x="2701" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="2843" font-size="13" fill="#bbb">x₂₃,z₂</text>
+<text x="2821" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="2843" font-size="13" fill="#bbb">x₂₄,z₂</text>
+<text x="2941" y="2811" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="2843" font-size="13" fill="#bbb">x₂₅,z₂</text>
+<text x="61" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="61" y="2963" font-size="13" fill="#bbb">x₁,z₁</text>
+<text x="181" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="181" y="2963" font-size="13" fill="#bbb">x₂,z₁</text>
+<text x="301" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="301" y="2963" font-size="13" fill="#bbb">x₃,z₁</text>
+<text x="421" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="421" y="2963" font-size="13" fill="#bbb">x₄,z₁</text>
+<text x="541" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="541" y="2963" font-size="13" fill="#bbb">x₅,z₁</text>
+<text x="661" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="661" y="2963" font-size="13" fill="#bbb">x₆,z₁</text>
+<text x="781" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="781" y="2963" font-size="13" fill="#bbb">x₇,z₁</text>
+<text x="901" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="901" y="2963" font-size="13" fill="#bbb">x₈,z₁</text>
+<text x="1021" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1021" y="2963" font-size="13" fill="#bbb">x₉,z₁</text>
+<text x="1141" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1141" y="2963" font-size="13" fill="#bbb">x₁₀,z₁</text>
+<text x="1261" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1261" y="2963" font-size="13" fill="#bbb">x₁₁,z₁</text>
+<text x="1381" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1381" y="2963" font-size="13" fill="#bbb">x₁₂,z₁</text>
+<text x="1501" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1501" y="2963" font-size="13" fill="#bbb">x₁₃,z₁</text>
+<text x="1621" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1621" y="2963" font-size="13" fill="#bbb">x₁₄,z₁</text>
+<text x="1741" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1741" y="2963" font-size="13" fill="#bbb">x₁₅,z₁</text>
+<text x="1861" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1861" y="2963" font-size="13" fill="#bbb">x₁₆,z₁</text>
+<text x="1981" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="1981" y="2963" font-size="13" fill="#bbb">x₁₇,z₁</text>
+<text x="2101" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2101" y="2963" font-size="13" fill="#bbb">x₁₈,z₁</text>
+<text x="2221" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2221" y="2963" font-size="13" fill="#bbb">x₁₉,z₁</text>
+<text x="2341" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2341" y="2963" font-size="13" fill="#bbb">x₂₀,z₁</text>
+<text x="2461" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2461" y="2963" font-size="13" fill="#bbb">x₂₁,z₁</text>
+<text x="2581" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2581" y="2963" font-size="13" fill="#bbb">x₂₂,z₁</text>
+<text x="2701" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2701" y="2963" font-size="13" fill="#bbb">x₂₃,z₁</text>
+<text x="2821" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2821" y="2963" font-size="13" fill="#bbb">x₂₄,z₁</text>
+<text x="2941" y="2931" font-size="32" font-weight="bold" fill="#999">9</text>
+<text x="2941" y="2963" font-size="13" fill="#bbb">x₂₅,z₁</text>
+  </g>
+
+  <!-- Circle boundary -->
+  <circle cx="1501" cy="1501" r="840"
+          fill="none" stroke="#222" stroke-width="6" stroke-dasharray="20,8"/>
+
+</svg>
