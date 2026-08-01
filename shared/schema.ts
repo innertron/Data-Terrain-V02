@@ -2,6 +2,11 @@ import { pgTable, text, serial, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+export const projectSettings = pgTable("project_settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+});
+
 export const gridSegments = pgTable("grid_segments", {
   id: serial("id").primaryKey(),
   xIndex: integer("x_index").notNull(), // 0-24

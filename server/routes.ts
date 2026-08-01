@@ -129,5 +129,28 @@ export async function registerRoutes(
     }
   });
 
+  // GET all project settings
+  app.get("/api/settings", async (req, res) => {
+    try {
+      const settings = await storage.getAllSettings();
+      res.json(settings);
+    } catch (err) {
+      res.status(500).json({ message: "Failed to fetch settings" });
+    }
+  });
+
+  // PUT upsert a single setting
+  app.put("/api/settings/:key", async (req, res) => {
+    try {
+      const { key } = req.params;
+      const { value } = z.object({ value: z.string() }).parse(req.body);
+      await storage.setSetting(key, value);
+      res.json({ key, value });
+    } catch (err) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
+      res.status(500).json({ message: "Failed to save setting" });
+    }
+  });
+
   return httpServer;
 }

@@ -8,7 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useUpdateSegment } from "@/hooks/use-segments";
 import { useTheme } from "@/hooks/use-theme";
-import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers } from "lucide-react";
+import { ProjectSettingsDrawer } from "@/components/ProjectSettings";
+import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers, Wrench } from "lucide-react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { apiRequest } from "@/lib/queryClient";
@@ -101,7 +102,9 @@ export default function Home() {
   const [selectedSegment, setSelectedSegment] = useState<GridSegment | null>(null);
   const [editValue, setEditValue] = useState<string>("");
   const [showSettings, setShowSettings] = useState(false);
+  const [showProjectSettings, setShowProjectSettings] = useState(false);
   const [surfMode, setSurfMode] = useState(false);
+  const isAdmin = import.meta.env.DEV;
   const updateMutation = useUpdateSegment();
   const queryClient = useQueryClient();
   const { theme, setTheme } = useTheme();
@@ -216,6 +219,18 @@ export default function Home() {
               <Info className="w-3.5 h-3.5 text-primary" />
               Inspector
             </h2>
+            <div className="flex items-center gap-1">
+              {isAdmin && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-primary/60 hover:text-primary"
+                  title="Project Settings (admin only)"
+                  onClick={() => setShowProjectSettings(true)}
+                >
+                  <Wrench className="w-3.5 h-3.5" />
+                </Button>
+              )}
             <div className="relative">
               <Button
                 variant="ghost"
@@ -267,6 +282,7 @@ export default function Home() {
                 </div>
               )}
             </div>
+            </div>{/* end flex items-center gap-1 */}
           </div>
           <p className="text-[10px] text-muted-foreground leading-none mt-0.5">
             Hover or click a data node to view details.
@@ -366,6 +382,14 @@ export default function Home() {
           </Button>
         </div>
       </div>
+
+      {/* Admin-only Project Settings drawer — never rendered in production builds */}
+      {isAdmin && (
+        <ProjectSettingsDrawer
+          open={showProjectSettings}
+          onClose={() => setShowProjectSettings(false)}
+        />
+      )}
     </div>
   );
 }

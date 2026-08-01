@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { gridSegments, type GridSegment, type InsertGridSegment } from "@shared/schema";
+import { gridSegments, projectSettings, type GridSegment, type InsertGridSegment } from "@shared/schema";
 import { eq, asc } from "drizzle-orm";
 
 export interface IStorage {
@@ -7,6 +7,8 @@ export interface IStorage {
   getGridSegment(id: number): Promise<GridSegment | undefined>;
   updateGridSegment(id: number, segment: Partial<InsertGridSegment>): Promise<GridSegment>;
   initializeGrid(segments: InsertGridSegment[]): Promise<void>;
+  getAllSettings(): Promise<Record<string, string>>;
+  setSetting(key: string, value: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -29,6 +31,17 @@ export class DatabaseStorage implements IStorage {
 
   async initializeGrid(segments: InsertGridSegment[]): Promise<void> {
     await db.insert(gridSegments).values(segments);
+  }
+
+  async getAllSettings(): Promise<Record<string, string>> {
+    const rows = await db.select().from(projectSettings);
+    return Object.fromEntries(rows.map(r => [r.key, r.value]));
+  }
+
+  async setSetting(key: string, value: string): Promise<void> {
+    await db.insert(projectSettings)
+      .values({ key, value })
+      .onConflictDoUpdate({ target: projectSettings.key, set: { value } });
   }
 }
 
