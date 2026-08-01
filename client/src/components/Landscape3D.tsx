@@ -326,7 +326,7 @@ function FloatingLabel({ data, maxValue, isDark = true }: { data: GridSegment; m
   const xPos = (data.xIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const zPos = (data.zIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const barHeight = Math.max((data.value / maxValue) * MAX_HEIGHT, 0.1);
-  const yPos = barHeight + 3;
+  const yPos = barHeight + 6;
 
   const domainLabel = X_LABELS[data.xIndex] || data.xLabel;
   const incomeLabel = Z_LABELS[data.zIndex] || data.zLabel;
