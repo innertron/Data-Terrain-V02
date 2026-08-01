@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DemoScape — 25×25 Grid Template</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Courier New', monospace;
+    background: #fff;
+    color: #111;
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: #555;
+  }
+
+  .wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  /* Z-axis label (vertical, left side) */
+  .z-axis-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+    padding-right: 6px;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  .grid-and-xaxis {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* The main 26×26 table (1 header row + 25 data rows, 1 header col + 25 data cols) */
+  table {
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  /* Column header row (x-axis labels) */
+  th.x-header {
+    font-size: 6px;
+    letter-spacing: 0.05em;
+    text-align: center;
+    vertical-align: bottom;
+    padding: 2px 1px 4px;
+    color: #555;
+    width: 52px;
+    min-width: 52px;
+    border-bottom: 1.5px solid #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  th.corner {
+    width: 52px;
+    min-width: 52px;
+  }
+
+  /* Row header cells (z-axis labels) */
+  td.z-header {
+    font-size: 6px;
+    text-align: right;
+    padding: 0 4px 0 0;
+    color: #555;
+    white-space: nowrap;
+    border-right: 1.5px solid #333;
+    width: 52px;
+    min-width: 52px;
+    vertical-align: middle;
+  }
+
+  /* Data cells */
+  td.cell {
+    width: 52px;
+    min-width: 52px;
+    height: 26px;
+    border: 0.5px solid #ccc;
+    vertical-align: middle;
+    text-align: center;
+    padding: 1px 2px;
+    font-size: 5px;
+    line-height: 1.4;
+    color: #333;
+    overflow: hidden;
+  }
+
+  td.cell .coord {
+    display: block;
+    font-size: 5.5px;
+    color: #888;
+  }
+
+  td.cell .labels {
+    display: block;
+    font-size: 4.5px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* X-axis footer label */
+  .x-axis-label {
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+    text-align: center;
+    padding-top: 6px;
+  }
+
+  @media print {
+    body { padding: 4px; }
+    @page { size: A2 landscape; margin: 8mm; }
+    h1 { margin-bottom: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>DemoScape — 25 × 25 Grid Template &nbsp;|&nbsp; X: Political Domain &nbsp;|&nbsp; Z: Income / Education</h1>
+
+<div class="wrapper">
+  <div class="z-axis-label">Z — Income / Education</div>
+
+  <div class="grid-and-xaxis">
+    <table id="grid"></table>
+    <div class="x-axis-label">X — Political Domain</div>
+  </div>
+</div>
+
+<script>
+const X_LABELS = [
+  'DEM-4','DEM-3','DEM-2','DEM-1','DEM 0',
+  'DEM+1','DEM+2','DEM+3','DEM+4','Swng/z',
+  'Swng/y','Swng/x','Swng 0','Swng\\x','Swng\\y',
+  'Swng\\z','GOP+4','GOP+3','GOP+2','GOP+1',
+  'GOP 0','GOP-1','GOP-2','GOP-3','GOP-4'
+];
+
+// Z_LABELS index 0 = highest income ($20B+), index 24 = lowest (<$34K)
+// User's z1 = <$34K GED = Z_LABELS[24]; z25 = $20B+ = Z_LABELS[0]
+const Z_LABELS = [
+  '$20B+ Luck2','$1B Luck1','$50M MDPhD3','$1M MDPhD2','$500K MDPhD1',
+  '$400K MD2','$300K MD1','$250K BSJD2','$200K BSJD1','$175K BSPhD2',
+  '$150K BSPhD1','$120K BSMS','$100K Trade3','$90K BS2','$80K BS1',
+  '$77K BAPhD','$70K Trade2','$65K Trade1','$60K BAMS','$55K BA2',
+  '$50K BA1','$45K AS','$40K GED','$35K GED','<$34K GED'
+];
+
+const table = document.getElementById('grid');
+
+// --- Header row (x-axis labels) ---
+const headRow = document.createElement('tr');
+// corner cell
+const corner = document.createElement('th');
+corner.className = 'corner';
+headRow.appendChild(corner);
+
+for (let xi = 0; xi < 25; xi++) {
+  const th = document.createElement('th');
+  th.className = 'x-header';
+  th.title = X_LABELS[xi];
+  th.textContent = X_LABELS[xi];
+  headRow.appendChild(th);
+}
+table.appendChild(headRow);
+
+// --- Data rows ---
+// Row 0 of the HTML = z25 ($20B+, zIndex=0 in code)
+// Row 24 of the HTML = z1 (<$34K GED, zIndex=24 in code)
+for (let row = 0; row < 25; row++) {
+  const zi = row;                    // code zIndex (0=top/$20B+, 24=bottom/<$34K)
+  const zNum = 25 - zi;              // user's z-number: zi=0 → z25, zi=24 → z1
+  const zLabel = Z_LABELS[zi];
+
+  const tr = document.createElement('tr');
+
+  // Row header (z-axis label)
+  const th = document.createElement('td');
+  th.className = 'z-header';
+  th.title = zLabel;
+  th.textContent = `z${zNum}  ${zLabel}`;
+  tr.appendChild(th);
+
+  for (let xi = 0; xi < 25; xi++) {
+    const xNum = xi + 1;             // user's x-number: xi=0 → x1, xi=24 → x25
+    const xLabel = X_LABELS[xi];
+
+    const td = document.createElement('td');
+    td.className = 'cell';
+    td.title = `${zLabel}, ${xLabel} (x${xNum}, z${zNum})`;
+
+    td.innerHTML =
+      `<span class="coord">(x${xNum}, z${zNum})</span>` +
+      `<span class="labels">${xLabel} / ${zLabel}</span>`;
+
+    tr.appendChild(td);
+  }
+  table.appendChild(tr);
+}
+</script>
+</body>
+</html>
