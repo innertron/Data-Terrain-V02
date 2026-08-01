@@ -105,6 +105,23 @@ export default function Home() {
   const [showProjectSettings, setShowProjectSettings] = useState(false);
   const [surfMode, setSurfMode] = useState(false);
   const isAdmin = import.meta.env.DEV;
+
+  const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
+    queryKey: ["/api/settings"],
+    queryFn: () => fetch("/api/settings").then(r => r.json()),
+  });
+
+  const projectTitle = projectSettingsData["project_title"] || "";
+  const formatDate = (iso: string) => {
+    if (!iso) return "";
+    const [y, m, d] = iso.split("-");
+    return `${m}/${d}/${y}`;
+  };
+  const dateStart = projectSettingsData["date_range_start"] || "";
+  const dateEnd = projectSettingsData["date_range_end"] || "";
+  const dateLabel = dateStart || dateEnd
+    ? [dateStart, dateEnd].filter(Boolean).map(formatDate).join(" – ")
+    : "";
   const updateMutation = useUpdateSegment();
   const queryClient = useQueryClient();
   const { theme, setTheme } = useTheme();
@@ -193,21 +210,44 @@ export default function Home() {
       <div className="flex-1 relative h-[60vh] md:h-auto order-2 md:order-1">
         <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} />
         
-        {/* Header Overlay — minedICE logo */}
-        <div className="absolute top-4 left-6 z-10 pointer-events-none">
-          {(() => {
-            const isDarkMode = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            return (
+        {/* Header Overlay — left: minedICE logo, right: project title + dates */}
+        <div className="absolute top-4 left-6 right-6 z-10 pointer-events-none flex items-start justify-between">
+          {/* Left — brand */}
+          <div>
+            {(() => {
+              const isDarkMode = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+              return (
+                <img
+                  src={isDarkMode ? '/minedice-logo-dark.png' : '/minedice-logo-light.png'}
+                  alt="minedICE"
+                  className="h-6 md:h-8 w-auto object-contain"
+                />
+              );
+            })()}
+            <p className={`font-mono mt-1 text-xs tracking-widest uppercase ${theme === 'light' ? 'text-gray-500' : 'text-white/50'}`}>
+              Module Interaction & Visualization
+            </p>
+          </div>
+
+          {/* Right — project title + date range (only when set) */}
+          {projectTitle && (
+            <div className="text-right">
               <img
-                src={isDarkMode ? '/minedice-logo-dark.png' : '/minedice-logo-light.png'}
-                alt="minedICE"
-                className="h-6 md:h-8 w-auto object-contain"
+                src={theme === 'light' ? '/minedice-logo-light.png' : '/minedice-logo-dark.png'}
+                alt={projectTitle}
+                className="h-6 md:h-8 w-auto object-contain opacity-0 absolute"
+                aria-hidden
               />
-            );
-          })()}
-          <p className={`font-mono mt-1 text-xs tracking-widest uppercase ${theme === 'light' ? 'text-gray-500' : 'text-white/50'}`}>
-            Module Interaction & Visualization
-          </p>
+              <p className={`font-mono text-base md:text-lg font-bold tracking-widest uppercase ${theme === 'light' ? 'text-gray-700' : 'text-white/90'}`}>
+                {projectTitle}
+              </p>
+              {dateLabel && (
+                <p className={`font-mono mt-1 text-xs tracking-widest uppercase ${theme === 'light' ? 'text-gray-500' : 'text-white/50'}`}>
+                  {dateLabel}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
