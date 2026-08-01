@@ -335,7 +335,7 @@ function FloatingLabel({ data, isDark = true }: { data: GridSegment; isDark?: bo
         <div className={`space-y-0.5 font-mono ${isDark ? 'text-muted-foreground' : 'text-gray-600'}`} style={{ fontSize: '11px' }}>
           <p><span className={isDark ? 'text-white' : 'text-black font-bold'}>Domain:</span> {domainLabel}</p>
           <p><span className={isDark ? 'text-white' : 'text-black font-bold'}>Income/Edu:</span> {incomeLabel}</p>
-          <p><span className={isDark ? 'text-primary font-bold' : 'text-purple-700 font-bold'}>People:</span> {data.value.toLocaleString()}</p>
+          <p><span className={isDark ? 'text-primary font-bold' : 'text-purple-700 font-bold'}>PopDensity:</span> {data.value.toLocaleString()}</p>
           <p className={`italic pt-1 mt-1 ${isDark ? 'border-t border-white/10 text-white/40' : 'border-t border-gray-300 text-gray-400'}`}>Segment [{data.xIndex},{data.zIndex}]</p>
         </div>
       </div>
