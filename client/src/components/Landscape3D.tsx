@@ -331,7 +331,7 @@ function FloatingLabel({ data, isDark = true }: { data: GridSegment; isDark?: bo
 
   return (
     <Html position={[xPos, MAX_HEIGHT + 7, zPos]} center style={{ pointerEvents: 'none' }}>
-      <div className={`backdrop-blur-md p-2 rounded-lg shadow-2xl min-w-[180px] transform transition-all duration-200 ${isDark ? 'bg-black/80 border border-primary/50' : 'bg-white/90 border border-gray-300'}`}>
+      <div className={`backdrop-blur-md p-2 rounded-lg shadow-2xl w-fit transform transition-all duration-200 ${isDark ? 'bg-black/60 border border-primary/50' : 'bg-white/65 border border-gray-300/70'}`}>
         <div className={`space-y-0.5 font-mono ${isDark ? 'text-muted-foreground' : 'text-gray-600'}`} style={{ fontSize: '11px' }}>
           <p><span className={isDark ? 'text-white' : 'text-black font-bold'}>Domain:</span> {domainLabel}</p>
           <p><span className={isDark ? 'text-white' : 'text-black font-bold'}>Income/Edu:</span> {incomeLabel}</p>
