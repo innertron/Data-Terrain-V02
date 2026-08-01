@@ -331,11 +331,11 @@ function FloatingLabel({ data, isDark = true }: { data: GridSegment; isDark?: bo
 
   return (
     <Html position={[xPos, MAX_HEIGHT + 7, zPos]} center style={{ pointerEvents: 'none' }}>
-      <div className={`backdrop-blur-md p-3 rounded-lg shadow-2xl min-w-[220px] transform transition-all duration-200 ${isDark ? 'bg-black/80 border border-primary/50' : 'bg-white/90 border border-gray-300'}`}>
-        <h4 className={`font-bold text-lg font-display mb-1 ${isDark ? 'text-primary' : 'text-purple-700'}`}>{data.value.toLocaleString()} People</h4>
-        <div className={`space-y-1 font-mono ${isDark ? 'text-muted-foreground' : 'text-gray-600'}`} style={{ fontSize: '11px' }}>
+      <div className={`backdrop-blur-md p-2 rounded-lg shadow-2xl min-w-[180px] transform transition-all duration-200 ${isDark ? 'bg-black/80 border border-primary/50' : 'bg-white/90 border border-gray-300'}`}>
+        <div className={`space-y-0.5 font-mono ${isDark ? 'text-muted-foreground' : 'text-gray-600'}`} style={{ fontSize: '11px' }}>
           <p><span className={isDark ? 'text-white' : 'text-black font-bold'}>Domain:</span> {domainLabel}</p>
           <p><span className={isDark ? 'text-white' : 'text-black font-bold'}>Income/Edu:</span> {incomeLabel}</p>
+          <p><span className={isDark ? 'text-primary font-bold' : 'text-purple-700 font-bold'}>People:</span> {data.value.toLocaleString()}</p>
           <p className={`italic pt-1 mt-1 ${isDark ? 'border-t border-white/10 text-white/40' : 'border-t border-gray-300 text-gray-400'}`}>Segment [{data.xIndex},{data.zIndex}]</p>
         </div>
       </div>

@@ -280,13 +280,15 @@ export default function Home() {
               {/* Fixed cards */}
               <div className="flex flex-col gap-3 shrink-0">
                 {/* Coordinates Badge */}
-                <div className="flex items-center gap-1.5 flex-wrap">
+                <div className="flex items-center">
                   <Badge variant="outline" className="font-mono text-xs">
                     ID: {selectedSegment.id}
                   </Badge>
-                  <Badge className="bg-primary/20 text-primary border-primary/50 font-mono text-xs">
-                    PopDensity: {selectedSegment.value}
-                  </Badge>
+                  <div className="flex-1 flex justify-center">
+                    <Badge className="bg-primary/20 text-primary border-primary/50 font-mono text-xs">
+                      PopDensity: {selectedSegment.value}
+                    </Badge>
+                  </div>
                   <Badge variant="outline" className="font-mono text-xs">
                     POS: [{selectedSegment.xIndex}, {selectedSegment.zIndex}]
                   </Badge>
@@ -310,7 +312,7 @@ export default function Home() {
                     <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">
                       Income / Education (Z)
                     </Label>
-                    <div className="text-xs font-medium leading-snug">
+                    <div className="text-sm font-medium leading-snug">
                       <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
                         {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
                       </span>
