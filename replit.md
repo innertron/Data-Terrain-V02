@@ -34,6 +34,10 @@ A full-stack 3D landscape visualization using a 25x25 grid where:
 - Bar colors use HSL with hue interpolated from 240 (blue/DEM) to 0 (red/GOP)
 - Fog range: 30 to 120 units
 
+## User Preferences
+- Never use the AskQuestion tool. Work from direct instructions only; make decisions without stopping to ask.
+- Never make changes to DemoScape without explicit instruction.
+
 ## Packages
 - `@react-three/fiber` ^8
 - `@react-three/drei` ^9

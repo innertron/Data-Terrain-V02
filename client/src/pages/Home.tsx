@@ -1,6 +1,5 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef } from "react";
 import { Landscape3D } from "@/components/Landscape3D";
-import { DEMO_CONTOURS, computeEffectiveValues } from "@/lib/demoContours";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -105,16 +104,7 @@ export default function Home() {
   const [showSettings, setShowSettings] = useState(false);
   const [showProjectSettings, setShowProjectSettings] = useState(false);
   const [surfMode, setSurfMode] = useState(false);
-  const [activeContourIds, setActiveContourIds] = useState<string[]>([]);
   const isAdmin = import.meta.env.DEV;
-
-  const effectiveValues = useMemo(() => {
-    const active = DEMO_CONTOURS.filter(c => activeContourIds.includes(c.id));
-    return active.length > 0 ? computeEffectiveValues(active) : undefined;
-  }, [activeContourIds]);
-
-  const toggleContour = (id: string) =>
-    setActiveContourIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
   const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
     queryKey: ["/api/settings"],
@@ -218,7 +208,7 @@ export default function Home() {
       
       {/* 3D Viewport - Takes dominant space */}
       <div className="flex-1 relative h-[60vh] md:h-auto order-2 md:order-1">
-        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} effectiveValues={effectiveValues} />
+        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} />
         
         {/* Header Overlay — left: minedICE logo, right: project title + dates */}
         <div className="absolute top-4 left-6 right-6 z-10 pointer-events-none flex items-start justify-between">
@@ -340,37 +330,6 @@ export default function Home() {
         </div>
 
         <div className="flex-1 flex flex-col overflow-hidden p-4 gap-4">
-
-          {/* ConTour Layers — always visible */}
-          <div className="shrink-0">
-            <p className="text-[10px] uppercase tracking-widest text-primary font-semibold mb-2">Contour Layers</p>
-            <div className="space-y-1.5">
-              {DEMO_CONTOURS.map(c => {
-                const on = activeContourIds.includes(c.id);
-                return (
-                  <button
-                    key={c.id}
-                    onClick={() => toggleContour(c.id)}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-xs transition-colors border ${on ? 'border-transparent' : 'border-border hover:bg-muted/50'}`}
-                    style={on ? { backgroundColor: c.color + '22', borderColor: c.color + '66' } : {}}
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: c.color }} />
-                      <span className={`font-mono ${on ? 'text-foreground' : 'text-muted-foreground'}`}>{c.name}</span>
-                    </span>
-                    <span className={`w-8 h-4 rounded-full transition-colors flex items-center px-0.5 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: c.color } : {}}>
-                      <span className={`w-3 h-3 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            {activeContourIds.length > 0 && (
-              <p className="text-[10px] text-muted-foreground mt-2 font-mono">
-                {activeContourIds.length} layer{activeContourIds.length > 1 ? 's' : ''} active — terrain shows summed values
-              </p>
-            )}
-          </div>
 
           {selectedSegment ? (
             <div className="flex flex-col flex-1 gap-4 animate-in slide-in-from-right-4 duration-300 min-h-0">
