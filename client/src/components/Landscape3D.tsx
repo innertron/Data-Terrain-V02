@@ -322,15 +322,17 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment }
   );
 }
 
-function FloatingLabel({ data, isDark = true }: { data: GridSegment; isDark?: boolean }) {
+function FloatingLabel({ data, maxValue, isDark = true }: { data: GridSegment; maxValue: number; isDark?: boolean }) {
   const xPos = (data.xIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const zPos = (data.zIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
-  
+  const barHeight = Math.max((data.value / maxValue) * MAX_HEIGHT, 0.1);
+  const yPos = barHeight + 3;
+
   const domainLabel = X_LABELS[data.xIndex] || data.xLabel;
   const incomeLabel = Z_LABELS[data.zIndex] || data.zLabel;
 
   return (
-    <Html position={[xPos, MAX_HEIGHT + 7, zPos]} center style={{ pointerEvents: 'none' }}>
+    <Html position={[xPos, yPos, zPos]} center style={{ pointerEvents: 'none' }}>
       <div className={`backdrop-blur-md p-2 rounded-lg shadow-2xl min-w-[147px] transform transition-all duration-200 ${isDark ? 'bg-black/60 border border-primary/50' : 'bg-white/65 border border-gray-300/70'}`}>
         <div className={`space-y-0.5 font-mono ${isDark ? 'text-muted-foreground' : 'text-gray-600'}`} style={{ fontSize: '11px' }}>
           <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Domain:</span><span>{domainLabel}</span></div>
@@ -427,7 +429,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false }
         </group>
 
         {/* Hover Label */}
-        {hoveredSegment && <FloatingLabel data={hoveredSegment} isDark={isDark} />}
+        {hoveredSegment && <FloatingLabel data={hoveredSegment} maxValue={maxValue} isDark={isDark} />}
 
         <OrbitControls 
           enableDamping 
