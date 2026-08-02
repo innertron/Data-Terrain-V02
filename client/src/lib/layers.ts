@@ -14,23 +14,24 @@ export async function fetchLayers(): Promise<LayerDef[]> {
   return res.json();
 }
 
-// Sum active grids, normalize 0-100 → Map<"xIndex,zIndex", value>
+// Average active grids per cell, normalize 0-100 → Map<"xIndex,zIndex", value>
 // Returns undefined when no layers are active (terrain uses raw DB values)
 export function computeLayerValues(
   activeGrids: number[][][]
 ): Map<string, number> | undefined {
   if (activeGrids.length === 0) return undefined;
 
+  const n = activeGrids.length;
   const sums: number[][] = [];
   let min = Infinity, max = -Infinity;
 
   for (let r = 0; r < 25; r++) {
     sums[r] = [];
     for (let c = 0; c < 25; c++) {
-      const s = activeGrids.reduce((a, g) => a + (g[r]?.[c] ?? 0), 0);
-      sums[r][c] = s;
-      if (s < min) min = s;
-      if (s > max) max = s;
+      const avg = activeGrids.reduce((a, g) => a + (g[r]?.[c] ?? 0), 0) / n;
+      sums[r][c] = avg;
+      if (avg < min) min = avg;
+      if (avg > max) max = avg;
     }
   }
 
