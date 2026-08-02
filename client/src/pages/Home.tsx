@@ -1,5 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Landscape3D } from "@/components/Landscape3D";
+import { LAYER_DEFS, fetchLayerGrid, computeLayerValues } from "@/lib/layers";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -104,7 +105,31 @@ export default function Home() {
   const [showSettings, setShowSettings] = useState(false);
   const [showProjectSettings, setShowProjectSettings] = useState(false);
   const [surfMode, setSurfMode] = useState(false);
+  const [layerMode, setLayerMode] = useState<'layers' | 'details'>('layers');
+  const [activeLayers, setActiveLayers] = useState<string[]>(LAYER_DEFS.map(l => l.id));
+  const [layerGrids, setLayerGrids] = useState<Map<string, number[][]>>(new Map());
   const isAdmin = import.meta.env.DEV;
+
+  // Load all layer CSVs once on mount
+  useEffect(() => {
+    Promise.all(
+      LAYER_DEFS.map(async l => ({ id: l.id, grid: await fetchLayerGrid(l.url) }))
+    ).then(results => {
+      const m = new Map<string, number[][]>();
+      results.forEach(({ id, grid }) => m.set(id, grid));
+      setLayerGrids(m);
+    }).catch(console.error);
+  }, []);
+
+  const effectiveValues = useMemo(() => {
+    const grids = activeLayers
+      .map(id => layerGrids.get(id))
+      .filter((g): g is number[][] => !!g);
+    return computeLayerValues(grids);
+  }, [activeLayers, layerGrids]);
+
+  const toggleLayer = (id: string) =>
+    setActiveLayers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
   const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
     queryKey: ["/api/settings"],
@@ -208,7 +233,7 @@ export default function Home() {
       
       {/* 3D Viewport - Takes dominant space */}
       <div className="flex-1 relative h-[60vh] md:h-auto order-2 md:order-1">
-        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} />
+        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} effectiveValues={effectiveValues} />
         
         {/* Header Overlay — left: minedICE logo, right: project title + dates */}
         <div className="absolute top-4 left-6 right-6 z-10 pointer-events-none flex items-start justify-between">
@@ -324,81 +349,109 @@ export default function Home() {
             </div>
             </div>{/* end flex items-center gap-1 */}
           </div>
-          <p className="text-[10px] text-muted-foreground leading-none mt-0.5">
-            Hover or click a data node to view details.
-          </p>
+          {/* Mode toggle: LAYERS ↔ DETAILS */}
+          <div className="flex items-center bg-muted rounded-lg p-0.5 mt-1 text-[10px] font-semibold tracking-wider">
+            <button
+              onClick={() => setLayerMode('layers')}
+              className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+            >LAYERS</button>
+            <button
+              onClick={() => setLayerMode('details')}
+              className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+            >DETAILS</button>
+          </div>
         </div>
 
         <div className="flex-1 flex flex-col overflow-hidden p-4 gap-4">
 
-          {selectedSegment ? (
-            <div className="flex flex-col flex-1 gap-4 animate-in slide-in-from-right-4 duration-300 min-h-0">
-              
-              {/* Fixed cards */}
-              <div className="flex flex-col gap-3 shrink-0">
-                {/* Coordinates Badge */}
-                <div className="flex items-center">
-                  <Badge variant="outline" className="font-mono text-xs">
-                    ID: {selectedSegment.id}
-                  </Badge>
-                  <div className="flex-1 flex justify-center">
-                    <Badge className="bg-primary/20 text-primary border-primary/50 font-mono text-xs">
-                      PopDensity: {selectedSegment.value}
-                    </Badge>
-                  </div>
-                  <Badge variant="outline" className="font-mono text-xs">
-                    POS: [{selectedSegment.xIndex}, {selectedSegment.zIndex}]
-                  </Badge>
-                </div>
-
-                {/* Data Display */}
-                <div className="space-y-3">
-                  <div className="bg-muted p-3 rounded-lg border border-border">
-                    <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">
-                      Political Domain (X)
-                    </Label>
-                    <div className="text-xs font-medium leading-snug">
-                      <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
-                        {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
+          {layerMode === 'layers' ? (
+            /* ── LAYERS MODE ── */
+            <div className="flex flex-col gap-3">
+              <p className="text-[10px] uppercase tracking-widest text-primary font-semibold">Active Layers</p>
+              <div className="space-y-2">
+                {LAYER_DEFS.map(layer => {
+                  const on = activeLayers.includes(layer.id);
+                  const loaded = layerGrids.has(layer.id);
+                  return (
+                    <button
+                      key={layer.id}
+                      onClick={() => toggleLayer(layer.id)}
+                      disabled={!loaded}
+                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs border transition-colors ${on ? 'border-transparent' : 'border-border hover:bg-muted/50'} ${!loaded ? 'opacity-40' : ''}`}
+                      style={on ? { backgroundColor: layer.color + '18', borderColor: layer.color + '55' } : {}}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: layer.color }} />
+                        <span className={`font-mono ${on ? 'text-foreground' : 'text-muted-foreground'}`}>{layer.name}</span>
                       </span>
-                      : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
-                    </div>
-                  </div>
-
-                  <div className="bg-muted p-3 rounded-lg border border-border">
-                    <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">
-                      Income / Education (Z)
-                    </Label>
-                    <div className="text-sm font-medium leading-snug">
-                      <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
-                        {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
+                      <span className={`w-9 h-5 rounded-full flex items-center px-0.5 transition-colors ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: layer.color } : {}}>
+                        <span className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />
                       </span>
-                      : {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
-                    </div>
-                  </div>
-                </div>
-              </div>{/* end fixed cards */}
-
-              {/* Results — purple box, fills remaining space */}
-              <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-3 rounded-lg border border-primary/20 flex-1 flex flex-col min-h-0">
-                <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">
-                  Results
-                </Label>
-                <div className="text-xs text-muted-foreground italic">
-                  — no results yet —
-                </div>
+                    </button>
+                  );
+                })}
               </div>
-
+              {activeLayers.length > 0 && effectiveValues ? (
+                <p className="text-[10px] text-muted-foreground font-mono">
+                  {activeLayers.length} layer{activeLayers.length > 1 ? 's' : ''} active · normalized 0–100
+                </p>
+              ) : (
+                <p className="text-[10px] text-muted-foreground font-mono">No layers active — terrain shows raw DB values</p>
+              )}
             </div>
           ) : (
-            <div className="h-full flex flex-col items-center justify-center text-muted-foreground opacity-50 space-y-4">
-              <div className="w-16 h-16 rounded-full border-2 border-dashed border-current flex items-center justify-center">
-                <Info className="w-8 h-8" />
+            /* ── DETAILS MODE ── */
+            selectedSegment ? (
+              <div className="flex flex-col flex-1 gap-4 animate-in slide-in-from-right-4 duration-300 min-h-0">
+                {/* Fixed cards */}
+                <div className="flex flex-col gap-3 shrink-0">
+                  <div className="flex items-center">
+                    <Badge variant="outline" className="font-mono text-xs">
+                      ID: {selectedSegment.id}
+                    </Badge>
+                    <div className="flex-1 flex justify-center">
+                      <Badge className="bg-primary/20 text-primary border-primary/50 font-mono text-xs">
+                        PopDensity: {selectedSegment.value}
+                      </Badge>
+                    </div>
+                    <Badge variant="outline" className="font-mono text-xs">
+                      POS: [{selectedSegment.xIndex}, {selectedSegment.zIndex}]
+                    </Badge>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="bg-muted p-3 rounded-lg border border-border">
+                      <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Political Domain (X)</Label>
+                      <div className="text-xs font-medium leading-snug">
+                        <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
+                          {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
+                        </span>
+                        : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
+                      </div>
+                    </div>
+                    <div className="bg-muted p-3 rounded-lg border border-border">
+                      <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Income / Education (Z)</Label>
+                      <div className="text-sm font-medium leading-snug">
+                        <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
+                          {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
+                        </span>
+                        : {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-3 rounded-lg border border-primary/20 flex-1 flex flex-col min-h-0">
+                  <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">Results</Label>
+                  <div className="text-xs text-muted-foreground italic">— no results yet —</div>
+                </div>
               </div>
-              <p className="text-center text-sm px-8">
-                Select a segment in the 3D grid to view and edit its properties.
-              </p>
-            </div>
+            ) : (
+              <div className="h-full flex flex-col items-center justify-center text-muted-foreground opacity-50 space-y-4">
+                <div className="w-16 h-16 rounded-full border-2 border-dashed border-current flex items-center justify-center">
+                  <Info className="w-8 h-8" />
+                </div>
+                <p className="text-center text-sm px-8">Select a segment in the 3D grid to view its details.</p>
+              </div>
+            )
           )}
         </div>
 
