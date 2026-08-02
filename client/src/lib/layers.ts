@@ -5,10 +5,13 @@ export type LayerDef = {
   color: string;
 };
 
+// Shared muted teal — lighter/greyer version of the project teal
+const LAYER_COLOR = '#a8d4d2';
+
 export const LAYER_DEFS: LayerDef[] = [
-  { id: 'l1', name: 'Layer 1 — Circle',          url: '/grid-circle.csv',  color: '#818cf8' },
-  { id: 'l2', name: 'Layer 2 — Quarter Arc',      url: '/grid-layer2.csv', color: '#f87171' },
-  { id: 'l3', name: 'Layer 3 — Diagonal Ellipse', url: '/grid-layer3.csv', color: '#34d399' },
+  { id: 'l1', name: 'Layer 1 — Circle',          url: '/grid-circle.csv',  color: LAYER_COLOR },
+  { id: 'l2', name: 'Layer 2 — Quarter Arc',      url: '/grid-layer2.csv', color: LAYER_COLOR },
+  { id: 'l3', name: 'Layer 3 — Diagonal Ellipse', url: '/grid-layer3.csv', color: LAYER_COLOR },
 ];
 
 // Parse a 25×25 CSV into grid[svgRow][svgCol] (row 0 = top = z25)
