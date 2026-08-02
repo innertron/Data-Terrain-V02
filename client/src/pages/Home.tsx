@@ -380,7 +380,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col overflow-hidden p-4 gap-3">
+        <div className="flex-1 flex flex-col overflow-y-auto p-4 gap-3">
 
           {/* Segment cards — always visible when a bar is selected */}
           {selectedSegment && (
@@ -422,8 +422,11 @@ export default function Home() {
           {/* Switching content */}
           {layerMode === 'layers' ? (
             <div className="flex flex-col gap-2">
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold px-1">
+                Layers ({layerDefs.length})
+              </p>
               {layerDefs.length === 0 ? (
-                <p className="text-[10px] text-muted-foreground font-mono">Loading layers…</p>
+                <p className="text-xs text-muted-foreground font-mono px-1">No layers found — try refreshing.</p>
               ) : (
                 layerDefs.map(layer => {
                   const on = activeLayers.includes(layer.id);
