@@ -424,7 +424,7 @@ export default function Home() {
                     <div
                       key={layer.id}
                       className={`flex items-center gap-1 px-2 py-1.5 rounded-md border transition-colors ${on ? 'border-transparent' : 'border-border'}`}
-                      style={on ? { backgroundColor: layer.color + '18', borderColor: layer.color + '55' } : {}}
+                      style={on ? { backgroundColor: '#a8d4d218', borderColor: '#a8d4d255' } : {}}
                     >
                       {/* Toggle button — takes full remaining width */}
                       <button
@@ -432,10 +432,10 @@ export default function Home() {
                         className="flex-1 flex items-center justify-between min-w-0"
                       >
                         <span className="flex items-center gap-1.5 min-w-0">
-                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: layer.color }} />
-                          <span className="text-[10px] uppercase tracking-wider text-muted-foreground truncate">{layer.name}</span>
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: '#a8d4d2' }} />
+                          <span className="text-[10px] uppercase tracking-wider text-black dark:text-white truncate">{layer.name}</span>
                         </span>
-                        <span className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors shrink-0 ml-2 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: layer.color } : {}}>
+                        <span className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors shrink-0 ml-2 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: '#a8d4d2' } : {}}>
                           <span className={`w-3 h-3 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />
                         </span>
                       </button>
