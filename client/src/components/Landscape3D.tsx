@@ -382,7 +382,7 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, 
   );
 }
 
-function FloatingLabel({ data, maxValue, isDark = true, displayValue }: { data: GridSegment; maxValue: number; isDark?: boolean; displayValue?: number }) {
+function FloatingLabel({ data, maxValue, isDark = true, displayValue, peopleValue }: { data: GridSegment; maxValue: number; isDark?: boolean; displayValue?: number; peopleValue?: number }) {
   const xPos = (data.xIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const zPos = (data.zIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const effectiveVal = displayValue ?? data.value;
@@ -398,7 +398,7 @@ function FloatingLabel({ data, maxValue, isDark = true, displayValue }: { data: 
         <div className={`space-y-0.5 font-mono ${isDark ? 'text-muted-foreground' : 'text-gray-600'}`} style={{ fontSize: '11px' }}>
           <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Domain:</span><span>{domainLabel}</span></div>
           <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Income/Edu:</span><span>{incomeLabel}</span></div>
-          <div className="flex justify-between gap-4"><span className={isDark ? 'text-primary font-bold' : 'text-purple-700 font-bold'}>PopDensity:</span><span>{effectiveVal.toLocaleString()}</span></div>
+          <div className="flex justify-between gap-4"><span className={isDark ? 'text-primary font-bold' : 'text-purple-700 font-bold'}>People:</span><span>{(peopleValue ?? effectiveVal).toLocaleString()}</span></div>
           <div className={`flex justify-between gap-4 italic pt-1 mt-1 ${isDark ? 'border-t border-white/10 text-white/40' : 'border-t border-gray-300 text-gray-400'}`}><span>Segment</span><span>[{data.xIndex},{data.zIndex}]</span></div>
         </div>
       </div>
@@ -420,7 +420,7 @@ function CameraTracker({ onCameraChange }: { onCameraChange?: (x: number, y: num
   return null;
 }
 
-export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues, onCameraChange }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; onCameraChange?: (x: number, y: number, z: number) => void; }) {
+export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues, onCameraChange, rawLayerValues }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; onCameraChange?: (x: number, y: number, z: number) => void; rawLayerValues?: Map<string, number>; }) {
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
 
@@ -517,6 +517,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
             maxValue={maxValue}
             isDark={isDark}
             displayValue={effectiveValues?.get(`${hoveredSegment.xIndex},${hoveredSegment.zIndex}`)}
+            peopleValue={rawLayerValues?.get(`${hoveredSegment.xIndex},${hoveredSegment.zIndex}`)}
           />
         )}
 

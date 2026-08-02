@@ -145,6 +145,24 @@ export default function Home() {
     return computeLayerValues(activeGrids, allGrids);
   }, [activeLayers, layerDefs]);
 
+  // Raw (un-normalized) sum of active layer values per cell — used for People count display
+  const rawLayerValues = useMemo(() => {
+    if (layerDefs.length === 0 || activeLayers.length === 0) return undefined;
+    const activeGrids = activeLayers
+      .map(id => layerDefs.find(l => l.id === id)?.gridValues)
+      .filter((g): g is number[][] => !!g);
+    if (activeGrids.length === 0) return undefined;
+    const result = new Map<string, number>();
+    for (let r = 0; r < 25; r++) {
+      const zIndex = 24 - r;
+      for (let c = 0; c < 25; c++) {
+        const sum = activeGrids.reduce((a, g) => a + (g[r]?.[c] ?? 0), 0);
+        result.set(`${c},${zIndex}`, sum);
+      }
+    }
+    return result;
+  }, [activeLayers, layerDefs]);
+
   const toggleLayer = (id: number) =>
     setActiveLayers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
@@ -250,7 +268,7 @@ export default function Home() {
       
       {/* 3D Viewport - Takes dominant space */}
       <div className="flex-1 relative h-[60vh] md:h-auto order-2 md:order-1">
-        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} effectiveValues={effectiveValues} onCameraChange={(x,y,z) => setCameraPos({x,y,z})} />
+        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} effectiveValues={effectiveValues} rawLayerValues={rawLayerValues} onCameraChange={(x,y,z) => setCameraPos({x,y,z})} />
         
         {/* Header Overlay — left: minedICE logo, right: project title + dates */}
         <div className="absolute top-4 left-6 right-6 z-10 pointer-events-none flex items-start justify-between">
@@ -508,7 +526,7 @@ export default function Home() {
             <div className="flex flex-col gap-3 shrink-0 animate-in slide-in-from-right-4 duration-300">
               <div className="flex items-center justify-between">
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">ID:{selectedSegment.id}</Badge>
-                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">People:{selectedSegment.value}</Badge>
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
               </div>
