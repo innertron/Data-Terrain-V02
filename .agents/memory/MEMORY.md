@@ -1,3 +1,4 @@
-- [ConTour wiring](contour-wiring.md) — effectiveValues prop added to Landscape3D/Bar/SurfaceTerrain/FloatingLabel but ConTour panel was removed from Home.tsx per user; wiring code remains in Landscape3D, ready to re-enable when explicitly asked.
+- [ConTour wiring](contour-wiring.md) — full layer toggle system built client-side; surf walls added; inspector layout/sizes documented; deferred: DB-backed layers, axis labels from settings.
 - [Grid template files](grid-template-files.md) — static SVG/HTML/CSV grid tools live in client/public/; generator scripts in scripts/; user prefers matrix CSV (25×25) not flat x,z,value list.
 - [User rules](user-rules.md) — never use AskQuestion tool; never make unsolicited changes to DemoScape; work from direct instructions only.
+- [Tomorrow Aug 3 priorities](tomorrow-aug3.md) — Change Labels UI, project name missing on deployed site, new project with random distribution layer + separate URL.
