@@ -4,6 +4,78 @@ import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
 import { initializeSegmentTables, getSegmentData, setSegmentData, getSegmentTotal } from "./segmentDb";
+import { readFileSync } from "fs";
+import { join } from "path";
+import { pool } from "./db";
+
+// ── Layer helpers ────────────────────────────────────────────────────────────
+
+/** Parse a 25×25 CSV (header + 25 rows) into a number[][] */
+function parseCsvGrid(csvText: string): number[][] {
+  return csvText.trim().split('\n').slice(1).map(l => l.split(',').map(Number));
+}
+
+/** Sum active grids and normalise 0-100 → plain object {[key]: value} */
+function computeEffectiveValues(activeGrids: number[][][]): Record<string, number> {
+  if (activeGrids.length === 0) return {};
+  const sums: number[][] = [];
+  let min = Infinity, max = -Infinity;
+  for (let r = 0; r < 25; r++) {
+    sums[r] = [];
+    for (let c = 0; c < 25; c++) {
+      const s = activeGrids.reduce((a, g) => a + (g[r]?.[c] ?? 0), 0);
+      sums[r][c] = s;
+      if (s < min) min = s;
+      if (s > max) max = s;
+    }
+  }
+  const spread = max - min;
+  const result: Record<string, number> = {};
+  for (let r = 0; r < 25; r++) {
+    const zIndex = 24 - r;
+    for (let c = 0; c < 25; c++) {
+      const normalized = spread > 0 ? Math.round((sums[r][c] - min) / spread * 100) : 50;
+      result[`${c},${zIndex}`] = normalized;
+    }
+  }
+  return result;
+}
+
+/** Ensure the layers table exists — safe to call on every startup */
+async function ensureLayersTable(): Promise<void> {
+  const client = await pool.connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS layers (
+        id      SERIAL PRIMARY KEY,
+        name    TEXT    NOT NULL,
+        color   TEXT    NOT NULL,
+        grid_values TEXT NOT NULL,
+        active  BOOLEAN NOT NULL DEFAULT true
+      )
+    `);
+  } finally {
+    client.release();
+  }
+}
+
+/** Seed CSV files that ship with the repo into the layers table */
+async function seedLayers() {
+  const seeds = [
+    { name: 'Layer 1 — Circle',          color: '#818cf8', file: 'grid-circle.csv'  },
+    { name: 'Layer 2 — Quarter Arc',      color: '#f87171', file: 'grid-layer2.csv' },
+    { name: 'Layer 3 — Diagonal Ellipse', color: '#34d399', file: 'grid-layer3.csv' },
+  ];
+  const publicDir = join(process.cwd(), 'client', 'public');
+  const records = seeds.map(s => ({
+    name: s.name,
+    color: s.color,
+    gridValues: JSON.stringify(parseCsvGrid(readFileSync(join(publicDir, s.file), 'utf8'))),
+    active: true,
+  }));
+  await storage.bulkInsertLayers(records);
+  console.log('Layers seeded from static CSV files.');
+}
 
 const segmentDataRowSchema = z.object({
   response_category: z.string().min(1),
@@ -21,6 +93,108 @@ export async function registerRoutes(
   
   // Initialize all 625 segment data tables
   await initializeSegmentTables();
+
+  // Ensure layers table exists (safe on every restart)
+  await ensureLayersTable();
+
+  // Seed the three bundled CSV layers exactly once.
+  // We use a project_settings marker so that an intentionally empty layers
+  // table (e.g. after all layers are deleted) is never silently re-populated.
+  const settings = await storage.getAllSettings();
+  if (!settings['layers_seeded']) {
+    await seedLayers();
+    await storage.setSetting('layers_seeded', '1');
+  }
+
+  // ── Layer routes ────────────────────────────────────────────────────────────
+
+  // GET /api/layers — return all layers with parsed grid data
+  app.get("/api/layers", async (_req, res) => {
+    try {
+      const rows = await storage.getLayers();
+      const result = rows.map(r => ({
+        id: r.id,
+        name: r.name,
+        color: r.color,
+        active: r.active,
+        gridValues: JSON.parse(r.gridValues) as number[][],
+      }));
+      res.json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to fetch layers" });
+    }
+  });
+
+  // POST /api/layers — add a new layer from CSV text
+  const newLayerSchema = z.object({
+    name: z.string().min(1),
+    color: z.string().min(1),
+    csv: z.string().min(1),
+  });
+
+  app.post("/api/layers", async (req, res) => {
+    try {
+      const { name, color, csv } = newLayerSchema.parse(req.body);
+      const grid = parseCsvGrid(csv);
+      if (grid.length !== 25 || grid.some(r => r.length !== 25)) {
+        return res.status(400).json({ message: "CSV must be a 25×25 grid (header + 25 rows, 25 columns each)" });
+      }
+      const layer = await storage.createLayer({
+        name,
+        color,
+        gridValues: JSON.stringify(grid),
+        active: true,
+      });
+      res.status(201).json({ id: layer.id, name: layer.name, color: layer.color, active: layer.active, gridValues: grid });
+    } catch (err) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
+      console.error(err);
+      res.status(500).json({ message: "Failed to create layer" });
+    }
+  });
+
+  // PATCH /api/layers/:id — toggle active flag
+  app.patch("/api/layers/:id", async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      const { active } = z.object({ active: z.boolean() }).parse(req.body);
+      const updated = await storage.updateLayerActive(id, active);
+      const grid = JSON.parse(updated.gridValues) as number[][];
+      res.json({ id: updated.id, name: updated.name, color: updated.color, active: updated.active, gridValues: grid });
+    } catch (err) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
+      console.error(err);
+      res.status(500).json({ message: "Failed to update layer" });
+    }
+  });
+
+  // DELETE /api/layers/:id
+  app.delete("/api/layers/:id", async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      await storage.deleteLayer(id);
+      res.json({ ok: true });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to delete layer" });
+    }
+  });
+
+  // POST /api/layers/compute — sum all active layers, normalise 0-100, return map
+  app.post("/api/layers/compute", async (_req, res) => {
+    try {
+      const rows = await storage.getLayers();
+      const activeGrids = rows
+        .filter(r => r.active)
+        .map(r => JSON.parse(r.gridValues) as number[][]);
+      const effectiveValues = computeEffectiveValues(activeGrids);
+      res.json({ effectiveValues });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to compute effective values" });
+    }
+  });
 
   // Seeding logic
   const existingSegments = await storage.getGridSegments();

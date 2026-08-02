@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -21,3 +21,16 @@ export const insertGridSegmentSchema = createInsertSchema(gridSegments).omit({ i
 
 export type GridSegment = typeof gridSegments.$inferSelect;
 export type InsertGridSegment = z.infer<typeof insertGridSegmentSchema>;
+
+export const layers = pgTable("layers", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  color: text("color").notNull(),
+  gridValues: text("grid_values").notNull(), // JSON-serialised number[][]
+  active: boolean("active").notNull().default(true),
+});
+
+export const insertLayerSchema = createInsertSchema(layers).omit({ id: true });
+
+export type Layer = typeof layers.$inferSelect;
+export type InsertLayer = z.infer<typeof insertLayerSchema>;

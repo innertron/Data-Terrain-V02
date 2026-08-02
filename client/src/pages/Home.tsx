@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { Landscape3D } from "@/components/Landscape3D";
-import { LAYER_DEFS, fetchLayerGrid, computeLayerValues } from "@/lib/layers";
+import { type LayerDef, fetchLayers, computeLayerValues } from "@/lib/layers";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -106,29 +106,28 @@ export default function Home() {
   const [showProjectSettings, setShowProjectSettings] = useState(false);
   const [surfMode, setSurfMode] = useState(false);
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('layers');
-  const [activeLayers, setActiveLayers] = useState<string[]>(LAYER_DEFS.map(l => l.id));
-  const [layerGrids, setLayerGrids] = useState<Map<string, number[][]>>(new Map());
+  const [layerDefs, setLayerDefs] = useState<LayerDef[]>([]);
+  const [activeLayers, setActiveLayers] = useState<number[]>([]);
   const isAdmin = import.meta.env.DEV;
 
-  // Load all layer CSVs once on mount
+  // Fetch layers from API once on mount
   useEffect(() => {
-    Promise.all(
-      LAYER_DEFS.map(async l => ({ id: l.id, grid: await fetchLayerGrid(l.url) }))
-    ).then(results => {
-      const m = new Map<string, number[][]>();
-      results.forEach(({ id, grid }) => m.set(id, grid));
-      setLayerGrids(m);
-    }).catch(console.error);
+    fetchLayers()
+      .then(defs => {
+        setLayerDefs(defs);
+        setActiveLayers(defs.filter(l => l.active).map(l => l.id));
+      })
+      .catch(console.error);
   }, []);
 
   const effectiveValues = useMemo(() => {
     const grids = activeLayers
-      .map(id => layerGrids.get(id))
+      .map(id => layerDefs.find(l => l.id === id)?.gridValues)
       .filter((g): g is number[][] => !!g);
     return computeLayerValues(grids);
-  }, [activeLayers, layerGrids]);
+  }, [activeLayers, layerDefs]);
 
-  const toggleLayer = (id: string) =>
+  const toggleLayer = (id: number) =>
     setActiveLayers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
   const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
@@ -405,27 +404,29 @@ export default function Home() {
           {/* Switching content */}
           {layerMode === 'layers' ? (
             <div className="flex flex-col gap-2">
-              {LAYER_DEFS.map(layer => {
-                const on = activeLayers.includes(layer.id);
-                const loaded = layerGrids.has(layer.id);
-                return (
-                  <button
-                    key={layer.id}
-                    onClick={() => toggleLayer(layer.id)}
-                    disabled={!loaded}
-                    className={`w-full flex items-center justify-between px-2 py-1.5 rounded-md border transition-colors ${on ? 'border-transparent' : 'border-border hover:bg-muted/50'} ${!loaded ? 'opacity-40' : ''}`}
-                    style={on ? { backgroundColor: layer.color + '18', borderColor: layer.color + '55' } : {}}
-                  >
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: layer.color }} />
-                      <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{layer.name}</span>
-                    </span>
-                    <span className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors shrink-0 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: layer.color } : {}}>
-                      <span className={`w-3 h-3 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />
-                    </span>
-                  </button>
-                );
-              })}
+              {layerDefs.length === 0 ? (
+                <p className="text-[10px] text-muted-foreground font-mono">Loading layers…</p>
+              ) : (
+                layerDefs.map(layer => {
+                  const on = activeLayers.includes(layer.id);
+                  return (
+                    <button
+                      key={layer.id}
+                      onClick={() => toggleLayer(layer.id)}
+                      className={`w-full flex items-center justify-between px-2 py-1.5 rounded-md border transition-colors ${on ? 'border-transparent' : 'border-border hover:bg-muted/50'}`}
+                      style={on ? { backgroundColor: layer.color + '18', borderColor: layer.color + '55' } : {}}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: layer.color }} />
+                        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{layer.name}</span>
+                      </span>
+                      <span className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors shrink-0 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: layer.color } : {}}>
+                        <span className={`w-3 h-3 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />
+                      </span>
+                    </button>
+                  );
+                })
+              )}
               <p className="text-[10px] text-muted-foreground font-mono mt-1">
                 {activeLayers.length > 0 && effectiveValues
                   ? `${activeLayers.length} layer${activeLayers.length > 1 ? 's' : ''} active · normalized 0–100`

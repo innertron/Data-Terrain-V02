@@ -1,24 +1,16 @@
 export type LayerDef = {
-  id: string;
+  id: number;
   name: string;
-  url: string;
   color: string;
+  active: boolean;
+  gridValues: number[][];
 };
 
-// Shared muted teal — lighter/greyer version of the project teal
-const LAYER_COLOR = '#a8d4d2';
-
-export const LAYER_DEFS: LayerDef[] = [
-  { id: 'l1', name: 'Layer 1 — Circle',          url: '/grid-circle.csv',  color: LAYER_COLOR },
-  { id: 'l2', name: 'Layer 2 — Quarter Arc',      url: '/grid-layer2.csv', color: LAYER_COLOR },
-  { id: 'l3', name: 'Layer 3 — Diagonal Ellipse', url: '/grid-layer3.csv', color: LAYER_COLOR },
-];
-
-// Parse a 25×25 CSV into grid[svgRow][svgCol] (row 0 = top = z25)
-export async function fetchLayerGrid(url: string): Promise<number[][]> {
-  const res = await fetch(url, { cache: 'no-store' });
-  const text = await res.text();
-  return text.trim().split('\n').slice(1).map(l => l.split(',').map(Number));
+/** Fetch all layers (with grid data) from the API */
+export async function fetchLayers(): Promise<LayerDef[]> {
+  const res = await fetch("/api/layers", { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to fetch layers: ${res.status}`);
+  return res.json();
 }
 
 // Sum active grids, normalize 0-100 → Map<"xIndex,zIndex", value>
