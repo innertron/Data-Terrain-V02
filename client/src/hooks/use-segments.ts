@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { api, buildUrl } from "@shared/routes";
 import { z } from "zod";
 
@@ -11,6 +11,7 @@ export function useSegments() {
     queryKey: [api.segments.list.path],
     staleTime: 0,
     gcTime: 0,
+    placeholderData: keepPreviousData,
     queryFn: async () => {
       const res = await fetch(api.segments.list.path, {
         credentials: "include",
