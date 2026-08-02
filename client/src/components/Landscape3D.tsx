@@ -241,6 +241,54 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, 
     return geo;
   }, [segments, maxValue, isDark, segMap, effectiveValues]);
 
+  // Edge walls — vertical quads dropping to y=0 on any perimeter edge with height > 0
+  const wallGeometry = useMemo(() => {
+    const step = BAR_SIZE + GAP;
+    const totalSize = GRID_SIZE * step;
+
+    const getH = (row: number, col: number) => {
+      const seg = segMap.get(`${col},${row}`);
+      const ev = effectiveValues ? (effectiveValues.get(`${col},${row}`) ?? 0) : (seg?.value ?? 0);
+      return (ev / maxValue) * MAX_HEIGHT;
+    };
+    const getWX = (col: number) => (col / (GRID_SIZE - 1) - 0.5) * totalSize;
+    const getWZ = (row: number) => (row / (GRID_SIZE - 1) - 0.5) * totalSize;
+    const getRGB = (row: number, col: number): [number, number, number] => {
+      const seg = segMap.get(`${col},${row}`);
+      const ev = effectiveValues ? (effectiveValues.get(`${col},${row}`) ?? 0) : (seg?.value ?? 0);
+      const c = new THREE.Color(getBarColor(ev, maxValue, col, isDark));
+      return [c.r, c.g, c.b];
+    };
+
+    const positions: number[] = [];
+    const colors: number[] = [];
+
+    const addQuad = (r0: number, c0: number, r1: number, c1: number) => {
+      const h0 = getH(r0, c0), h1 = getH(r1, c1);
+      if (h0 <= 0 && h1 <= 0) return;
+      const x0 = getWX(c0), z0 = getWZ(r0);
+      const x1 = getWX(c1), z1 = getWZ(r1);
+      const col0 = getRGB(r0, c0), col1 = getRGB(r1, c1);
+      positions.push(x0, h0, z0,  x1, h1, z1,  x0, 0, z0);
+      colors.push(...col0, ...col1, ...col0);
+      positions.push(x1, h1, z1,  x1, 0,  z1,  x0, 0, z0);
+      colors.push(...col1, ...col1, ...col0);
+    };
+
+    const N = GRID_SIZE - 1;
+    for (let r = 0; r < N; r++) addQuad(r, 0,  r + 1, 0);           // left
+    for (let r = 0; r < N; r++) addQuad(r, N,  r + 1, N);           // right
+    for (let c = 0; c < N; c++) addQuad(0, c,  0,     c + 1);       // front
+    for (let c = 0; c < N; c++) addQuad(N, c,  N,     c + 1);       // back
+
+    if (positions.length === 0) return null;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+    geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(colors),    3));
+    geo.computeVertexNormals();
+    return geo;
+  }, [segments, maxValue, isDark, segMap, effectiveValues]);
+
   const faceGeoRef = useRef<THREE.BufferGeometry>(null!);
   const [showFace, setShowFace] = useState(false);
 
@@ -306,6 +354,18 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, 
           metalness={isDark ? 0.3 : 0.05}
         />
       </mesh>
+
+      {/* Edge walls */}
+      {wallGeometry && (
+        <mesh geometry={wallGeometry}>
+          <meshStandardMaterial
+            vertexColors
+            roughness={isDark ? 0.3 : 0.5}
+            metalness={isDark ? 0.3 : 0.05}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      )}
 
       {/* Hover face highlight — uses actual terrain quad geometry */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} visible={showFace} renderOrder={1}>

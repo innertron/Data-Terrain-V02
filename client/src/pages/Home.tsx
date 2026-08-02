@@ -349,8 +349,49 @@ export default function Home() {
             </div>
             </div>{/* end flex items-center gap-1 */}
           </div>
-          {/* Mode toggle: LAYERS ↔ DETAILS */}
-          <div className="flex items-center bg-muted rounded-lg p-0.5 mt-1 text-[10px] font-semibold tracking-wider">
+        </div>
+
+        <div className="flex-1 flex flex-col overflow-hidden p-4 gap-3">
+
+          {/* Segment cards — always visible when a bar is selected */}
+          {selectedSegment && (
+            <div className="flex flex-col gap-3 shrink-0 animate-in slide-in-from-right-4 duration-300">
+              <div className="flex items-center">
+                <Badge variant="outline" className="font-mono text-xs">ID: {selectedSegment.id}</Badge>
+                <div className="flex-1 flex justify-center">
+                  <Badge className="bg-primary/20 text-primary border-primary/50 font-mono text-xs">
+                    PopDensity: {selectedSegment.value}
+                  </Badge>
+                </div>
+                <Badge variant="outline" className="font-mono text-xs">
+                  POS: [{selectedSegment.xIndex}, {selectedSegment.zIndex}]
+                </Badge>
+              </div>
+              <div className="space-y-3">
+                <div className="bg-muted p-3 rounded-lg border border-border">
+                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Political Domain (X)</Label>
+                  <div className="text-xs font-medium leading-snug">
+                    <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
+                      {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
+                    </span>
+                    : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
+                  </div>
+                </div>
+                <div className="bg-muted p-3 rounded-lg border border-border">
+                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Income / Education (Z)</Label>
+                  <div className="text-sm font-medium leading-snug">
+                    <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
+                      {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
+                    </span>
+                    : {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Mode toggle — sits between segment cards and content area */}
+          <div className="flex items-center bg-muted rounded-lg p-0.5 shrink-0 text-[10px] font-semibold tracking-wider">
             <button
               onClick={() => setLayerMode('layers')}
               className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
@@ -360,89 +401,42 @@ export default function Home() {
               className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
             >DETAILS</button>
           </div>
-        </div>
 
-        <div className="flex-1 flex flex-col overflow-hidden p-4 gap-4">
-
+          {/* Switching content */}
           {layerMode === 'layers' ? (
-            /* ── LAYERS MODE ── */
-            <div className="flex flex-col gap-3">
-              <p className="text-[10px] uppercase tracking-widest text-primary font-semibold">Active Layers</p>
-              <div className="space-y-2">
-                {LAYER_DEFS.map(layer => {
-                  const on = activeLayers.includes(layer.id);
-                  const loaded = layerGrids.has(layer.id);
-                  return (
-                    <button
-                      key={layer.id}
-                      onClick={() => toggleLayer(layer.id)}
-                      disabled={!loaded}
-                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs border transition-colors ${on ? 'border-transparent' : 'border-border hover:bg-muted/50'} ${!loaded ? 'opacity-40' : ''}`}
-                      style={on ? { backgroundColor: layer.color + '18', borderColor: layer.color + '55' } : {}}
-                    >
-                      <span className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: layer.color }} />
-                        <span className={`font-mono ${on ? 'text-foreground' : 'text-muted-foreground'}`}>{layer.name}</span>
-                      </span>
-                      <span className={`w-9 h-5 rounded-full flex items-center px-0.5 transition-colors ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: layer.color } : {}}>
-                        <span className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-              {activeLayers.length > 0 && effectiveValues ? (
-                <p className="text-[10px] text-muted-foreground font-mono">
-                  {activeLayers.length} layer{activeLayers.length > 1 ? 's' : ''} active · normalized 0–100
-                </p>
-              ) : (
-                <p className="text-[10px] text-muted-foreground font-mono">No layers active — terrain shows raw DB values</p>
-              )}
+            <div className="flex flex-col gap-2">
+              {LAYER_DEFS.map(layer => {
+                const on = activeLayers.includes(layer.id);
+                const loaded = layerGrids.has(layer.id);
+                return (
+                  <button
+                    key={layer.id}
+                    onClick={() => toggleLayer(layer.id)}
+                    disabled={!loaded}
+                    className={`w-full flex items-center justify-between px-2 py-1.5 rounded-md border transition-colors ${on ? 'border-transparent' : 'border-border hover:bg-muted/50'} ${!loaded ? 'opacity-40' : ''}`}
+                    style={on ? { backgroundColor: layer.color + '18', borderColor: layer.color + '55' } : {}}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: layer.color }} />
+                      <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{layer.name}</span>
+                    </span>
+                    <span className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors shrink-0 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: layer.color } : {}}>
+                      <span className={`w-3 h-3 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />
+                    </span>
+                  </button>
+                );
+              })}
+              <p className="text-[10px] text-muted-foreground font-mono mt-1">
+                {activeLayers.length > 0 && effectiveValues
+                  ? `${activeLayers.length} layer${activeLayers.length > 1 ? 's' : ''} active · normalized 0–100`
+                  : 'No layers active — terrain shows raw DB values'}
+              </p>
             </div>
           ) : (
-            /* ── DETAILS MODE ── */
             selectedSegment ? (
-              <div className="flex flex-col flex-1 gap-4 animate-in slide-in-from-right-4 duration-300 min-h-0">
-                {/* Fixed cards */}
-                <div className="flex flex-col gap-3 shrink-0">
-                  <div className="flex items-center">
-                    <Badge variant="outline" className="font-mono text-xs">
-                      ID: {selectedSegment.id}
-                    </Badge>
-                    <div className="flex-1 flex justify-center">
-                      <Badge className="bg-primary/20 text-primary border-primary/50 font-mono text-xs">
-                        PopDensity: {selectedSegment.value}
-                      </Badge>
-                    </div>
-                    <Badge variant="outline" className="font-mono text-xs">
-                      POS: [{selectedSegment.xIndex}, {selectedSegment.zIndex}]
-                    </Badge>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="bg-muted p-3 rounded-lg border border-border">
-                      <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Political Domain (X)</Label>
-                      <div className="text-xs font-medium leading-snug">
-                        <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
-                          {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
-                        </span>
-                        : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
-                      </div>
-                    </div>
-                    <div className="bg-muted p-3 rounded-lg border border-border">
-                      <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Income / Education (Z)</Label>
-                      <div className="text-sm font-medium leading-snug">
-                        <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
-                          {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
-                        </span>
-                        : {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-3 rounded-lg border border-primary/20 flex-1 flex flex-col min-h-0">
-                  <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">Results</Label>
-                  <div className="text-xs text-muted-foreground italic">— no results yet —</div>
-                </div>
+              <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-3 rounded-lg border border-primary/20 flex-1 flex flex-col min-h-0">
+                <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">Results</Label>
+                <div className="text-xs text-muted-foreground italic">— no results yet —</div>
               </div>
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-muted-foreground opacity-50 space-y-4">
