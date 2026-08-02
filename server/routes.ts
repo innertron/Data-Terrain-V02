@@ -64,22 +64,80 @@ async function ensureLayersTable(): Promise<void> {
   }
 }
 
-/** Seed CSV files that ship with the repo into the layers table */
+/** Generate dome+arch grid values using the seeded PRNG */
+function generateDomeGrid(
+  prng: () => number,
+  params: Record<string, number>
+): number[][] {
+  const applyNoise = (hBase: number, bot: number, top: number) => {
+    const mag = bot + prng() * (top - bot);
+    const noise = prng() > 0.5 ? mag : -mag;
+    return Math.max(0, Math.round(hBase + noise));
+  };
+  const grid: number[][] = [];
+  const { shape } = params as { shape?: string } & Record<string, number>;
+  if (shape === 'rectangle') {
+    const { x1, x2, row1, row2, hJunction, hPeak, maxDin, dMax, insideBottom, insideTop, outsideBottom, outsideTop } = params;
+    for (let row = 0; row < 25; row++) {
+      const cols: number[] = [];
+      for (let col = 0; col < 25; col++) {
+        const insideRect = row >= row1 && row <= row2 && col >= x1 && col <= x2;
+        let hBase: number, bot: number, top: number;
+        if (insideRect) {
+          const dIn = Math.min(row - row1, row2 - row, col - x1, x2 - col);
+          hBase = hJunction + (hPeak - hJunction) * Math.pow(dIn / maxDin, 2);
+          bot = insideBottom; top = insideTop;
+        } else {
+          const dx = Math.max(x1 - col, 0, col - x2);
+          const dz = Math.max(row1 - row, 0, row - row2);
+          hBase = hJunction * Math.pow(1 - Math.min(Math.sqrt(dx*dx+dz*dz) / dMax, 1), 2);
+          bot = outsideBottom; top = outsideTop;
+        }
+        cols.push(applyNoise(hBase, bot, top));
+      }
+      grid.push(cols);
+    }
+  } else {
+    // circle
+    const { cx, cz, r, hJunction, hPeak, dMax, insideBottom, insideTop, outsideBottom, outsideTop } = params;
+    for (let row = 0; row < 25; row++) {
+      const cols: number[] = [];
+      for (let col = 0; col < 25; col++) {
+        const dx = col - cx, dz = (24 - row) - cz;
+        const d = Math.sqrt(dx*dx + dz*dz);
+        let hBase: number, bot: number, top: number;
+        if (d <= r) {
+          hBase = hJunction + (hPeak - hJunction) * (1 - Math.pow(d/r, 2));
+          bot = insideBottom; top = insideTop;
+        } else {
+          hBase = hJunction * Math.pow(1 - Math.min((d-r)/(dMax-r), 1), 2);
+          bot = outsideBottom; top = outsideTop;
+        }
+        cols.push(applyNoise(hBase, bot, top));
+      }
+      grid.push(cols);
+    }
+  }
+  return grid;
+}
+
+/** Seed layers table with algorithmically generated dome+arch data */
 async function seedLayers() {
-  const seeds = [
-    { name: 'Layer 1 — Circle',          color: '#a8d4d2', file: 'grid-circle.csv'  },
-    { name: 'Layer 2 — Quarter Arc',      color: '#a8d4d2', file: 'grid-layer2.csv' },
-    { name: 'Layer 3 — Diagonal Ellipse', color: '#a8d4d2', file: 'grid-layer3.csv' },
+  let seed = 0xCAFEBABE;
+  const prng = () => {
+    seed ^= seed << 13; seed ^= seed >> 17; seed ^= seed << 5;
+    return (seed >>> 0) / 0xFFFFFFFF;
+  };
+
+  const circleParams = { shape: 'circle', cx: 12, cz: 12, r: 7, hJunction: 40, hPeak: 100, dMax: 17, insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 5 };
+  const rectParams   = { shape: 'rectangle', x1: 6, x2: 18, row1: 7, row2: 19, hJunction: 40, hPeak: 100, maxDin: 6, dMax: 9.22, insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 5 };
+
+  const records = [
+    { name: 'Layer 1 — Circle',    color: '#a8d4d2', active: true, params: JSON.stringify(circleParams), gridValues: JSON.stringify(generateDomeGrid(prng, circleParams as unknown as Record<string, number>)) },
+    { name: 'Layer 2 — Rectangle', color: '#a8d4d2', active: true, params: JSON.stringify(rectParams),   gridValues: JSON.stringify(generateDomeGrid(prng, rectParams   as unknown as Record<string, number>)) },
   ];
-  const publicDir = join(process.cwd(), 'client', 'public');
-  const records = seeds.map(s => ({
-    name: s.name,
-    color: s.color,
-    gridValues: JSON.stringify(parseCsvGrid(readFileSync(join(publicDir, s.file), 'utf8'))),
-    active: true,
-  }));
   await storage.bulkInsertLayers(records);
-  console.log('Layers seeded from static CSV files.');
+  console.log('Layers seeded with dome+arch algorithms.');
 }
 
 const segmentDataRowSchema = z.object({
@@ -102,11 +160,12 @@ export async function registerRoutes(
   // Ensure layers table exists (safe on every restart)
   await ensureLayersTable();
 
-  // Seed the three bundled CSV layers exactly once.
-  // We use a project_settings marker so that an intentionally empty layers
-  // table (e.g. after all layers are deleted) is never silently re-populated.
+  // Seed layers on first run OR whenever the table is empty.
+  // An empty table in production (e.g. after a fresh deploy) is detected by
+  // checking the actual row count, not just the marker flag.
   const settings = await storage.getAllSettings();
-  if (!settings['layers_seeded']) {
+  const existingLayers = await storage.getLayers();
+  if (!settings['layers_seeded'] || existingLayers.length === 0) {
     await seedLayers();
     await storage.setSetting('layers_seeded', '1');
   }
