@@ -440,7 +440,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
     <div className="w-full h-full relative group">
       <Canvas 
         shadows 
-        camera={{ position: [0, 20, 25], fov: 45 }}
+        camera={{ position: [0, 20, 0], fov: 45 }}
         className={isDark ? "canvas-container" : "canvas-container-light"}
       >
         <color attach="background" args={[isDark ? '#050505' : '#f5f5f5']} />
@@ -513,6 +513,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
           maxPolarAngle={Math.PI / 2 - 0.1} // Prevent going below ground
           maxDistance={60}
           minDistance={10}
+          target={[0, 0, 0]}
         />
       </Canvas>
       
