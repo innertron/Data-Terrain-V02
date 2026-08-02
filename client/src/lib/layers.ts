@@ -4,6 +4,7 @@ export type LayerDef = {
   color: string;
   active: boolean;
   gridValues: number[][];
+  params?: string | null; // JSON: stored algorithm params incl. skew bounds
 };
 
 /** Fetch all layers (with grid data) from the API */
