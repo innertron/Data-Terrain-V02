@@ -506,21 +506,11 @@ export default function Home() {
           {/* Segment cards — always visible when a bar is selected */}
           {selectedSegment && (
             <div className="flex flex-col gap-3 shrink-0 animate-in slide-in-from-right-4 duration-300">
-              <div className="flex items-center">
-                <Badge variant="outline" className="font-mono text-xs">ID: {selectedSegment.id}</Badge>
-                <div className="flex-1 flex justify-center">
-                  <Badge variant="outline" className="font-mono text-xs">
-                    PopDensity: {selectedSegment.value}
-                  </Badge>
-                </div>
-                <Badge variant="outline" className="font-mono text-xs">
-                  POS: [{selectedSegment.xIndex}, {selectedSegment.zIndex}]
-                </Badge>
-              </div>
-              <div className="flex items-center justify-center">
-                <Badge variant="outline" className="font-mono text-xs">
-                  CamAngle: [{cameraPos.x}, {cameraPos.y}, {cameraPos.z}]
-                </Badge>
+              <div className="flex items-center gap-1 flex-wrap">
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">ID:{selectedSegment.id}</Badge>
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">People:{selectedSegment.value}</Badge>
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
               </div>
               <div className="space-y-3">
                 <div className="bg-muted p-2.5 rounded-lg border border-border">
