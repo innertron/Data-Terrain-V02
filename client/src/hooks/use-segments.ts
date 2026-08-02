@@ -9,8 +9,13 @@ type UpdateSegmentInput = z.infer<typeof api.segments.update.input>;
 export function useSegments() {
   return useQuery({
     queryKey: [api.segments.list.path],
+    staleTime: 0,
+    gcTime: 0,
     queryFn: async () => {
-      const res = await fetch(api.segments.list.path, { credentials: "include" });
+      const res = await fetch(api.segments.list.path, {
+        credentials: "include",
+        cache: "no-store",
+      });
       if (!res.ok) throw new Error("Failed to fetch segments");
       return api.segments.list.responses[200].parse(await res.json());
     },
