@@ -201,43 +201,55 @@ export async function registerRoutes(
       });
       const { insideBottom, insideTop, outsideBottom, outsideTop } = skewSchema.parse(req.body);
 
-      // Load stored shape params (default = circle dome algorithm)
-      const p = layer.params
-        ? JSON.parse(layer.params)
-        : { shape: 'circle', cx: 12, cz: 12, r: 7, hJunction: 40, hPeak: 100, dMax: 17 };
-      const { cx, cz, r, hJunction, hPeak, dMax } = p;
-
       // Seeded PRNG (xorshift32)
       let seed = 0xCAFEBABE;
       const rand = () => {
         seed ^= seed << 13; seed ^= seed >> 17; seed ^= seed << 5;
         return (seed >>> 0) / 0xFFFFFFFF;
       };
+      const applyNoise = (hBase: number, bot: number, top: number): number => {
+        const magnitude = bot + rand() * (top - bot);
+        const noise = rand() > 0.5 ? magnitude : -magnitude;
+        return Math.max(0, Math.round(hBase + noise));
+      };
 
-      const grid: number[][] = [];
-      for (let row = 0; row < 25; row++) {
-        const cols: number[] = [];
-        for (let col = 0; col < 25; col++) {
-          const dx = col - cx, dz = (24 - row) - cz;
-          const d = Math.sqrt(dx * dx + dz * dz);
-          let hBase: number, bot: number, top: number;
-          if (d <= r) {
-            const t = d / r;
-            hBase = hJunction + (hPeak - hJunction) * (1 - t * t);
-            bot = insideBottom; top = insideTop;
-          } else {
-            const t = Math.min((d - r) / (dMax - r), 1);
-            hBase = hJunction * Math.pow(1 - t, 2);
-            bot = outsideBottom; top = outsideTop;
+      let grid: number[][];
+      let newParams: string;
+
+      if (!layer.params) {
+        // No shape params — add noise to each existing cell value.
+        // Uses outsideBottom/outsideTop as the noise range for all cells.
+        const existing = JSON.parse(layer.gridValues) as number[][];
+        grid = existing.map(row =>
+          row.map(val => applyNoise(val, outsideBottom, outsideTop))
+        );
+        newParams = JSON.stringify({ insideBottom, insideTop, outsideBottom, outsideTop });
+      } else {
+        // Shape params exist — regenerate from scratch using stored algorithm.
+        const p = JSON.parse(layer.params);
+        const { cx, cz, r, hJunction, hPeak, dMax } = p;
+        grid = [];
+        for (let row = 0; row < 25; row++) {
+          const cols: number[] = [];
+          for (let col = 0; col < 25; col++) {
+            const dx = col - cx, dz = (24 - row) - cz;
+            const d = Math.sqrt(dx * dx + dz * dz);
+            let hBase: number, bot: number, top: number;
+            if (d <= r) {
+              const t = d / r;
+              hBase = hJunction + (hPeak - hJunction) * (1 - t * t);
+              bot = insideBottom; top = insideTop;
+            } else {
+              const t = Math.min((d - r) / (dMax - r), 1);
+              hBase = hJunction * Math.pow(1 - t, 2);
+              bot = outsideBottom; top = outsideTop;
+            }
+            cols.push(applyNoise(hBase, bot, top));
           }
-          const magnitude = rand() * (top - bot) + bot;
-          const noise = rand() > 0.5 ? magnitude : -magnitude;
-          cols.push(Math.max(0, Math.round(hBase + noise)));
+          grid.push(cols);
         }
-        grid.push(cols);
+        newParams = JSON.stringify({ ...p, insideBottom, insideTop, outsideBottom, outsideTop });
       }
-
-      const newParams = JSON.stringify({ ...p, insideBottom, insideTop, outsideBottom, outsideTop });
       const updated = await storage.updateLayerGridValues(id, JSON.stringify(grid), newParams);
       const parsedGrid = JSON.parse(updated.gridValues) as number[][];
       res.json({ id: updated.id, name: updated.name, color: updated.color, active: updated.active, gridValues: parsedGrid, params: updated.params });
