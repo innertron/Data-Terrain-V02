@@ -278,7 +278,7 @@ export default function Home() {
 
       {/* Sidebar Control Panel */}
       <div className="w-full md:w-[350px] lg:w-[400px] h-full bg-card border-l border-border flex flex-col shadow-2xl z-20 order-1 md:order-2">
-        <div className="px-3 py-2 border-b border-border bg-black/20 relative">
+        <div className="px-3 py-1.5 border-b border-border bg-black/20 relative">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold flex items-center gap-1.5">
               <Info className="w-3.5 h-3.5 text-primary" />
@@ -368,7 +368,7 @@ export default function Home() {
                 </Badge>
               </div>
               <div className="space-y-3">
-                <div className="bg-muted p-3 rounded-lg border border-border">
+                <div className="bg-muted p-2.5 rounded-lg border border-border">
                   <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Political Domain (X)</Label>
                   <div className="text-xs font-medium leading-snug">
                     <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
@@ -377,7 +377,7 @@ export default function Home() {
                     : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
                   </div>
                 </div>
-                <div className="bg-muted p-3 rounded-lg border border-border">
+                <div className="bg-muted p-2.5 rounded-lg border border-border">
                   <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Income / Education (Z)</Label>
                   <div className="text-sm font-medium leading-snug">
                     <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
