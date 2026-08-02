@@ -360,6 +360,19 @@ export default function Home() {
                       </span>
                     </button>
                   </div>
+                  <div className="mt-3 pt-3 border-t border-border">
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2 px-1">Panel</p>
+                    <div className="flex items-center bg-muted rounded-lg p-0.5 text-[10px] font-semibold tracking-wider">
+                      <button
+                        onClick={() => setLayerMode('layers')}
+                        className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                      >LAYERS</button>
+                      <button
+                        onClick={() => setLayerMode('details')}
+                        className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                      >DETAILS</button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -405,18 +418,6 @@ export default function Home() {
               </div>
             </div>
           )}
-
-          {/* Mode toggle — sits between segment cards and content area */}
-          <div className="flex items-center bg-muted rounded-lg p-0.5 shrink-0 text-[10px] font-semibold tracking-wider">
-            <button
-              onClick={() => setLayerMode('layers')}
-              className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-            >LAYERS</button>
-            <button
-              onClick={() => setLayerMode('details')}
-              className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-            >DETAILS</button>
-          </div>
 
           {/* Switching content */}
           {layerMode === 'layers' ? (
