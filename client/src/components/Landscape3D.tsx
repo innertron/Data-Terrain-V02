@@ -399,7 +399,7 @@ function FloatingLabel({ data, maxValue, isDark = true, displayValue, peopleValu
           <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Domain:</span><span>{domainLabel}</span></div>
           <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Income/Edu:</span><span>{incomeLabel}</span></div>
           <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>People:</span><span>{(peopleValue ?? effectiveVal).toLocaleString()}</span></div>
-          <div className={`flex justify-between gap-4 italic pt-1 mt-1 ${isDark ? 'border-t border-white/10 text-white/40' : 'border-t border-gray-300 text-gray-400'}`}><span>Segment</span><span>[{data.xIndex},{data.zIndex}]</span></div>
+          <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Segment:</span><span>[{data.xIndex},{data.zIndex}]</span></div>
         </div>
       </div>
     </Html>
