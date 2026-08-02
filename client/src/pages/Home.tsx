@@ -129,16 +129,19 @@ export default function Home() {
 
   const effectiveValues = useMemo(() => {
     if (layerDefs.length === 0) return undefined; // not yet loaded — use raw DB values
-    const grids = activeLayers
+    const allGrids = layerDefs.map(l => l.gridValues);
+    const activeGrids = activeLayers
       .map(id => layerDefs.find(l => l.id === id)?.gridValues)
       .filter((g): g is number[][] => !!g);
-    if (grids.length === 0) {
+    if (activeGrids.length === 0) {
       // All layers off — terrain flat (all zero)
       const zeros = new Map<string, number>();
       for (let x = 0; x < 25; x++) for (let z = 0; z < 25; z++) zeros.set(`${x},${z}`, 0);
       return zeros;
     }
-    return computeLayerValues(grids);
+    // allGrids provides the fixed normalization reference so single-layer
+    // views show proportional heights, not re-normalized to full 0-100.
+    return computeLayerValues(activeGrids, allGrids);
   }, [activeLayers, layerDefs]);
 
   const toggleLayer = (id: number) =>
