@@ -126,9 +126,16 @@ export default function Home() {
       const soloGrid = layerDefs.find(l => l.id === soloLayer)?.gridValues;
       return computeLayerValues(soloGrid ? [soloGrid] : []);
     }
+    if (layerDefs.length === 0) return undefined; // not yet loaded — use raw DB values
     const grids = activeLayers
       .map(id => layerDefs.find(l => l.id === id)?.gridValues)
       .filter((g): g is number[][] => !!g);
+    if (grids.length === 0) {
+      // All layers off — terrain flat (all zero)
+      const zeros = new Map<string, number>();
+      for (let x = 0; x < 25; x++) for (let z = 0; z < 25; z++) zeros.set(`${x},${z}`, 0);
+      return zeros;
+    }
     return computeLayerValues(grids);
   }, [activeLayers, layerDefs, soloLayer]);
 
@@ -458,7 +465,7 @@ export default function Home() {
                   ? `SOLO MODE · ${layerDefs.find(l => l.id === soloLayer)?.name ?? `Layer ${soloLayer}`} · normalized 0–100`
                   : activeLayers.length > 0 && effectiveValues
                     ? `${activeLayers.length} layer${activeLayers.length > 1 ? 's' : ''} active · normalized 0–100`
-                    : 'No layers active — terrain shows raw DB values'}
+                    : 'No layers active — terrain zeroed'}
               </p>
             </div>
           ) : (
