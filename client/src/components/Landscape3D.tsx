@@ -440,7 +440,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
     <div className="w-full h-full relative group">
       <Canvas 
         shadows 
-        camera={{ position: [25, 20, 25], fov: 45 }}
+        camera={{ position: [0, 20, 25], fov: 45 }}
         className={isDark ? "canvas-container" : "canvas-container-light"}
       >
         <color attach="background" args={[isDark ? '#050505' : '#f5f5f5']} />
@@ -518,7 +518,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
       
       {/* Overlay UI hints */}
       <div className="absolute bottom-6 left-6 pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity">
-        <div className="flex gap-2 text-xs font-mono text-white/50 bg-black/50 px-3 py-1 rounded-full border border-white/10">
+        <div className={`flex gap-2 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white/50 bg-black/50 border border-white/10' : 'text-gray-700'}`}>
           <span>LMB: Rotate</span>
           <span>•</span>
           <span>RMB: Pan</span>
