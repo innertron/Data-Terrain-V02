@@ -506,7 +506,7 @@ export default function Home() {
           {/* Segment cards — always visible when a bar is selected */}
           {selectedSegment && (
             <div className="flex flex-col gap-3 shrink-0 animate-in slide-in-from-right-4 duration-300">
-              <div className="flex items-center gap-1 flex-wrap">
+              <div className="flex items-center justify-between">
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">ID:{selectedSegment.id}</Badge>
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">People:{selectedSegment.value}</Badge>
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
