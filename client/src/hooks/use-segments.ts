@@ -10,7 +10,6 @@ export function useSegments() {
   return useQuery({
     queryKey: [api.segments.list.path],
     staleTime: 0,
-    gcTime: 0,
     placeholderData: keepPreviousData,
     queryFn: async () => {
       const res = await fetch(api.segments.list.path, {

@@ -410,7 +410,10 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
 
-  if (isLoading) {
+  // Only show the full-screen loader on first load (no data yet).
+  // On subsequent refetches keepPreviousData keeps segments defined, so the
+  // Canvas stays mounted and the WebGL context is never destroyed.
+  if (isLoading && !segments) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-background/50 backdrop-blur-sm animate-in fade-in">
         <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
