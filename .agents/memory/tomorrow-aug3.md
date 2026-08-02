@@ -16,7 +16,13 @@ The existing **Project Settings** modal (wrench icon, already has IDENTITY and A
 ## 2 — Project name not showing when published — FIXED 2026-08-02
 - Root cause: production DB had no `project_settings` rows; dev DB had them.
 - Fix: curled `PUT /api/settings/:key` on `data-terrain.replit.app` to seed all three values.
-- Going forward: whenever settings change in dev, they must also be pushed to prod via the same curl pattern (or a future "sync to prod" button).
+- Task #12 proposed to solve this permanently at the server level.
+
+## 3 — Bugs fixed this session (2026-08-02)
+- **Layers "Loading..."**: Task #4 merge left layers table empty while `layers_seeded=1` was set. Server restart re-seeded. Root cause resolved.
+- **Refresh Stream crash**: `gcTime: 0` in `useSegments` was evicting cache on invalidation → `isLoading` true → Canvas unmounted → WebGL context lost. Fix: removed `gcTime: 0`, added `placeholderData: keepPreviousData`, guarded `isLoading && !segments` in Landscape3D.
+- **All layers off = flat terrain**: was showing raw DB values. Fixed: when `layerDefs.length > 0` but `activeLayers` empty, return all-zero Map.
+- **Layer row colors**: all overridden to `#a8d4d2` in UI; text changed to `text-black`.
 
 ## 3 — New project (after items 1 & 2)
 - Create a brand-new DemoScape project (separate repl / separate URL).
