@@ -373,6 +373,22 @@ export default function Home() {
                       >DETAILS</button>
                     </div>
                   </div>
+                  <div className="mt-3 pt-3 border-t border-border">
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2 px-1">Actions</p>
+                    <div className="flex flex-col gap-1.5">
+                      <button
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm hover:bg-muted/50 transition-colors"
+                        onClick={() => { queryClient.invalidateQueries({ queryKey: [api.segments.list.path] }); setShowSettings(false); }}
+                      >
+                        <RefreshCw className="w-4 h-4" /> Refresh Stream
+                      </button>
+                      <button
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm text-primary hover:bg-primary/10 transition-colors"
+                      >
+                        <span className="w-4 h-4 flex items-center justify-center font-bold">＋</span> New Project
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -486,26 +502,6 @@ export default function Home() {
           )}
         </div>
 
-        {/* Global Controls Footer */}
-        <div className="p-3 border-t border-border bg-card/50 backdrop-blur-md flex gap-2">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="flex-1 text-[10px] font-mono"
-            onClick={() => queryClient.invalidateQueries({ queryKey: [api.segments.list.path] })}
-          >
-            <RefreshCw className="w-3 h-3 mr-1.5" />
-            Refresh Stream
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1 text-[10px] font-mono border-primary/40 text-primary hover:bg-primary/10"
-          >
-            <span className="mr-1.5">＋</span>
-            New Project
-          </Button>
-        </div>
       </div>
 
       {/* Admin-only Project Settings drawer — never rendered in production builds */}
