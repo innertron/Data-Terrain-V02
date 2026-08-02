@@ -406,7 +406,21 @@ function FloatingLabel({ data, maxValue, isDark = true, displayValue }: { data: 
   );
 }
 
-export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; }) {
+function CameraTracker({ onCameraChange }: { onCameraChange?: (x: number, y: number, z: number) => void }) {
+  const lastRef = useRef({ x: 0, y: 0, z: 0 });
+  useFrame(({ camera }) => {
+    const x = Math.round(camera.position.x * 10) / 10;
+    const y = Math.round(camera.position.y * 10) / 10;
+    const z = Math.round(camera.position.z * 10) / 10;
+    if (x !== lastRef.current.x || y !== lastRef.current.y || z !== lastRef.current.z) {
+      lastRef.current = { x, y, z };
+      onCameraChange?.(x, y, z);
+    }
+  });
+  return null;
+}
+
+export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues, onCameraChange }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; onCameraChange?: (x: number, y: number, z: number) => void; }) {
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
 
@@ -515,6 +529,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
           minDistance={10}
           target={[0, 0, 0]}
         />
+        <CameraTracker onCameraChange={onCameraChange} />
       </Canvas>
       
       {/* Overlay UI hints */}

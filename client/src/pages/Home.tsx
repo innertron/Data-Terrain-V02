@@ -101,6 +101,7 @@ const Z_MIDDLE_NAMES = [
 
 export default function Home() {
   const [selectedSegment, setSelectedSegment] = useState<GridSegment | null>(null);
+  const [cameraPos, setCameraPos] = useState<{x:number,y:number,z:number}>({ x: -25, y: 30, z: 25 });
   const [editValue, setEditValue] = useState<string>("");
   const [showSettings, setShowSettings] = useState(false);
   const [showProjectSettings, setShowProjectSettings] = useState(false);
@@ -249,7 +250,7 @@ export default function Home() {
       
       {/* 3D Viewport - Takes dominant space */}
       <div className="flex-1 relative h-[60vh] md:h-auto order-2 md:order-1">
-        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} effectiveValues={effectiveValues} />
+        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} effectiveValues={effectiveValues} onCameraChange={(x,y,z) => setCameraPos({x,y,z})} />
         
         {/* Header Overlay — left: minedICE logo, right: project title + dates */}
         <div className="absolute top-4 left-6 right-6 z-10 pointer-events-none flex items-start justify-between">
@@ -508,12 +509,17 @@ export default function Home() {
               <div className="flex items-center">
                 <Badge variant="outline" className="font-mono text-xs">ID: {selectedSegment.id}</Badge>
                 <div className="flex-1 flex justify-center">
-                  <Badge className="bg-primary/20 text-primary border-primary/50 font-mono text-xs">
+                  <Badge variant="outline" className="font-mono text-xs">
                     PopDensity: {selectedSegment.value}
                   </Badge>
                 </div>
                 <Badge variant="outline" className="font-mono text-xs">
                   POS: [{selectedSegment.xIndex}, {selectedSegment.zIndex}]
+                </Badge>
+              </div>
+              <div className="flex items-center justify-center">
+                <Badge variant="outline" className="font-mono text-xs">
+                  CamAngle: [{cameraPos.x}, {cameraPos.y}, {cameraPos.z}]
                 </Badge>
               </div>
               <div className="space-y-3">
