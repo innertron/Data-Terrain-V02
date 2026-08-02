@@ -525,9 +525,8 @@ export default function Home() {
           {selectedSegment && (
             <div className="flex flex-col gap-3 shrink-0 animate-in slide-in-from-right-4 duration-300">
               <div className="flex items-center justify-between">
-                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">ID:{selectedSegment.id}</Badge>
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
-                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
               </div>
               <div className="space-y-3">
