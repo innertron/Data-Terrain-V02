@@ -527,6 +527,7 @@ export default function Home() {
               <div className="flex items-center justify-between">
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
               </div>
               <div className="space-y-3">
