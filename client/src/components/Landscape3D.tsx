@@ -20,8 +20,8 @@ type GridSegment = {
 
 // --- Constants ---
 const GRID_SIZE = 25;
-const BAR_SIZE = 0.84; // Width/Depth of each bar
-const GAP = 0.16; // Space between bars
+const BAR_SIZE = 0.864; // Width/Depth of each bar
+const GAP = 0.136; // Space between bars
 const MAX_HEIGHT = 10; // Maximum visual height for the highest value
 
 // --- Helper: Color Gradient ---
