@@ -22,7 +22,7 @@ type GridSegment = {
 const GRID_SIZE = 25;
 const BAR_SIZE = 0.864; // Width/Depth of each bar
 const GAP = 0.136; // Space between bars
-const MAX_HEIGHT = 10; // Maximum visual height for the highest value
+const MAX_HEIGHT = 6.6; // Maximum visual height for the highest value (66% of original 10)
 
 // --- Helper: Color Gradient ---
 // Returns a color based on value intensity and X-axis position (Political domain)
