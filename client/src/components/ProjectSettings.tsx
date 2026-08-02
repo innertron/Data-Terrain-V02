@@ -4,7 +4,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { X, Wrench } from "lucide-react";
+import { X, Wrench, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 type Settings = Record<string, string>;
@@ -133,6 +133,33 @@ export function ProjectSettingsDrawer({
             <div className="space-y-3">
               <Field label="X-Axis Title" settingKey="x_axis_label" settings={settings} onSave={handleSave} />
               <Field label="Z-Axis Title" settingKey="z_axis_label" settings={settings} onSave={handleSave} />
+            </div>
+          </section>
+
+          {/* Actions */}
+          <section>
+            <p className="text-[10px] uppercase tracking-widest text-primary mb-3 font-semibold">Actions</p>
+            <div className="space-y-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full justify-start text-xs font-mono"
+                onClick={() => {
+                  queryClient.invalidateQueries({ queryKey: ["/api/segments"] });
+                  onClose();
+                }}
+              >
+                <RefreshCw className="w-3.5 h-3.5 mr-2" />
+                Refresh Stream
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full justify-start text-xs font-mono border-primary/40 text-primary hover:bg-primary/10"
+              >
+                <span className="mr-2 font-bold">＋</span>
+                New Project
+              </Button>
             </div>
           </section>
         </div>
