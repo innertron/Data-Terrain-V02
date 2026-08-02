@@ -568,16 +568,6 @@ export default function Home() {
                           <span className={`w-3 h-3 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />
                         </span>
                       </button>
-                      {/* Solo button — admin only */}
-                      {isAdmin && (
-                        <button
-                          onClick={() => setSoloLayer(isSolo ? null : layer.id)}
-                          title={isSolo ? 'Exit solo' : `Solo: ${layer.name}`}
-                          className={`shrink-0 ml-1 p-0.5 rounded transition-colors ${isSolo ? 'text-yellow-400 bg-yellow-500/20 hover:bg-yellow-500/30' : 'text-muted-foreground/40 hover:text-yellow-400 hover:bg-yellow-500/10'}`}
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                        </button>
-                      )}
                     </div>
                   );
                 })
