@@ -123,6 +123,7 @@ export async function registerRoutes(
         color: r.color,
         active: r.active,
         gridValues: JSON.parse(r.gridValues) as number[][],
+        params: r.params ?? null,
       }));
       res.json(result);
     } catch (err) {
