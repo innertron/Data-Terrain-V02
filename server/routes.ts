@@ -194,10 +194,10 @@ export async function registerRoutes(
       if (!layer) return res.status(404).json({ message: "Layer not found" });
 
       const skewSchema = z.object({
-        insideBottom: z.number().int().min(0),
-        insideTop:    z.number().int().min(0),
-        outsideBottom: z.number().int().min(0),
-        outsideTop:    z.number().int().min(0),
+        insideBottom:  z.number().min(0),
+        insideTop:     z.number().min(0),
+        outsideBottom: z.number().min(0),
+        outsideTop:    z.number().min(0),
       });
       const { insideBottom, insideTop, outsideBottom, outsideTop } = skewSchema.parse(req.body);
 

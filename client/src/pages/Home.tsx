@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useUpdateSegment } from "@/hooks/use-segments";
 import { useTheme } from "@/hooks/use-theme";
 import { ProjectSettingsDrawer } from "@/components/ProjectSettings";
-import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers, Wrench, Eye, SlidersHorizontal, ChevronLeft } from "lucide-react";
+import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers, Wrench, Eye, SlidersHorizontal, X } from "lucide-react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { apiRequest } from "@/lib/queryClient";
@@ -312,7 +312,7 @@ export default function Home() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className={`h-8 w-8 ${showAdjustSkew ? 'text-primary bg-primary/10' : 'text-primary/60 hover:text-primary'}`}
+                  className={`h-8 w-8 ${showAdjustSkew ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                   title="Adjust Skew (admin only)"
                   onClick={() => { setShowAdjustSkew(v => !v); setSkewLayerId(null); }}
                 >
@@ -323,7 +323,7 @@ export default function Home() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-primary/60 hover:text-primary"
+                  className="h-8 w-8 text-muted-foreground hover:text-foreground"
                   title="Project Settings (admin only)"
                   onClick={() => setShowProjectSettings(true)}
                 >
@@ -335,13 +335,20 @@ export default function Home() {
                 variant="ghost"
                 size="icon"
                 data-testid="button-settings"
-                className="h-8 w-8"
+                className="h-8 w-8 text-muted-foreground hover:text-foreground"
                 onClick={() => setShowSettings(!showSettings)}
               >
                 <Settings className="w-4 h-4" />
               </Button>
               {showSettings && (
-                <div className="absolute right-0 top-10 z-50 bg-card border border-border rounded-lg shadow-2xl p-3 min-w-[180px] animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 top-10 z-50 bg-card border border-border rounded-lg shadow-2xl p-3 min-w-[200px] animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-border">
+                    <div className="flex items-center gap-1.5">
+                      <Settings className="w-3.5 h-3.5 text-muted-foreground" />
+                      <span className="text-sm font-semibold">Settings</span>
+                    </div>
+                    <button onClick={() => setShowSettings(false)} className="text-muted-foreground hover:text-foreground"><X className="w-3.5 h-3.5" /></button>
+                  </div>
                   <p className="text-xs uppercase tracking-wider text-muted-foreground mb-2 px-1">Theme</p>
                   <div className="space-y-1">
                     <button
@@ -403,12 +410,13 @@ export default function Home() {
           {/* Adjust Skew panel — admin only, replaces normal content when open */}
           {isAdmin && showAdjustSkew && (
             <div className="flex flex-col gap-3 animate-in slide-in-from-right-4 duration-200">
-              <div className="flex items-center justify-between">
-                <p className="text-[10px] uppercase tracking-wider font-semibold text-primary flex items-center gap-1.5">
-                  <SlidersHorizontal className="w-3 h-3" /> Adjust Skew
-                </p>
+              <div className="flex items-center justify-between pb-2 border-b border-border">
+                <div className="flex items-center gap-1.5">
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-muted-foreground" />
+                  <span className="text-sm font-semibold">Adjust Skew</span>
+                </div>
                 <button onClick={() => { setShowAdjustSkew(false); setSoloLayer(null); setSkewLayerId(null); }} className="text-muted-foreground hover:text-foreground">
-                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <X className="w-3.5 h-3.5" />
                 </button>
               </div>
 
@@ -443,11 +451,11 @@ export default function Home() {
                     <div className="flex items-center gap-2">
                       <div className="flex-1">
                         <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                        <Input type="number" min={0} value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                        <Input type="number" min={0} step="any" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
                       </div>
                       <div className="flex-1">
                         <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                        <Input type="number" min={0} value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                        <Input type="number" min={0} step="any" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
                       </div>
                     </div>
                   </div>
@@ -457,11 +465,11 @@ export default function Home() {
                     <div className="flex items-center gap-2">
                       <div className="flex-1">
                         <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                        <Input type="number" min={0} value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                        <Input type="number" min={0} step="any" value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-7 text-xs font-mono" />
                       </div>
                       <div className="flex-1">
                         <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                        <Input type="number" min={0} value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                        <Input type="number" min={0} step="any" value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-7 text-xs font-mono" />
                       </div>
                     </div>
                   </div>
