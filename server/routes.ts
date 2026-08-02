@@ -62,9 +62,9 @@ async function ensureLayersTable(): Promise<void> {
 /** Seed CSV files that ship with the repo into the layers table */
 async function seedLayers() {
   const seeds = [
-    { name: 'Layer 1 — Circle',          color: '#818cf8', file: 'grid-circle.csv'  },
-    { name: 'Layer 2 — Quarter Arc',      color: '#f87171', file: 'grid-layer2.csv' },
-    { name: 'Layer 3 — Diagonal Ellipse', color: '#34d399', file: 'grid-layer3.csv' },
+    { name: 'Layer 1 — Circle',          color: '#a8d4d2', file: 'grid-circle.csv'  },
+    { name: 'Layer 2 — Quarter Arc',      color: '#a8d4d2', file: 'grid-layer2.csv' },
+    { name: 'Layer 3 — Diagonal Ellipse', color: '#a8d4d2', file: 'grid-layer3.csv' },
   ];
   const publicDir = join(process.cwd(), 'client', 'public');
   const records = seeds.map(s => ({
