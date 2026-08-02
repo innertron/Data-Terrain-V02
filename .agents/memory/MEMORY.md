@@ -1,3 +1,4 @@
+- [GitHub save target](github-save-target.md) — "save to GitHub" always means `git push` to data-terrain-v02 (Data-Terrain-V02); main branch upstream is set to data-terrain-v02/main.
 - [Landscape3D camera setup](landscape3d-camera.md) — camera at [-25,30,25]; Z_LABELS is HIGH→LOW so <$34K is at +z not -z; hard refresh needed after camera prop changes.
 - [ConTour wiring](contour-wiring.md) — effectiveValues prop added to Landscape3D/Bar/SurfaceTerrain/FloatingLabel but ConTour panel was removed from Home.tsx per user; wiring code remains in Landscape3D, ready to re-enable when explicitly asked.
 - [Grid template files](grid-template-files.md) — static SVG/HTML/CSV grid tools live in client/public/; generator scripts in scripts/; user prefers matrix CSV (25×25) not flat x,z,value list.
