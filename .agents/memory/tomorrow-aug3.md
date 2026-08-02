@@ -24,7 +24,12 @@ The existing **Project Settings** modal (wrench icon, already has IDENTITY and A
 - **All layers off = flat terrain**: was showing raw DB values. Fixed: when `layerDefs.length > 0` but `activeLayers` empty, return all-zero Map.
 - **Layer row colors**: all overridden to `#a8d4d2` in UI; text changed to `text-black`.
 
-## 3 — New project (after items 1 & 2)
+## 4 — About page + Tutorial
+- Add an "About" section somewhere accessible to all visitors (non-admin) explaining what minedICE / DemoScape is
+- Add a tutorial — walkthrough of how to use the terrain, layers, inspector
+- Placement TBD (modal, side drawer, footer link, or dedicated route)
+
+## 5 — New project (after items 1 & 2)
 - Create a brand-new DemoScape project (separate repl / separate URL).
 - Feature: **random distribution layer** — after a layer CSV is submitted, apply a configurable random ± noise to make values slightly stochastic.
 - Must deploy to a **different URL** from the current minedICE project.
