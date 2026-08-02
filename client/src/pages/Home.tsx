@@ -115,7 +115,6 @@ export default function Home() {
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('layers');
   const [layerDefs, setLayerDefs] = useState<LayerDef[]>([]);
   const [activeLayers, setActiveLayers] = useState<number[]>([]);
-  const [soloLayer, setSoloLayer] = useState<number | null>(null);
   const isAdmin = import.meta.env.DEV;
 
   // Fetch layers from API once on mount
@@ -129,10 +128,6 @@ export default function Home() {
   }, []);
 
   const effectiveValues = useMemo(() => {
-    if (soloLayer !== null) {
-      const soloGrid = layerDefs.find(l => l.id === soloLayer)?.gridValues;
-      return computeLayerValues(soloGrid ? [soloGrid] : []);
-    }
     if (layerDefs.length === 0) return undefined; // not yet loaded — use raw DB values
     const grids = activeLayers
       .map(id => layerDefs.find(l => l.id === id)?.gridValues)
@@ -144,7 +139,7 @@ export default function Home() {
       return zeros;
     }
     return computeLayerValues(grids);
-  }, [activeLayers, layerDefs, soloLayer]);
+  }, [activeLayers, layerDefs]);
 
   const toggleLayer = (id: number) =>
     setActiveLayers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
@@ -301,11 +296,6 @@ export default function Home() {
             <h2 className="text-sm font-bold flex items-center gap-1.5">
               <Info className="w-3.5 h-3.5 text-primary" />
               Inspector
-              {soloLayer !== null && (
-                <span className="ml-1 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 animate-pulse">
-                  SOLO: {layerDefs.find(l => l.id === soloLayer)?.name ?? `Layer ${soloLayer}`}
-                </span>
-              )}
             </h2>
             <div className="flex items-center gap-1">
               {isAdmin && (
@@ -314,7 +304,7 @@ export default function Home() {
                   size="icon"
                   className={`h-8 w-8 ${showAdjustSkew ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                   title="Adjust Skew (admin only)"
-                  onClick={() => { setShowAdjustSkew(v => !v); setSkewLayerId(null); }}
+                  onClick={() => { setShowAdjustSkew(v => !v); setSkewLayerId(null); }}  
                 >
                   <SlidersHorizontal className="w-3.5 h-3.5" />
                 </Button>
@@ -415,7 +405,7 @@ export default function Home() {
                   <SlidersHorizontal className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="text-sm font-semibold">Adjust Skew</span>
                 </div>
-                <button onClick={() => { setShowAdjustSkew(false); setSoloLayer(null); setSkewLayerId(null); }} className="text-muted-foreground hover:text-foreground">
+                <button onClick={() => { setShowAdjustSkew(false); setSkewLayerId(null); }} className="text-muted-foreground hover:text-foreground">
                   <X className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -430,13 +420,11 @@ export default function Home() {
                       key={layer.id}
                       onClick={() => {
                         setSkewLayerId(layer.id);
-                        setSoloLayer(layer.id);
                       }}
                       className={`flex items-center gap-2 px-2 py-1.5 rounded-md border text-left transition-colors ${selected ? 'border-primary/50 bg-primary/10' : 'border-border hover:bg-muted/50'}`}
                     >
                       <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: '#a8d4d2' }} />
                       <span className="text-[10px] uppercase tracking-wider font-medium flex-1 truncate">{layer.name}</span>
-                      {selected && <span className="text-[9px] text-primary font-mono">SOLO</span>}
                     </button>
                   );
                 })}
@@ -548,7 +536,6 @@ export default function Home() {
               ) : (
                 layerDefs.map(layer => {
                   const on = activeLayers.includes(layer.id);
-                  const isSolo = soloLayer === layer.id;
                   return (
                     <div
                       key={layer.id}
@@ -573,11 +560,9 @@ export default function Home() {
                 })
               )}
               <p className="text-[10px] text-muted-foreground font-mono mt-1">
-                {soloLayer !== null
-                  ? `SOLO MODE · ${layerDefs.find(l => l.id === soloLayer)?.name ?? `Layer ${soloLayer}`} · normalized 0–100`
-                  : activeLayers.length > 0 && effectiveValues
-                    ? `${activeLayers.length} layer${activeLayers.length > 1 ? 's' : ''} active · normalized 0–100`
-                    : 'No layers active — terrain zeroed'}
+                {activeLayers.length > 0 && effectiveValues
+                  ? `${activeLayers.length} layer${activeLayers.length > 1 ? 's' : ''} active · normalized 0–100`
+                  : 'No layers active — terrain zeroed'}
               </p>
             </div>
           ) : (
