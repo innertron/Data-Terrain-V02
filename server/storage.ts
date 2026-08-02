@@ -14,6 +14,7 @@ export interface IStorage {
   getLayer(id: number): Promise<Layer | undefined>;
   createLayer(layer: InsertLayer): Promise<Layer>;
   updateLayerActive(id: number, active: boolean): Promise<Layer>;
+  updateLayerGridValues(id: number, gridValues: string, params?: string): Promise<Layer>;
   deleteLayer(id: number): Promise<void>;
   layerCount(): Promise<number>;
   bulkInsertLayers(layerList: InsertLayer[]): Promise<void>;
@@ -71,6 +72,14 @@ export class DatabaseStorage implements IStorage {
   async updateLayerActive(id: number, active: boolean): Promise<Layer> {
     const [updated] = await db.update(layers)
       .set({ active })
+      .where(eq(layers.id, id))
+      .returning();
+    return updated;
+  }
+
+  async updateLayerGridValues(id: number, gridValues: string, params?: string): Promise<Layer> {
+    const [updated] = await db.update(layers)
+      .set({ gridValues, ...(params !== undefined ? { params } : {}) })
       .where(eq(layers.id, id))
       .returning();
     return updated;

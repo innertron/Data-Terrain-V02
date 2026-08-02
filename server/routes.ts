@@ -51,8 +51,13 @@ async function ensureLayersTable(): Promise<void> {
         name    TEXT    NOT NULL,
         color   TEXT    NOT NULL,
         grid_values TEXT NOT NULL,
-        active  BOOLEAN NOT NULL DEFAULT true
+        active  BOOLEAN NOT NULL DEFAULT true,
+        params  TEXT
       )
+    `);
+    // Add params column to existing tables that predate this column
+    await client.query(`
+      ALTER TABLE layers ADD COLUMN IF NOT EXISTS params TEXT
     `);
   } finally {
     client.release();
@@ -178,6 +183,68 @@ export async function registerRoutes(
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Failed to delete layer" });
+    }
+  });
+
+  // POST /api/layers/:id/skew — regenerate layer gridValues with new randomness bounds
+  app.post("/api/layers/:id/skew", async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      const layer = await storage.getLayer(id);
+      if (!layer) return res.status(404).json({ message: "Layer not found" });
+
+      const skewSchema = z.object({
+        insideBottom: z.number().int().min(0),
+        insideTop:    z.number().int().min(0),
+        outsideBottom: z.number().int().min(0),
+        outsideTop:    z.number().int().min(0),
+      });
+      const { insideBottom, insideTop, outsideBottom, outsideTop } = skewSchema.parse(req.body);
+
+      // Load stored shape params (default = circle dome algorithm)
+      const p = layer.params
+        ? JSON.parse(layer.params)
+        : { shape: 'circle', cx: 12, cz: 12, r: 7, hJunction: 40, hPeak: 100, dMax: 17 };
+      const { cx, cz, r, hJunction, hPeak, dMax } = p;
+
+      // Seeded PRNG (xorshift32)
+      let seed = 0xCAFEBABE;
+      const rand = () => {
+        seed ^= seed << 13; seed ^= seed >> 17; seed ^= seed << 5;
+        return (seed >>> 0) / 0xFFFFFFFF;
+      };
+
+      const grid: number[][] = [];
+      for (let row = 0; row < 25; row++) {
+        const cols: number[] = [];
+        for (let col = 0; col < 25; col++) {
+          const dx = col - cx, dz = (24 - row) - cz;
+          const d = Math.sqrt(dx * dx + dz * dz);
+          let hBase: number, bot: number, top: number;
+          if (d <= r) {
+            const t = d / r;
+            hBase = hJunction + (hPeak - hJunction) * (1 - t * t);
+            bot = insideBottom; top = insideTop;
+          } else {
+            const t = Math.min((d - r) / (dMax - r), 1);
+            hBase = hJunction * Math.pow(1 - t, 2);
+            bot = outsideBottom; top = outsideTop;
+          }
+          const magnitude = rand() * (top - bot) + bot;
+          const noise = rand() > 0.5 ? magnitude : -magnitude;
+          cols.push(Math.max(0, Math.round(hBase + noise)));
+        }
+        grid.push(cols);
+      }
+
+      const newParams = JSON.stringify({ ...p, insideBottom, insideTop, outsideBottom, outsideTop });
+      const updated = await storage.updateLayerGridValues(id, JSON.stringify(grid), newParams);
+      const parsedGrid = JSON.parse(updated.gridValues) as number[][];
+      res.json({ id: updated.id, name: updated.name, color: updated.color, active: updated.active, gridValues: parsedGrid, params: updated.params });
+    } catch (err) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
+      console.error(err);
+      res.status(500).json({ message: "Failed to apply skew" });
     }
   });
 

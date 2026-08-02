@@ -28,6 +28,7 @@ export const layers = pgTable("layers", {
   color: text("color").notNull(),
   gridValues: text("grid_values").notNull(), // JSON-serialised number[][]
   active: boolean("active").notNull().default(true),
+  params: text("params"),                    // JSON: shape algorithm params (nullable)
 });
 
 export const insertLayerSchema = createInsertSchema(layers).omit({ id: true });

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useUpdateSegment } from "@/hooks/use-segments";
 import { useTheme } from "@/hooks/use-theme";
 import { ProjectSettingsDrawer } from "@/components/ProjectSettings";
-import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers, Wrench, Eye } from "lucide-react";
+import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers, Wrench, Eye, SlidersHorizontal, ChevronLeft } from "lucide-react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { apiRequest } from "@/lib/queryClient";
@@ -104,6 +104,13 @@ export default function Home() {
   const [editValue, setEditValue] = useState<string>("");
   const [showSettings, setShowSettings] = useState(false);
   const [showProjectSettings, setShowProjectSettings] = useState(false);
+  const [showAdjustSkew, setShowAdjustSkew] = useState(false);
+  const [skewLayerId, setSkewLayerId] = useState<number | null>(null);
+  const [skewInB, setSkewInB] = useState(0);
+  const [skewInT, setSkewInT] = useState(5);
+  const [skewOutB, setSkewOutB] = useState(0);
+  const [skewOutT, setSkewOutT] = useState(5);
+  const [skewApplying, setSkewApplying] = useState(false);
   const [surfMode, setSurfMode] = useState(false);
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('layers');
   const [layerDefs, setLayerDefs] = useState<LayerDef[]>([]);
@@ -305,6 +312,17 @@ export default function Home() {
                 <Button
                   variant="ghost"
                   size="icon"
+                  className={`h-8 w-8 ${showAdjustSkew ? 'text-primary bg-primary/10' : 'text-primary/60 hover:text-primary'}`}
+                  title="Adjust Skew (admin only)"
+                  onClick={() => { setShowAdjustSkew(v => !v); setSkewLayerId(null); }}
+                >
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                </Button>
+              )}
+              {isAdmin && (
+                <Button
+                  variant="ghost"
+                  size="icon"
                   className="h-8 w-8 text-primary/60 hover:text-primary"
                   title="Project Settings (admin only)"
                   onClick={() => setShowProjectSettings(true)}
@@ -381,6 +399,98 @@ export default function Home() {
         </div>
 
         <div className="flex-1 flex flex-col overflow-y-auto p-4 gap-3">
+
+          {/* Adjust Skew panel — admin only, replaces normal content when open */}
+          {isAdmin && showAdjustSkew && (
+            <div className="flex flex-col gap-3 animate-in slide-in-from-right-4 duration-200">
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] uppercase tracking-wider font-semibold text-primary flex items-center gap-1.5">
+                  <SlidersHorizontal className="w-3 h-3" /> Adjust Skew
+                </p>
+                <button onClick={() => { setShowAdjustSkew(false); setSoloLayer(null); setSkewLayerId(null); }} className="text-muted-foreground hover:text-foreground">
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Layer list */}
+              <div className="flex flex-col gap-1 max-h-[140px] overflow-y-auto">
+                {layerDefs.length === 0 && <p className="text-[10px] text-muted-foreground font-mono px-1">No layers found.</p>}
+                {layerDefs.map(layer => {
+                  const selected = skewLayerId === layer.id;
+                  return (
+                    <button
+                      key={layer.id}
+                      onClick={() => {
+                        setSkewLayerId(layer.id);
+                        setSoloLayer(layer.id);
+                      }}
+                      className={`flex items-center gap-2 px-2 py-1.5 rounded-md border text-left transition-colors ${selected ? 'border-primary/50 bg-primary/10' : 'border-border hover:bg-muted/50'}`}
+                    >
+                      <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: '#a8d4d2' }} />
+                      <span className="text-[10px] uppercase tracking-wider font-medium flex-1 truncate">{layer.name}</span>
+                      {selected && <span className="text-[9px] text-primary font-mono">SOLO</span>}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Bounds inputs — shown when a layer is selected */}
+              {skewLayerId !== null && (
+                <div className="flex flex-col gap-3 border border-border rounded-lg p-3 bg-muted/30">
+                  {/* Outside shape */}
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Outside Shape — RANDBETWEEN</p>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1">
+                        <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
+                        <Input type="number" min={0} value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                      </div>
+                      <div className="flex-1">
+                        <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
+                        <Input type="number" min={0} value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                      </div>
+                    </div>
+                  </div>
+                  {/* Inside shape */}
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Inside Shape — RANDBETWEEN</p>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1">
+                        <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
+                        <Input type="number" min={0} value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                      </div>
+                      <div className="flex-1">
+                        <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
+                        <Input type="number" min={0} value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    size="sm"
+                    disabled={skewApplying}
+                    className="w-full h-7 text-[10px] uppercase tracking-wider"
+                    onClick={async () => {
+                      setSkewApplying(true);
+                      try {
+                        const res = await fetch(`/api/layers/${skewLayerId}/skew`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ insideBottom: skewInB, insideTop: skewInT, outsideBottom: skewOutB, outsideTop: skewOutT }),
+                        });
+                        const updated = await res.json();
+                        setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, gridValues: updated.gridValues } : l));
+                      } finally {
+                        setSkewApplying(false);
+                      }
+                    }}
+                  >
+                    {skewApplying ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
+                    Apply
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Segment cards — always visible when a bar is selected */}
           {selectedSegment && (
