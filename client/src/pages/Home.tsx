@@ -420,16 +420,17 @@ export default function Home() {
                       key={layer.id}
                       onClick={() => {
                         setSkewLayerId(layer.id);
-                        // Populate inputs from stored params
+                        // Populate inputs from stored params; always reset first
                         try {
                           const p = layer.params ? JSON.parse(layer.params) : null;
-                          if (p) {
-                            if (p.outsideBottom !== undefined) setSkewOutB(p.outsideBottom);
-                            if (p.outsideTop    !== undefined) setSkewOutT(p.outsideTop);
-                            if (p.insideBottom  !== undefined) setSkewInB(p.insideBottom);
-                            if (p.insideTop     !== undefined) setSkewInT(p.insideTop);
-                          }
-                        } catch { /* ignore bad JSON */ }
+                          setSkewOutB(p?.outsideBottom ?? 0);
+                          setSkewOutT(p?.outsideTop    ?? 5);
+                          setSkewInB(p?.insideBottom   ?? 0);
+                          setSkewInT(p?.insideTop      ?? 5);
+                        } catch {
+                          setSkewOutB(0); setSkewOutT(5);
+                          setSkewInB(0);  setSkewInT(5);
+                        }
                       }}
                       className={`flex items-center gap-2 px-2 py-1.5 rounded-md border text-left transition-colors ${selected ? 'border-primary/50 bg-primary/10' : 'border-border hover:bg-muted/50'}`}
                     >

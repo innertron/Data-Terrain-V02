@@ -228,26 +228,58 @@ export async function registerRoutes(
       } else {
         // Shape params exist — regenerate from scratch using stored algorithm.
         const p = JSON.parse(layer.params);
-        const { cx, cz, r, hJunction, hPeak, dMax } = p;
+        const { hJunction, hPeak } = p;
         grid = [];
-        for (let row = 0; row < 25; row++) {
-          const cols: number[] = [];
-          for (let col = 0; col < 25; col++) {
-            const dx = col - cx, dz = (24 - row) - cz;
-            const d = Math.sqrt(dx * dx + dz * dz);
-            let hBase: number, bot: number, top: number;
-            if (d <= r) {
-              const t = d / r;
-              hBase = hJunction + (hPeak - hJunction) * (1 - t * t);
-              bot = insideBottom; top = insideTop;
-            } else {
-              const t = Math.min((d - r) / (dMax - r), 1);
-              hBase = hJunction * Math.pow(1 - t, 2);
-              bot = outsideBottom; top = outsideTop;
+
+        if (p.shape === 'rectangle') {
+          // Rectangle: dome inside, arch outside, distance-to-boundary based
+          const { x1, x2, row1, row2, maxDin, dMax } = p;
+          for (let row = 0; row < 25; row++) {
+            const cols: number[] = [];
+            for (let col = 0; col < 25; col++) {
+              const insideRect = row >= row1 && row <= row2 && col >= x1 && col <= x2;
+              let hBase: number, bot: number, top: number;
+              if (insideRect) {
+                // Distance from nearest rectangle edge (0 at edge, maxDin at center)
+                const dIn = Math.min(row - row1, row2 - row, col - x1, x2 - col);
+                const t = dIn / maxDin;
+                hBase = hJunction + (hPeak - hJunction) * (t * t);
+                bot = insideBottom; top = insideTop;
+              } else {
+                // Distance to nearest point on rectangle boundary
+                const dx = Math.max(x1 - col, 0, col - x2);
+                const dz = Math.max(row1 - row, 0, row - row2);
+                const dOut = Math.sqrt(dx * dx + dz * dz);
+                const t = Math.min(dOut / dMax, 1);
+                hBase = hJunction * Math.pow(1 - t, 2);
+                bot = outsideBottom; top = outsideTop;
+              }
+              cols.push(applyNoise(hBase, bot, top));
             }
-            cols.push(applyNoise(hBase, bot, top));
+            grid.push(cols);
           }
-          grid.push(cols);
+        } else {
+          // Default: circle dome+arch algorithm
+          const { cx, cz, r, dMax } = p;
+          for (let row = 0; row < 25; row++) {
+            const cols: number[] = [];
+            for (let col = 0; col < 25; col++) {
+              const dx = col - cx, dz = (24 - row) - cz;
+              const d = Math.sqrt(dx * dx + dz * dz);
+              let hBase: number, bot: number, top: number;
+              if (d <= r) {
+                const t = d / r;
+                hBase = hJunction + (hPeak - hJunction) * (1 - t * t);
+                bot = insideBottom; top = insideTop;
+              } else {
+                const t = Math.min((d - r) / (dMax - r), 1);
+                hBase = hJunction * Math.pow(1 - t, 2);
+                bot = outsideBottom; top = outsideTop;
+              }
+              cols.push(applyNoise(hBase, bot, top));
+            }
+            grid.push(cols);
+          }
         }
         newParams = JSON.stringify({ ...p, insideBottom, insideTop, outsideBottom, outsideTop });
       }
