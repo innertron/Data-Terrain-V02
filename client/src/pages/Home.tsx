@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useUpdateSegment } from "@/hooks/use-segments";
 import { useTheme } from "@/hooks/use-theme";
 import { ProjectSettingsDrawer } from "@/components/ProjectSettings";
-import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers, Wrench } from "lucide-react";
+import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers, Wrench, Eye } from "lucide-react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { apiRequest } from "@/lib/queryClient";
@@ -108,6 +108,7 @@ export default function Home() {
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('layers');
   const [layerDefs, setLayerDefs] = useState<LayerDef[]>([]);
   const [activeLayers, setActiveLayers] = useState<number[]>([]);
+  const [soloLayer, setSoloLayer] = useState<number | null>(null);
   const isAdmin = import.meta.env.DEV;
 
   // Fetch layers from API once on mount
@@ -121,18 +122,15 @@ export default function Home() {
   }, []);
 
   const effectiveValues = useMemo(() => {
-    if (layerDefs.length === 0) return undefined; // layers not yet loaded — use raw DB values
+    if (soloLayer !== null) {
+      const soloGrid = layerDefs.find(l => l.id === soloLayer)?.gridValues;
+      return computeLayerValues(soloGrid ? [soloGrid] : []);
+    }
     const grids = activeLayers
       .map(id => layerDefs.find(l => l.id === id)?.gridValues)
       .filter((g): g is number[][] => !!g);
-    if (grids.length === 0) {
-      // All layers toggled off — terrain should be flat (all zero)
-      const zeros = new Map<string, number>();
-      for (let x = 0; x < 25; x++) for (let z = 0; z < 25; z++) zeros.set(`${x},${z}`, 0);
-      return zeros;
-    }
     return computeLayerValues(grids);
-  }, [activeLayers, layerDefs]);
+  }, [activeLayers, layerDefs, soloLayer]);
 
   const toggleLayer = (id: number) =>
     setActiveLayers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
@@ -289,6 +287,11 @@ export default function Home() {
             <h2 className="text-sm font-bold flex items-center gap-1.5">
               <Info className="w-3.5 h-3.5 text-primary" />
               Inspector
+              {soloLayer !== null && (
+                <span className="ml-1 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 animate-pulse">
+                  SOLO: {layerDefs.find(l => l.id === soloLayer)?.name ?? `Layer ${soloLayer}`}
+                </span>
+              )}
             </h2>
             <div className="flex items-center gap-1">
               {isAdmin && (
@@ -416,28 +419,46 @@ export default function Home() {
               ) : (
                 layerDefs.map(layer => {
                   const on = activeLayers.includes(layer.id);
+                  const isSolo = soloLayer === layer.id;
                   return (
-                    <button
+                    <div
                       key={layer.id}
-                      onClick={() => toggleLayer(layer.id)}
-                      className={`w-full flex items-center justify-between px-2 py-1.5 rounded-md border transition-colors ${on ? 'border-transparent' : 'border-border hover:bg-muted/50'}`}
-                      style={on ? { backgroundColor: '#a8d4d218', borderColor: '#a8d4d255' } : {}}
+                      className={`flex items-center gap-1 px-2 py-1.5 rounded-md border transition-colors ${on ? 'border-transparent' : 'border-border'}`}
+                      style={on ? { backgroundColor: layer.color + '18', borderColor: layer.color + '55' } : {}}
                     >
-                      <span className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: '#a8d4d2' }} />
-                        <span className="text-[10px] uppercase tracking-wider text-black dark:text-white">{layer.name}</span>
-                      </span>
-                      <span className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors shrink-0 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: '#a8d4d2' } : {}}>
-                        <span className={`w-3 h-3 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />
-                      </span>
-                    </button>
+                      {/* Toggle button — takes full remaining width */}
+                      <button
+                        onClick={() => toggleLayer(layer.id)}
+                        className="flex-1 flex items-center justify-between min-w-0"
+                      >
+                        <span className="flex items-center gap-1.5 min-w-0">
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: layer.color }} />
+                          <span className="text-[10px] uppercase tracking-wider text-muted-foreground truncate">{layer.name}</span>
+                        </span>
+                        <span className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors shrink-0 ml-2 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: layer.color } : {}}>
+                          <span className={`w-3 h-3 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />
+                        </span>
+                      </button>
+                      {/* Solo button — admin only */}
+                      {isAdmin && (
+                        <button
+                          onClick={() => setSoloLayer(isSolo ? null : layer.id)}
+                          title={isSolo ? 'Exit solo' : `Solo: ${layer.name}`}
+                          className={`shrink-0 ml-1 p-0.5 rounded transition-colors ${isSolo ? 'text-yellow-400 bg-yellow-500/20 hover:bg-yellow-500/30' : 'text-muted-foreground/40 hover:text-yellow-400 hover:bg-yellow-500/10'}`}
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
                   );
                 })
               )}
               <p className="text-[10px] text-muted-foreground font-mono mt-1">
-                {activeLayers.length > 0 && effectiveValues
-                  ? `${activeLayers.length} layer${activeLayers.length > 1 ? 's' : ''} active · normalized 0–100`
-                  : 'No layers active — terrain zeroed'}
+                {soloLayer !== null
+                  ? `SOLO MODE · ${layerDefs.find(l => l.id === soloLayer)?.name ?? `Layer ${soloLayer}`} · normalized 0–100`
+                  : activeLayers.length > 0 && effectiveValues
+                    ? `${activeLayers.length} layer${activeLayers.length > 1 ? 's' : ''} active · normalized 0–100`
+                    : 'No layers active — terrain shows raw DB values'}
               </p>
             </div>
           ) : (
