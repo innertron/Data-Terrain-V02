@@ -89,7 +89,28 @@ function generateDomeGrid(
   };
   const grid: number[][] = [];
   const { shape } = params as { shape?: string } & Record<string, number>;
-  if (shape === 'valley') {
+  if (shape === 'ellipse') {
+    // Off-center ellipse dome+arch. edist = sqrt((dx/rx)²+(dz/rz)²).
+    // edist ≤ 1 → inside ellipse (dome up to hPeak); edist > 1 → outside (arch down to 0).
+    const { cx, cz, rx, rz, hJunction, hPeak, dArch, insideBottom, insideTop, outsideBottom, outsideTop } = params;
+    for (let row = 0; row < 25; row++) {
+      const cols: number[] = [];
+      const zIndex = 24 - row;
+      for (let col = 0; col < 25; col++) {
+        const edist = Math.sqrt(Math.pow((col - cx) / rx, 2) + Math.pow((zIndex - cz) / rz, 2));
+        let hBase: number, bot: number, top: number;
+        if (edist <= 1) {
+          hBase = hJunction + (hPeak - hJunction) * Math.pow(1 - edist, 2);
+          bot = insideBottom; top = insideTop;
+        } else {
+          hBase = hJunction * Math.pow(1 - Math.min((edist - 1) / dArch, 1), 2);
+          bot = outsideBottom; top = outsideTop;
+        }
+        cols.push(applyNoise(hBase, bot, top, row, col));
+      }
+      grid.push(cols);
+    }
+  } else if (shape === 'valley') {
     // Parabolic bowl: valley floor at bottom-center, terrain rises toward top.
     // curveZ(col) = z0 + bowlCurve * ((col-cx)/cx)^2  — the parabola in zIndex space.
     // dist = zIndex - curveZ  → positive = above curve (high terrain), negative = inside valley.
@@ -164,6 +185,7 @@ const LAYER_SEEDS: Record<string, number> = {
   circle:    0xCAFEBABE,
   rectangle: 0xDEADBEEF,
   valley:    0xBEEFCAFE,
+  ellipse:   0xF00DCAFE,
 };
 
 /** Canonical layer definitions — add new layers here only. */
@@ -182,6 +204,11 @@ const LAYER_DEFINITIONS = [
     name: 'Layer 3 — Valley',
     color: '#a8d4d2',
     params: { shape: 'valley', cx: 12, z0: 3, bowlCurve: 9, hJunction: 40, hPeak: 100, dMax: 12, dFloor: 5, insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 3 },
+  },
+  {
+    name: 'Layer 4 — Ellipse',
+    color: '#a8d4d2',
+    params: { shape: 'ellipse', cx: 4, cz: 16, rx: 7, rz: 9, hJunction: 40, hPeak: 100, dArch: 2.5, insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 4 },
   },
 ];
 
@@ -349,7 +376,26 @@ export async function registerRoutes(
         const { hJunction, hPeak } = p;
         grid = [];
 
-        if (p.shape === 'valley') {
+        if (p.shape === 'ellipse') {
+          const { cx, cz, rx, rz, hJunction, hPeak, dArch } = p;
+          for (let row = 0; row < 25; row++) {
+            const cols: number[] = [];
+            const zIndex = 24 - row;
+            for (let col = 0; col < 25; col++) {
+              const edist = Math.sqrt(Math.pow((col - cx) / rx, 2) + Math.pow((zIndex - cz) / rz, 2));
+              let hBase: number, bot: number, top: number;
+              if (edist <= 1) {
+                hBase = hJunction + (hPeak - hJunction) * Math.pow(1 - edist, 2);
+                bot = insideBottom; top = insideTop;
+              } else {
+                hBase = hJunction * Math.pow(1 - Math.min((edist - 1) / dArch, 1), 2);
+                bot = outsideBottom; top = outsideTop;
+              }
+              cols.push(applyNoise(hBase, bot, top, row, col));
+            }
+            grid.push(cols);
+          }
+        } else if (p.shape === 'valley') {
           const { cx, z0, bowlCurve, hJunction, hPeak, dMax, dFloor } = p;
           for (let row = 0; row < 25; row++) {
             const cols: number[] = [];
