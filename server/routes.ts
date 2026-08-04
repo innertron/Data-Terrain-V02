@@ -10,6 +10,19 @@ import { pool } from "./db";
 
 // ── Layer helpers ────────────────────────────────────────────────────────────
 
+/**
+ * Position-based hash noise — derives a value in [0,1) purely from (row,col,seed,idx).
+ * No sequential state means zero correlation between adjacent cells; eliminates
+ * the diagonal banding that sequential PRNGs (xorshift etc.) produce on a 2-D grid.
+ */
+function cellHash(row: number, col: number, seed: number, idx: number): number {
+  let h = (seed ^ Math.imul(row, 1000003) ^ Math.imul(col, 999983) ^ Math.imul(idx, 998981));
+  h = Math.imul(h ^ (h >>> 16), 0x45d9f3b);
+  h = Math.imul(h ^ (h >>> 16), 0x45d9f3b);
+  h = h ^ (h >>> 16);
+  return (h >>> 0) / 0xFFFFFFFF;
+}
+
 /** Parse a 25×25 CSV (header + 25 rows) into a number[][] */
 function parseCsvGrid(csvText: string): number[][] {
   return csvText.trim().split('\n').slice(1).map(l => l.split(',').map(Number));
@@ -64,14 +77,14 @@ async function ensureLayersTable(): Promise<void> {
   }
 }
 
-/** Generate dome+arch grid values using the seeded PRNG */
+/** Generate dome+arch grid values using position-based hash noise (no sequential PRNG) */
 function generateDomeGrid(
-  prng: () => number,
+  layerSeed: number,
   params: Record<string, number>
 ): number[][] {
-  const applyNoise = (hBase: number, bot: number, top: number) => {
-    const mag = bot + prng() * (top - bot);
-    const noise = prng() > 0.5 ? mag : -mag;
+  const applyNoise = (hBase: number, bot: number, top: number, row: number, col: number) => {
+    const mag = bot + cellHash(row, col, layerSeed, 0) * (top - bot);
+    const noise = cellHash(row, col, layerSeed, 1) > 0.5 ? mag : -mag;
     return Math.max(0, Math.round(hBase + noise));
   };
   const grid: number[][] = [];
@@ -93,7 +106,7 @@ function generateDomeGrid(
           hBase = hJunction * Math.pow(1 - Math.min(Math.sqrt(dx*dx+dz*dz) / dMax, 1), 2);
           bot = outsideBottom; top = outsideTop;
         }
-        cols.push(applyNoise(hBase, bot, top));
+        cols.push(applyNoise(hBase, bot, top, row, col));
       }
       grid.push(cols);
     }
@@ -113,7 +126,7 @@ function generateDomeGrid(
           hBase = hJunction * Math.pow(1 - Math.min((d-r)/(dMax-r), 1), 2);
           bot = outsideBottom; top = outsideTop;
         }
-        cols.push(applyNoise(hBase, bot, top));
+        cols.push(applyNoise(hBase, bot, top, row, col));
       }
       grid.push(cols);
     }
@@ -121,23 +134,38 @@ function generateDomeGrid(
   return grid;
 }
 
-/** Seed layers table with algorithmically generated dome+arch data */
-async function seedLayers() {
-  let seed = 0xCAFEBABE;
-  const prng = () => {
-    seed ^= seed << 13; seed ^= seed >> 17; seed ^= seed << 5;
-    return (seed >>> 0) / 0xFFFFFFFF;
-  };
+// Distinct seeds per layer — keeps each layer's noise independent of the other
+const LAYER_SEEDS: Record<string, number> = {
+  circle:    0xCAFEBABE,
+  rectangle: 0xDEADBEEF,
+};
 
-  const circleParams = { shape: 'circle', cx: 12, cz: 12, r: 7, hJunction: 40, hPeak: 100, dMax: 17, insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 5 };
+/** Seed layers table with algorithmically generated dome+arch data.
+ *  On a fresh DB inserts two rows; if rows already exist, refreshes their
+ *  gridValues with the current (hash-based) noise algorithm. */
+async function seedLayers() {
+  const circleParams = { shape: 'circle',    cx: 12, cz: 12, r: 7, hJunction: 40, hPeak: 100, dMax: 17,   insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 5 };
   const rectParams   = { shape: 'rectangle', x1: 6, x2: 18, row1: 7, row2: 19, hJunction: 40, hPeak: 100, maxDin: 6, dMax: 9.22, insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 5 };
 
-  const records = [
-    { name: 'Layer 1 — Circle',    color: '#a8d4d2', active: true, params: JSON.stringify(circleParams), gridValues: JSON.stringify(generateDomeGrid(prng, circleParams as unknown as Record<string, number>)) },
-    { name: 'Layer 2 — Rectangle', color: '#a8d4d2', active: true, params: JSON.stringify(rectParams),   gridValues: JSON.stringify(generateDomeGrid(prng, rectParams   as unknown as Record<string, number>)) },
-  ];
-  await storage.bulkInsertLayers(records);
-  console.log('Layers seeded with dome+arch algorithms.');
+  const existing = await storage.getLayers();
+  if (existing.length === 0) {
+    const records = [
+      { name: 'Layer 1 — Circle',    color: '#a8d4d2', active: true, params: JSON.stringify(circleParams), gridValues: JSON.stringify(generateDomeGrid(LAYER_SEEDS.circle,    circleParams as unknown as Record<string, number>)) },
+      { name: 'Layer 2 — Rectangle', color: '#a8d4d2', active: true, params: JSON.stringify(rectParams),   gridValues: JSON.stringify(generateDomeGrid(LAYER_SEEDS.rectangle, rectParams   as unknown as Record<string, number>)) },
+    ];
+    await storage.bulkInsertLayers(records);
+    console.log('Layers seeded with hash-based dome+arch algorithms.');
+  } else {
+    // Refresh gridValues using the improved hash noise (fixes diagonal patterns)
+    for (const layer of existing) {
+      if (!layer.params) continue;
+      const p = JSON.parse(layer.params) as Record<string, number> & { shape?: string };
+      const seed = p.shape ? (LAYER_SEEDS[p.shape] ?? 0xCAFEBABE) : 0xCAFEBABE;
+      const newGrid = generateDomeGrid(seed, p);
+      await storage.updateLayerGridValues(layer.id, JSON.stringify(newGrid), layer.params);
+    }
+    console.log('Layers refreshed with hash-based noise (diagonal pattern fix).');
+  }
 }
 
 const segmentDataRowSchema = z.object({
@@ -160,15 +188,10 @@ export async function registerRoutes(
   // Ensure layers table exists (safe on every restart)
   await ensureLayersTable();
 
-  // Seed layers on first run OR whenever the table is empty.
-  // An empty table in production (e.g. after a fresh deploy) is detected by
-  // checking the actual row count, not just the marker flag.
-  const settings = await storage.getAllSettings();
-  const existingLayers = await storage.getLayers();
-  if (!settings['layers_seeded'] || existingLayers.length === 0) {
-    await seedLayers();
-    await storage.setSetting('layers_seeded', '1');
-  }
+  // Always run seedLayers — it inserts on first run, refreshes gridValues
+  // (with improved hash-based noise) on subsequent runs. Cost is trivial.
+  await seedLayers();
+  await storage.setSetting('layers_seeded', '1');
 
   // ── Layer routes ────────────────────────────────────────────────────────────
 
@@ -261,15 +284,11 @@ export async function registerRoutes(
       });
       const { insideBottom, insideTop, outsideBottom, outsideTop } = skewSchema.parse(req.body);
 
-      // Seeded PRNG (xorshift32)
-      let seed = 0xCAFEBABE;
-      const rand = () => {
-        seed ^= seed << 13; seed ^= seed >> 17; seed ^= seed << 5;
-        return (seed >>> 0) / 0xFFFFFFFF;
-      };
-      const applyNoise = (hBase: number, bot: number, top: number): number => {
-        const magnitude = bot + rand() * (top - bot);
-        const noise = rand() > 0.5 ? magnitude : -magnitude;
+      // Position-based noise — no sequential state, no diagonal artifacts
+      const layerSeed = id * 0x9e3779b9;
+      const applyNoise = (hBase: number, bot: number, top: number, row: number, col: number): number => {
+        const magnitude = bot + cellHash(row, col, layerSeed, 0) * (top - bot);
+        const noise = cellHash(row, col, layerSeed, 1) > 0.5 ? magnitude : -magnitude;
         return Math.max(0, Math.round(hBase + noise));
       };
 
@@ -280,8 +299,8 @@ export async function registerRoutes(
         // No shape params — add noise to each existing cell value.
         // Uses outsideBottom/outsideTop as the noise range for all cells.
         const existing = JSON.parse(layer.gridValues) as number[][];
-        grid = existing.map(row =>
-          row.map(val => applyNoise(val, outsideBottom, outsideTop))
+        grid = existing.map((rowArr, r) =>
+          rowArr.map((val, c) => applyNoise(val, outsideBottom, outsideTop, r, c))
         );
         newParams = JSON.stringify({ insideBottom, insideTop, outsideBottom, outsideTop });
       } else {
@@ -299,13 +318,11 @@ export async function registerRoutes(
               const insideRect = row >= row1 && row <= row2 && col >= x1 && col <= x2;
               let hBase: number, bot: number, top: number;
               if (insideRect) {
-                // Distance from nearest rectangle edge (0 at edge, maxDin at center)
                 const dIn = Math.min(row - row1, row2 - row, col - x1, x2 - col);
                 const t = dIn / maxDin;
                 hBase = hJunction + (hPeak - hJunction) * (t * t);
                 bot = insideBottom; top = insideTop;
               } else {
-                // Distance to nearest point on rectangle boundary
                 const dx = Math.max(x1 - col, 0, col - x2);
                 const dz = Math.max(row1 - row, 0, row - row2);
                 const dOut = Math.sqrt(dx * dx + dz * dz);
@@ -313,7 +330,7 @@ export async function registerRoutes(
                 hBase = hJunction * Math.pow(1 - t, 2);
                 bot = outsideBottom; top = outsideTop;
               }
-              cols.push(applyNoise(hBase, bot, top));
+              cols.push(applyNoise(hBase, bot, top, row, col));
             }
             grid.push(cols);
           }
@@ -335,7 +352,7 @@ export async function registerRoutes(
                 hBase = hJunction * Math.pow(1 - t, 2);
                 bot = outsideBottom; top = outsideTop;
               }
-              cols.push(applyNoise(hBase, bot, top));
+              cols.push(applyNoise(hBase, bot, top, row, col));
             }
             grid.push(cols);
           }
