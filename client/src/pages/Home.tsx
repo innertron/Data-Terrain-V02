@@ -202,6 +202,11 @@ export default function Home() {
   const queryClient = useQueryClient();
   const { theme, setTheme } = useTheme();
   const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const blockBarColor = selectedSegment
+    ? isDark
+      ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)`
+      : `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 100%, 48%)`
+    : '#a8d4d2';
   const detailBgStyle: React.CSSProperties = {
     backgroundImage: `linear-gradient(${isDark ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.7)'}, ${isDark ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.7)'}), url(/detail-bg.png)`,
     backgroundSize: 'cover',
@@ -375,6 +380,8 @@ export default function Home() {
                 <Settings className="w-4 h-4" />
               </Button>
               {showSettings && (
+                <>
+                <div className="fixed inset-0 z-40" onClick={() => setShowSettings(false)} />
                 <div className="absolute right-0 top-10 z-50 bg-card border border-border rounded-lg shadow-2xl p-3 min-w-[200px] animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="flex items-center justify-between mb-3 pb-2 border-b border-border">
                     <div className="flex items-center gap-1.5">
@@ -433,6 +440,7 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+                </>
               )}
             </div>
             </div>{/* end flex items-center gap-1 */}
@@ -635,7 +643,7 @@ export default function Home() {
                         <div className="h-1.5 rounded-full bg-muted overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all duration-300"
-                            style={{ width: `${r.pct}%`, backgroundColor: '#a8d4d2' }}
+                            style={{ width: `${r.pct}%`, backgroundColor: blockBarColor }}
                           />
                         </div>
                       </div>
