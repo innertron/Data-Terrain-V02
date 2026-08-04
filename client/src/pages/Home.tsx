@@ -547,7 +547,7 @@ export default function Home() {
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
               </div>
               <div className="space-y-3">
-                <div className="bg-muted p-2.5 rounded-lg border border-border">
+                <div className="p-2.5 rounded-lg border border-border/40" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.7)), url(/detail-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                   <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Political Domain (X)</Label>
                   <div className="text-xs font-medium leading-snug">
                     <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
@@ -556,7 +556,7 @@ export default function Home() {
                     : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
                   </div>
                 </div>
-                <div className="bg-muted p-2.5 rounded-lg border border-border">
+                <div className="p-2.5 rounded-lg border border-border/40" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.7)), url(/detail-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                   <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Income / Education (Z)</Label>
                   <div className="text-sm font-medium leading-snug">
                     <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
