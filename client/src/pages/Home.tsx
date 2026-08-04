@@ -166,6 +166,22 @@ export default function Home() {
   const toggleLayer = (id: number) =>
     setActiveLayers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
+  // Ranked layer values at the selected block — used in Results panel
+  const layerResultsAtBlock = useMemo(() => {
+    if (!selectedSegment || activeLayers.length === 0 || layerDefs.length === 0) return [];
+    const row = 24 - selectedSegment.zIndex;
+    const col = selectedSegment.xIndex;
+    const entries = activeLayers.map(id => {
+      const layer = layerDefs.find(l => l.id === id);
+      if (!layer) return null;
+      return { id, name: layer.name, value: layer.gridValues[row]?.[col] ?? 0 };
+    }).filter((r): r is { id: number; name: string; value: number } => !!r);
+    const total = entries.reduce((s, r) => s + r.value, 0);
+    return entries
+      .map(r => ({ ...r, pct: total > 0 ? Math.round(r.value / total * 100) : 0 }))
+      .sort((a, b) => b.value - a.value);
+  }, [selectedSegment, activeLayers, layerDefs]);
+
   const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
     queryKey: ["/api/settings"],
     queryFn: () => fetch("/api/settings").then(r => r.json()),
@@ -596,8 +612,33 @@ export default function Home() {
           ) : (
             selectedSegment ? (
               <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-3 rounded-lg border border-primary/20 flex-1 flex flex-col min-h-0">
-                <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">Results</Label>
-                <div className="text-xs text-muted-foreground italic">— no results yet —</div>
+                <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">
+                  Results — [{selectedSegment.xIndex},{selectedSegment.zIndex}]
+                </Label>
+                {layerResultsAtBlock.length === 0 ? (
+                  <div className="text-xs text-muted-foreground italic">— no active layers —</div>
+                ) : (
+                  <div className="flex flex-col gap-1.5">
+                    {layerResultsAtBlock.map((r, i) => (
+                      <div key={r.id} className="flex flex-col gap-0.5">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[10px] font-mono text-muted-foreground shrink-0">{i + 1}.</span>
+                          <span className="text-[10px] font-semibold text-foreground flex-1 truncate">{r.name}</span>
+                          <span className="text-[10px] font-mono text-foreground shrink-0">{r.pct}%</span>
+                        </div>
+                        <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-300"
+                            style={{ width: `${r.pct}%`, backgroundColor: '#a8d4d2' }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                    <p className="text-[10px] text-muted-foreground font-mono mt-1">
+                      total · {layerResultsAtBlock.reduce((s, r) => s + r.value, 0)} · {layerResultsAtBlock.length} layer{layerResultsAtBlock.length > 1 ? 's' : ''}
+                    </p>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-muted-foreground opacity-50 space-y-4">
