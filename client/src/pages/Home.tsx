@@ -201,6 +201,12 @@ export default function Home() {
   const updateMutation = useUpdateSegment();
   const queryClient = useQueryClient();
   const { theme, setTheme } = useTheme();
+  const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const detailBgStyle: React.CSSProperties = {
+    backgroundImage: `linear-gradient(${isDark ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.7)'}, ${isDark ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.7)'}), url(/detail-bg.png)`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  };
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -547,7 +553,7 @@ export default function Home() {
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
               </div>
               <div className="space-y-3">
-                <div className="p-2.5 rounded-lg border border-border/40" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.7)), url(/detail-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <div className="p-2.5 rounded-lg border border-border/40" style={detailBgStyle}>
                   <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Political Domain (X)</Label>
                   <div className="text-xs font-medium leading-snug">
                     <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
@@ -556,7 +562,7 @@ export default function Home() {
                     : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
                   </div>
                 </div>
-                <div className="p-2.5 rounded-lg border border-border/40" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.7)), url(/detail-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                <div className="p-2.5 rounded-lg border border-border/40" style={detailBgStyle}>
                   <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Income / Education (Z)</Label>
                   <div className="text-sm font-medium leading-snug">
                     <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
@@ -611,7 +617,7 @@ export default function Home() {
             </div>
           ) : (
             selectedSegment ? (
-              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.7)), url(/detail-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0" style={detailBgStyle}>
                 <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">
                   Results — [{selectedSegment.xIndex},{selectedSegment.zIndex}]
                 </Label>
