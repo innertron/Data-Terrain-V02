@@ -89,7 +89,32 @@ function generateDomeGrid(
   };
   const grid: number[][] = [];
   const { shape } = params as { shape?: string } & Record<string, number>;
-  if (shape === 'rectangle') {
+  if (shape === 'valley') {
+    // Parabolic bowl: valley floor at bottom-center, terrain rises toward top.
+    // curveZ(col) = z0 + bowlCurve * ((col-cx)/cx)^2  — the parabola in zIndex space.
+    // dist = zIndex - curveZ  → positive = above curve (high terrain), negative = inside valley.
+    const { cx, z0, bowlCurve, hJunction, hPeak, dMax, dFloor, insideBottom, insideTop, outsideBottom, outsideTop } = params;
+    for (let row = 0; row < 25; row++) {
+      const cols: number[] = [];
+      const zIndex = 24 - row;
+      for (let col = 0; col < 25; col++) {
+        const curveZ = z0 + bowlCurve * Math.pow((col - cx) / cx, 2);
+        const dist = zIndex - curveZ;
+        let hBase: number, bot: number, top: number;
+        if (dist >= 0) {
+          // Above valley curve — dome up to hPeak
+          hBase = hJunction + (hPeak - hJunction) * Math.pow(Math.min(dist / dMax, 1), 2);
+          bot = insideBottom; top = insideTop;
+        } else {
+          // Inside valley — arch down to 0
+          hBase = hJunction * Math.pow(1 - Math.min(-dist / dFloor, 1), 2);
+          bot = outsideBottom; top = outsideTop;
+        }
+        cols.push(applyNoise(hBase, bot, top, row, col));
+      }
+      grid.push(cols);
+    }
+  } else if (shape === 'rectangle') {
     const { x1, x2, row1, row2, hJunction, hPeak, maxDin, dMax, insideBottom, insideTop, outsideBottom, outsideTop } = params;
     for (let row = 0; row < 25; row++) {
       const cols: number[] = [];
@@ -138,34 +163,49 @@ function generateDomeGrid(
 const LAYER_SEEDS: Record<string, number> = {
   circle:    0xCAFEBABE,
   rectangle: 0xDEADBEEF,
+  valley:    0xBEEFCAFE,
 };
 
-/** Seed layers table with algorithmically generated dome+arch data.
- *  On a fresh DB inserts two rows; if rows already exist, refreshes their
- *  gridValues with the current (hash-based) noise algorithm. */
-async function seedLayers() {
-  const circleParams = { shape: 'circle',    cx: 12, cz: 12, r: 7, hJunction: 40, hPeak: 100, dMax: 17,   insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 5 };
-  const rectParams   = { shape: 'rectangle', x1: 6, x2: 18, row1: 7, row2: 19, hJunction: 40, hPeak: 100, maxDin: 6, dMax: 9.22, insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 5 };
+/** Canonical layer definitions — add new layers here only. */
+const LAYER_DEFINITIONS = [
+  {
+    name: 'Layer 1 — Circle',
+    color: '#a8d4d2',
+    params: { shape: 'circle', cx: 12, cz: 12, r: 7, hJunction: 40, hPeak: 100, dMax: 17, insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 5 },
+  },
+  {
+    name: 'Layer 2 — Rectangle',
+    color: '#a8d4d2',
+    params: { shape: 'rectangle', x1: 6, x2: 18, row1: 7, row2: 19, hJunction: 40, hPeak: 100, maxDin: 6, dMax: 9.22, insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 5 },
+  },
+  {
+    name: 'Layer 3 — Valley',
+    color: '#a8d4d2',
+    params: { shape: 'valley', cx: 12, z0: 3, bowlCurve: 9, hJunction: 40, hPeak: 100, dMax: 12, dFloor: 5, insideBottom: 0, insideTop: 5, outsideBottom: 0, outsideTop: 3 },
+  },
+];
 
+/** Inserts any layer definitions that do not yet exist in the DB (by name).
+ *  Never overwrites existing rows — preserves any Adjust Skew changes. */
+async function seedLayers() {
   const existing = await storage.getLayers();
-  if (existing.length === 0) {
-    const records = [
-      { name: 'Layer 1 — Circle',    color: '#a8d4d2', active: true, params: JSON.stringify(circleParams), gridValues: JSON.stringify(generateDomeGrid(LAYER_SEEDS.circle,    circleParams as unknown as Record<string, number>)) },
-      { name: 'Layer 2 — Rectangle', color: '#a8d4d2', active: true, params: JSON.stringify(rectParams),   gridValues: JSON.stringify(generateDomeGrid(LAYER_SEEDS.rectangle, rectParams   as unknown as Record<string, number>)) },
-    ];
-    await storage.bulkInsertLayers(records);
-    console.log('Layers seeded with hash-based dome+arch algorithms.');
-  } else {
-    // Refresh gridValues using the improved hash noise (fixes diagonal patterns)
-    for (const layer of existing) {
-      if (!layer.params) continue;
-      const p = JSON.parse(layer.params) as Record<string, number> & { shape?: string };
-      const seed = p.shape ? (LAYER_SEEDS[p.shape] ?? 0xCAFEBABE) : 0xCAFEBABE;
-      const newGrid = generateDomeGrid(seed, p);
-      await storage.updateLayerGridValues(layer.id, JSON.stringify(newGrid), layer.params);
-    }
-    console.log('Layers refreshed with hash-based noise (diagonal pattern fix).');
-  }
+  const existingNames = new Set(existing.map(l => l.name));
+
+  const toInsert = LAYER_DEFINITIONS.filter(d => !existingNames.has(d.name));
+  if (toInsert.length === 0) return;
+
+  const records = toInsert.map(d => ({
+    name: d.name,
+    color: d.color,
+    active: true,
+    params: JSON.stringify(d.params),
+    gridValues: JSON.stringify(generateDomeGrid(
+      LAYER_SEEDS[d.params.shape] ?? 0xCAFEBABE,
+      d.params as unknown as Record<string, number>
+    )),
+  }));
+  await storage.bulkInsertLayers(records);
+  console.log(`Seeded ${records.length} new layer(s): ${records.map(r => r.name).join(', ')}`);
 }
 
 const segmentDataRowSchema = z.object({
@@ -309,7 +349,27 @@ export async function registerRoutes(
         const { hJunction, hPeak } = p;
         grid = [];
 
-        if (p.shape === 'rectangle') {
+        if (p.shape === 'valley') {
+          const { cx, z0, bowlCurve, hJunction, hPeak, dMax, dFloor } = p;
+          for (let row = 0; row < 25; row++) {
+            const cols: number[] = [];
+            const zIndex = 24 - row;
+            for (let col = 0; col < 25; col++) {
+              const curveZ = z0 + bowlCurve * Math.pow((col - cx) / cx, 2);
+              const dist = zIndex - curveZ;
+              let hBase: number, bot: number, top: number;
+              if (dist >= 0) {
+                hBase = hJunction + (hPeak - hJunction) * Math.pow(Math.min(dist / dMax, 1), 2);
+                bot = insideBottom; top = insideTop;
+              } else {
+                hBase = hJunction * Math.pow(1 - Math.min(-dist / dFloor, 1), 2);
+                bot = outsideBottom; top = outsideTop;
+              }
+              cols.push(applyNoise(hBase, bot, top, row, col));
+            }
+            grid.push(cols);
+          }
+        } else if (p.shape === 'rectangle') {
           // Rectangle: dome inside, arch outside, distance-to-boundary based
           const { x1, x2, row1, row2, maxDin, dMax } = p;
           for (let row = 0; row < 25; row++) {
