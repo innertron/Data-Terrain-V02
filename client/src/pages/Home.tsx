@@ -611,7 +611,7 @@ export default function Home() {
             </div>
           ) : (
             selectedSegment ? (
-              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5)), url(/detail-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.7)), url(/detail-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">
                   Results — [{selectedSegment.xIndex},{selectedSegment.zIndex}]
                 </Label>
