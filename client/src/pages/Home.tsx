@@ -573,7 +573,7 @@ export default function Home() {
                 <div className="p-2.5 rounded-lg border border-border/40" style={detailBgStyle}>
                   <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Income / Education (Z)</Label>
                   <div className="text-sm font-medium leading-snug">
-                    <span className="font-bold" style={{ color: theme === 'dark' ? '#e6c040' : '#000000' }}>
+                    <span className="font-bold" style={{ color: blockBarColor }}>
                       {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
                     </span>
                     : {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
