@@ -564,7 +564,7 @@ export default function Home() {
                 <div className="p-2.5 rounded-lg border border-border/40" style={detailBgStyle}>
                   <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Political Domain (X)</Label>
                   <div className="text-xs font-medium leading-snug">
-                    <span className="font-bold" style={{ color: theme === 'dark' ? `hsl(${Math.round(240 - (selectedSegment.xIndex / 24) * 240)}, 90%, 60%)` : '#000000' }}>
+                    <span className="font-bold" style={{ color: blockBarColor }}>
                       {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
                     </span>
                     : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
