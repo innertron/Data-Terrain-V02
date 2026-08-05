@@ -324,6 +324,20 @@ export async function registerRoutes(
     }
   });
 
+  // PATCH /api/layers/:id/rename — update layer display name
+  app.patch("/api/layers/:id/rename", async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      const { name } = z.object({ name: z.string().min(1) }).parse(req.body);
+      const updated = await storage.updateLayerName(id, name);
+      res.json({ id: updated.id, name: updated.name });
+    } catch (err) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
+      console.error(err);
+      res.status(500).json({ message: "Failed to rename layer" });
+    }
+  });
+
   // DELETE /api/layers/:id
   app.delete("/api/layers/:id", async (req, res) => {
     try {

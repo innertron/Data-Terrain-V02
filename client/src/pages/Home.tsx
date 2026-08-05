@@ -112,6 +112,8 @@ export default function Home() {
   const [skewOutB, setSkewOutB] = useState(0);
   const [skewOutT, setSkewOutT] = useState(5);
   const [skewApplying, setSkewApplying] = useState(false);
+  const [renameValue, setRenameValue] = useState("");
+  const [renameApplying, setRenameApplying] = useState(false);
   const [surfMode, setSurfMode] = useState(false);
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('layers');
   const [layerDefs, setLayerDefs] = useState<LayerDef[]>([]);
@@ -449,20 +451,20 @@ export default function Home() {
 
         <div className="flex-1 flex flex-col overflow-y-auto p-4 gap-3">
 
-          {/* Adjust Skew panel — admin only, replaces normal content when open */}
+          {/* Sliders panel — Adjust Skew + Rename Layers side by side */}
           {isAdmin && showAdjustSkew && (
             <div className="flex flex-col gap-3 animate-in slide-in-from-right-4 duration-200">
               <div className="flex items-center justify-between pb-2 border-b border-border">
                 <div className="flex items-center gap-1.5">
                   <SlidersHorizontal className="w-3.5 h-3.5 text-muted-foreground" />
-                  <span className="text-sm font-semibold">Adjust Skew</span>
+                  <span className="text-sm font-semibold">Layer Tools</span>
                 </div>
                 <button onClick={() => { setShowAdjustSkew(false); setSkewLayerId(null); }} className="text-muted-foreground hover:text-foreground">
                   <X className="w-3.5 h-3.5" />
                 </button>
               </div>
 
-              {/* Layer list */}
+              {/* Shared layer list */}
               <div className="flex flex-col gap-1 max-h-[140px] overflow-y-auto">
                 {layerDefs.length === 0 && <p className="text-[10px] text-muted-foreground font-mono px-1">No layers found.</p>}
                 {layerDefs.map(layer => {
@@ -472,7 +474,7 @@ export default function Home() {
                       key={layer.id}
                       onClick={() => {
                         setSkewLayerId(layer.id);
-                        // Populate inputs from stored params; always reset first
+                        setRenameValue(layer.name);
                         try {
                           const p = layer.params ? JSON.parse(layer.params) : null;
                           setSkewOutB(p?.outsideBottom ?? 0);
@@ -493,61 +495,101 @@ export default function Home() {
                 })}
               </div>
 
-              {/* Bounds inputs — shown when a layer is selected */}
+              {/* Two-column controls — shown when a layer is selected */}
               {skewLayerId !== null && (
-                <div className="flex flex-col gap-3 border border-border rounded-lg p-3 bg-muted/30">
-                  <div className="flex gap-2">
-                    {/* Outside shape */}
-                    <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Outside — RANDBETWEEN</p>
-                      <div className="flex items-center gap-1">
-                        <div className="flex-1">
-                          <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                          <Input type="number" min={0} step="any" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                <div className="flex gap-2">
+                  {/* LEFT: Adjust Skew */}
+                  <div className="flex-1 flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Adjust Skew</p>
+                    <div className="flex gap-1.5">
+                      {/* Outside shape */}
+                      <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
+                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1">Outside</p>
+                        <div className="flex flex-col gap-1">
+                          <div>
+                            <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
+                            <Input type="number" min={0} step="any" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-6 text-xs font-mono" />
+                          </div>
+                          <div>
+                            <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
+                            <Input type="number" min={0} step="any" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-6 text-xs font-mono" />
+                          </div>
                         </div>
-                        <div className="flex-1">
-                          <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                          <Input type="number" min={0} step="any" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                      </div>
+                      {/* Inside shape */}
+                      <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
+                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1">Inside</p>
+                        <div className="flex flex-col gap-1">
+                          <div>
+                            <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
+                            <Input type="number" min={0} step="any" value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-6 text-xs font-mono" />
+                          </div>
+                          <div>
+                            <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
+                            <Input type="number" min={0} step="any" value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-6 text-xs font-mono" />
+                          </div>
                         </div>
                       </div>
                     </div>
-                    {/* Inside shape */}
-                    <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Inside — RANDBETWEEN</p>
-                      <div className="flex items-center gap-1">
-                        <div className="flex-1">
-                          <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                          <Input type="number" min={0} step="any" value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-7 text-xs font-mono" />
-                        </div>
-                        <div className="flex-1">
-                          <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                          <Input type="number" min={0} step="any" value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-7 text-xs font-mono" />
-                        </div>
-                      </div>
-                    </div>
+                    <Button
+                      size="sm"
+                      disabled={skewApplying}
+                      className="w-full h-7 text-[10px] uppercase tracking-wider mt-auto"
+                      onClick={async () => {
+                        setSkewApplying(true);
+                        try {
+                          const res = await fetch(`/api/layers/${skewLayerId}/skew`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ insideBottom: skewInB, insideTop: skewInT, outsideBottom: skewOutB, outsideTop: skewOutT }),
+                          });
+                          const updated = await res.json();
+                          setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, gridValues: updated.gridValues } : l));
+                        } finally {
+                          setSkewApplying(false);
+                        }
+                      }}
+                    >
+                      {skewApplying ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
+                      Apply
+                    </Button>
                   </div>
-                  <Button
-                    size="sm"
-                    disabled={skewApplying}
-                    className="w-full h-7 text-[10px] uppercase tracking-wider"
-                    onClick={async () => {
-                      setSkewApplying(true);
-                      try {
-                        const res = await fetch(`/api/layers/${skewLayerId}/skew`, {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ insideBottom: skewInB, insideTop: skewInT, outsideBottom: skewOutB, outsideTop: skewOutT }),
-                        });
-                        const updated = await res.json();
-                        setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, gridValues: updated.gridValues } : l));
-                      } finally {
-                        setSkewApplying(false);
-                      }
-                    }}
-                  >
-                    {skewApplying ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
-                    Apply
-                  </Button>
+
+                  {/* RIGHT: Rename Layer */}
+                  <div className="flex-1 flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Rename Layer</p>
+                    <div className="flex flex-col gap-1 flex-1">
+                      <Label className="text-[9px] text-muted-foreground uppercase">Name</Label>
+                      <Input
+                        value={renameValue}
+                        onChange={e => setRenameValue(e.target.value)}
+                        className="h-7 text-xs font-mono"
+                        placeholder="Layer name…"
+                      />
+                    </div>
+                    <Button
+                      size="sm"
+                      disabled={renameApplying || !renameValue.trim()}
+                      className="w-full h-7 text-[10px] uppercase tracking-wider mt-auto"
+                      onClick={async () => {
+                        setRenameApplying(true);
+                        try {
+                          const res = await fetch(`/api/layers/${skewLayerId}/rename`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name: renameValue.trim() }),
+                          });
+                          const updated = await res.json();
+                          setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, name: updated.name } : l));
+                        } finally {
+                          setRenameApplying(false);
+                        }
+                      }}
+                    >
+                      {renameApplying ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
+                      Save
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>

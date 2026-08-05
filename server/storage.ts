@@ -69,6 +69,14 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
+  async updateLayerName(id: number, name: string): Promise<Layer> {
+    const [updated] = await db.update(layers)
+      .set({ name })
+      .where(eq(layers.id, id))
+      .returning();
+    return updated;
+  }
+
   async updateLayerActive(id: number, active: boolean): Promise<Layer> {
     const [updated] = await db.update(layers)
       .set({ active })
