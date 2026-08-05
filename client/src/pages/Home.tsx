@@ -498,7 +498,7 @@ export default function Home() {
                 <div className="flex flex-col gap-3 border border-border rounded-lg p-3 bg-muted/30">
                   <div className="flex gap-2">
                     {/* Outside shape */}
-                    <div className="flex-1">
+                    <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
                       <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Outside — RANDBETWEEN</p>
                       <div className="flex items-center gap-1">
                         <div className="flex-1">
@@ -512,7 +512,7 @@ export default function Home() {
                       </div>
                     </div>
                     {/* Inside shape */}
-                    <div className="flex-1">
+                    <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
                       <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Inside — RANDBETWEEN</p>
                       <div className="flex items-center gap-1">
                         <div className="flex-1">
