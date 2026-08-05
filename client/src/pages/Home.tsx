@@ -496,31 +496,33 @@ export default function Home() {
               {/* Bounds inputs — shown when a layer is selected */}
               {skewLayerId !== null && (
                 <div className="flex flex-col gap-3 border border-border rounded-lg p-3 bg-muted/30">
-                  {/* Outside shape */}
-                  <div>
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Outside Shape — RANDBETWEEN</p>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1">
-                        <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                        <Input type="number" min={0} step="any" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
-                      </div>
-                      <div className="flex-1">
-                        <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                        <Input type="number" min={0} step="any" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                  <div className="flex gap-2">
+                    {/* Outside shape */}
+                    <div className="flex-1">
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Outside — RANDBETWEEN</p>
+                      <div className="flex items-center gap-1">
+                        <div className="flex-1">
+                          <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
+                          <Input type="number" min={0} step="any" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                        </div>
+                        <div className="flex-1">
+                          <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
+                          <Input type="number" min={0} step="any" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  {/* Inside shape */}
-                  <div>
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Inside Shape — RANDBETWEEN</p>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1">
-                        <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                        <Input type="number" min={0} step="any" value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-7 text-xs font-mono" />
-                      </div>
-                      <div className="flex-1">
-                        <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                        <Input type="number" min={0} step="any" value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                    {/* Inside shape */}
+                    <div className="flex-1">
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Inside — RANDBETWEEN</p>
+                      <div className="flex items-center gap-1">
+                        <div className="flex-1">
+                          <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
+                          <Input type="number" min={0} step="any" value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                        </div>
+                        <div className="flex-1">
+                          <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
+                          <Input type="number" min={0} step="any" value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                        </div>
                       </div>
                     </div>
                   </div>
