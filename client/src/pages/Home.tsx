@@ -495,38 +495,38 @@ export default function Home() {
                 })}
               </div>
 
-              {/* Two-column controls — shown when a layer is selected */}
+              {/* Controls — shown when a layer is selected */}
               {skewLayerId !== null && (
-                <div className="flex gap-2">
-                  {/* LEFT: Adjust Skew */}
-                  <div className="flex-1 flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
+                <div className="flex flex-col gap-2">
+                  {/* Adjust Skew — full width */}
+                  <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Adjust Skew</p>
-                    <div className="flex gap-1.5">
+                    <div className="flex gap-2">
                       {/* Outside shape */}
                       <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
-                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1">Outside</p>
-                        <div className="flex flex-col gap-1">
-                          <div>
+                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Outside — RANDBETWEEN</p>
+                        <div className="flex items-center gap-1">
+                          <div className="flex-1">
                             <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                            <Input type="number" min={0} step="any" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-6 text-xs font-mono" />
+                            <Input type="number" min={0} step="any" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
                           </div>
-                          <div>
+                          <div className="flex-1">
                             <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                            <Input type="number" min={0} step="any" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-6 text-xs font-mono" />
+                            <Input type="number" min={0} step="any" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
                           </div>
                         </div>
                       </div>
                       {/* Inside shape */}
                       <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
-                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1">Inside</p>
-                        <div className="flex flex-col gap-1">
-                          <div>
+                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Inside — RANDBETWEEN</p>
+                        <div className="flex items-center gap-1">
+                          <div className="flex-1">
                             <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                            <Input type="number" min={0} step="any" value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-6 text-xs font-mono" />
+                            <Input type="number" min={0} step="any" value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-7 text-xs font-mono" />
                           </div>
-                          <div>
+                          <div className="flex-1">
                             <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                            <Input type="number" min={0} step="any" value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-6 text-xs font-mono" />
+                            <Input type="number" min={0} step="any" value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-7 text-xs font-mono" />
                           </div>
                         </div>
                       </div>
@@ -534,7 +534,7 @@ export default function Home() {
                     <Button
                       size="sm"
                       disabled={skewApplying}
-                      className="w-full h-7 text-[10px] uppercase tracking-wider mt-auto"
+                      className="w-full h-7 text-[10px] uppercase tracking-wider"
                       onClick={async () => {
                         setSkewApplying(true);
                         try {
@@ -555,10 +555,10 @@ export default function Home() {
                     </Button>
                   </div>
 
-                  {/* RIGHT: Rename Layer */}
-                  <div className="flex-1 flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
+                  {/* Rename Layer — full width, below */}
+                  <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Rename Layer</p>
-                    <div className="flex flex-col gap-1 flex-1">
+                    <div>
                       <Label className="text-[9px] text-muted-foreground uppercase">Name</Label>
                       <Input
                         value={renameValue}
@@ -570,7 +570,7 @@ export default function Home() {
                     <Button
                       size="sm"
                       disabled={renameApplying || !renameValue.trim()}
-                      className="w-full h-7 text-[10px] uppercase tracking-wider mt-auto"
+                      className="w-full h-7 text-[10px] uppercase tracking-wider"
                       onClick={async () => {
                         setRenameApplying(true);
                         try {
