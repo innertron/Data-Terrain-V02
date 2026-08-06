@@ -335,7 +335,10 @@ export async function registerRoutes(
         name: z.string().min(1).optional(),
         name2: z.string().max(20).optional(),
         description: z.string().max(200).optional(),
-        icon: z.string().optional(),
+        icon: z.string().refine(
+          v => v === undefined || v.startsWith('data:image/jpeg;base64,') || v.startsWith('data:image/png;base64,'),
+          { message: 'Icon must be a JPG or PNG data URL' }
+        ).optional(),
       }).parse(req.body);
       const updated = await storage.updateLayerMeta(id, body);
       res.json({ id: updated.id, name: updated.name, name2: updated.name2, description: updated.description, icon: updated.icon });

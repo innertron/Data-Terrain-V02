@@ -593,20 +593,41 @@ export default function Home() {
 
                     {/* Icon upload — shown when toggle is on */}
                     {renameIconOn && (
-                      <div className="flex items-center gap-2">
-                        <label className="flex flex-col items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-border bg-background cursor-pointer overflow-hidden shrink-0">
-                          {renameIcon
-                            ? <img src={renameIcon} className="w-full h-full object-cover rounded-full" />
-                            : <span className="text-[9px] text-muted-foreground text-center leading-tight">Upload</span>}
-                          <input type="file" accept="image/*" className="hidden" onChange={e => {
-                            const file = e.target.files?.[0];
-                            if (!file) return;
-                            const reader = new FileReader();
-                            reader.onload = ev => setRenameIcon(ev.target?.result as string);
-                            reader.readAsDataURL(file);
-                          }} />
-                        </label>
-                        <span className="text-[9px] text-muted-foreground">Click circle to upload a round icon</span>
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <label className="flex flex-col items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-border bg-background cursor-pointer overflow-hidden shrink-0">
+                            {renameIcon
+                              ? <img src={renameIcon} className="w-full h-full object-cover rounded-full" />
+                              : <span className="text-[9px] text-muted-foreground text-center leading-tight">Upload</span>}
+                            <input type="file" accept="image/jpeg,image/png" className="hidden" onChange={e => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                                alert('Only JPG or PNG files are allowed.');
+                                e.target.value = '';
+                                return;
+                              }
+                              const img = new Image();
+                              const url = URL.createObjectURL(file);
+                              img.onload = () => {
+                                URL.revokeObjectURL(url);
+                                if (img.width > 150 || img.height > 150) {
+                                  alert(`Image must be 150×150 px or smaller (yours is ${img.width}×${img.height}).`);
+                                  e.target.value = '';
+                                  return;
+                                }
+                                const reader = new FileReader();
+                                reader.onload = ev => setRenameIcon(ev.target?.result as string);
+                                reader.readAsDataURL(file);
+                              };
+                              img.src = url;
+                            }} />
+                          </label>
+                          <span className="text-[9px] text-muted-foreground">Click circle to upload</span>
+                        </div>
+                        <p className="text-[9px] font-semibold" style={{ color: '#8b0000' }}>
+                          JPG or PNG only · max 150×150 px · square images work best
+                        </p>
                       </div>
                     )}
 
