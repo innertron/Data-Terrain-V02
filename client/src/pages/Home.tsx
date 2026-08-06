@@ -113,6 +113,10 @@ export default function Home() {
   const [skewOutT, setSkewOutT] = useState(5);
   const [skewApplying, setSkewApplying] = useState(false);
   const [renameValue, setRenameValue] = useState("");
+  const [renameName2, setRenameName2] = useState("");
+  const [renameDesc, setRenameDesc] = useState("");
+  const [renameIcon, setRenameIcon] = useState<string | null>(null);
+  const [renameIconOn, setRenameIconOn] = useState(false);
   const [renameApplying, setRenameApplying] = useState(false);
   const [surfMode, setSurfMode] = useState(false);
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('layers');
@@ -475,6 +479,11 @@ export default function Home() {
                       onClick={() => {
                         setSkewLayerId(layer.id);
                         setRenameValue(layer.name);
+                        setRenameName2((layer as any).name2 ?? "");
+                        setRenameDesc((layer as any).description ?? "");
+                        const ic = (layer as any).icon ?? null;
+                        setRenameIcon(ic);
+                        setRenameIconOn(!!ic);
                         try {
                           const p = layer.params ? JSON.parse(layer.params) : null;
                           setSkewOutB(p?.outsideBottom ?? 0);
@@ -558,15 +567,76 @@ export default function Home() {
                   {/* Rename Layer — full width, below */}
                   <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Rename Layer</p>
-                    <div>
-                      <Label className="text-[9px] text-muted-foreground uppercase">Name</Label>
-                      <Input
-                        value={renameValue}
-                        onChange={e => setRenameValue(e.target.value)}
-                        className="h-7 text-xs font-mono"
-                        placeholder="Layer name…"
-                      />
+
+                    {/* Row 1: Name (1) + Icon toggle */}
+                    <div className="flex gap-2 items-start">
+                      <div className="flex-1">
+                        <Label className="text-[9px] text-muted-foreground uppercase">Name (1) — Main</Label>
+                        <Input
+                          value={renameValue}
+                          onChange={e => setRenameValue(e.target.value)}
+                          className="h-7 text-xs font-mono uppercase"
+                          placeholder="LAYER NAME…"
+                        />
+                      </div>
+                      <div className="flex flex-col items-center gap-1 pt-4">
+                        <Label className="text-[9px] text-muted-foreground uppercase">Icon</Label>
+                        <button
+                          type="button"
+                          onClick={() => setRenameIconOn(v => !v)}
+                          className={`relative inline-flex h-4 w-7 items-center rounded-full transition-colors ${renameIconOn ? 'bg-primary' : 'bg-muted-foreground/40'}`}
+                        >
+                          <span className={`inline-block h-3 w-3 rounded-full bg-white shadow transition-transform ${renameIconOn ? 'translate-x-3.5' : 'translate-x-0.5'}`} />
+                        </button>
+                      </div>
                     </div>
+
+                    {/* Icon upload — shown when toggle is on */}
+                    {renameIconOn && (
+                      <div className="flex items-center gap-2">
+                        <label className="flex flex-col items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-border bg-background cursor-pointer overflow-hidden shrink-0">
+                          {renameIcon
+                            ? <img src={renameIcon} className="w-full h-full object-cover rounded-full" />
+                            : <span className="text-[9px] text-muted-foreground text-center leading-tight">Upload</span>}
+                          <input type="file" accept="image/*" className="hidden" onChange={e => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            const reader = new FileReader();
+                            reader.onload = ev => setRenameIcon(ev.target?.result as string);
+                            reader.readAsDataURL(file);
+                          }} />
+                        </label>
+                        <span className="text-[9px] text-muted-foreground">Click circle to upload a round icon</span>
+                      </div>
+                    )}
+
+                    {/* Name (2) — short subtitle */}
+                    <div>
+                      <Label className="text-[9px] text-muted-foreground uppercase">Name (2) — Subtitle <span className="normal-case">(max 20 chars)</span></Label>
+                      <Input
+                        value={renameName2}
+                        onChange={e => setRenameName2(e.target.value.slice(0, 20))}
+                        className="h-7 text-xs font-mono"
+                        placeholder="Short subtitle…"
+                        maxLength={20}
+                      />
+                      <span className="text-[9px] text-muted-foreground">{renameName2.length}/20</span>
+                    </div>
+
+                    {/* Description — long */}
+                    <div>
+                      <Label className="text-[9px] text-muted-foreground uppercase">Description <span className="normal-case">(max 200 chars)</span></Label>
+                      <textarea
+                        value={renameDesc}
+                        onChange={e => setRenameDesc(e.target.value.slice(0, 200))}
+                        maxLength={200}
+                        rows={3}
+                        className="w-full rounded-md border border-input bg-background px-2 py-1 text-xs font-mono resize-none focus:outline-none focus:ring-1 focus:ring-ring"
+                        placeholder="Description…"
+                      />
+                      <span className="text-[9px] text-muted-foreground">{renameDesc.length}/200</span>
+                    </div>
+
                     <Button
                       size="sm"
                       disabled={renameApplying || !renameValue.trim()}
@@ -577,10 +647,15 @@ export default function Home() {
                           const res = await fetch(`/api/layers/${skewLayerId}/rename`, {
                             method: 'PATCH',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ name: renameValue.trim() }),
+                            body: JSON.stringify({
+                              name: renameValue.trim(),
+                              name2: renameName2.trim() || undefined,
+                              description: renameDesc.trim() || undefined,
+                              icon: renameIcon ?? undefined,
+                            }),
                           });
                           const updated = await res.json();
-                          setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, name: updated.name } : l));
+                          setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, name: updated.name, name2: updated.name2, description: updated.description, icon: updated.icon } : l));
                         } finally {
                           setRenameApplying(false);
                         }

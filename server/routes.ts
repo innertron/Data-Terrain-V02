@@ -70,7 +70,10 @@ async function ensureLayersTable(): Promise<void> {
     `);
     // Add params column to existing tables that predate this column
     await client.query(`
-      ALTER TABLE layers ADD COLUMN IF NOT EXISTS params TEXT
+      ALTER TABLE layers ADD COLUMN IF NOT EXISTS params TEXT;
+      ALTER TABLE layers ADD COLUMN IF NOT EXISTS name2 TEXT;
+      ALTER TABLE layers ADD COLUMN IF NOT EXISTS description TEXT;
+      ALTER TABLE layers ADD COLUMN IF NOT EXISTS icon TEXT
     `);
   } finally {
     client.release();
@@ -324,17 +327,22 @@ export async function registerRoutes(
     }
   });
 
-  // PATCH /api/layers/:id/rename — update layer display name
+  // PATCH /api/layers/:id/rename — update layer meta (name, name2, description, icon)
   app.patch("/api/layers/:id/rename", async (req, res) => {
     try {
       const id = Number(req.params.id);
-      const { name } = z.object({ name: z.string().min(1) }).parse(req.body);
-      const updated = await storage.updateLayerName(id, name);
-      res.json({ id: updated.id, name: updated.name });
+      const body = z.object({
+        name: z.string().min(1).optional(),
+        name2: z.string().max(20).optional(),
+        description: z.string().max(200).optional(),
+        icon: z.string().optional(),
+      }).parse(req.body);
+      const updated = await storage.updateLayerMeta(id, body);
+      res.json({ id: updated.id, name: updated.name, name2: updated.name2, description: updated.description, icon: updated.icon });
     } catch (err) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
       console.error(err);
-      res.status(500).json({ message: "Failed to rename layer" });
+      res.status(500).json({ message: "Failed to update layer" });
     }
   });
 

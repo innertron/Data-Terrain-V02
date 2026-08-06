@@ -25,6 +25,9 @@ export type InsertGridSegment = z.infer<typeof insertGridSegmentSchema>;
 export const layers = pgTable("layers", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
+  name2: text("name2"),                      // Short subtitle, max 20 chars
+  description: text("description"),          // Long description, max 200 chars
+  icon: text("icon"),                        // Base64 data URL for round icon
   color: text("color").notNull(),
   gridValues: text("grid_values").notNull(), // JSON-serialised number[][]
   active: boolean("active").notNull().default(true),
