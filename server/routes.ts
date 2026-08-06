@@ -272,6 +272,9 @@ export async function registerRoutes(
       const result = rows.map(r => ({
         id: r.id,
         name: r.name,
+        name2: r.name2 ?? null,
+        description: r.description ?? null,
+        icon: r.icon ?? null,
         color: r.color,
         active: r.active,
         gridValues: JSON.parse(r.gridValues) as number[][],

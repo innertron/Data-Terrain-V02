@@ -751,9 +751,25 @@ export default function Home() {
                         onClick={() => toggleLayer(layer.id)}
                         className="flex-1 flex items-center justify-between min-w-0"
                       >
-                        <span className="flex items-center gap-1.5 min-w-0">
-                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: '#a8d4d2' }} />
-                          <span className="text-[10px] uppercase tracking-wider text-black dark:text-white truncate">{layer.name}</span>
+                        <span className="flex items-start gap-1.5 min-w-0">
+                          {layer.icon ? (
+                            <img
+                              src={layer.icon}
+                              alt=""
+                              className="w-4 h-4 rounded-full shrink-0 object-cover mt-0.5"
+                            />
+                          ) : (
+                            <span className="w-2 h-2 rounded-full shrink-0 mt-1" style={{ backgroundColor: '#a8d4d2' }} />
+                          )}
+                          <span className="flex flex-col min-w-0 text-left">
+                            <span className="text-[10px] uppercase tracking-wider text-black dark:text-white truncate">{layer.name}</span>
+                            {layer.name2 && (
+                              <span className="text-[9px] text-muted-foreground truncate">{layer.name2}</span>
+                            )}
+                            {layer.description && (
+                              <span className="text-[9px] text-muted-foreground/70 truncate" title={layer.description}>{layer.description}</span>
+                            )}
+                          </span>
                         </span>
                         <span className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors shrink-0 ml-2 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: '#a8d4d2' } : {}}>
                           <span className={`w-3 h-3 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : 'translate-x-0'}`} />

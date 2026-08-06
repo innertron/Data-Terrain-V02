@@ -1,6 +1,9 @@
 export type LayerDef = {
   id: number;
   name: string;
+  name2?: string | null;        // Short subtitle
+  description?: string | null;  // Long description
+  icon?: string | null;         // Base64 data URL for round icon
   color: string;
   active: boolean;
   gridValues: number[][];
