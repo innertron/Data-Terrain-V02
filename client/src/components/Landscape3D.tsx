@@ -102,9 +102,9 @@ function Bar({
     >
       <boxGeometry args={[BAR_SIZE, height, BAR_SIZE]} />
       <meshStandardMaterial 
-        color={isSelected ? (isDark ? "#ffffff" : "#111111") : color} 
-        emissive={isSelected ? (isDark ? "#ffffff" : "#111111") : color}
-        emissiveIntensity={isDark ? (isSelected ? 0.8 : hovered ? 0.5 : 0.2) : (isSelected ? 0.6 : hovered ? 0.2 : 0)}
+        color={isSelected ? (isDark ? "#ffffff" : "#00c4b0") : color} 
+        emissive={isSelected ? (isDark ? "#ffffff" : "#00c4b0") : color}
+        emissiveIntensity={isDark ? (isSelected ? 0.8 : hovered ? 0.5 : 0.2) : (isSelected ? 0.5 : hovered ? 0.15 : 0)}
         roughness={isDark ? 0.2 : 0.6}
         metalness={isDark ? 0.8 : 0.1}
       />
