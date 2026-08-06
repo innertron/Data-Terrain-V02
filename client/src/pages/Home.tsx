@@ -793,7 +793,7 @@ export default function Home() {
                 ) : (
                   <div className="flex flex-col gap-1.5">
                     {layerResultsAtBlock.map((r, i) => (
-                      <div key={r.id} className="flex flex-col gap-1 rounded-lg border-2 border-black dark:border-zinc-300 px-2.5 py-2">
+                      <div key={r.id} className="flex flex-col gap-1 rounded-lg border-[1.5px] border-black dark:border-zinc-300 px-2.5 py-2">
                         {/* Row header: number · icon · name · name2 · pct */}
                         <div className="flex items-center justify-between gap-2">
                           <span className="text-xs font-mono text-foreground/60 shrink-0">{i + 1}.</span>
