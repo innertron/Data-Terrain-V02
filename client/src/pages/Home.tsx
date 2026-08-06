@@ -180,8 +180,8 @@ export default function Home() {
     const entries = activeLayers.map(id => {
       const layer = layerDefs.find(l => l.id === id);
       if (!layer) return null;
-      return { id, name: layer.name, value: layer.gridValues[row]?.[col] ?? 0 };
-    }).filter((r): r is { id: number; name: string; value: number } => !!r);
+      return { id, name: layer.name, name2: layer.name2 ?? null, description: layer.description ?? null, icon: layer.icon ?? null, value: layer.gridValues[row]?.[col] ?? 0 };
+    }).filter((r): r is { id: number; name: string; name2: string|null; description: string|null; icon: string|null; value: number } => !!r);
     const total = entries.reduce((s, r) => s + r.value, 0);
     return entries
       .map(r => ({ ...r, pct: total > 0 ? Math.round(r.value / total * 100) : 0 }))
@@ -766,9 +766,6 @@ export default function Home() {
                             {layer.name2 && (
                               <span className="text-[9px] text-muted-foreground truncate">{layer.name2}</span>
                             )}
-                            {layer.description && (
-                              <span className="text-[9px] text-muted-foreground/70 truncate" title={layer.description}>{layer.description}</span>
-                            )}
                           </span>
                         </span>
                         <span className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors shrink-0 ml-2 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: '#a8d4d2' } : {}}>
@@ -797,17 +794,33 @@ export default function Home() {
                   <div className="flex flex-col gap-1.5">
                     {layerResultsAtBlock.map((r, i) => (
                       <div key={r.id} className="flex flex-col gap-0.5">
+                        {/* Row header: number · icon · name · name2 · pct */}
                         <div className="flex items-center justify-between gap-2">
                           <span className="text-[10px] font-mono text-muted-foreground shrink-0">{i + 1}.</span>
-                          <span className="text-[10px] font-semibold text-foreground flex-1 truncate">{r.name}</span>
+                          {r.icon && (
+                            <img src={r.icon} alt="" className="w-4 h-4 rounded-full object-cover shrink-0" />
+                          )}
+                          <span className="flex flex-col min-w-0 flex-1">
+                            <span className="text-[10px] font-semibold text-foreground truncate">{r.name}</span>
+                            {r.name2 && (
+                              <span className="text-[9px] text-muted-foreground truncate">{r.name2}</span>
+                            )}
+                          </span>
                           <span className="text-[10px] font-mono text-foreground shrink-0">{r.pct}%</span>
                         </div>
+                        {/* Percentage bar */}
                         <div className="h-1.5 rounded-full bg-muted overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all duration-300"
                             style={{ width: `${r.pct}%`, backgroundColor: blockBarColor }}
                           />
                         </div>
+                        {/* Description box — only when set */}
+                        {r.description && (
+                          <div className="mt-0.5 px-2 py-1 rounded bg-muted/60 border border-border/40">
+                            <p className="text-[9px] text-muted-foreground leading-snug">{r.description}</p>
+                          </div>
+                        )}
                       </div>
                     ))}
                     <p className="text-[10px] text-muted-foreground font-mono mt-1">
