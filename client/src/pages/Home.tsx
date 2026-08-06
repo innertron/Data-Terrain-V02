@@ -662,8 +662,15 @@ export default function Home() {
                               icon: renameIcon ?? undefined,
                             }),
                           });
-                          const updated = await res.json();
-                          setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, name: updated.name, name2: updated.name2, description: updated.description, icon: updated.icon } : l));
+                          const data = await res.json();
+                          if (!res.ok) {
+                            toast({ title: "Save failed", description: data.message ?? "Unknown error", variant: "destructive" });
+                            return;
+                          }
+                          setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon } : l));
+                          toast({ title: "Layer saved", description: `"${data.name}" updated successfully.` });
+                        } catch (err) {
+                          toast({ title: "Save failed", description: "Network error — check connection.", variant: "destructive" });
                         } finally {
                           setRenameApplying(false);
                         }
