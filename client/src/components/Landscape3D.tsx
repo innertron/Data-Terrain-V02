@@ -102,9 +102,9 @@ function Bar({
     >
       <boxGeometry args={[BAR_SIZE, height, BAR_SIZE]} />
       <meshStandardMaterial 
-        color={isSelected ? "#ffffff" : color} 
-        emissive={color}
-        emissiveIntensity={isDark ? (isSelected ? 0.8 : hovered ? 0.5 : 0.2) : (isSelected ? 0.3 : hovered ? 0.1 : 0)}
+        color={isSelected ? (isDark ? "#ffffff" : "#111111") : color} 
+        emissive={isSelected ? (isDark ? "#ffffff" : "#111111") : color}
+        emissiveIntensity={isDark ? (isSelected ? 0.8 : hovered ? 0.5 : 0.2) : (isSelected ? 0.6 : hovered ? 0.2 : 0)}
         roughness={isDark ? 0.2 : 0.6}
         metalness={isDark ? 0.8 : 0.1}
       />
@@ -394,12 +394,12 @@ function FloatingLabel({ data, maxValue, isDark = true, displayValue, peopleValu
 
   return (
     <Html position={[xPos, yPos, zPos]} center style={{ pointerEvents: 'none' }}>
-      <div className={`backdrop-blur-md p-2 rounded-lg shadow-2xl min-w-[147px] transform transition-all duration-200 ${isDark ? 'bg-black/60 border border-primary/50' : 'bg-white/65 border border-gray-300/70'}`}>
-        <div className={`space-y-0.5 font-mono ${isDark ? 'text-muted-foreground' : 'text-gray-600'}`} style={{ fontSize: '11px' }}>
-          <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Domain:</span><span>{domainLabel}</span></div>
-          <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Income/Edu:</span><span>{incomeLabel}</span></div>
-          <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>People:</span><span>{(peopleValue ?? effectiveVal).toLocaleString()}</span></div>
-          <div className="flex justify-between gap-4"><span className={isDark ? 'text-white' : 'text-black font-bold'}>Segment:</span><span>[{data.xIndex},{data.zIndex}]</span></div>
+      <div className={`backdrop-blur-md p-2 rounded-lg shadow-2xl min-w-[147px] transform transition-all duration-200 ${isDark ? 'bg-black/60 border border-primary/50' : 'bg-gray-900/85 border border-gray-600'}`}>
+        <div className="space-y-0.5 font-mono text-gray-300" style={{ fontSize: '11px' }}>
+          <div className="flex justify-between gap-4"><span className="text-white font-bold">Domain:</span><span>{domainLabel}</span></div>
+          <div className="flex justify-between gap-4"><span className="text-white font-bold">Income/Edu:</span><span>{incomeLabel}</span></div>
+          <div className="flex justify-between gap-4"><span className="text-white font-bold">People:</span><span>{(peopleValue ?? effectiveVal).toLocaleString()}</span></div>
+          <div className="flex justify-between gap-4"><span className="text-white font-bold">Segment:</span><span>[{data.xIndex},{data.zIndex}]</span></div>
         </div>
       </div>
     </Html>
