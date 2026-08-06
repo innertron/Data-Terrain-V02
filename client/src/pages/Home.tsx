@@ -793,20 +793,20 @@ export default function Home() {
                 ) : (
                   <div className="flex flex-col gap-1.5">
                     {layerResultsAtBlock.map((r, i) => (
-                      <div key={r.id} className="flex flex-col gap-0.5">
+                      <div key={r.id} className="flex flex-col gap-1 rounded-lg border border-border px-2.5 py-2">
                         {/* Row header: number · icon · name · name2 · pct */}
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-mono text-muted-foreground shrink-0">{i + 1}.</span>
+                          <span className="text-xs font-mono text-foreground/60 shrink-0">{i + 1}.</span>
                           {r.icon && (
-                            <img src={r.icon} alt="" className="w-4 h-4 rounded-full object-cover shrink-0" />
+                            <img src={r.icon} alt="" className="w-6 h-6 rounded-full object-cover shrink-0" />
                           )}
                           <span className="flex flex-col min-w-0 flex-1">
-                            <span className="text-[10px] font-semibold text-foreground truncate">{r.name}</span>
+                            <span className="text-xs font-semibold text-foreground truncate">{r.name}</span>
                             {r.name2 && (
-                              <span className="text-[9px] text-muted-foreground truncate">{r.name2}</span>
+                              <span className="text-[11px] text-foreground/70 truncate">{r.name2}</span>
                             )}
                           </span>
-                          <span className="text-[10px] font-mono text-foreground shrink-0">{r.pct}%</span>
+                          <span className="text-xs font-mono font-bold text-foreground shrink-0">{r.pct}%</span>
                         </div>
                         {/* Percentage bar */}
                         <div className="h-1.5 rounded-full bg-muted overflow-hidden">
@@ -815,11 +815,9 @@ export default function Home() {
                             style={{ width: `${r.pct}%`, backgroundColor: blockBarColor }}
                           />
                         </div>
-                        {/* Description box — only when set */}
+                        {/* Description — inside the card, below bar */}
                         {r.description && (
-                          <div className="mt-0.5 px-2 py-1 rounded bg-muted/60 border border-border/40">
-                            <p className="text-[9px] text-muted-foreground leading-snug">{r.description}</p>
-                          </div>
+                          <p className="text-[11px] text-foreground/80 leading-snug pt-0.5">{r.description}</p>
                         )}
                       </div>
                     ))}
