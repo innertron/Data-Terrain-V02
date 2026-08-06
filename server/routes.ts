@@ -215,14 +215,13 @@ const LAYER_DEFINITIONS = [
   },
 ];
 
-/** Inserts any layer definitions that do not yet exist in the DB (by name).
- *  Never overwrites existing rows — preserves any Adjust Skew changes. */
+/** Inserts default layer definitions only when the table is completely empty.
+ *  Once any layers exist (FANS or otherwise), this is a no-op. */
 async function seedLayers() {
   const existing = await storage.getLayers();
-  const existingNames = new Set(existing.map(l => l.name));
+  if (existing.length > 0) return;
 
-  const toInsert = LAYER_DEFINITIONS.filter(d => !existingNames.has(d.name));
-  if (toInsert.length === 0) return;
+  const toInsert = LAYER_DEFINITIONS;
 
   const records = toInsert.map(d => ({
     name: d.name,
