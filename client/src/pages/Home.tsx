@@ -568,18 +568,9 @@ export default function Home() {
                   <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Rename Layer</p>
 
-                    {/* Row 1: Name (1) + Icon toggle */}
-                    <div className="flex gap-2 items-start">
-                      <div className="flex-1">
-                        <Label className="text-[9px] text-muted-foreground uppercase">Name (1) — Main</Label>
-                        <Input
-                          value={renameValue}
-                          onChange={e => setRenameValue(e.target.value)}
-                          className="h-7 text-xs font-mono uppercase"
-                          placeholder="LAYER NAME…"
-                        />
-                      </div>
-                      <div className="flex flex-col items-center gap-1 pt-4">
+                    {/* Icon toggle + upload */}
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
                         <Label className="text-[9px] text-muted-foreground uppercase">Icon</Label>
                         <button
                           type="button"
@@ -589,47 +580,56 @@ export default function Home() {
                           <span className={`inline-block h-3 w-3 rounded-full bg-white shadow transition-transform ${renameIconOn ? 'translate-x-3.5' : 'translate-x-0.5'}`} />
                         </button>
                       </div>
-                    </div>
-
-                    {/* Icon upload — shown when toggle is on */}
-                    {renameIconOn && (
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2">
-                          <label className="flex flex-col items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-border bg-background cursor-pointer overflow-hidden shrink-0">
-                            {renameIcon
-                              ? <img src={renameIcon} className="w-full h-full object-cover rounded-full" />
-                              : <span className="text-[9px] text-muted-foreground text-center leading-tight">Upload</span>}
-                            <input type="file" accept="image/jpeg,image/png" className="hidden" onChange={e => {
-                              const file = e.target.files?.[0];
-                              if (!file) return;
-                              if (!['image/jpeg', 'image/png'].includes(file.type)) {
-                                alert('Only JPG or PNG files are allowed.');
-                                e.target.value = '';
-                                return;
-                              }
-                              const img = new Image();
-                              const url = URL.createObjectURL(file);
-                              img.onload = () => {
-                                URL.revokeObjectURL(url);
-                                if (img.width > 150 || img.height > 150) {
-                                  alert(`Image must be 150×150 px or smaller (yours is ${img.width}×${img.height}).`);
+                      {renameIconOn && (
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center gap-2">
+                            <label className="flex flex-col items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-border bg-background cursor-pointer overflow-hidden shrink-0">
+                              {renameIcon
+                                ? <img src={renameIcon} className="w-full h-full object-cover rounded-full" />
+                                : <span className="text-[9px] text-muted-foreground text-center leading-tight">Upload</span>}
+                              <input type="file" accept="image/jpeg,image/png" className="hidden" onChange={e => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                                  alert('Only JPG or PNG files are allowed.');
                                   e.target.value = '';
                                   return;
                                 }
-                                const reader = new FileReader();
-                                reader.onload = ev => setRenameIcon(ev.target?.result as string);
-                                reader.readAsDataURL(file);
-                              };
-                              img.src = url;
-                            }} />
-                          </label>
-                          <span className="text-[9px] text-muted-foreground">Click circle to upload</span>
+                                const img = new Image();
+                                const url = URL.createObjectURL(file);
+                                img.onload = () => {
+                                  URL.revokeObjectURL(url);
+                                  if (img.width > 150 || img.height > 150) {
+                                    alert(`Image must be 150×150 px or smaller (yours is ${img.width}×${img.height}).`);
+                                    e.target.value = '';
+                                    return;
+                                  }
+                                  const reader = new FileReader();
+                                  reader.onload = ev => setRenameIcon(ev.target?.result as string);
+                                  reader.readAsDataURL(file);
+                                };
+                                img.src = url;
+                              }} />
+                            </label>
+                            <span className="text-[9px] text-muted-foreground">Click circle to upload</span>
+                          </div>
+                          <p className="text-[9px] font-semibold" style={{ color: '#8b0000' }}>
+                            JPG or PNG only · max 150×150 px · square images work best
+                          </p>
                         </div>
-                        <p className="text-[9px] font-semibold" style={{ color: '#8b0000' }}>
-                          JPG or PNG only · max 150×150 px · square images work best
-                        </p>
-                      </div>
-                    )}
+                      )}
+                    </div>
+
+                    {/* Name (1) — main */}
+                    <div>
+                      <Label className="text-[9px] text-muted-foreground uppercase">Name (1) — Main</Label>
+                      <Input
+                        value={renameValue}
+                        onChange={e => setRenameValue(e.target.value)}
+                        className="h-7 text-xs font-mono uppercase"
+                        placeholder="LAYER NAME…"
+                      />
+                    </div>
 
                     {/* Name (2) — short subtitle */}
                     <div>
