@@ -385,12 +385,9 @@ export default function Home() {
                </div>
              </div>
              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0" style={detailBgStyle}>
-               <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block shrink-0">Income / Education (Z)</Label>
-               <div className="text-xl font-bold shrink-0 mb-1" style={{ color: isDark ? '#ffffff' : '#000000' }}>
-                 {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
-               </div>
-               <div className="text-xs leading-snug overflow-y-auto text-foreground/80" style={{ maxHeight: '72px' }}>
-                 {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
+               <div className="text-xs leading-snug overflow-y-auto" style={{ maxHeight: '80px' }}>
+                 <span className="uppercase tracking-wider font-bold text-muted-foreground">Income / Education (Z)</span>{' '}
+                 <span className="text-foreground/80">{Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}</span>
                </div>
              </div>
            </div>
