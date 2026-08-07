@@ -300,7 +300,8 @@ export default function Home() {
     <div className="h-screen w-screen flex flex-col md:flex-row overflow-hidden bg-background text-foreground">
       
       {/* 3D Viewport - Takes dominant space */}
-      <div className="flex-1 relative h-[60vh] md:h-auto order-2 md:order-1">
+      <div className="flex-1 flex flex-col min-h-0 order-2 md:order-1">
+       <div className="flex-1 relative min-h-0">
         <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} effectiveValues={effectiveValues} rawLayerValues={rawLayerValues} onCameraChange={(x,y,z) => setCameraPos({x,y,z})} />
         
         {/* Header Overlay — left: minedICE logo, right: project title + dates */}
@@ -342,10 +343,59 @@ export default function Home() {
             </div>
           )}
         </div>
-      </div>
+       </div>{/* end inner terrain */}
+
+       {/* ── Bottom Bar — only when a segment is selected */}
+       {selectedSegment && (
+         <div className="flex border-t border-border bg-card shrink-0">
+           {/* Left: LAYERS/DETAILS tabs + 2×2 stats pills */}
+           <div className="flex flex-col gap-2 p-3 border-r border-border" style={{ width: '42%' }}>
+             <div className="flex items-center bg-muted rounded-lg p-0.5 text-[11px] font-semibold tracking-wider shrink-0">
+               <button
+                 onClick={() => setLayerMode('layers')}
+                 className={`flex-1 py-1.5 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+               >LAYERS</button>
+               <button
+                 onClick={() => setLayerMode('details')}
+                 className={`flex-1 py-1.5 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+               >DETAILS</button>
+             </div>
+             <div className="flex flex-col gap-1.5">
+               <div className="flex gap-1.5">
+                 <Badge variant="outline" className="font-mono text-[11px] px-2 py-1 flex-1 justify-center">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
+                 <Badge variant="outline" className="font-mono text-[11px] px-2 py-1 flex-1 justify-center">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
+               </div>
+               <div className="flex gap-1.5">
+                 <Badge variant="outline" className="font-mono text-[11px] px-2 py-1 flex-1 justify-center">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
+                 <Badge variant="outline" className="font-mono text-[11px] px-2 py-1 flex-1 justify-center">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
+               </div>
+             </div>
+           </div>
+           {/* Right: Political Domain + Income/Education */}
+           <div className="flex flex-col gap-2 p-3 flex-1">
+             <div className="p-2.5 rounded-lg border border-border/40 flex-1" style={detailBgStyle}>
+               <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Political Domain (X)</Label>
+               <div className="text-sm font-medium leading-snug">
+                 <span className="font-bold" style={{ color: isDark ? '#ffffff' : '#000000' }}>
+                   {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
+                 </span>: {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
+               </div>
+             </div>
+             <div className="p-2.5 rounded-lg border border-border/40 flex-1" style={detailBgStyle}>
+               <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Income / Education (Z)</Label>
+               <div className="text-sm font-medium leading-snug">
+                 <span className="font-bold" style={{ color: isDark ? '#ffffff' : '#000000' }}>
+                   {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
+                 </span>: {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
+               </div>
+             </div>
+           </div>
+         </div>
+       )}
+      </div>{/* end left column */}
 
       {/* Sidebar Control Panel */}
-      <div className="w-full md:w-[350px] lg:w-[400px] h-full bg-card border-l border-border flex flex-col shadow-2xl z-20 order-1 md:order-2">
+      <div className="w-full md:w-[460px] lg:w-[530px] h-full bg-card border-l border-border flex flex-col shadow-2xl z-20 order-1 md:order-2">
         <div className="px-3 py-1.5 border-b border-border bg-black/20 relative">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold flex items-center gap-1.5">
@@ -684,50 +734,6 @@ export default function Home() {
               )}
             </div>
           )}
-
-          {/* Segment cards — always visible when a bar is selected */}
-          {selectedSegment && (
-            <div className="flex flex-col gap-3 shrink-0 animate-in slide-in-from-right-4 duration-300">
-              <div className="flex items-center justify-between">
-                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
-                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
-                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
-                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
-              </div>
-              <div className="space-y-3">
-                <div className="p-2.5 rounded-lg border border-border/40" style={detailBgStyle}>
-                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Political Domain (X)</Label>
-                  <div className="text-xs font-medium leading-snug">
-                    <span className="font-bold" style={{ color: isDark ? '#ffffff' : '#000000' }}>
-                      {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
-                    </span>
-                    : {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
-                  </div>
-                </div>
-                <div className="p-2.5 rounded-lg border border-border/40" style={detailBgStyle}>
-                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Income / Education (Z)</Label>
-                  <div className="text-sm font-medium leading-snug">
-                    <span className="font-bold" style={{ color: isDark ? '#ffffff' : '#000000' }}>
-                      {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
-                    </span>
-                    : {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* LAYERS / DETAILS tab switcher — always visible */}
-          <div className="flex items-center bg-muted rounded-lg p-0.5 text-[10px] font-semibold tracking-wider shrink-0">
-            <button
-              onClick={() => setLayerMode('layers')}
-              className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-            >LAYERS</button>
-            <button
-              onClick={() => setLayerMode('details')}
-              className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-            >DETAILS</button>
-          </div>
 
           {/* Switching content */}
           {layerMode === 'layers' ? (
