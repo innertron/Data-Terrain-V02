@@ -349,29 +349,29 @@ export default function Home() {
        {selectedSegment && (
          <div className="flex border-t border-border bg-card shrink-0">
            {/* Left: LAYERS/DETAILS tabs + stats pills */}
-           <div className="flex flex-col p-3 border-r border-border" style={{ width: '42%' }}>
+           <div className="flex flex-col p-2 border-r border-border" style={{ width: '28%' }}>
              {/* Tabs — top */}
-             <div className="flex items-center bg-muted rounded-lg p-0.5 text-sm font-semibold tracking-wider shrink-0">
+             <div className="flex items-center bg-muted rounded-lg p-0.5 text-[10px] font-semibold tracking-wider shrink-0">
                <button
                  onClick={() => setLayerMode('layers')}
-                 className={`flex-1 py-2 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                 className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                >LAYERS</button>
                <button
                  onClick={() => setLayerMode('details')}
-                 className={`flex-1 py-2 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                 className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                >DETAILS</button>
              </div>
              {/* ID:SEG + People — vertically centred */}
              <div className="flex-1 flex items-center">
-               <div className="flex gap-1.5 w-full">
-                 <Badge variant="outline" className="font-mono text-sm px-3 py-2 flex-1 justify-center">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
-                 <Badge variant="outline" className="font-mono text-sm px-3 py-2 flex-1 justify-center">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
+               <div className="flex gap-1 w-full">
+                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
+                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
                </div>
              </div>
              {/* POS + CamPos — pinned to bottom */}
-             <div className="flex gap-1.5 shrink-0">
-               <Badge variant="outline" className="font-mono text-sm px-3 py-2 flex-1 justify-center">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
-               <Badge variant="outline" className="font-mono text-sm px-3 py-2 flex-1 justify-center">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
+             <div className="flex gap-1 shrink-0">
+               <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
+               <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
              </div>
            </div>
            {/* Right: Political Domain + Income/Education */}
