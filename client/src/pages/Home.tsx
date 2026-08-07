@@ -378,7 +378,7 @@ export default function Home() {
            <div className="flex flex-col gap-2 p-3 flex-1">
              <div className="p-3 rounded-lg border border-border/40 flex-1" style={detailBgStyle}>
                <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Political Domain (X)</Label>
-               <div className="text-base font-medium leading-snug">
+               <div className="text-xl font-medium leading-snug">
                  <span className="font-bold" style={{ color: isDark ? '#ffffff' : '#000000' }}>
                    {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
                  </span>: {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
@@ -386,7 +386,7 @@ export default function Home() {
              </div>
              <div className="p-3 rounded-lg border border-border/40 flex-1" style={detailBgStyle}>
                <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Income / Education (Z)</Label>
-               <div className="text-base font-medium leading-snug">
+               <div className="text-xl font-medium leading-snug">
                  <span className="font-bold" style={{ color: isDark ? '#ffffff' : '#000000' }}>
                    {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
                  </span>: {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
@@ -810,12 +810,12 @@ export default function Home() {
                             <img src={r.icon} alt="" className="w-8 h-8 rounded-full object-cover shrink-0" />
                           )}
                           <span className="flex flex-col min-w-0 flex-1">
-                            <span className="text-base font-semibold text-foreground truncate">{r.name}</span>
+                            <span className="text-xl font-semibold text-foreground truncate">{r.name}</span>
                             {r.name2 && (
-                              <span className="text-sm text-foreground/70 truncate">{r.name2}</span>
+                              <span className="text-base text-foreground/70 truncate">{r.name2}</span>
                             )}
                           </span>
-                          <span className="text-base font-mono font-bold text-foreground shrink-0">{r.pct}%</span>
+                          <span className="text-xl font-mono font-bold text-foreground shrink-0">{r.pct}%</span>
                         </div>
                         {/* Percentage bar */}
                         <div className="h-2 rounded-full bg-muted overflow-hidden">
@@ -826,7 +826,7 @@ export default function Home() {
                         </div>
                         {/* Description — inside the card, below bar */}
                         {r.description && (
-                          <p className="text-sm text-foreground/80 leading-snug pt-0.5">{r.description}</p>
+                          <p className="text-base text-foreground/80 leading-snug pt-0.5">{r.description}</p>
                         )}
                       </div>
                     ))}
