@@ -99,6 +99,19 @@ const Z_MIDDLE_NAMES = [
   '<$34K → Educational/training profile: unemployment or intermittent work, retired status, and government-support income. Outcome = unemployment, underemployment, part-time low-wage work, limited retirement income, or government assistance. Observed cases: Social Security-dependent retirees, students with limited earnings, part-time service staff, gig workers, caregivers, cleaners, warehouse employees, seasonal laborers, entry-level retail and food-service workers, clerical workers, hospitality staff, and households combining public benefits, family support, savings, or part-time wages.',
 ];
 
+function renderConverged(text: string) {
+  const parts = text.split(/(Educational\/training profile:|Outcome =|Observed cases:)/g);
+  return (
+    <>
+      {parts.map((part, i) =>
+        part === 'Educational/training profile:' || part === 'Outcome =' || part === 'Observed cases:'
+          ? <strong key={i}>{part}</strong>
+          : <span key={i}>{part}</span>
+      )}
+    </>
+  );
+}
+
 export default function Home() {
   const [selectedSegment, setSelectedSegment] = useState<GridSegment | null>(null);
   const [cameraPos, setCameraPos] = useState<{x:number,y:number,z:number}>({ x: -25, y: 30, z: 25 });
@@ -387,7 +400,7 @@ export default function Home() {
              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0" style={detailBgStyle}>
                <div className="text-xs leading-snug overflow-y-auto" style={{ maxHeight: '80px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Income / Education (Z)</span>{' '}
-                 <span className="text-foreground/80">{Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}</span>
+                 <span className="text-foreground/80">{renderConverged(Z_MIDDLE_NAMES[selectedSegment.zIndex] || '')}</span>
                </div>
              </div>
            </div>
