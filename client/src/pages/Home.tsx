@@ -119,7 +119,7 @@ export default function Home() {
   const [renameIconOn, setRenameIconOn] = useState(false);
   const [renameApplying, setRenameApplying] = useState(false);
   const [surfMode, setSurfMode] = useState(false);
-  const [layerMode, setLayerMode] = useState<'layers' | 'details'>('layers');
+  const [layerMode, setLayerMode] = useState<'layers' | 'details'>('details');
   const [layerDefs, setLayerDefs] = useState<LayerDef[]>([]);
   const [activeLayers, setActiveLayers] = useState<number[]>([]);
   const isAdmin = import.meta.env.DEV;
@@ -348,42 +348,45 @@ export default function Home() {
        {/* ── Bottom Bar — only when a segment is selected */}
        {selectedSegment && (
          <div className="flex border-t border-border bg-card shrink-0">
-           {/* Left: LAYERS/DETAILS tabs + 2×2 stats pills */}
-           <div className="flex flex-col gap-2 p-3 border-r border-border" style={{ width: '42%' }}>
-             <div className="flex items-center bg-muted rounded-lg p-0.5 text-[11px] font-semibold tracking-wider shrink-0">
+           {/* Left: LAYERS/DETAILS tabs + stats pills */}
+           <div className="flex flex-col p-3 border-r border-border" style={{ width: '42%' }}>
+             {/* Tabs — top */}
+             <div className="flex items-center bg-muted rounded-lg p-0.5 text-sm font-semibold tracking-wider shrink-0">
                <button
                  onClick={() => setLayerMode('layers')}
-                 className={`flex-1 py-1.5 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                 className={`flex-1 py-2 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                >LAYERS</button>
                <button
                  onClick={() => setLayerMode('details')}
-                 className={`flex-1 py-1.5 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                 className={`flex-1 py-2 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                >DETAILS</button>
              </div>
-             <div className="flex flex-col gap-1.5">
-               <div className="flex gap-1.5">
-                 <Badge variant="outline" className="font-mono text-[11px] px-2 py-1 flex-1 justify-center">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
-                 <Badge variant="outline" className="font-mono text-[11px] px-2 py-1 flex-1 justify-center">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
+             {/* ID:SEG + People — vertically centred */}
+             <div className="flex-1 flex items-center">
+               <div className="flex gap-1.5 w-full">
+                 <Badge variant="outline" className="font-mono text-sm px-3 py-2 flex-1 justify-center">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
+                 <Badge variant="outline" className="font-mono text-sm px-3 py-2 flex-1 justify-center">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
                </div>
-               <div className="flex gap-1.5">
-                 <Badge variant="outline" className="font-mono text-[11px] px-2 py-1 flex-1 justify-center">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
-                 <Badge variant="outline" className="font-mono text-[11px] px-2 py-1 flex-1 justify-center">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
-               </div>
+             </div>
+             {/* POS + CamPos — pinned to bottom */}
+             <div className="flex gap-1.5 shrink-0">
+               <Badge variant="outline" className="font-mono text-sm px-3 py-2 flex-1 justify-center">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
+               <Badge variant="outline" className="font-mono text-sm px-3 py-2 flex-1 justify-center">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
              </div>
            </div>
            {/* Right: Political Domain + Income/Education */}
            <div className="flex flex-col gap-2 p-3 flex-1">
-             <div className="p-2.5 rounded-lg border border-border/40 flex-1" style={detailBgStyle}>
-               <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Political Domain (X)</Label>
-               <div className="text-sm font-medium leading-snug">
+             <div className="p-3 rounded-lg border border-border/40 flex-1" style={detailBgStyle}>
+               <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Political Domain (X)</Label>
+               <div className="text-base font-medium leading-snug">
                  <span className="font-bold" style={{ color: isDark ? '#ffffff' : '#000000' }}>
                    {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}
                  </span>: {X_MIDDLE_NAMES[selectedSegment.xIndex] || ''}
                </div>
              </div>
-             <div className="p-2.5 rounded-lg border border-border/40 flex-1" style={detailBgStyle}>
-               <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5 block">Income / Education (Z)</Label>
-               <div className="text-sm font-medium leading-snug">
+             <div className="p-3 rounded-lg border border-border/40 flex-1" style={detailBgStyle}>
+               <Label className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">Income / Education (Z)</Label>
+               <div className="text-base font-medium leading-snug">
                  <span className="font-bold" style={{ color: isDark ? '#ffffff' : '#000000' }}>
                    {Z_LABELS[selectedSegment.zIndex] || selectedSegment.zLabel}
                  </span>: {Z_MIDDLE_NAMES[selectedSegment.zIndex] || ''}
@@ -768,9 +771,9 @@ export default function Home() {
                             <span className="w-2 h-2 rounded-full shrink-0 mt-1" style={{ backgroundColor: '#a8d4d2' }} />
                           )}
                           <span className="flex flex-col min-w-0 text-left">
-                            <span className="text-[10px] uppercase tracking-wider text-black dark:text-white truncate">{layer.name}</span>
+                            <span className="text-sm uppercase tracking-wider text-black dark:text-white truncate">{layer.name}</span>
                             {layer.name2 && (
-                              <span className="text-[9px] text-muted-foreground truncate">{layer.name2}</span>
+                              <span className="text-xs text-muted-foreground truncate">{layer.name2}</span>
                             )}
                           </span>
                         </span>
@@ -791,31 +794,31 @@ export default function Home() {
           ) : (
             selectedSegment ? (
               <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0" style={detailBgStyle}>
-                <Label className="text-[10px] uppercase tracking-wider text-primary mb-1.5 block shrink-0">
+                <Label className="text-sm uppercase tracking-wider text-primary mb-2 block shrink-0">
                   Results — [{selectedSegment.xIndex},{selectedSegment.zIndex}]
                 </Label>
                 {layerResultsAtBlock.length === 0 ? (
-                  <div className="text-xs text-muted-foreground italic">— no active layers —</div>
+                  <div className="text-sm text-muted-foreground italic">— no active layers —</div>
                 ) : (
-                  <div className="flex flex-col gap-1.5">
+                  <div className="flex flex-col gap-2">
                     {layerResultsAtBlock.map((r, i) => (
-                      <div key={r.id} className="flex flex-col gap-1 rounded-lg border-[1.5px] border-black dark:border-zinc-300 px-2.5 py-2">
+                      <div key={r.id} className="flex flex-col gap-2 rounded-lg border-[1.5px] border-black dark:border-zinc-300 px-3 py-3">
                         {/* Row header: number · icon · name · name2 · pct */}
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs font-mono text-foreground/60 shrink-0">{i + 1}.</span>
+                          <span className="text-sm font-mono text-foreground/60 shrink-0">{i + 1}.</span>
                           {r.icon && (
-                            <img src={r.icon} alt="" className="w-6 h-6 rounded-full object-cover shrink-0" />
+                            <img src={r.icon} alt="" className="w-8 h-8 rounded-full object-cover shrink-0" />
                           )}
                           <span className="flex flex-col min-w-0 flex-1">
-                            <span className="text-xs font-semibold text-foreground truncate">{r.name}</span>
+                            <span className="text-base font-semibold text-foreground truncate">{r.name}</span>
                             {r.name2 && (
-                              <span className="text-[11px] text-foreground/70 truncate">{r.name2}</span>
+                              <span className="text-sm text-foreground/70 truncate">{r.name2}</span>
                             )}
                           </span>
-                          <span className="text-xs font-mono font-bold text-foreground shrink-0">{r.pct}%</span>
+                          <span className="text-base font-mono font-bold text-foreground shrink-0">{r.pct}%</span>
                         </div>
                         {/* Percentage bar */}
-                        <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                        <div className="h-2 rounded-full bg-muted overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all duration-300"
                             style={{ width: `${r.pct}%`, backgroundColor: blockBarColor }}
@@ -823,11 +826,11 @@ export default function Home() {
                         </div>
                         {/* Description — inside the card, below bar */}
                         {r.description && (
-                          <p className="text-[11px] text-foreground/80 leading-snug pt-0.5">{r.description}</p>
+                          <p className="text-sm text-foreground/80 leading-snug pt-0.5">{r.description}</p>
                         )}
                       </div>
                     ))}
-                    <p className="text-[10px] text-muted-foreground font-mono mt-1">
+                    <p className="text-xs text-muted-foreground font-mono mt-1">
                       total · {layerResultsAtBlock.reduce((s, r) => s + r.value, 0)} · {layerResultsAtBlock.length} layer{layerResultsAtBlock.length > 1 ? 's' : ''}
                     </p>
                   </div>
