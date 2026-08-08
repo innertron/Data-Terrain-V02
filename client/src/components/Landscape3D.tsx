@@ -426,7 +426,10 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isLockedRef = useRef(false);
+  const [isLocked, setIsLocked] = useState(false);
+  const [hoverCountdown, setHoverCountdown] = useState<number | null>(null);
 
   // Only show the full-screen loader on first load (no data yet).
   // On subsequent refetches keepPreviousData keeps segments defined, so the
@@ -574,9 +577,9 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
         <div className={`flex gap-3 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white bg-black/40 border border-white/10' : 'text-black font-bold bg-gray-200 border border-gray-300'}`}>
           <span>Hover — live</span>
           <span>•</span>
-          <span>Click — lock</span>
+          <span>Click on area to scroll below</span>
           <span>•</span>
-          <span>Hover 3s — unlock</span>
+          <span className={isLocked ? 'text-red-600 font-bold' : ''}>{isLocked && hoverCountdown !== null ? `Hover ${hoverCountdown}s — unlock` : 'Hover 3s — unlock'}</span>
         </div>
       </div>
     </div>
