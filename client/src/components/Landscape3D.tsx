@@ -564,14 +564,14 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
       
       {/* Overlay UI hints */}
       <div className="absolute bottom-1 left-4 right-4 pointer-events-none opacity-40 hover:opacity-90 transition-opacity flex items-center justify-between">
-        <div className={`flex gap-2 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white bg-black/40 border border-white/10' : 'text-gray-900 bg-gray-200 border border-gray-300'}`}>
+        <div className={`flex gap-2 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white bg-black/40 border border-white/10' : 'text-gray-900 bg-gray-400 border border-gray-500'}`}>
           <span>LMB: Rotate</span>
           <span>•</span>
           <span>RMB: Pan</span>
           <span>•</span>
           <span>Scroll: Zoom</span>
         </div>
-        <div className={`flex gap-3 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white bg-black/40 border border-white/10' : 'text-gray-900 bg-gray-200 border border-gray-300'}`}>
+        <div className={`flex gap-3 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white bg-black/40 border border-white/10' : 'text-gray-900 bg-gray-400 border border-gray-500'}`}>
           <span>Hover — live</span>
           <span>•</span>
           <span>Click — lock</span>
