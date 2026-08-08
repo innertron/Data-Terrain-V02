@@ -599,7 +599,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
       </Canvas>
       
       {/* Overlay UI hints */}
-      <div className="absolute bottom-1 left-4 right-4 pointer-events-none opacity-40 hover:opacity-90 transition-opacity flex items-center justify-between">
+      <div className={`absolute bottom-1 left-4 right-4 pointer-events-none transition-opacity flex items-center justify-between ${isLocked ? 'opacity-100' : 'opacity-40'}`}>
         <div className={`flex gap-2 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white bg-black/40 border border-white/10' : 'text-black font-bold bg-gray-200 border border-gray-300'}`}>
           <span>LMB: Rotate</span>
           <span>•</span>
@@ -607,12 +607,14 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
           <span>•</span>
           <span>Scroll: Zoom</span>
         </div>
-        <div className={`flex gap-3 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white bg-black/40 border border-white/10' : 'text-black font-bold bg-gray-200 border border-gray-300'}`}>
-          <span>Hover — live</span>
-          <span>•</span>
-          <span>Click on area to scroll below</span>
-          <span>•</span>
-          <span className={isLocked ? 'text-red-600 font-bold' : ''}>{isLocked && hoverCountdown !== null ? `Hover ${hoverCountdown}s — unlock` : 'Hover 3s — unlock'}</span>
+        <div className={`flex gap-3 text-xs font-mono px-3 py-1 rounded-full ${isLocked ? (isDark ? 'bg-black/60 border border-red-800' : 'bg-gray-200 border border-red-400') : (isDark ? 'bg-black/40 border border-white/10' : 'bg-gray-200 border border-gray-300')}`}>
+          <span className={isDark ? 'text-white' : 'text-black font-bold'}>Hover — live</span>
+          <span className={isDark ? 'text-white' : 'text-black font-bold'}>•</span>
+          <span className={isDark ? 'text-white' : 'text-black font-bold'}>Click on area to scroll below</span>
+          <span className={isDark ? 'text-white' : 'text-black font-bold'}>•</span>
+          <span className={isLocked ? 'text-red-500 font-bold' : (isDark ? 'text-white' : 'text-black font-bold')}>
+            {isLocked && hoverCountdown !== null ? `Hover ${hoverCountdown}s — unlock` : 'Hover 3s — unlock'}
+          </span>
         </div>
       </div>
     </div>
