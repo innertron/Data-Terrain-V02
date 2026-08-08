@@ -397,52 +397,50 @@ export default function Home() {
        {selectedSegment && (
          <div className="flex border-t border-border bg-card shrink-0">
            {/* Left: LAYERS/DETAILS tabs + controls + stats pills */}
-           <div className="flex flex-col p-2 justify-evenly border-r border-border" style={{ width: '28%' }}>
-             {/* Tabs — top */}
-             <div className="flex items-center bg-muted rounded-lg p-0.5 text-[10px] font-semibold tracking-wider shrink-0">
-               <button
-                 onClick={() => setLayerMode('layers')}
-                 className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-               >LAYERS</button>
-               <button
-                 onClick={() => setLayerMode('details')}
-                 className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-               >DETAILS</button>
-             </div>
-             {/* Theme + Surf Mode — 2-column grid matching badge rows */}
-             <div className="flex flex-col gap-1 shrink-0">
-               <div className="flex gap-1">
-                 <button onClick={() => setTheme('dark')} className={`flex-1 flex items-center justify-center gap-0.5 text-[9px] font-mono py-0.5 px-1 rounded border transition-colors ${theme === 'dark' ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
-                   <Moon className="w-2.5 h-2.5" /> Dark
-                 </button>
-                 <button onClick={() => setTheme('light')} className={`flex-1 flex items-center justify-center gap-0.5 text-[9px] font-mono py-0.5 px-1 rounded border transition-colors ${theme === 'light' ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
-                   <Sun className="w-2.5 h-2.5" /> Light
-                 </button>
-               </div>
-               <div className="flex gap-1">
-                 <button onClick={() => setSurfMode(v => !v)} className={`flex-1 flex items-center justify-between text-[9px] font-mono py-0.5 px-1.5 rounded border transition-colors ${surfMode ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
-                   <span className="flex items-center gap-0.5"><Layers className="w-2.5 h-2.5" /> Surf Mode</span>
-                   <span className={`w-6 h-3 rounded-full flex items-center px-0.5 transition-colors ${surfMode ? 'bg-primary' : 'bg-muted'}`}>
-                     <span className={`w-2.5 h-2.5 rounded-full bg-white shadow transition-transform ${surfMode ? 'translate-x-3' : 'translate-x-0'}`} />
-                   </span>
-                 </button>
-                 <button onClick={() => setTheme('system')} className={`flex-1 flex items-center justify-center gap-0.5 text-[9px] font-mono py-0.5 px-1 rounded border transition-colors ${theme === 'system' ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
-                   <Monitor className="w-2.5 h-2.5" /> Sys
-                 </button>
-               </div>
-             </div>
-             {/* ID:SEG + People snug above POS + CamPos */}
-             <div className="flex flex-col gap-1 shrink-0">
-               <div className="flex gap-1">
-                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
-                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
-               </div>
-               <div className="flex gap-1">
-                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
-                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
-               </div>
-             </div>
-           </div>
+            <div className="flex flex-col p-2 justify-between border-r border-border" style={{ width: '28%' }}>
+              {/* Row 1 — Tabs (pinned top) */}
+              <div className="flex items-center bg-muted rounded-lg p-0.5 text-[10px] font-semibold tracking-wider shrink-0">
+                <button
+                  onClick={() => setLayerMode('layers')}
+                  className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'layers' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                >LAYERS</button>
+                <button
+                  onClick={() => setLayerMode('details')}
+                  className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
+                >DETAILS</button>
+              </div>
+              {/* Row 2 — Dark / Light */}
+              <div className="flex gap-1">
+                <button onClick={() => setTheme('dark')} className={`flex-1 flex items-center justify-center gap-0.5 text-[9px] font-mono py-0.5 px-1 rounded border transition-colors ${theme === 'dark' ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
+                  <Moon className="w-2.5 h-2.5" /> Dark
+                </button>
+                <button onClick={() => setTheme('light')} className={`flex-1 flex items-center justify-center gap-0.5 text-[9px] font-mono py-0.5 px-1 rounded border transition-colors ${theme === 'light' ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
+                  <Sun className="w-2.5 h-2.5" /> Light
+                </button>
+              </div>
+              {/* Row 3 — Surf Mode / Sys */}
+              <div className="flex gap-1">
+                <button onClick={() => setSurfMode(v => !v)} className={`flex-1 flex items-center justify-between text-[9px] font-mono py-0.5 px-1.5 rounded border transition-colors ${surfMode ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
+                  <span className="flex items-center gap-0.5"><Layers className="w-2.5 h-2.5" /> Surf Mode</span>
+                  <span className={`w-6 h-3 rounded-full flex items-center px-0.5 transition-colors ${surfMode ? 'bg-primary' : 'bg-muted'}`}>
+                    <span className={`w-2.5 h-2.5 rounded-full bg-white shadow transition-transform ${surfMode ? 'translate-x-3' : 'translate-x-0'}`} />
+                  </span>
+                </button>
+                <button onClick={() => setTheme('system')} className={`flex-1 flex items-center justify-center gap-0.5 text-[9px] font-mono py-0.5 px-1 rounded border transition-colors ${theme === 'system' ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
+                  <Monitor className="w-2.5 h-2.5" /> Sys
+                </button>
+              </div>
+              {/* Row 4 — ID:SEG / People */}
+              <div className="flex gap-1">
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
+              </div>
+              {/* Row 5 — POS / CamPos (pinned bottom) */}
+              <div className="flex gap-1">
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">POS:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">CamPos:[{cameraPos.x},{cameraPos.y},{cameraPos.z}]</Badge>
+              </div>
+            </div>
            {/* Right: Political Domain + Income/Education */}
            <div className="flex flex-col gap-2 p-3 flex-1">
              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0" style={detailBgStyle}>
