@@ -425,6 +425,7 @@ function CameraTracker({ onCameraChange }: { onCameraChange?: (x: number, y: num
 export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues, onCameraChange, rawLayerValues }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; onCameraChange?: (x: number, y: number, z: number) => void; rawLayerValues?: Map<string, number>; }) {
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Only show the full-screen loader on first load (no data yet).
   // On subsequent refetches keepPreviousData keeps segments defined, so the
@@ -488,6 +489,8 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
               isDark={isDark}
               onHover={(s) => {
                 setHoveredSegment(s);
+                if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+                if (s) hoverTimerRef.current = setTimeout(() => onSelectSegment(s), 3000);
               }}
               onSelectSegment={onSelectSegment}
               effectiveValues={effectiveValues}
@@ -500,8 +503,11 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                 maxValue={maxValue}
                 onHover={(s) => {
                   setHoveredSegment(s);
+                  if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+                  if (s) hoverTimerRef.current = setTimeout(() => onSelectSegment(s), 3000);
                 }}
                 onSelect={(s) => {
+                  if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
                   onSelectSegment(s);
                 }}
                 isSelected={hoveredSegment?.id === seg.id}
