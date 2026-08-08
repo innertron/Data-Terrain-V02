@@ -425,9 +425,6 @@ function CameraTracker({ onCameraChange }: { onCameraChange?: (x: number, y: num
 export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues, onCameraChange, rawLayerValues }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; onCameraChange?: (x: number, y: number, z: number) => void; rawLayerValues?: Map<string, number>; }) {
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
-  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isLockedRef = useRef(false);
-  const lockedSegmentIdRef = useRef<number | null>(null);
 
   // Only show the full-screen loader on first load (no data yet).
   // On subsequent refetches keepPreviousData keeps segments defined, so the
@@ -491,9 +488,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
               isDark={isDark}
               onHover={(s) => {
                 setHoveredSegment(s);
-                if (s && !isLockedRef.current) {
-                  onSelectSegment(s);
-                }
+                if (s) onSelectSegment(s);
               }}
               onSelectSegment={onSelectSegment}
               effectiveValues={effectiveValues}
@@ -506,20 +501,10 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                 maxValue={maxValue}
                 onHover={(s) => {
                   setHoveredSegment(s);
-                  if (s && !isLockedRef.current) {
-                    onSelectSegment(s);
-                  }
+                  if (s) onSelectSegment(s);
                 }}
                 onSelect={(s) => {
-                  if (isLockedRef.current && lockedSegmentIdRef.current === s.id) {
-                    // clicking the locked bar again → unlock
-                    isLockedRef.current = false;
-                    lockedSegmentIdRef.current = null;
-                  } else {
-                    isLockedRef.current = true;
-                    lockedSegmentIdRef.current = s.id;
-                    onSelectSegment(s);
-                  }
+                  onSelectSegment(s);
                 }}
                 isSelected={hoveredSegment?.id === seg.id}
                 isDark={isDark}
@@ -565,9 +550,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
         <div className={`flex gap-3 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white bg-black/40 border border-white/10' : 'text-black font-bold bg-gray-200 border border-gray-300'}`}>
           <span>Hover — live</span>
           <span>•</span>
-          <span>Click — lock</span>
-          <span>•</span>
-          <span>Click again — unlock</span>
+          <span>Click on area to scroll below</span>
         </div>
       </div>
     </div>
