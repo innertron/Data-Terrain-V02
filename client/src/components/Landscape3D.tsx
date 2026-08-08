@@ -426,11 +426,8 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const countdownSegmentRef = useRef<number | null>(null);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isLockedRef = useRef(false);
-  const [isLocked, setIsLocked] = useState(false);
-  const [hoverCountdown, setHoverCountdown] = useState<number | null>(null);
 
   // Only show the full-screen loader on first load (no data yet).
   // On subsequent refetches keepPreviousData keeps segments defined, so the
@@ -495,33 +492,15 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
               onHover={(s) => {
                 setHoveredSegment(s);
                 if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-                if (countdownIntervalRef.current) { clearInterval(countdownIntervalRef.current); countdownIntervalRef.current = null; }
                 if (s) {
                   if (!isLockedRef.current) {
                     onSelectSegment(s);
-                    setHoverCountdown(null);
                   } else {
-                    if (countdownSegmentRef.current === s.id) return; // already counting for this segment
-                    countdownSegmentRef.current = s.id;
-                    setHoverCountdown(3);
-                    let remaining = 3;
-                    countdownIntervalRef.current = setInterval(() => {
-                      remaining -= 1;
-                      if (remaining <= 0) {
-                        clearInterval(countdownIntervalRef.current!);
-                        countdownIntervalRef.current = null;
-                        countdownSegmentRef.current = null;
-                        isLockedRef.current = false;
-                        setIsLocked(false);
-                        setHoverCountdown(null);
-                        onSelectSegment(s);
-                      } else {
-                        setHoverCountdown(remaining);
-                      }
-                    }, 1000);
+                    hoverTimerRef.current = setTimeout(() => {
+                      isLockedRef.current = false;
+                      onSelectSegment(s);
+                    }, 3000);
                   }
-                } else {
-                  setHoverCountdown(null);
                 }
               }}
               onSelectSegment={onSelectSegment}
@@ -536,42 +515,20 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                 onHover={(s) => {
                   setHoveredSegment(s);
                   if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-                  if (countdownIntervalRef.current) { clearInterval(countdownIntervalRef.current); countdownIntervalRef.current = null; }
                   if (s) {
                     if (!isLockedRef.current) {
                       onSelectSegment(s);
-                      setHoverCountdown(null);
                     } else {
-                      if (countdownSegmentRef.current === s.id) return; // already counting for this segment
-                      countdownSegmentRef.current = s.id;
-                      setHoverCountdown(3);
-                      let remaining = 3;
-                      countdownIntervalRef.current = setInterval(() => {
-                        remaining -= 1;
-                        if (remaining <= 0) {
-                          clearInterval(countdownIntervalRef.current!);
-                          countdownIntervalRef.current = null;
-                          countdownSegmentRef.current = null;
-                          isLockedRef.current = false;
-                          setIsLocked(false);
-                          setHoverCountdown(null);
-                          onSelectSegment(s);
-                        } else {
-                          setHoverCountdown(remaining);
-                        }
-                      }, 1000);
+                      hoverTimerRef.current = setTimeout(() => {
+                        isLockedRef.current = false;
+                        onSelectSegment(s);
+                      }, 3000);
                     }
-                  } else {
-                    setHoverCountdown(null);
                   }
                 }}
                 onSelect={(s) => {
                   if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-                  if (countdownIntervalRef.current) { clearInterval(countdownIntervalRef.current); countdownIntervalRef.current = null; }
-                  countdownSegmentRef.current = null;
                   isLockedRef.current = true;
-                  setIsLocked(true);
-                  setHoverCountdown(null);
                   onSelectSegment(s);
                 }}
                 isSelected={hoveredSegment?.id === seg.id}
@@ -607,7 +564,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
       </Canvas>
       
       {/* Overlay UI hints */}
-      <div className={`absolute bottom-1 left-4 right-4 pointer-events-none transition-opacity flex items-center justify-between ${isLocked ? 'opacity-100' : 'opacity-40'}`}>
+      <div className="absolute bottom-1 left-4 right-4 pointer-events-none opacity-40 hover:opacity-90 transition-opacity flex items-center justify-between">
         <div className={`flex gap-2 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white bg-black/40 border border-white/10' : 'text-black font-bold bg-gray-200 border border-gray-300'}`}>
           <span>LMB: Rotate</span>
           <span>•</span>
@@ -615,14 +572,12 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
           <span>•</span>
           <span>Scroll: Zoom</span>
         </div>
-        <div className={`flex gap-3 text-xs font-mono px-3 py-1 rounded-full ${isLocked ? (isDark ? 'bg-black/60 border border-red-800' : 'bg-gray-200 border border-red-400') : (isDark ? 'bg-black/40 border border-white/10' : 'bg-gray-200 border border-gray-300')}`}>
-          <span className={isDark ? 'text-white' : 'text-black font-bold'}>Hover — live</span>
-          <span className={isDark ? 'text-white' : 'text-black font-bold'}>•</span>
-          <span className={isDark ? 'text-white' : 'text-black font-bold'}>Click on area to scroll below</span>
-          <span className={isDark ? 'text-white' : 'text-black font-bold'}>•</span>
-          <span className={isLocked ? 'text-red-500 font-bold' : (isDark ? 'text-white' : 'text-black font-bold')}>
-            {isLocked && hoverCountdown !== null ? `Hover ${hoverCountdown}s — unlock` : 'Hover 3s — unlock'}
-          </span>
+        <div className={`flex gap-3 text-xs font-mono px-3 py-1 rounded-full ${isDark ? 'text-white bg-black/40 border border-white/10' : 'text-black font-bold bg-gray-200 border border-gray-300'}`}>
+          <span>Hover — live</span>
+          <span>•</span>
+          <span>Click on area to scroll below</span>
+          <span>•</span>
+          <span>Hover 3s — unlock</span>
         </div>
       </div>
     </div>
