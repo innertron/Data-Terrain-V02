@@ -494,15 +494,30 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
               onHover={(s) => {
                 setHoveredSegment(s);
                 if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+                if (countdownIntervalRef.current) { clearInterval(countdownIntervalRef.current); countdownIntervalRef.current = null; }
                 if (s) {
                   if (!isLockedRef.current) {
                     onSelectSegment(s);
+                    setHoverCountdown(null);
                   } else {
-                    hoverTimerRef.current = setTimeout(() => {
-                      isLockedRef.current = false;
-                      onSelectSegment(s);
-                    }, 3000);
+                    setHoverCountdown(3);
+                    let remaining = 3;
+                    countdownIntervalRef.current = setInterval(() => {
+                      remaining -= 1;
+                      if (remaining <= 0) {
+                        clearInterval(countdownIntervalRef.current!);
+                        countdownIntervalRef.current = null;
+                        isLockedRef.current = false;
+                        setIsLocked(false);
+                        setHoverCountdown(null);
+                        onSelectSegment(s);
+                      } else {
+                        setHoverCountdown(remaining);
+                      }
+                    }, 1000);
                   }
+                } else {
+                  setHoverCountdown(null);
                 }
               }}
               onSelectSegment={onSelectSegment}
@@ -517,20 +532,38 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                 onHover={(s) => {
                   setHoveredSegment(s);
                   if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+                  if (countdownIntervalRef.current) { clearInterval(countdownIntervalRef.current); countdownIntervalRef.current = null; }
                   if (s) {
                     if (!isLockedRef.current) {
                       onSelectSegment(s);
+                      setHoverCountdown(null);
                     } else {
-                      hoverTimerRef.current = setTimeout(() => {
-                        isLockedRef.current = false;
-                        onSelectSegment(s);
-                      }, 3000);
+                      setHoverCountdown(3);
+                      let remaining = 3;
+                      countdownIntervalRef.current = setInterval(() => {
+                        remaining -= 1;
+                        if (remaining <= 0) {
+                          clearInterval(countdownIntervalRef.current!);
+                          countdownIntervalRef.current = null;
+                          isLockedRef.current = false;
+                          setIsLocked(false);
+                          setHoverCountdown(null);
+                          onSelectSegment(s);
+                        } else {
+                          setHoverCountdown(remaining);
+                        }
+                      }, 1000);
                     }
+                  } else {
+                    setHoverCountdown(null);
                   }
                 }}
                 onSelect={(s) => {
                   if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+                  if (countdownIntervalRef.current) { clearInterval(countdownIntervalRef.current); countdownIntervalRef.current = null; }
                   isLockedRef.current = true;
+                  setIsLocked(true);
+                  setHoverCountdown(null);
                   onSelectSegment(s);
                 }}
                 isSelected={hoveredSegment?.id === seg.id}
