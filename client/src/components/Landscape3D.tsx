@@ -47,6 +47,7 @@ function Bar({
   data, 
   maxValue, 
   onHover, 
+  onSelect,
   isSelected,
   isDark = true,
   overrideValue,
@@ -54,6 +55,7 @@ function Bar({
   data: GridSegment; 
   maxValue: number; 
   onHover: (data: GridSegment | null) => void;
+  onSelect: (data: GridSegment) => void;
   isSelected: boolean;
   isDark?: boolean;
   overrideValue?: number;
@@ -97,7 +99,7 @@ function Bar({
       }}
       onClick={(e) => {
         e.stopPropagation();
-        onHover(data); // Also select on click for mobile
+        onSelect(data);
       }}
     >
       <boxGeometry args={[BAR_SIZE, height, BAR_SIZE]} />
@@ -486,7 +488,6 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
               isDark={isDark}
               onHover={(s) => {
                 setHoveredSegment(s);
-                if (s) onSelectSegment(s);
               }}
               onSelectSegment={onSelectSegment}
               effectiveValues={effectiveValues}
@@ -499,7 +500,9 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                 maxValue={maxValue}
                 onHover={(s) => {
                   setHoveredSegment(s);
-                  if (s) onSelectSegment(s);
+                }}
+                onSelect={(s) => {
+                  onSelectSegment(s);
                 }}
                 isSelected={hoveredSegment?.id === seg.id}
                 isDark={isDark}
