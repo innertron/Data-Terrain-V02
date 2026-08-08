@@ -427,6 +427,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const countdownSegmentRef = useRef<number | null>(null);
   const isLockedRef = useRef(false);
   const [isLocked, setIsLocked] = useState(false);
   const [hoverCountdown, setHoverCountdown] = useState<number | null>(null);
@@ -500,6 +501,8 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                     onSelectSegment(s);
                     setHoverCountdown(null);
                   } else {
+                    if (countdownSegmentRef.current === s.id) return; // already counting for this segment
+                    countdownSegmentRef.current = s.id;
                     setHoverCountdown(3);
                     let remaining = 3;
                     countdownIntervalRef.current = setInterval(() => {
@@ -507,6 +510,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                       if (remaining <= 0) {
                         clearInterval(countdownIntervalRef.current!);
                         countdownIntervalRef.current = null;
+                        countdownSegmentRef.current = null;
                         isLockedRef.current = false;
                         setIsLocked(false);
                         setHoverCountdown(null);
@@ -538,6 +542,8 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                       onSelectSegment(s);
                       setHoverCountdown(null);
                     } else {
+                      if (countdownSegmentRef.current === s.id) return; // already counting for this segment
+                      countdownSegmentRef.current = s.id;
                       setHoverCountdown(3);
                       let remaining = 3;
                       countdownIntervalRef.current = setInterval(() => {
@@ -545,6 +551,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                         if (remaining <= 0) {
                           clearInterval(countdownIntervalRef.current!);
                           countdownIntervalRef.current = null;
+                          countdownSegmentRef.current = null;
                           isLockedRef.current = false;
                           setIsLocked(false);
                           setHoverCountdown(null);
@@ -561,6 +568,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                 onSelect={(s) => {
                   if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
                   if (countdownIntervalRef.current) { clearInterval(countdownIntervalRef.current); countdownIntervalRef.current = null; }
+                  countdownSegmentRef.current = null;
                   isLockedRef.current = true;
                   setIsLocked(true);
                   setHoverCountdown(null);
