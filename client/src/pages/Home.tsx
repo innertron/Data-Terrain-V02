@@ -397,7 +397,7 @@ export default function Home() {
        {selectedSegment && (
          <div className="flex border-t border-border bg-card shrink-0">
            {/* Left: LAYERS/DETAILS tabs + controls + stats pills */}
-           <div className="flex flex-col p-2 justify-between border-r border-border" style={{ width: '28%' }}>
+           <div className="flex flex-col p-2 justify-evenly border-r border-border" style={{ width: '28%' }}>
              {/* Tabs — top */}
              <div className="flex items-center bg-muted rounded-lg p-0.5 text-[10px] font-semibold tracking-wider shrink-0">
                <button
