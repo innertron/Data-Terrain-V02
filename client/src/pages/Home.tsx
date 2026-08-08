@@ -409,7 +409,7 @@ export default function Home() {
                  className={`flex-1 py-1 rounded-md transition-colors ${layerMode === 'details' ? 'bg-card text-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                >DETAILS</button>
              </div>
-             {/* Theme + Surf Mode — compact inline controls */}
+             {/* Theme + Surf Mode — 2-column grid matching badge rows */}
              <div className="flex flex-col gap-1 shrink-0">
                <div className="flex gap-1">
                  <button onClick={() => setTheme('dark')} className={`flex-1 flex items-center justify-center gap-0.5 text-[9px] font-mono py-0.5 px-1 rounded border transition-colors ${theme === 'dark' ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
@@ -418,16 +418,18 @@ export default function Home() {
                  <button onClick={() => setTheme('light')} className={`flex-1 flex items-center justify-center gap-0.5 text-[9px] font-mono py-0.5 px-1 rounded border transition-colors ${theme === 'light' ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
                    <Sun className="w-2.5 h-2.5" /> Light
                  </button>
+               </div>
+               <div className="flex gap-1">
+                 <button onClick={() => setSurfMode(v => !v)} className={`flex-1 flex items-center justify-between text-[9px] font-mono py-0.5 px-1.5 rounded border transition-colors ${surfMode ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
+                   <span className="flex items-center gap-0.5"><Layers className="w-2.5 h-2.5" /> Surf Mode</span>
+                   <span className={`w-6 h-3 rounded-full flex items-center px-0.5 transition-colors ${surfMode ? 'bg-primary' : 'bg-muted'}`}>
+                     <span className={`w-2.5 h-2.5 rounded-full bg-white shadow transition-transform ${surfMode ? 'translate-x-3' : 'translate-x-0'}`} />
+                   </span>
+                 </button>
                  <button onClick={() => setTheme('system')} className={`flex-1 flex items-center justify-center gap-0.5 text-[9px] font-mono py-0.5 px-1 rounded border transition-colors ${theme === 'system' ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
                    <Monitor className="w-2.5 h-2.5" /> Sys
                  </button>
                </div>
-               <button onClick={() => setSurfMode(v => !v)} className={`w-full flex items-center justify-between text-[9px] font-mono py-0.5 px-1.5 rounded border transition-colors ${surfMode ? 'border-primary text-primary bg-primary/10' : 'border-border text-muted-foreground hover:text-foreground'}`}>
-                 <span className="flex items-center gap-0.5"><Layers className="w-2.5 h-2.5" /> Surf Mode</span>
-                 <span className={`w-6 h-3 rounded-full flex items-center px-0.5 transition-colors ${surfMode ? 'bg-primary' : 'bg-muted'}`}>
-                   <span className={`w-2.5 h-2.5 rounded-full bg-white shadow transition-transform ${surfMode ? 'translate-x-3' : 'translate-x-0'}`} />
-                 </span>
-               </button>
              </div>
              {/* ID:SEG + People snug above POS + CamPos */}
              <div className="flex flex-col gap-1 shrink-0">
