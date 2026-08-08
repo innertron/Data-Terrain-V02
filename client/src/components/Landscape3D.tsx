@@ -426,6 +426,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isLockedRef = useRef(false);
 
   // Only show the full-screen loader on first load (no data yet).
   // On subsequent refetches keepPreviousData keeps segments defined, so the
@@ -490,7 +491,16 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
               onHover={(s) => {
                 setHoveredSegment(s);
                 if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-                if (s) hoverTimerRef.current = setTimeout(() => onSelectSegment(s), 3000);
+                if (s) {
+                  if (!isLockedRef.current) {
+                    onSelectSegment(s);
+                  } else {
+                    hoverTimerRef.current = setTimeout(() => {
+                      isLockedRef.current = false;
+                      onSelectSegment(s);
+                    }, 3000);
+                  }
+                }
               }}
               onSelectSegment={onSelectSegment}
               effectiveValues={effectiveValues}
@@ -504,10 +514,20 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                 onHover={(s) => {
                   setHoveredSegment(s);
                   if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-                  if (s) hoverTimerRef.current = setTimeout(() => onSelectSegment(s), 3000);
+                  if (s) {
+                    if (!isLockedRef.current) {
+                      onSelectSegment(s);
+                    } else {
+                      hoverTimerRef.current = setTimeout(() => {
+                        isLockedRef.current = false;
+                        onSelectSegment(s);
+                      }, 3000);
+                    }
+                  }
                 }}
                 onSelect={(s) => {
                   if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+                  isLockedRef.current = true;
                   onSelectSegment(s);
                 }}
                 isSelected={hoveredSegment?.id === seg.id}
