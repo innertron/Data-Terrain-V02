@@ -426,7 +426,6 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isLockedRef = useRef(false);
 
   // Only show the full-screen loader on first load (no data yet).
