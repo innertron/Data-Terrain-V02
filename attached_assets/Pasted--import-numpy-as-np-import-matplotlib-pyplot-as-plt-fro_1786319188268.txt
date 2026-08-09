@@ -1,0 +1,78 @@
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.interpolate import Rbf
+
+# 1. Define grid coordinates
+x = np.linspace(1, 25, 25)
+z = np.linspace(1, 25, 25)
+X, Z = np.meshgrid(x, z)
+
+# 2. Control points extracted along contour lines (X, Z, HeightValue)
+points = [
+    # Contour 0.54
+    (1, 23, 0.54), (10, 22, 0.54), (18, 22, 0.54), (25, 23, 0.54),
+    # Contour 0.67
+    (1, 20, 0.67), (10, 19, 0.67), (18, 19, 0.67), (25, 20, 0.67),
+    # Contour 0.84
+    (1, 18, 0.84), (10, 17, 0.84), (18, 17, 0.84), (25, 18, 0.84),
+    # Contour 1.05
+    (1, 15, 1.05), (10, 14, 1.05), (18, 15, 1.05), (25, 16, 1.05),
+    # Contour 1.31
+    (6, 1, 1.31), (10, 3, 1.31), (14, 7, 1.31), (18, 11, 1.31), (25, 15, 1.31),
+    # Contour 1.64
+    (12, 1, 1.64), (16, 4, 1.64), (19, 8, 1.64), (22, 12, 1.64), (25, 13.5, 1.64),
+    # Contour 2.05
+    (18, 1, 2.05), (20, 3, 2.05), (22, 7, 2.05), (25, 12, 2.05),
+    # Contour 2.56
+    (22, 1, 2.56), (23, 3, 2.56), (24, 7, 2.56), (25, 10.5, 2.56),
+    # Contour 3.20 (Peak)
+    (24.5, 1, 3.20), (25, 4, 3.20), (25, 8, 3.20), (25, 9.5, 3.20)
+]
+
+pts = np.array(points)
+px, pz, pvals = pts[:, 0], pts[:, 1], pts[:, 2]
+
+# 3. RBF Interpolation and Normalization to max height 10
+rbf = Rbf(px, pz, pvals, function='multiquadric', smooth=0.2)
+Height_raw = rbf(X, Z)
+Height_norm = (Height_raw - Height_raw.min()) / (Height_raw.max() - Height_raw.min()) * 10
+
+# Prepare 3D Bar (Voxel Column) parameters
+x_flat = X.flatten()
+z_flat = Z.flatten()
+heights_flat = Height_norm.flatten()
+bottom = np.zeros_like(heights_flat)
+dx = dz = 0.85  # Bar width/depth dimensions
+
+# Colormap mapping for heights
+cmap = plt.cm.get_cmap('viridis')
+colors = cmap(heights_flat / 10.0)
+
+# Set up multi-angle figure
+fig = plt.figure(figsize=(16, 12))
+
+# Angle Configurations: (elevation, azimuth, title)
+views = [
+    (30, -60, "Isometric View (Front Right)"),
+    (90, -90, "Top-Down Map View (Plan)"),
+    (15, -135, "Low Elevation View (Front Left)"),
+    (30, 120, "Opposite Isometric View (Back View)")
+]
+
+for idx, (elev, azim, title) in enumerate(views, 1):
+    ax = fig.add_subplot(2, 2, idx, projection='3d')
+    ax.bar3d(x_flat - dx/2, z_flat - dz/2, bottom, dx, dz, heights_flat, color=colors, edgecolor='k', linewidth=0.1)
+    
+    ax.set_title(title, fontsize=12, pad=10)
+    ax.set_xlabel('X Axis (1-25)')
+    ax.set_ylabel('Z Axis (1-25)')
+    ax.set_zlabel('Height (0-10)')
+    ax.set_zlim(0, 10)
+    ax.view_init(elev=elev, azim=azim)
+
+plt.tight_layout()
+plt.savefig('multi_angle_blocks.png', dpi=150)
+plt.close()
+print("Multi-angle plot generated successfully.")
