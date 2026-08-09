@@ -32,6 +32,9 @@ export const layers = pgTable("layers", {
   gridValues: text("grid_values").notNull(), // JSON-serialised number[][]
   active: boolean("active").notNull().default(true),
   params: text("params"),                    // JSON: shape algorithm params (nullable)
+  rank: integer("rank"),                     // 1-74 overall rank
+  affiliation: text("affiliation"),          // e.g. FOX, NBC, NPR, SPOTIFY
+  primaryMedium: text("primary_medium"),     // Cable TV, Podcast / YouTube, Radio, etc.
 });
 
 export const insertLayerSchema = createInsertSchema(layers).omit({ id: true });

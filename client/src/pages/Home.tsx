@@ -166,10 +166,20 @@ export default function Home() {
   const [renameIcon, setRenameIcon] = useState<string | null>(null);
   const [renameIconOn, setRenameIconOn] = useState(false);
   const [renameApplying, setRenameApplying] = useState(false);
+  const [renameRank, setRenameRank] = useState<number | "">("");
+  const [renameAffiliation, setRenameAffiliation] = useState("");
+  const [renameMedium, setRenameMedium] = useState("");
+  const [mediumFilter, setMediumFilter] = useState<string[]>([]); // empty = show all
   const [surfMode, setSurfMode] = useState(false);
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('details');
   const [layerDefs, setLayerDefs] = useState<LayerDef[]>([]);
   const [activeLayers, setActiveLayers] = useState<number[]>([]);
+
+  const ALL_MEDIA = ["Cable TV", "Broadcast TV", "Podcast / YouTube", "Radio", "Print / Digital", "Digital Video", "Podcast / Social"] as const;
+
+  const visibleLayers = mediumFilter.length === 0
+    ? layerDefs
+    : layerDefs.filter(l => l.primaryMedium && mediumFilter.includes(l.primaryMedium));
   const isAdmin = import.meta.env.DEV;
 
   // Fetch layers from API once on mount
@@ -587,6 +597,9 @@ export default function Home() {
                         const ic = (layer as any).icon ?? null;
                         setRenameIcon(ic);
                         setRenameIconOn(!!ic);
+                        setRenameRank((layer as any).rank ?? "");
+                        setRenameAffiliation((layer as any).affiliation ?? "");
+                        setRenameMedium((layer as any).primaryMedium ?? "");
                         try {
                           const p = layer.params ? JSON.parse(layer.params) : null;
                           setSkewOutB(p?.outsideBottom ?? 0);
@@ -761,6 +774,44 @@ export default function Home() {
                       <span className="text-[9px] text-muted-foreground">{renameDesc.length}/200</span>
                     </div>
 
+                    {/* Rank */}
+                    <div>
+                      <Label className="text-[9px] text-muted-foreground uppercase">Rank</Label>
+                      <Input
+                        type="number"
+                        min={1}
+                        max={200}
+                        value={renameRank}
+                        onChange={e => setRenameRank(e.target.value === "" ? "" : Number(e.target.value))}
+                        className="h-7 text-xs font-mono"
+                        placeholder="e.g. 2"
+                      />
+                    </div>
+
+                    {/* Affiliation */}
+                    <div>
+                      <Label className="text-[9px] text-muted-foreground uppercase">Affiliation</Label>
+                      <Input
+                        value={renameAffiliation}
+                        onChange={e => setRenameAffiliation(e.target.value)}
+                        className="h-7 text-xs font-mono uppercase"
+                        placeholder="e.g. FOX, NBC, NPR…"
+                      />
+                    </div>
+
+                    {/* Primary Medium */}
+                    <div>
+                      <Label className="text-[9px] text-muted-foreground uppercase">Primary Medium</Label>
+                      <select
+                        value={renameMedium}
+                        onChange={e => setRenameMedium(e.target.value)}
+                        className="w-full h-7 rounded-md border border-input bg-background px-2 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-ring"
+                      >
+                        <option value="">— select —</option>
+                        {ALL_MEDIA.map(m => <option key={m} value={m}>{m}</option>)}
+                      </select>
+                    </div>
+
                     <Button
                       size="sm"
                       disabled={renameApplying || !renameValue.trim()}
@@ -776,6 +827,9 @@ export default function Home() {
                               name2: renameName2.trim() || undefined,
                               description: renameDesc.trim() || undefined,
                               icon: renameIcon ?? undefined,
+                              rank: renameRank !== "" ? Number(renameRank) : undefined,
+                              affiliation: renameAffiliation.trim() || undefined,
+                              primaryMedium: renameMedium || undefined,
                             }),
                           });
                           const data = await res.json();
@@ -783,7 +837,7 @@ export default function Home() {
                             toast({ title: "Save failed", description: data.message ?? "Unknown error", variant: "destructive" });
                             return;
                           }
-                          setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon } : l));
+                          setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon, rank: data.rank, affiliation: data.affiliation, primaryMedium: data.primaryMedium } : l));
                           toast({ title: "Layer saved", description: `"${data.name}" updated successfully.` });
                         } catch (err) {
                           toast({ title: "Save failed", description: "Network error — check connection.", variant: "destructive" });
@@ -830,13 +884,40 @@ export default function Home() {
           {/* Switching content */}
           {layerMode === 'layers' ? (
             <div className="flex flex-col gap-2">
+              {/* Media type filter pills */}
+              {layerDefs.some(l => l.primaryMedium) && (
+                <div className="flex flex-col gap-1">
+                  <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold px-1">Filter by medium</p>
+                  <div className="flex flex-wrap gap-1 px-1">
+                    {ALL_MEDIA.filter(m => layerDefs.some(l => l.primaryMedium === m)).map(m => {
+                      const active = mediumFilter.includes(m);
+                      return (
+                        <button
+                          key={m}
+                          onClick={() => setMediumFilter(prev => active ? prev.filter(x => x !== m) : [...prev, m])}
+                          className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${active ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
+                          style={active ? { backgroundColor: '#a8d4d2' } : {}}
+                        >
+                          {m}
+                        </button>
+                      );
+                    })}
+                    {mediumFilter.length > 0 && (
+                      <button onClick={() => setMediumFilter([])} className="px-1.5 py-0.5 rounded text-[9px] text-muted-foreground hover:text-foreground border border-dashed border-border">
+                        clear
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold px-1">
-                Layers ({layerDefs.length})
+                Layers ({visibleLayers.length}{mediumFilter.length > 0 ? ` of ${layerDefs.length}` : ''})
               </p>
               {layerDefs.length === 0 ? (
                 <p className="text-xs text-muted-foreground font-mono px-1">No layers found — try refreshing.</p>
               ) : (
-                layerDefs.map(layer => {
+                visibleLayers.map(layer => {
                   const on = activeLayers.includes(layer.id);
                   return (
                     <div

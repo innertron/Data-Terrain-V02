@@ -337,6 +337,9 @@ export async function registerRoutes(
         active: r.active,
         gridValues: JSON.parse(r.gridValues) as number[][],
         params: r.params ?? null,
+        rank: r.rank ?? null,
+        affiliation: r.affiliation ?? null,
+        primaryMedium: r.primaryMedium ?? null,
       }));
       res.json(result);
     } catch (err) {
@@ -350,11 +353,14 @@ export async function registerRoutes(
     name: z.string().min(1),
     color: z.string().min(1),
     csv: z.string().min(1),
+    rank: z.number().int().min(1).max(200).optional(),
+    affiliation: z.string().optional(),
+    primaryMedium: z.string().optional(),
   });
 
   app.post("/api/layers", async (req, res) => {
     try {
-      const { name, color, csv } = newLayerSchema.parse(req.body);
+      const { name, color, csv, rank, affiliation, primaryMedium } = newLayerSchema.parse(req.body);
       const grid = parseCsvGrid(csv);
       if (grid.length !== 25 || grid.some(r => r.length !== 25)) {
         return res.status(400).json({ message: "CSV must be a 25×25 grid (header + 25 rows, 25 columns each)" });
@@ -364,8 +370,11 @@ export async function registerRoutes(
         color,
         gridValues: JSON.stringify(grid),
         active: true,
+        ...(rank !== undefined ? { rank } : {}),
+        ...(affiliation ? { affiliation } : {}),
+        ...(primaryMedium ? { primaryMedium } : {}),
       });
-      res.status(201).json({ id: layer.id, name: layer.name, color: layer.color, active: layer.active, gridValues: grid });
+      res.status(201).json({ id: layer.id, name: layer.name, color: layer.color, active: layer.active, gridValues: grid, rank: layer.rank, affiliation: layer.affiliation, primaryMedium: layer.primaryMedium });
     } catch (err) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
       console.error(err);
@@ -388,7 +397,7 @@ export async function registerRoutes(
     }
   });
 
-  // PATCH /api/layers/:id/rename — update layer meta (name, name2, description, icon)
+  // PATCH /api/layers/:id/rename — update layer meta (name, name2, description, icon, rank, affiliation, primaryMedium)
   app.patch("/api/layers/:id/rename", async (req, res) => {
     try {
       const id = Number(req.params.id);
@@ -400,9 +409,12 @@ export async function registerRoutes(
           v => v === undefined || v.startsWith('data:image/jpeg;base64,') || v.startsWith('data:image/png;base64,'),
           { message: 'Icon must be a JPG or PNG data URL' }
         ).optional(),
+        rank: z.number().int().min(1).max(200).optional(),
+        affiliation: z.string().max(50).optional(),
+        primaryMedium: z.string().max(50).optional(),
       }).parse(req.body);
       const updated = await storage.updateLayerMeta(id, body);
-      res.json({ id: updated.id, name: updated.name, name2: updated.name2, description: updated.description, icon: updated.icon });
+      res.json({ id: updated.id, name: updated.name, name2: updated.name2, description: updated.description, icon: updated.icon, rank: updated.rank, affiliation: updated.affiliation, primaryMedium: updated.primaryMedium });
     } catch (err) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
       console.error(err);

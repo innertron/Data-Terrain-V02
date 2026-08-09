@@ -7,7 +7,10 @@ export type LayerDef = {
   color: string;
   active: boolean;
   gridValues: number[][];
-  params?: string | null; // JSON: stored algorithm params incl. skew bounds
+  params?: string | null;       // JSON: stored algorithm params incl. skew bounds
+  rank?: number | null;         // 1-74 overall rank
+  affiliation?: string | null;  // e.g. FOX, NBC, NPR
+  primaryMedium?: string | null;// Cable TV, Podcast / YouTube, Radio, etc.
 };
 
 /** Fetch all layers (with grid data) from the API */
