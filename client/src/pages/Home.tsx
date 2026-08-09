@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useUpdateSegment } from "@/hooks/use-segments";
 import { useTheme } from "@/hooks/use-theme";
 import { ProjectSettingsDrawer } from "@/components/ProjectSettings";
-import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers, Wrench, Eye, SlidersHorizontal, X } from "lucide-react";
+import { Loader2, Save, Info, RefreshCw, Settings, Sun, Moon, Monitor, Upload, Database, CheckCircle2, Layers, Wrench, Eye, SlidersHorizontal, X, Trash2 } from "lucide-react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { apiRequest } from "@/lib/queryClient";
@@ -794,6 +794,32 @@ export default function Home() {
                     >
                       {renameApplying ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
                       Save
+                    </Button>
+
+                    {/* Delete layer */}
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="w-full h-7 text-[10px] uppercase tracking-wider"
+                      onClick={async () => {
+                        const layerName = layerDefs.find(l => l.id === skewLayerId)?.name ?? "this layer";
+                        if (!window.confirm(`Delete "${layerName}"? This cannot be undone.`)) return;
+                        try {
+                          const res = await fetch(`/api/layers/${skewLayerId}`, { method: 'DELETE' });
+                          if (!res.ok) {
+                            toast({ title: "Delete failed", description: "Server error — try again.", variant: "destructive" });
+                            return;
+                          }
+                          setLayerDefs(prev => prev.filter(l => l.id !== skewLayerId));
+                          setSkewLayerId(null);
+                          toast({ title: "Layer deleted", description: `"${layerName}" has been removed.` });
+                        } catch {
+                          toast({ title: "Delete failed", description: "Network error — check connection.", variant: "destructive" });
+                        }
+                      }}
+                    >
+                      <Trash2 className="w-3 h-3 mr-1" />
+                      Delete This Layer
                     </Button>
                   </div>
                 </div>
