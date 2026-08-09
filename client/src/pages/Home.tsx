@@ -155,10 +155,10 @@ export default function Home() {
   const [showProjectSettings, setShowProjectSettings] = useState(false);
   const [showAdjustSkew, setShowAdjustSkew] = useState(false);
   const [skewLayerId, setSkewLayerId] = useState<number | null>(null);
-  const [skewInB, setSkewInB] = useState(0);
-  const [skewInT, setSkewInT] = useState(5);
-  const [skewOutB, setSkewOutB] = useState(0);
-  const [skewOutT, setSkewOutT] = useState(5);
+  const [skewInB, setSkewInB] = useState(0.01);
+  const [skewInT, setSkewInT] = useState(0.05);
+  const [skewOutB, setSkewOutB] = useState(0.00);
+  const [skewOutT, setSkewOutT] = useState(0.01);
   const [skewApplying, setSkewApplying] = useState(false);
   const [renameValue, setRenameValue] = useState("");
   const [renameName2, setRenameName2] = useState("");
@@ -633,11 +633,11 @@ export default function Home() {
                         <div className="flex items-center gap-1">
                           <div className="flex-1">
                             <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                            <Input type="number" min={0} step="any" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                            <Input type="number" min={0} step="0.01" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
                           </div>
                           <div className="flex-1">
                             <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                            <Input type="number" min={0} step="any" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                            <Input type="number" min={0} step="0.01" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
                           </div>
                         </div>
                       </div>
@@ -647,18 +647,19 @@ export default function Home() {
                         <div className="flex items-center gap-1">
                           <div className="flex-1">
                             <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                            <Input type="number" min={0} step="any" value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                            <Input type="number" min={0} step="0.01" value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-7 text-xs font-mono" />
                           </div>
                           <div className="flex-1">
                             <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                            <Input type="number" min={0} step="any" value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                            <Input type="number" min={0} step="0.01" value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-7 text-xs font-mono" />
                           </div>
                         </div>
                       </div>
                     </div>
                     <Button
                       size="sm"
-                      disabled={skewApplying}
+                      disabled={skewApplying || (skewOutB === 0 && skewOutT === 0 && skewInB === 0 && skewInT === 0)}
+                      title={skewOutB === 0 && skewOutT === 0 && skewInB === 0 && skewInT === 0 ? "Set at least one non-zero value" : undefined}
                       className="w-full h-7 text-[10px] uppercase tracking-wider"
                       onClick={async () => {
                         setSkewApplying(true);
