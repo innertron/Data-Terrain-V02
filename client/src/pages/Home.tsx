@@ -656,29 +656,38 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
-                    <Button
-                      size="sm"
-                      disabled={skewApplying || (skewOutB === 0 && skewOutT === 0 && skewInB === 0 && skewInT === 0)}
-                      title={skewOutB === 0 && skewOutT === 0 && skewInB === 0 && skewInT === 0 ? "Set at least one non-zero value" : undefined}
-                      className="w-full h-7 text-[10px] uppercase tracking-wider"
-                      onClick={async () => {
-                        setSkewApplying(true);
-                        try {
-                          const res = await fetch(`/api/layers/${skewLayerId}/skew`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ insideBottom: skewInB, insideTop: skewInT, outsideBottom: skewOutB, outsideTop: skewOutT }),
-                          });
-                          const updated = await res.json();
-                          setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, gridValues: updated.gridValues } : l));
-                        } finally {
-                          setSkewApplying(false);
-                        }
-                      }}
-                    >
-                      {skewApplying ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
-                      Apply
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 h-7 text-[10px] uppercase tracking-wider"
+                        onClick={() => { setSkewOutB(0.00); setSkewOutT(0.01); setSkewInB(0.01); setSkewInT(0.05); }}
+                      >
+                        Reset
+                      </Button>
+                      <Button
+                        size="sm"
+                        disabled={skewApplying}
+                        className="flex-1 h-7 text-[10px] uppercase tracking-wider"
+                        onClick={async () => {
+                          setSkewApplying(true);
+                          try {
+                            const res = await fetch(`/api/layers/${skewLayerId}/skew`, {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ insideBottom: skewInB, insideTop: skewInT, outsideBottom: skewOutB, outsideTop: skewOutT }),
+                            });
+                            const updated = await res.json();
+                            setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, gridValues: updated.gridValues } : l));
+                          } finally {
+                            setSkewApplying(false);
+                          }
+                        }}
+                      >
+                        {skewApplying ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
+                        Apply
+                      </Button>
+                    </div>
                   </div>
 
                   {/* Rename Layer — full width, below */}
