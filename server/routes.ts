@@ -461,11 +461,16 @@ export async function registerRoutes(
       let newParams: string;
 
       if (!layer.params) {
-        // No shape params — add noise to each existing cell value.
-        // Uses outsideBottom/outsideTop as the noise range for all cells.
+        // No shape params (RBF/static layer) — apply relative noise as a fraction
+        // of each cell's existing value.  outsideBottom/Top are treated as fractional
+        // multipliers (e.g. 0.05 = ±5% variation) so decimal grids are not destroyed.
         const existing = JSON.parse(layer.gridValues) as number[][];
         grid = existing.map((rowArr, r) =>
-          rowArr.map((val, c) => applyNoise(val, outsideBottom, outsideTop, r, c))
+          rowArr.map((val, c) => {
+            const frac = outsideBottom + cellHash(r, c, id * 0x9e3779b9, 0) * (outsideTop - outsideBottom);
+            const sign = cellHash(r, c, id * 0x9e3779b9, 1) > 0.5 ? 1 : -1;
+            return Math.max(0, Math.round((val * (1 + sign * frac)) * 10000) / 10000);
+          })
         );
         newParams = JSON.stringify({ insideBottom, insideTop, outsideBottom, outsideTop });
       } else {

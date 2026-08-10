@@ -625,7 +625,7 @@ export default function Home() {
                 <div className="flex flex-col gap-2">
                   {/* Adjust Skew — full width */}
                   <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Adjust Skew</p>
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Adjust Skew <span className="normal-case font-normal opacity-60">(fraction · 0.05 = ±5%)</span></p>
                     <div className="flex gap-2">
                       {/* Outside shape */}
                       <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
