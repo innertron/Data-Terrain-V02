@@ -30,6 +30,7 @@ export const layers = pgTable("layers", {
   icon: text("icon"),                        // Base64 data URL for round icon
   color: text("color").notNull(),
   gridValues: text("grid_values").notNull(), // JSON-serialised number[][]
+  originalGridValues: text("original_grid_values"), // snapshot at creation — never overwritten by skew
   active: boolean("active").notNull().default(true),
   params: text("params"),                    // JSON: shape algorithm params (nullable)
   rank: integer("rank"),                     // 1-74 overall rank

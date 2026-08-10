@@ -93,6 +93,17 @@ export class DatabaseStorage implements IStorage {
     return updated;
   }
 
+  async restoreLayerGridValues(id: number): Promise<Layer> {
+    const layer = await this.getLayer(id);
+    if (!layer) throw new Error("Layer not found");
+    const original = layer.originalGridValues ?? layer.gridValues;
+    const [updated] = await db.update(layers)
+      .set({ gridValues: original, params: null })
+      .where(eq(layers.id, id))
+      .returning();
+    return updated;
+  }
+
   async deleteLayer(id: number): Promise<void> {
     await db.delete(layers).where(eq(layers.id, id));
   }

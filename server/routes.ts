@@ -365,10 +365,12 @@ export async function registerRoutes(
       if (grid.length !== 25 || grid.some(r => r.length !== 25)) {
         return res.status(400).json({ message: "CSV must be a 25×25 grid (header + 25 rows, 25 columns each)" });
       }
+      const gridJson = JSON.stringify(grid);
       const layer = await storage.createLayer({
         name,
         color,
-        gridValues: JSON.stringify(grid),
+        gridValues: gridJson,
+        originalGridValues: gridJson,  // permanent backup — never touched by skew
         active: true,
         ...(rank !== undefined ? { rank } : {}),
         ...(affiliation ? { affiliation } : {}),
@@ -431,6 +433,19 @@ export async function registerRoutes(
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Failed to delete layer" });
+    }
+  });
+
+  // POST /api/layers/:id/restore — revert gridValues to the original snapshot
+  app.post("/api/layers/:id/restore", async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      const updated = await storage.restoreLayerGridValues(id);
+      const grid = JSON.parse(updated.gridValues) as number[][];
+      res.json({ id: updated.id, gridValues: grid });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to restore layer" });
     }
   });
 

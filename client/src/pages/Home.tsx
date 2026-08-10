@@ -661,7 +661,15 @@ export default function Home() {
                         size="sm"
                         variant="outline"
                         className="flex-1 h-7 text-[10px] uppercase tracking-wider"
-                        onClick={() => { setSkewOutB(0.00); setSkewOutT(0.01); setSkewInB(0.01); setSkewInT(0.05); }}
+                        onClick={async () => {
+                          setSkewOutB(0.00); setSkewOutT(0.01); setSkewInB(0.01); setSkewInT(0.05);
+                          if (skewLayerId === null) return;
+                          const res = await fetch(`/api/layers/${skewLayerId}/restore`, { method: 'POST' });
+                          if (res.ok) {
+                            const data = await res.json();
+                            setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, gridValues: data.gridValues } : l));
+                          }
+                        }}
                       >
                         Reset
                       </Button>
