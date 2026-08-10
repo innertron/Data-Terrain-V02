@@ -425,6 +425,17 @@ function CameraTracker({ onCameraChange }: { onCameraChange?: (x: number, y: num
 export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues, onCameraChange, rawLayerValues }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; onCameraChange?: (x: number, y: number, z: number) => void; rawLayerValues?: Map<string, number>; }) {
   const { data: segments, isLoading, error } = useSegments();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
+  // Click locks the selection (Political Domain / Income boxes) for 3 seconds,
+  // then hover resumes updating it live.
+  const selectionLockRef = useRef<number>(0);
+  const hoverSelect = (s: GridSegment | null) => {
+    setHoveredSegment(s);
+    if (s && Date.now() >= selectionLockRef.current) onSelectSegment(s);
+  };
+  const clickSelect = (s: GridSegment) => {
+    selectionLockRef.current = Date.now() + 3000;
+    onSelectSegment(s);
+  };
 
   // Only show the full-screen loader on first load (no data yet).
   // On subsequent refetches keepPreviousData keeps segments defined, so the
@@ -486,11 +497,8 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
               segments={segments}
               maxValue={maxValue}
               isDark={isDark}
-              onHover={(s) => {
-                setHoveredSegment(s);
-                if (s) onSelectSegment(s);
-              }}
-              onSelectSegment={onSelectSegment}
+              onHover={hoverSelect}
+              onSelectSegment={clickSelect}
               effectiveValues={effectiveValues}
             />
           ) : (
@@ -499,13 +507,8 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                 key={seg.id}
                 data={seg}
                 maxValue={maxValue}
-                onHover={(s) => {
-                  setHoveredSegment(s);
-                  if (s) onSelectSegment(s);
-                }}
-                onSelect={(s) => {
-                  onSelectSegment(s);
-                }}
+                onHover={hoverSelect}
+                onSelect={clickSelect}
                 isSelected={hoveredSegment?.id === seg.id}
                 isDark={isDark}
                 overrideValue={effectiveValues?.get(`${seg.xIndex},${seg.zIndex}`)}
