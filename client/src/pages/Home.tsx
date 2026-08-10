@@ -152,10 +152,10 @@ export default function Home() {
   const [cameraPos, setCameraPos] = useState<{x:number,y:number,z:number}>({ x: -25, y: 30, z: 25 });
   const [editValue, setEditValue] = useState<string>("");
   const [showSettings, setShowSettings] = useState(false);
+  const [showPoliticalPopup, setShowPoliticalPopup] = useState(false);
+  const [showIncomePopup, setShowIncomePopup] = useState(false);
   const [showProjectSettings, setShowProjectSettings] = useState(false);
   const [showAdjustSkew, setShowAdjustSkew] = useState(false);
-  const [showPoliticalZoom, setShowPoliticalZoom] = useState(false);
-  const [showIncomeZoom, setShowIncomeZoom] = useState(false);
   const [skewLayerId, setSkewLayerId] = useState<number | null>(null);
   const [skewInB, setSkewInB] = useState(0.01);
   const [skewInT, setSkewInT] = useState(0.05);
@@ -463,68 +463,73 @@ export default function Home() {
            <div className="flex flex-col gap-2 p-3 flex-1">
              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0 relative" style={detailBgStyle}>
                <button
-                 onClick={() => setShowPoliticalZoom(true)}
-                 className="absolute top-1.5 right-1.5 p-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-black/20 transition-colors"
-                 title="Enlarge text"
-                 aria-label="Enlarge Political Domain text"
-                 data-testid="button-zoom-political"
+                 onClick={() => setShowPoliticalPopup(true)}
+                 className="absolute top-1.5 right-1.5 p-0.5 text-muted-foreground hover:text-foreground transition-colors z-10"
+                 title="Magnify political domain text"
+                 data-testid="button-magnify-political"
                >
-                 <Search className="w-3.5 h-3.5" />
+                 <Search className="w-3 h-3" />
                </button>
-               <div className="text-xs leading-snug overflow-y-auto pr-5" style={{ maxHeight: '80px' }}>
+               <div className="text-xs leading-snug overflow-y-auto pr-4" style={{ maxHeight: '80px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Political Domain (X)</span>{' '} 
                  <span className="text-foreground/80"><strong style={{ color: getXLabelColor(selectedSegment.xIndex) }}>{X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}</strong>{' → '}{renderPolitical(X_MIDDLE_NAMES[selectedSegment.xIndex] || '')}</span>
                </div>
              </div>
              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0 relative" style={detailBgStyle}>
                <button
-                 onClick={() => setShowIncomeZoom(true)}
-                 className="absolute top-1.5 right-1.5 p-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-black/20 transition-colors"
-                 title="Enlarge text"
-                 aria-label="Enlarge Income and Education text"
-                 data-testid="button-zoom-income"
+                 onClick={() => setShowIncomePopup(true)}
+                 className="absolute top-1.5 right-1.5 p-0.5 text-muted-foreground hover:text-foreground transition-colors z-10"
+                 title="Magnify income/education text"
+                 data-testid="button-magnify-income"
                >
-                 <Search className="w-3.5 h-3.5" />
+                 <Search className="w-3 h-3" />
                </button>
-               <div className="text-xs leading-snug overflow-y-auto pr-5" style={{ maxHeight: '80px' }}>
+               <div className="text-xs leading-snug overflow-y-auto pr-4" style={{ maxHeight: '80px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Income / Education (Z)</span>{' '}
                  <span className="text-foreground/80">{renderConverged(Z_MIDDLE_NAMES[selectedSegment.zIndex] || '')}</span>
                </div>
              </div>
-           </div>
-         </div>
-       )}
-
-       {/* Political Domain zoom popup — white text on black */}
-       {showPoliticalZoom && selectedSegment && (
-         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" data-testid="popup-political-zoom">
-           <div role="dialog" aria-modal="true" aria-label="Political Domain full text" className="relative bg-black text-white rounded-lg shadow-2xl border border-white/20 w-[520px] max-w-[90vw] max-h-[70vh] flex flex-col">
-             <div className="flex items-center justify-between px-4 py-2 border-b border-white/20 shrink-0">
-               <span className="uppercase tracking-wider font-bold text-[11px]">Political Domain (X) — {X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}</span>
-               <button onClick={() => setShowPoliticalZoom(false)} aria-label="Close" autoFocus className="p-1 rounded hover:bg-white/10" data-testid="button-close-political-zoom">
-                 <X className="w-4 h-4" />
-               </button>
-             </div>
-             <div className="px-4 py-3 overflow-y-auto leading-relaxed" style={{ fontSize: '11pt' }}>
-               {renderPolitical(X_MIDDLE_NAMES[selectedSegment.xIndex] || '')}
-             </div>
-           </div>
-         </div>
-       )}
-
-       {/* Income / Education zoom popup — black text on white */}
-       {showIncomeZoom && selectedSegment && (
-         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" data-testid="popup-income-zoom">
-           <div role="dialog" aria-modal="true" aria-label="Income and Education full text" className="relative bg-white text-black rounded-lg shadow-2xl border border-black/20 w-[520px] max-w-[90vw] max-h-[70vh] flex flex-col">
-             <div className="flex items-center justify-between px-4 py-2 border-b border-black/20 shrink-0">
-               <span className="uppercase tracking-wider font-bold text-[11px]">Income / Education (Z) — {selectedSegment.zLabel}</span>
-               <button onClick={() => setShowIncomeZoom(false)} aria-label="Close" autoFocus className="p-1 rounded hover:bg-black/10" data-testid="button-close-income-zoom">
-                 <X className="w-4 h-4" />
-               </button>
-             </div>
-             <div className="px-4 py-3 overflow-y-auto leading-relaxed" style={{ fontSize: '11pt' }}>
-               {renderConverged(Z_MIDDLE_NAMES[selectedSegment.zIndex] || '')}
-             </div>
+             {showPoliticalPopup && (
+               <div
+                 className="fixed z-50 rounded-lg border border-white/25 shadow-2xl"
+                 style={{ backgroundColor: '#000', color: '#fff', width: '420px', maxWidth: '90vw', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
+                 data-testid="popup-political"
+               >
+                 <button
+                   onClick={() => setShowPoliticalPopup(false)}
+                   className="absolute top-1.5 right-1.5 p-0.5 text-white/70 hover:text-white transition-colors"
+                   title="Close"
+                   data-testid="button-close-political-popup"
+                 >
+                   <X className="w-3.5 h-3.5" />
+                 </button>
+                 <div className="p-3 pr-6 overflow-y-auto" style={{ fontSize: '11px', lineHeight: 1.4, maxHeight: '70vh' }}>
+                   <span className="uppercase tracking-wider font-bold">Political Domain (X)</span>{' '}
+                   <strong style={{ color: getXLabelColor(selectedSegment.xIndex) }}>{X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}</strong>{' → '}
+                   {renderPolitical(X_MIDDLE_NAMES[selectedSegment.xIndex] || '')}
+                 </div>
+               </div>
+             )}
+             {showIncomePopup && (
+               <div
+                 className="fixed z-50 rounded-lg border border-black/30 shadow-2xl"
+                 style={{ backgroundColor: '#fff', color: '#000', width: '420px', maxWidth: '90vw', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
+                 data-testid="popup-income"
+               >
+                 <button
+                   onClick={() => setShowIncomePopup(false)}
+                   className="absolute top-1.5 right-1.5 p-0.5 text-black/60 hover:text-black transition-colors"
+                   title="Close"
+                   data-testid="button-close-income-popup"
+                 >
+                   <X className="w-3.5 h-3.5" />
+                 </button>
+                 <div className="p-3 pr-6 overflow-y-auto" style={{ fontSize: '11px', lineHeight: 1.4, maxHeight: '70vh' }}>
+                   <span className="uppercase tracking-wider font-bold">Income / Education (Z)</span>{' '}
+                   {renderConverged(Z_MIDDLE_NAMES[selectedSegment.zIndex] || '')}
+                 </div>
+               </div>
+             )}
            </div>
          </div>
        )}
