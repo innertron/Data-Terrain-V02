@@ -29,6 +29,8 @@ Generate layer grids using **multiquadric RBF interpolation** from control point
 # anchors: 2.00 at (25,1),(23,1)                — kills RBF corner-overshoot bump
 ```
 
+**FINAL working config (Aug 10 2026):** multiquadric φ=sqrt(r²+c²) with **c=2.5, smooth=0.1** (NOT c=1/0.2 — that rings badly on the steep 3.2→1.64 cliff at right edge Z12-15, producing spurious back-side bumps at Z15-17). Control points = list above PLUS interior bridges 2.30@(23.2,7.2), 2.35@(23.2,9), 2.30@(23,8). Do NOT densify contour polylines — dense exact-interpolation points ring worse. Validate every generated grid with: (1) local-maxima scan (only one peak allowed besides low corner mounds), (2) monotonic descent along right edge above the peak, (3) monotonic rise along rows approaching the peak.
+
 **Overshoot lesson:** RBF extrapolation past the last bottom-edge control point creates a spurious second peak at the corner (user-visible bumps). Always add 1-2 low-value anchor points at unconstrained corners near the peak, then check for local maxima; also don't over-anchor (too many close anchors → oscillation).
 
 **Correction (2026-08-10):** the user flagged that the original 3.2/2.56 points anchored the peak to the bottom-right corner. The chart's innermost contours are small CLOSED arcs at the right edge centered a bit below middle (peak ends up at X=25, Z≈8). When extracting future charts, check whether inner contours close around a center vs. run off the grid edge.
