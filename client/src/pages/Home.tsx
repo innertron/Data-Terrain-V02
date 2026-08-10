@@ -625,34 +625,17 @@ export default function Home() {
                 <div className="flex flex-col gap-2">
                   {/* Adjust Skew — full width */}
                   <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Adjust Skew <span className="normal-case font-normal opacity-60">(fraction · 0.05 = ±5%)</span></p>
-                    <div className="flex gap-2">
-                      {/* Outside shape */}
-                      <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
-                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Outside — RANDBETWEEN</p>
-                        <div className="flex items-center gap-1">
-                          <div className="flex-1">
-                            <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                            <Input type="number" min={0} step="0.01" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
-                          </div>
-                          <div className="flex-1">
-                            <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                            <Input type="number" min={0} step="0.01" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
-                          </div>
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Randomize <span className="normal-case font-normal opacity-60">(fraction · 0.05 = ±5%)</span></p>
+                    <div className="border border-border rounded-md p-1.5 bg-background">
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">RANDBETWEEN</p>
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1">
+                          <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
+                          <Input type="number" min={0} step="0.01" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
                         </div>
-                      </div>
-                      {/* Inside shape */}
-                      <div className="flex-1 border border-border rounded-md p-1.5 bg-background">
-                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">Inside — RANDBETWEEN</p>
-                        <div className="flex items-center gap-1">
-                          <div className="flex-1">
-                            <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
-                            <Input type="number" min={0} step="0.01" value={skewInB} onChange={e => setSkewInB(Number(e.target.value))} className="h-7 text-xs font-mono" />
-                          </div>
-                          <div className="flex-1">
-                            <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
-                            <Input type="number" min={0} step="0.01" value={skewInT} onChange={e => setSkewInT(Number(e.target.value))} className="h-7 text-xs font-mono" />
-                          </div>
+                        <div className="flex-1">
+                          <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
+                          <Input type="number" min={0} step="0.01" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
                         </div>
                       </div>
                     </div>
@@ -662,7 +645,7 @@ export default function Home() {
                         variant="outline"
                         className="flex-1 h-7 text-[10px] uppercase tracking-wider"
                         onClick={async () => {
-                          setSkewOutB(0.00); setSkewOutT(0.01); setSkewInB(0.01); setSkewInT(0.05);
+                          setSkewOutB(0.00); setSkewOutT(0.02);
                           if (skewLayerId === null) return;
                           const res = await fetch(`/api/layers/${skewLayerId}/restore`, { method: 'POST' });
                           if (res.ok) {
@@ -683,7 +666,7 @@ export default function Home() {
                             const res = await fetch(`/api/layers/${skewLayerId}/skew`, {
                               method: 'POST',
                               headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ insideBottom: skewInB, insideTop: skewInT, outsideBottom: skewOutB, outsideTop: skewOutT }),
+                              body: JSON.stringify({ insideBottom: skewOutB, insideTop: skewOutT, outsideBottom: skewOutB, outsideTop: skewOutT }),
                             });
                             const updated = await res.json();
                             setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, gridValues: updated.gridValues } : l));
