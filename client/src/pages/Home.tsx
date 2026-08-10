@@ -192,6 +192,12 @@ export default function Home() {
       .catch(console.error);
   }, []);
 
+  // Reset skew inputs to safe defaults whenever a different layer is selected
+  useEffect(() => {
+    setSkewOutB(0.00);
+    setSkewOutT(0.02);
+  }, [skewLayerId]);
+
   const effectiveValues = useMemo(() => {
     if (layerDefs.length === 0) return undefined; // not yet loaded — use raw DB values
     const allGrids = layerDefs.map(l => l.gridValues);
