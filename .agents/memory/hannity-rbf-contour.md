@@ -24,9 +24,12 @@ Generate layer grids using **multiquadric RBF interpolation** from control point
 # 1.31: (6,1),(10,3),(14,7),(18,11),(25,15)
 # 1.64: (12,1),(16,4),(19,8),(22,12),(25,13.5)
 # 2.05: (18,1),(20,3),(22,7),(25,12.5)
-# 2.56: (22,1),(23,3),(24,7),(24.3,10.5),(25,13)
+# 2.56: (24.2,5),(24,7.5),(24.3,10.5),(25,13)   — hugs right edge, does NOT touch bottom
 # 3.20: (25,8),(24.5,10.2),(25,12)
+# anchors: 2.00 at (25,1),(23,1)                — kills RBF corner-overshoot bump
 ```
+
+**Overshoot lesson:** RBF extrapolation past the last bottom-edge control point creates a spurious second peak at the corner (user-visible bumps). Always add 1-2 low-value anchor points at unconstrained corners near the peak, then check for local maxima; also don't over-anchor (too many close anchors → oscillation).
 
 **Correction (2026-08-10):** the user flagged that the original 3.2/2.56 points anchored the peak to the bottom-right corner. The chart's innermost contours are small CLOSED arcs at the right edge centered a bit below middle (peak ends up at X=25, Z≈8). When extracting future charts, check whether inner contours close around a center vs. run off the grid edge.
 
