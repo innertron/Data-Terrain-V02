@@ -5,4 +5,5 @@
 - [Grid template files](grid-template-files.md) — static SVG/HTML/CSV grid tools live in client/public/; generator scripts in scripts/; user prefers matrix CSV (25×25) not flat x,z,value list.
 - [User rules](user-rules.md) — never use AskQuestion tool; never make unsolicited changes to DemoScape; work from direct instructions only.
 - [Layer row colors](layer-row-colors.md) — all layer rows must use #a8d4d2 teal, never layer.color from DB; text-black. Task agent merges keep reverting this — fix after every merge.
+- [Production data sync](prod-data-sync.md) — prod has a separate DB; publish never copies layer data. Sync layers via the live app's API, not SQL.
 - [Hannity RBF contour grid](hannity-rbf-contour.md) — ONLY correct method: multiquadric RBF from extracted control points; never use polynomial/product approximations.
