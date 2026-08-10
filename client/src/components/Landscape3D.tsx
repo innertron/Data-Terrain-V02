@@ -3,6 +3,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Text, Billboard, Stars, Environment, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { useSegments } from "@/hooks/use-segments";
+import { useAxisData } from "@/lib/axisData";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -114,23 +115,7 @@ function Bar({
   );
 }
 
-const X_LABELS = [
-  'DEM-4','DEM-3','DEM-2','DEM-1','DEM 0',
-  'DEM+1','DEM+2','DEM+3','DEM+4','Swng/z',
-  'Swng/y','Swng/x','Swng 0','Swng\\x','Swng\\y',
-  'Swng\\z','GOP+4','GOP+3','GOP+2','GOP+1',
-  'GOP 0','GOP-1','GOP-2','GOP-3','GOP-4'
-];
-
-const Z_LABELS = [
-  '$20B+ Luck2','$1B Luck1','$50M MDPhD3','$1M MDPhD2','$500K MDPhD1',
-  '$400K MD2','$300K MD1','$250K BSJD2','$200K BSJD1','$175K BSPhD2',
-  '$150K BSPhD1','$120K BSMS','$100K Trade3','$90K BS2','$80K BS1',
-  '$77K BAPhD','$70K Trade2','$65K Trade1','$60K BAMS','$55K BA2',
-  '$50K BA1','$45K AS','$40K GED','$35K GED','<$34K GED'
-];
-
-function AxisLabels({ isDark = true }: { isDark?: boolean }) {
+function AxisLabels({ isDark = true, xLabels, zLabels }: { isDark?: boolean; xLabels: string[]; zLabels: string[] }) {
   const groupRef = useRef<THREE.Group>(null);
   const [xLabelSide, setXLabelSide] = useState<'front' | 'back'>('front');
   const [zLabelSide, setZLabelSide] = useState<'right' | 'left'>('right');
@@ -161,7 +146,7 @@ function AxisLabels({ isDark = true }: { isDark?: boolean }) {
       </Billboard>
 
       {/* Individual X-Axis Labels */}
-      {X_LABELS.map((label, i) => {
+      {xLabels.map((label, i) => {
         const xPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
         const hue = THREE.MathUtils.lerp(240, 0, i / 24);
         const color = isDark ? `hsl(${hue}, 90%, 60%)` : 'black';
@@ -182,7 +167,7 @@ function AxisLabels({ isDark = true }: { isDark?: boolean }) {
       </Billboard>
 
       {/* Individual Z-Axis Labels */}
-      {Z_LABELS.map((label, i) => {
+      {zLabels.map((label, i) => {
         const zPos = (i - GRID_SIZE / 2) * (BAR_SIZE + GAP);
         return (
           <Billboard key={`z-${i}`} position={[zX, 0.5, zPos]}>
@@ -384,15 +369,15 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, 
   );
 }
 
-function FloatingLabel({ data, maxValue, isDark = true, displayValue, peopleValue }: { data: GridSegment; maxValue: number; isDark?: boolean; displayValue?: number; peopleValue?: number }) {
+function FloatingLabel({ data, maxValue, isDark = true, displayValue, peopleValue, xLabels, zLabels }: { data: GridSegment; maxValue: number; isDark?: boolean; displayValue?: number; peopleValue?: number; xLabels: string[]; zLabels: string[] }) {
   const xPos = (data.xIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const zPos = (data.zIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const effectiveVal = displayValue ?? data.value;
   const barHeight = Math.max((effectiveVal / maxValue) * MAX_HEIGHT, 0.1);
   const yPos = barHeight + 6;
 
-  const domainLabel = X_LABELS[data.xIndex] || data.xLabel;
-  const incomeLabel = Z_LABELS[data.zIndex] || data.zLabel;
+  const domainLabel = xLabels[data.xIndex] || data.xLabel;
+  const incomeLabel = zLabels[data.zIndex] || data.zLabel;
 
   return (
     <Html position={[xPos, yPos, zPos]} center style={{ pointerEvents: 'none' }}>
@@ -424,6 +409,7 @@ function CameraTracker({ onCameraChange }: { onCameraChange?: (x: number, y: num
 
 export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues, onCameraChange, rawLayerValues }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; onCameraChange?: (x: number, y: number, z: number) => void; rawLayerValues?: Map<string, number>; }) {
   const { data: segments, isLoading, error } = useSegments();
+  const { xLabels, zLabels } = useAxisData();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
   // Click locks the selection (Political Domain / Income boxes) for 3 seconds,
   // then hover resumes updating it live.
@@ -515,7 +501,7 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
               />
             ))
           )}
-          <AxisLabels isDark={isDark} />
+          <AxisLabels isDark={isDark} xLabels={xLabels} zLabels={zLabels} />
         </group>
 
         {/* Hover Label */}
@@ -524,6 +510,8 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
             data={hoveredSegment}
             maxValue={maxValue}
             isDark={isDark}
+            xLabels={xLabels}
+            zLabels={zLabels}
             displayValue={effectiveValues?.get(`${hoveredSegment.xIndex},${hoveredSegment.zIndex}`)}
             peopleValue={rawLayerValues?.get(`${hoveredSegment.xIndex},${hoveredSegment.zIndex}`)}
           />

@@ -7,4 +7,5 @@
 - [Layer row colors](layer-row-colors.md) — all layer rows must use #a8d4d2 teal, never layer.color from DB; text-black. Task agent merges keep reverting this — fix after every merge.
 - [Post-merge UI regressions](post-merge-regressions.md) — task merges have repeatedly overwritten UI behavior (popup font size, click-lock selection); re-verify these after every merge.
 - [Production data sync](prod-data-sync.md) — prod has a separate DB; publish never copies layer data. Sync layers via the live app's API, not SQL.
+- [Axis data storage](axis-data.md) — X/Z labels+descriptions live in project_settings via /api/axis with defaults in axisData.ts; never re-hardcode; Z is HIGH→LOW.
 - [Hannity RBF contour grid](hannity-rbf-contour.md) — ONLY correct method: multiquadric RBF from extracted control points; never use polynomial/product approximations.

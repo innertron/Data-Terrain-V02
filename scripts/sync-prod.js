@@ -68,7 +68,19 @@ async function main() {
     }
   }
 
-  // 4. Verify
+  // 4. Sync axis data (X/Z labels + descriptions) stored in project settings
+  const devSettings = await getJson(`${DEV}/api/settings`);
+  for (const key of ["axis_x", "axis_z"]) {
+    if (!devSettings[key]) continue;
+    const res = await fetch(`${PROD}/api/settings/${key}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ value: devSettings[key] }),
+    });
+    console.log(`  synced ${key} -> ${res.status}`);
+  }
+
+  // 5. Verify
   const final = await getJson(`${PROD}/api/layers`);
   console.log(`Done. Prod now has ${final.length} layers: ${final.map((l) => l.name).join(", ")}`);
 }

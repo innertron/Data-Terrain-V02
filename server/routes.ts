@@ -717,6 +717,43 @@ export async function registerRoutes(
     }
   });
 
+  // ── Axis data (X/Z labels + descriptions) — stored in project_settings ────
+  const axisDataSchema = z.object({
+    labels: z.array(z.string().min(1)).length(25),
+    descriptions: z.array(z.string()).length(25),
+  });
+
+  // GET /api/axis — returns stored axis data or null (client falls back to defaults)
+  app.get("/api/axis", async (_req, res) => {
+    try {
+      const settings = await storage.getAllSettings();
+      const parse = (key: string) => {
+        try { return settings[key] ? JSON.parse(settings[key]) : null; } catch { return null; }
+      };
+      res.json({ x: parse("axis_x"), z: parse("axis_z") });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to fetch axis data" });
+    }
+  });
+
+  // PUT /api/axis/:axis — replace labels + descriptions for x or z axis
+  app.put("/api/axis/:axis", async (req, res) => {
+    try {
+      const axis = req.params.axis;
+      if (axis !== "x" && axis !== "z") {
+        return res.status(400).json({ message: "Axis must be 'x' or 'z'" });
+      }
+      const data = axisDataSchema.parse(req.body);
+      await storage.setSetting(`axis_${axis}`, JSON.stringify(data));
+      res.json({ axis, ...data });
+    } catch (err) {
+      if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
+      console.error(err);
+      res.status(500).json({ message: "Failed to save axis data" });
+    }
+  });
+
   // GET all project settings
   app.get("/api/settings", async (req, res) => {
     try {
