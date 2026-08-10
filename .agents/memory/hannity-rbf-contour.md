@@ -23,10 +23,12 @@ Generate layer grids using **multiquadric RBF interpolation** from control point
 # 1.05: (1,15),(10,14),(18,15),(25,16)
 # 1.31: (6,1),(10,3),(14,7),(18,11),(25,15)
 # 1.64: (12,1),(16,4),(19,8),(22,12),(25,13.5)
-# 2.05: (18,1),(20,3),(22,7),(25,12)
-# 2.56: (22,1),(23,3),(24,7),(25,10.5)
-# 3.20: (24.5,1),(25,4),(25,8),(25,9.5)
+# 2.05: (18,1),(20,3),(22,7),(25,12.5)
+# 2.56: (22,1),(23,3),(24,7),(24.3,10.5),(25,13)
+# 3.20: (25,8),(24.5,10.2),(25,12)
 ```
+
+**Correction (2026-08-10):** the user flagged that the original 3.2/2.56 points anchored the peak to the bottom-right corner. The chart's innermost contours are small CLOSED arcs at the right edge centered a bit below middle (peak ends up at X=25, Z≈8). When extracting future charts, check whether inner contours close around a center vs. run off the grid edge.
 
 ## RBF Implementation (JS, no scipy needed)
 - Basis: φ(r) = sqrt(r² + 1²)  (multiquadric, ε=1)
