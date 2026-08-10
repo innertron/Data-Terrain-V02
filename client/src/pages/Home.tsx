@@ -491,19 +491,19 @@ export default function Home() {
              </div>
              {showPoliticalPopup && (
                <div
-                 className="fixed z-50 rounded-lg border border-white/25 shadow-2xl"
-                 style={{ backgroundColor: '#000', color: '#fff', width: '420px', maxWidth: '90vw', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
+                 className={`fixed z-50 rounded-lg shadow-2xl border ${isDark ? 'border-white/25' : 'border-black/30'}`}
+                 style={{ backgroundColor: isDark ? '#000' : '#fff', color: isDark ? '#fff' : '#000', width: '420px', maxWidth: '90vw', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
                  data-testid="popup-political"
                >
                  <button
                    onClick={() => setShowPoliticalPopup(false)}
-                   className="absolute top-1.5 right-1.5 p-0.5 text-white/70 hover:text-white transition-colors"
+                   className={`absolute top-1.5 right-1.5 p-0.5 transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-black/60 hover:text-black'}`}
                    title="Close"
                    data-testid="button-close-political-popup"
                  >
                    <X className="w-3.5 h-3.5" />
                  </button>
-                 <div className="p-3 pr-6 overflow-y-auto" style={{ fontSize: '11px', lineHeight: 1.4, maxHeight: '70vh' }}>
+                 <div className="p-3 pr-6 overflow-y-auto" style={{ fontSize: '11pt', lineHeight: 1.45, maxHeight: '70vh' }}>
                    <span className="uppercase tracking-wider font-bold">Political Domain (X)</span>{' '}
                    <strong style={{ color: getXLabelColor(selectedSegment.xIndex) }}>{X_LABELS[selectedSegment.xIndex] || selectedSegment.xLabel}</strong>{' → '}
                    {renderPolitical(X_MIDDLE_NAMES[selectedSegment.xIndex] || '')}
@@ -524,7 +524,7 @@ export default function Home() {
                  >
                    <X className="w-3.5 h-3.5" />
                  </button>
-                 <div className="p-3 pr-6 overflow-y-auto" style={{ fontSize: '11px', lineHeight: 1.4, maxHeight: '70vh' }}>
+                 <div className="p-3 pr-6 overflow-y-auto" style={{ fontSize: '11pt', lineHeight: 1.45, maxHeight: '70vh' }}>
                    <span className="uppercase tracking-wider font-bold">Income / Education (Z)</span>{' '}
                    {renderConverged(Z_MIDDLE_NAMES[selectedSegment.zIndex] || '')}
                  </div>
