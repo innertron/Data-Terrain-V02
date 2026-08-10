@@ -139,7 +139,52 @@ const HANNITY_CONTROL_POINTS = [
   [25, 25, 0.45], [22, 25, 0.45], [25, 24.5, 0.47],
 ];
 
-module.exports = { generateGrid, validateGrid, C, SMOOTH, HANNITY_CONTROL_POINTS };
+/**
+ * generateGridFromTraces — preferred mode when the user supplies cell-by-cell
+ * contour traces ("0.54: X1Z23, X2Z23, ..."). Dense cell-snapped points make
+ * exact interpolation ring, so this uses LEAST-SQUARES multiquadric instead:
+ * basis centers on a coarse lattice, fitted to ALL trace cells.
+ * Parameters LOCKED (tuned Aug 10 2026): C=4, ridge=1e-3, centers every 3 cells.
+ * Cells listed under two contour values get the average.
+ * Remember to add anchor/fill points for unconstrained corners and wide gaps
+ * between contours (see data/hannity-trace-points.json for a worked example).
+ * @param {Array<[number,number,number]>} data [x,z,value] — one entry per trace cell
+ */
+function generateGridFromTraces(data, opts = {}) {
+  const totalMillions = opts.totalMillions ?? 14.5;
+  const C2 = 4, ridge = 1e-3;
+  const centers = [];
+  for (let x = 1; x <= N; x += 3) for (let z = 1; z <= N; z += 3) centers.push([x, z]);
+  const phi = r => Math.sqrt(r * r + C2 * C2);
+  const m = data.length, n = centers.length;
+  const Phi = data.map(d => centers.map(c => phi(Math.hypot(d[0] - c[0], d[1] - c[1]))));
+  const A = Array.from({ length: n }, (_, i) => Array.from({ length: n }, (_, j) => {
+    let s = 0; for (let k = 0; k < m; k++) s += Phi[k][i] * Phi[k][j]; return s + (i === j ? ridge : 0);
+  }));
+  const b = Array.from({ length: n }, (_, i) => { let s = 0; for (let k = 0; k < m; k++) s += Phi[k][i] * data[k][2]; return s; });
+  for (let col = 0; col < n; col++) {
+    let piv = col;
+    for (let r = col + 1; r < n; r++) if (Math.abs(A[r][col]) > Math.abs(A[piv][col])) piv = r;
+    [A[col], A[piv]] = [A[piv], A[col]]; [b[col], b[piv]] = [b[piv], b[col]];
+    for (let r = col + 1; r < n; r++) {
+      const f = A[r][col] / A[col][col];
+      for (let c = col; c < n; c++) A[r][c] -= f * A[col][c];
+      b[r] -= f * b[col];
+    }
+  }
+  const w = new Array(n).fill(0);
+  for (let i = n - 1; i >= 0; i--) { let s = b[i]; for (let j = i + 1; j < n; j++) s -= A[i][j] * w[j]; w[i] = s / A[i][i]; }
+  const ev = (x, z) => centers.reduce((s, c, i) => s + w[i] * phi(Math.hypot(x - c[0], z - c[1])), 0);
+  const vals = [];
+  for (let r = 0; r < N; r++) { const row = []; for (let c = 0; c < N; c++) row.push(ev(c + 1, N - r)); vals.push(row); }
+  let mn = Infinity, mx = -Infinity;
+  vals.flat().forEach(v => { mn = Math.min(mn, v); mx = Math.max(mx, v); });
+  const norm = vals.map(row => row.map(v => (v - mn) / (mx - mn) * 10));
+  const tot = norm.flat().reduce((a, v) => a + v, 0);
+  return norm.map(row => row.map(v => Math.round(v * (totalMillions / tot) * 10000) / 10000)).reverse();
+}
+
+module.exports = { generateGrid, generateGridFromTraces, validateGrid, C, SMOOTH, HANNITY_CONTROL_POINTS };
 
 if (require.main === module) {
   const [, , file, total] = process.argv;
