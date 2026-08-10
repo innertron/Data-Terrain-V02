@@ -473,9 +473,11 @@ export async function registerRoutes(
       };
 
       let grid: number[][];
-      let newParams: string;
+      let newParams: string | undefined;
 
-      if (!layer.params) {
+      const hasShapeParams = layer.params ? (() => { try { return !!JSON.parse(layer.params).shape; } catch { return false; } })() : false;
+
+      if (!hasShapeParams) {
         // No shape params (RBF/static layer) — apply relative noise as a fraction
         // of each cell's existing value.  outsideBottom/Top are treated as fractional
         // multipliers (e.g. 0.05 = ±5% variation) so decimal grids are not destroyed.
@@ -487,10 +489,10 @@ export async function registerRoutes(
             return Math.max(0, Math.round((val * (1 + sign * frac)) * 10000) / 10000);
           })
         );
-        newParams = JSON.stringify({ insideBottom, insideTop, outsideBottom, outsideTop });
+        newParams = undefined; // RBF layers: never overwrite params — it would break the next skew
       } else {
         // Shape params exist — regenerate from scratch using stored algorithm.
-        const p = JSON.parse(layer.params);
+        const p = JSON.parse(layer.params!);
         const { hJunction, hPeak } = p;
         grid = [];
 
