@@ -27,7 +27,7 @@ curl -s http://localhost:5000/api/layers | python3 -c "import json,sys; [print(f
 
 ## CSV format
 - Header: `x1,x2,...,x25`
-- 25 data rows (row 1 = Z25/top of grid, row 25 = Z1/bottom)
+- 25 data rows — **row 1 = LOW income (Z=1, <$34K), row 25 = HIGH income (Z=25, $20B+)**. The app renders zIndex = 24 − rowIndex against Z_LABELS which is HIGH→LOW. (2026-08-10: the previous note here said row 1 = Z25/top — that was WRONG and caused Hannity's peak to render at the high-income corner twice.)
 - 25 comma-separated integers per row
 - Values: outside = 4, inside = 5 (or as specified by user)
 

@@ -12,8 +12,8 @@ Generate layer grids using **multiquadric RBF interpolation** from control point
 - Python/chart: X=1–25 (DEM→GOP), Z=1–25 (LOW income=1 at bottom, HIGH income=25 at top)
 - My CSV grid: row r=0…24, col c=0…24
   - c = X − 1
-  - r = 25 − Z  (so r=0=high income, r=24=low income)
-- zIndex used internally: zIndex = 24 − r
+  - **r = Z − 1  (row 0 = LOW income Z=1, row 24 = HIGH income Z=25)** — corrected 2026-08-10; the old note (r = 25 − Z) was inverted and put the peak at the wrong end.
+- App display: zIndex = 24 − r, and Z_LABELS is HIGH→LOW, so row 0 → zIndex 24 → '<$34K GED'.
 
 ## Hannity Control Points (X, Z, value)
 ```
