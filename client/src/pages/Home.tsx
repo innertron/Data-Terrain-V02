@@ -713,8 +713,8 @@ export default function Home() {
                                 const url = URL.createObjectURL(file);
                                 img.onload = () => {
                                   URL.revokeObjectURL(url);
-                                  if (img.width > 150 || img.height > 150) {
-                                    alert(`Image must be 150×150 px or smaller (yours is ${img.width}×${img.height}).`);
+                                  if (img.width > 300 || img.height > 300) {
+                                    alert(`Image must be 300×300 px or smaller (yours is ${img.width}×${img.height}).`);
                                     e.target.value = '';
                                     return;
                                   }
@@ -728,7 +728,7 @@ export default function Home() {
                             <span className="text-[9px] text-muted-foreground">Click circle to upload</span>
                           </div>
                           <p className="text-[9px] font-semibold" style={{ color: '#8b0000' }}>
-                            JPG or PNG only · max 150×150 px · square images work best
+                            JPG or PNG only · max 300×300 px · square images work best
                           </p>
                         </div>
                       )}
