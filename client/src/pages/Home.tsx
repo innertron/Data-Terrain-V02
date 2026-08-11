@@ -177,8 +177,8 @@ export default function Home() {
     const entries = activeLayers.map(id => {
       const layer = layerDefs.find(l => l.id === id);
       if (!layer) return null;
-      return { id, name: layer.name, name2: layer.name2 ?? null, description: layer.description ?? null, icon: layer.icon ?? null, value: layer.gridValues[row]?.[col] ?? 0 };
-    }).filter((r): r is { id: number; name: string; name2: string|null; description: string|null; icon: string|null; value: number } => !!r);
+      return { id, name: layer.name, name2: layer.name2 ?? null, description: layer.description ?? null, icon: layer.icon ?? null, rank: (layer as any).rank ?? null, affiliation: (layer as any).affiliation ?? null, value: layer.gridValues[row]?.[col] ?? 0 };
+    }).filter((r): r is { id: number; name: string; name2: string|null; description: string|null; icon: string|null; rank: number|null; affiliation: string|null; value: number } => !!r);
     const total = entries.reduce((s, r) => s + r.value, 0);
     return entries
       .map(r => ({ ...r, pct: total > 0 ? Math.round(r.value / total * 100) : 0 }))
@@ -985,31 +985,38 @@ export default function Home() {
                 ) : (
                   <div className="flex flex-col gap-2">
                     {layerResultsAtBlock.map((r, i) => (
-                      <div key={r.id} className="flex flex-col gap-2 rounded-lg border-[1.5px] border-black dark:border-zinc-300 px-3 py-3">
-                        {/* Row header: number · icon · name · name2 · pct */}
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-sm font-mono text-foreground/60 shrink-0">{i + 1}.</span>
+                      <div key={r.id} className="rounded-lg border-[1.5px] border-black dark:border-zinc-300 px-3 py-3">
+                        {/* Large icon spans name row + bar row */}
+                        <div className="flex items-start gap-3">
+                          <span className="text-sm font-mono text-foreground/60 shrink-0 pt-4">{i + 1}.</span>
                           {r.icon && (
-                            <img src={r.icon} alt="" className="w-8 h-8 rounded-full object-cover shrink-0" />
+                            <img src={r.icon} alt="" className="w-16 h-16 rounded-full object-cover shrink-0" />
                           )}
-                          <span className="flex flex-col min-w-0 flex-1">
-                            <span className="text-xl font-semibold text-foreground truncate">{r.name}</span>
-                            {r.name2 && (
-                              <span className="text-base text-foreground/70 truncate">{r.name2}</span>
-                            )}
-                          </span>
-                          <span className="text-xl font-mono font-bold text-foreground shrink-0">{r.pct}%</span>
-                        </div>
-                        {/* Percentage bar */}
-                        <div className="h-2 rounded-full bg-muted overflow-hidden">
-                          <div
-                            className="h-full rounded-full transition-all duration-300"
-                            style={{ width: `${r.pct}%`, backgroundColor: blockBarColor }}
-                          />
+                          <div className="flex flex-col min-w-0 flex-1 gap-1.5 pt-2">
+                            {/* Text row: name · affiliation · rank · pct */}
+                            <div className="flex items-baseline gap-3 min-w-0">
+                              <span className="text-xl font-semibold text-foreground truncate">{r.name}</span>
+                              {r.affiliation && (
+                                <span className="text-lg font-semibold text-foreground/90 truncate shrink-0">{r.affiliation}</span>
+                              )}
+                              <span className="flex-1" />
+                              {r.rank != null && (
+                                <span className="text-sm font-mono text-foreground/50 shrink-0 whitespace-nowrap">Rank → {String(r.rank).padStart(2, '0')}</span>
+                              )}
+                              <span className="text-xl font-mono font-bold text-foreground shrink-0">{r.pct}%</span>
+                            </div>
+                            {/* Percentage bar — starts at text indent */}
+                            <div className="h-2 rounded-full bg-muted overflow-hidden">
+                              <div
+                                className="h-full rounded-full transition-all duration-300"
+                                style={{ width: `${r.pct}%`, backgroundColor: blockBarColor }}
+                              />
+                            </div>
+                          </div>
                         </div>
                         {/* Description — inside the card, below bar */}
                         {r.description && (
-                          <p className="text-base text-foreground/80 leading-snug pt-0.5">{r.description}</p>
+                          <p className="text-base text-foreground/80 leading-snug pt-1.5">{r.description}</p>
                         )}
                       </div>
                     ))}
