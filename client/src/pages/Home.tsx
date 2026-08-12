@@ -1055,7 +1055,7 @@ export default function Home() {
                       </div>
                     ))}
                     <p className="text-xs text-muted-foreground font-mono mt-1">
-                      total · {layerResultsAtBlock.reduce((s, r) => s + r.value, 0)} · {layerResultsAtBlock.length} layer{layerResultsAtBlock.length > 1 ? 's' : ''}
+                      total · {layerResultsAtBlock.reduce((s, r) => s + r.value, 0).toFixed(4)}M · {layerResultsAtBlock.length} layer{layerResultsAtBlock.length > 1 ? 's' : ''}
                     </p>
                   </div>
                 )}
