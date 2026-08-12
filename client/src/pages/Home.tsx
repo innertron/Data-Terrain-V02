@@ -687,11 +687,11 @@ export default function Home() {
                       <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">RANDBETWEEN</p>
                       <div className="flex items-center gap-2">
                         <div className="flex-1">
-                          <Label className="text-[9px] text-muted-foreground uppercase">Bottom</Label>
+                          <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Bottom</Label>
                           <Input type="number" min={0} step="0.01" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
                         </div>
                         <div className="flex-1">
-                          <Label className="text-[9px] text-muted-foreground uppercase">Top</Label>
+                          <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Top</Label>
                           <Input type="number" min={0} step="0.01" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
                         </div>
                       </div>
@@ -745,7 +745,7 @@ export default function Home() {
                     {/* Icon toggle + upload */}
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-2">
-                        <Label className="text-[9px] text-muted-foreground uppercase">Icon</Label>
+                        <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Icon</Label>
                         <button
                           type="button"
                           onClick={() => setRenameIconOn(v => !v)}
@@ -796,7 +796,7 @@ export default function Home() {
 
                     {/* Name (1) — main */}
                     <div>
-                      <Label className="text-[9px] text-muted-foreground uppercase">Name (1) — Main</Label>
+                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Name (1) — Main</Label>
                       <Input
                         value={renameValue}
                         onChange={e => setRenameValue(e.target.value)}
@@ -807,7 +807,7 @@ export default function Home() {
 
                     {/* Name (2) — short subtitle */}
                     <div>
-                      <Label className="text-[9px] text-muted-foreground uppercase">Name (2) — Subtitle <span className="normal-case">(max 20 chars)</span></Label>
+                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Name (2) — Subtitle <span className="normal-case">(max 20 chars)</span></Label>
                       <Input
                         value={renameName2}
                         onChange={e => setRenameName2(e.target.value.slice(0, 20))}
@@ -820,7 +820,7 @@ export default function Home() {
 
                     {/* Description — long */}
                     <div>
-                      <Label className="text-[9px] text-muted-foreground uppercase">Description <span className="normal-case">(max 200 chars)</span></Label>
+                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Description <span className="normal-case">(max 200 chars)</span></Label>
                       <textarea
                         value={renameDesc}
                         onChange={e => setRenameDesc(e.target.value.slice(0, 200))}
@@ -832,9 +832,10 @@ export default function Home() {
                       <span className="text-[9px] text-muted-foreground">{renameDesc.length}/200</span>
                     </div>
 
-                    {/* Rank */}
+                    {/* Rank · Affiliation · Gender · Primary Medium — two lines */}
+                    <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <Label className="text-[9px] text-muted-foreground uppercase">Rank</Label>
+                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Rank</Label>
                       <Input
                         type="number"
                         min={1}
@@ -848,7 +849,7 @@ export default function Home() {
 
                     {/* Affiliation */}
                     <div>
-                      <Label className="text-[9px] text-muted-foreground uppercase">Affiliation</Label>
+                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Affiliation</Label>
                       <Input
                         value={renameAffiliation}
                         onChange={e => setRenameAffiliation(e.target.value)}
@@ -859,7 +860,7 @@ export default function Home() {
 
                     {/* Gender */}
                     <div>
-                      <Label className="text-[9px] text-muted-foreground uppercase">Gender</Label>
+                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Gender</Label>
                       <select
                         value={renameGender}
                         onChange={e => setRenameGender(e.target.value)}
@@ -873,7 +874,7 @@ export default function Home() {
 
                     {/* Primary Medium */}
                     <div>
-                      <Label className="text-[9px] text-muted-foreground uppercase">Primary Medium</Label>
+                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Primary Medium</Label>
                       <select
                         value={renameMedium}
                         onChange={e => setRenameMedium(e.target.value)}
@@ -883,6 +884,7 @@ export default function Home() {
                         {ALL_MEDIA.map(m => <option key={m} value={m}>{m}</option>)}
                       </select>
                     </div>
+                    </div>{/* end 2-col grid */}
 
                     <Button
                       size="sm"
