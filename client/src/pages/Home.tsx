@@ -141,9 +141,15 @@ export default function Home() {
   const effectiveValues = useMemo(() => {
     if (layerDefs.length === 0) return undefined; // not yet loaded — use raw DB values
     const allGrids = layerDefs.map(l => l.gridValues);
-    const activeGrids = activeLayers
-      .map(id => layerDefs.find(l => l.id === id)?.gridValues)
-      .filter((g): g is number[][] => !!g);
+    // Solo preview: while a layer is selected in Layer Tools, show only that layer
+    const soloGrid = showAdjustSkew && skewLayerId !== null
+      ? layerDefs.find(l => l.id === skewLayerId)?.gridValues
+      : undefined;
+    const activeGrids = soloGrid
+      ? [soloGrid]
+      : activeLayers
+          .map(id => layerDefs.find(l => l.id === id)?.gridValues)
+          .filter((g): g is number[][] => !!g);
     if (activeGrids.length === 0) {
       // All layers off — terrain flat (all zero)
       const zeros = new Map<string, number>();
@@ -153,7 +159,7 @@ export default function Home() {
     // allGrids provides the fixed normalization reference so single-layer
     // views show proportional heights, not re-normalized to full 0-100.
     return computeLayerValues(activeGrids, allGrids);
-  }, [activeLayers, layerDefs]);
+  }, [activeLayers, layerDefs, showAdjustSkew, skewLayerId]);
 
   // Raw (un-normalized) sum of active layer values per cell — used for People count display
   const rawLayerValues = useMemo(() => {
