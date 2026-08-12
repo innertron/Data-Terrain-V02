@@ -1039,7 +1039,7 @@ export default function Home() {
                 ) : (
                   <div className="flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto pr-1">
                     {layerResultsAtBlock.map((r, i) => (
-                      <div key={r.id} className={`rounded-lg border-[1.5px] border-black dark:border-zinc-300 px-3 py-3 transition-opacity ${r.active ? '' : 'opacity-40'}`}>
+                      <div key={r.id} className={`rounded-lg border-[1.5px] border-black dark:border-zinc-300 px-3 py-1.5 transition-opacity ${r.active ? '' : 'opacity-40'}`}>
                         {/* Large icon spans name row + bar row */}
                         <div className="flex items-start gap-3">
                           <span className="text-sm font-mono text-foreground/60 shrink-0 pt-4">{r.active ? `${i + 1}.` : '—'}</span>
