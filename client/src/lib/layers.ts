@@ -11,6 +11,7 @@ export type LayerDef = {
   rank?: number | null;         // 1-74 overall rank
   affiliation?: string | null;  // e.g. FOX, NBC, NPR
   primaryMedium?: string | null;// Cable TV, Podcast / YouTube, Radio, etc.
+  gender?: string | null;       // Male / Female
 };
 
 /** Fetch all layers (with grid data) from the API */

@@ -100,6 +100,7 @@ export default function Home() {
   const [renameRank, setRenameRank] = useState<number | "">("");
   const [renameAffiliation, setRenameAffiliation] = useState("");
   const [renameMedium, setRenameMedium] = useState("");
+  const [renameGender, setRenameGender] = useState("");
   const [mediumFilter, setMediumFilter] = useState<string[]>([]); // empty = show all
   const [surfMode, setSurfMode] = useState(false);
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('details');
@@ -655,6 +656,7 @@ export default function Home() {
                         setRenameRank((layer as any).rank ?? "");
                         setRenameAffiliation((layer as any).affiliation ?? "");
                         setRenameMedium((layer as any).primaryMedium ?? "");
+                        setRenameGender((layer as any).gender ?? "");
                         try {
                           const p = layer.params ? JSON.parse(layer.params) : null;
                           setSkewOutB(p?.outsideBottom ?? 0);
@@ -855,6 +857,20 @@ export default function Home() {
                       />
                     </div>
 
+                    {/* Gender */}
+                    <div>
+                      <Label className="text-[9px] text-muted-foreground uppercase">Gender</Label>
+                      <select
+                        value={renameGender}
+                        onChange={e => setRenameGender(e.target.value)}
+                        className="w-full h-7 rounded-md border border-input bg-background px-2 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-ring"
+                      >
+                        <option value="">— select —</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </div>
+
                     {/* Primary Medium */}
                     <div>
                       <Label className="text-[9px] text-muted-foreground uppercase">Primary Medium</Label>
@@ -886,6 +902,7 @@ export default function Home() {
                               rank: renameRank !== "" ? Number(renameRank) : undefined,
                               affiliation: renameAffiliation.trim() || undefined,
                               primaryMedium: renameMedium || undefined,
+                              gender: renameGender || undefined,
                             }),
                           });
                           const data = await res.json();
@@ -893,7 +910,7 @@ export default function Home() {
                             toast({ title: "Save failed", description: data.message ?? "Unknown error", variant: "destructive" });
                             return;
                           }
-                          setLayerDefs(prev => sortByRank(prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon, rank: data.rank, affiliation: data.affiliation, primaryMedium: data.primaryMedium } : l)));
+                          setLayerDefs(prev => sortByRank(prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon, rank: data.rank, affiliation: data.affiliation, primaryMedium: data.primaryMedium, gender: data.gender } : l)));
                           toast({ title: "Layer saved", description: `"${data.name}" updated successfully.` });
                         } catch (err) {
                           toast({ title: "Save failed", description: "Network error — check connection.", variant: "destructive" });

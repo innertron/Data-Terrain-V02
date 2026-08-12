@@ -35,6 +35,7 @@ export const layers = pgTable("layers", {
   params: text("params"),                    // JSON: shape algorithm params (nullable)
   rank: integer("rank"),                     // 1-74 overall rank
   affiliation: text("affiliation"),          // e.g. FOX, NBC, NPR, SPOTIFY
+  gender: text("gender"),                    // Male / Female
   primaryMedium: text("primary_medium"),     // Cable TV, Podcast / YouTube, Radio, etc.
 });
 

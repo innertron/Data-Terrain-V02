@@ -38,6 +38,7 @@ async function main() {
       ...(l.rank != null ? { rank: l.rank } : {}),
       ...(l.affiliation ? { affiliation: l.affiliation } : {}),
       ...(l.primaryMedium ? { primaryMedium: l.primaryMedium } : {}),
+      ...(l.gender ? { gender: l.gender } : {}),
     };
     const res = await fetch(`${PROD}/api/layers`, {
       method: "POST",
