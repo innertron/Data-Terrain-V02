@@ -115,11 +115,18 @@ export default function Home() {
     : layerDefs.filter(l => l.primaryMedium && mediumFilter.includes(l.primaryMedium));
   const isAdmin = import.meta.env.DEV;
 
+  // Sort: ranked layers first (rank ascending), unranked last (by name)
+  const sortByRank = (defs: LayerDef[]) =>
+    [...defs].sort((a, b) => {
+      const ra = a.rank ?? Infinity, rb = b.rank ?? Infinity;
+      return ra !== rb ? ra - rb : a.name.localeCompare(b.name);
+    });
+
   // Fetch layers from API once on mount
   useEffect(() => {
     fetchLayers()
       .then(defs => {
-        setLayerDefs(defs);
+        setLayerDefs(sortByRank(defs));
         setActiveLayers(defs.filter(l => l.active).map(l => l.id));
       })
       .catch(console.error);
@@ -835,7 +842,7 @@ export default function Home() {
                             toast({ title: "Save failed", description: data.message ?? "Unknown error", variant: "destructive" });
                             return;
                           }
-                          setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon, rank: data.rank, affiliation: data.affiliation, primaryMedium: data.primaryMedium } : l));
+                          setLayerDefs(prev => sortByRank(prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon, rank: data.rank, affiliation: data.affiliation, primaryMedium: data.primaryMedium } : l)));
                           toast({ title: "Layer saved", description: `"${data.name}" updated successfully.` });
                         } catch (err) {
                           toast({ title: "Save failed", description: "Network error — check connection.", variant: "destructive" });
