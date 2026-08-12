@@ -120,6 +120,33 @@ export default function Home() {
     : activeLayers.filter(id => visibleLayers.some(l => l.id === id));
   const isAdmin = import.meta.env.DEV;
 
+  // Medium filter pills — shared between the Layers list and the Results panel
+  const mediumFilterPills = layerDefs.some(l => l.primaryMedium) ? (
+    <div className="flex flex-col gap-1">
+      <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold px-1">Filter by medium</p>
+      <div className="flex flex-wrap gap-1 px-1">
+        {ALL_MEDIA.filter(m => layerDefs.some(l => l.primaryMedium === m)).map(m => {
+          const active = mediumFilter.includes(m);
+          return (
+            <button
+              key={m}
+              onClick={() => setMediumFilter(prev => active ? prev.filter(x => x !== m) : [...prev, m])}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${active ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
+              style={active ? { backgroundColor: '#a8d4d2' } : {}}
+            >
+              {m}
+            </button>
+          );
+        })}
+        {mediumFilter.length > 0 && (
+          <button onClick={() => setMediumFilter([])} className="px-1.5 py-0.5 rounded text-[9px] text-muted-foreground hover:text-foreground border border-dashed border-border">
+            clear
+          </button>
+        )}
+      </div>
+    </div>
+  ) : null;
+
   // Sort: ranked layers first (rank ascending), unranked last (by name)
   const sortByRank = (defs: LayerDef[]) =>
     [...defs].sort((a, b) => {
@@ -928,31 +955,7 @@ export default function Home() {
           {layerMode === 'layers' ? (
             <div className="flex flex-col gap-2">
               {/* Media type filter pills */}
-              {layerDefs.some(l => l.primaryMedium) && (
-                <div className="flex flex-col gap-1">
-                  <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold px-1">Filter by medium</p>
-                  <div className="flex flex-wrap gap-1 px-1">
-                    {ALL_MEDIA.filter(m => layerDefs.some(l => l.primaryMedium === m)).map(m => {
-                      const active = mediumFilter.includes(m);
-                      return (
-                        <button
-                          key={m}
-                          onClick={() => setMediumFilter(prev => active ? prev.filter(x => x !== m) : [...prev, m])}
-                          className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${active ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
-                          style={active ? { backgroundColor: '#a8d4d2' } : {}}
-                        >
-                          {m}
-                        </button>
-                      );
-                    })}
-                    {mediumFilter.length > 0 && (
-                      <button onClick={() => setMediumFilter([])} className="px-1.5 py-0.5 rounded text-[9px] text-muted-foreground hover:text-foreground border border-dashed border-border">
-                        clear
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
+              {mediumFilterPills}
 
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold px-1">
                 Layers ({visibleLayers.length}{mediumFilter.length > 0 ? ` of ${layerDefs.length}` : ''})
@@ -1010,6 +1013,7 @@ export default function Home() {
                 <Label className="text-sm uppercase tracking-wider text-primary mb-2 block shrink-0">
                   Results — [{selectedSegment.xIndex},{selectedSegment.zIndex}]
                 </Label>
+                <div className="mb-2 shrink-0">{mediumFilterPills}</div>
                 {layerResultsAtBlock.length === 0 ? (
                   <div className="text-sm text-muted-foreground italic">— no active layers —</div>
                 ) : (
