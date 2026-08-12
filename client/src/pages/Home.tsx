@@ -794,42 +794,27 @@ export default function Home() {
                       )}
                     </div>
 
-                    {/* Name (1) — main */}
-                    <div>
-                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Name (1) — Main</Label>
-                      <Input
-                        value={renameValue}
-                        onChange={e => setRenameValue(e.target.value)}
-                        className="h-7 text-xs font-mono uppercase"
-                        placeholder="LAYER NAME…"
-                      />
-                    </div>
-
-                    {/* Name (2) — short subtitle */}
-                    <div>
-                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Name (2) — Subtitle <span className="normal-case">(max 20 chars)</span></Label>
-                      <Input
-                        value={renameName2}
-                        onChange={e => setRenameName2(e.target.value.slice(0, 20))}
-                        className="h-7 text-xs font-mono"
-                        placeholder="Short subtitle…"
-                        maxLength={20}
-                      />
-                      <span className="text-[9px] text-muted-foreground">{renameName2.length}/20</span>
-                    </div>
-
-                    {/* Description — long */}
-                    <div>
-                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Description <span className="normal-case">(max 200 chars)</span></Label>
-                      <textarea
-                        value={renameDesc}
-                        onChange={e => setRenameDesc(e.target.value.slice(0, 200))}
-                        maxLength={200}
-                        rows={3}
-                        className="w-full rounded-md border border-input bg-background px-2 py-1 text-xs font-mono resize-none focus:outline-none focus:ring-1 focus:ring-ring"
-                        placeholder="Description…"
-                      />
-                      <span className="text-[9px] text-muted-foreground">{renameDesc.length}/200</span>
+                    {/* Name (1) · Name (2) — one line */}
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Name (1) — Main</Label>
+                        <Input
+                          value={renameValue}
+                          onChange={e => setRenameValue(e.target.value)}
+                          className="h-7 text-xs font-mono uppercase"
+                          placeholder="LAYER NAME…"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Name (2) — Subtitle</Label>
+                        <Input
+                          value={renameName2}
+                          onChange={e => setRenameName2(e.target.value.slice(0, 20))}
+                          className="h-7 text-xs font-mono"
+                          placeholder="Short subtitle…"
+                          maxLength={20}
+                        />
+                      </div>
                     </div>
 
                     {/* Rank · Affiliation · Gender · Primary Medium — two lines */}
