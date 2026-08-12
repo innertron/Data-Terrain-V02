@@ -102,6 +102,7 @@ export default function Home() {
   const [renameMedium, setRenameMedium] = useState("");
   const [renameGender, setRenameGender] = useState("");
   const [mediumFilter, setMediumFilter] = useState<string[]>([]); // empty = show all
+  const [genderFilter, setGenderFilter] = useState<string[]>([]); // empty = show all
   const [surfMode, setSurfMode] = useState(false);
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('details');
   const [layerDefs, setLayerDefs] = useState<LayerDef[]>([]);
@@ -111,12 +112,13 @@ export default function Home() {
 
   const ALL_MEDIA = ["Cable TV", "Broadcast TV", "Podcast / YouTube", "Radio", "Print / Digital", "Digital Video", "Podcast / Social"] as const;
 
-  const visibleLayers = mediumFilter.length === 0
-    ? layerDefs
-    : layerDefs.filter(l => l.primaryMedium && mediumFilter.includes(l.primaryMedium));
-  // Medium filter also zeroes out non-matching layers in the terrain:
-  // effective actives = toggled-on layers that pass the current filter
-  const effectiveActiveIds = mediumFilter.length === 0
+  const visibleLayers = layerDefs.filter(l =>
+    (mediumFilter.length === 0 || (l.primaryMedium && mediumFilter.includes(l.primaryMedium))) &&
+    (genderFilter.length === 0 || ((l as any).gender && genderFilter.includes((l as any).gender)))
+  );
+  // Filters also zero out non-matching layers in the terrain:
+  // effective actives = toggled-on layers that pass the current filters
+  const effectiveActiveIds = (mediumFilter.length === 0 && genderFilter.length === 0)
     ? activeLayers
     : activeLayers.filter(id => visibleLayers.some(l => l.id === id));
   const isAdmin = import.meta.env.DEV;
@@ -139,8 +141,21 @@ export default function Home() {
             </button>
           );
         })}
-        {mediumFilter.length > 0 && (
-          <button onClick={() => setMediumFilter([])} className="px-1.5 py-0.5 rounded text-[9px] text-muted-foreground hover:text-foreground border border-dashed border-border">
+        {["Male", "Female"].map(g => {
+          const active = genderFilter.includes(g);
+          return (
+            <button
+              key={g}
+              onClick={() => setGenderFilter(prev => active ? prev.filter(x => x !== g) : [...prev, g])}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${active ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
+              style={active ? { backgroundColor: '#a8d4d2' } : {}}
+            >
+              {g}
+            </button>
+          );
+        })}
+        {(mediumFilter.length > 0 || genderFilter.length > 0) && (
+          <button onClick={() => { setMediumFilter([]); setGenderFilter([]); }} className="px-1.5 py-0.5 rounded text-[9px] text-muted-foreground hover:text-foreground border border-dashed border-border">
             clear
           </button>
         )}
@@ -242,7 +257,7 @@ export default function Home() {
     return entries
       .map(r => ({ ...r, pct: r.active && total > 0 ? r.value / total * 100 : 0 }))
       .sort((a, b) => (Number(b.active) - Number(a.active)) || (b.value - a.value));
-  }, [selectedSegment, effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId, mediumFilter]);
+  }, [selectedSegment, effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId, mediumFilter, genderFilter]);
 
   const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
     queryKey: ["/api/settings"],
@@ -963,7 +978,7 @@ export default function Home() {
               {mediumFilterPills}
 
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold px-1">
-                Layers ({visibleLayers.length}{mediumFilter.length > 0 ? ` of ${layerDefs.length}` : ''})
+                Layers ({visibleLayers.length}{(mediumFilter.length > 0 || genderFilter.length > 0) ? ` of ${layerDefs.length}` : ''})
               </p>
               {layerDefs.length === 0 ? (
                 <p className="text-xs text-muted-foreground font-mono px-1">No layers found — try refreshing.</p>
