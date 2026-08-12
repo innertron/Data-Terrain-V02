@@ -113,6 +113,11 @@ export default function Home() {
   const visibleLayers = mediumFilter.length === 0
     ? layerDefs
     : layerDefs.filter(l => l.primaryMedium && mediumFilter.includes(l.primaryMedium));
+  // Medium filter also zeroes out non-matching layers in the terrain:
+  // effective actives = toggled-on layers that pass the current filter
+  const effectiveActiveIds = mediumFilter.length === 0
+    ? activeLayers
+    : activeLayers.filter(id => visibleLayers.some(l => l.id === id));
   const isAdmin = import.meta.env.DEV;
 
   // Sort: ranked layers first (rank ascending), unranked last (by name)
@@ -147,7 +152,7 @@ export default function Home() {
       : undefined;
     const activeGrids = soloGrid
       ? [soloGrid]
-      : activeLayers
+      : effectiveActiveIds
           .map(id => layerDefs.find(l => l.id === id)?.gridValues)
           .filter((g): g is number[][] => !!g);
     if (activeGrids.length === 0) {
@@ -159,7 +164,7 @@ export default function Home() {
     // allGrids provides the fixed normalization reference so single-layer
     // views show proportional heights, not re-normalized to full 0-100.
     return computeLayerValues(activeGrids, allGrids);
-  }, [activeLayers, layerDefs, showAdjustSkew, skewLayerId]);
+  }, [effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId]);
 
   // Raw (un-normalized) sum of active layer values per cell — used for People count display.
   // During solo preview, counts reflect only the soloed layer (matching the terrain).
@@ -168,10 +173,10 @@ export default function Home() {
     const soloGrid = showAdjustSkew && skewLayerId !== null
       ? layerDefs.find(l => l.id === skewLayerId)?.gridValues
       : undefined;
-    if (!soloGrid && activeLayers.length === 0) return undefined;
+    if (!soloGrid && effectiveActiveIds.length === 0) return undefined;
     const activeGrids = soloGrid
       ? [soloGrid]
-      : activeLayers
+      : effectiveActiveIds
           .map(id => layerDefs.find(l => l.id === id)?.gridValues)
           .filter((g): g is number[][] => !!g);
     if (activeGrids.length === 0) return undefined;
@@ -184,7 +189,7 @@ export default function Home() {
       }
     }
     return result;
-  }, [activeLayers, layerDefs, showAdjustSkew, skewLayerId]);
+  }, [effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId]);
 
   const toggleLayer = (id: number) =>
     setActiveLayers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
@@ -194,7 +199,7 @@ export default function Home() {
     if (!selectedSegment || layerDefs.length === 0) return [];
     // During solo preview, Results show only the soloed layer (matching the terrain)
     const soloActive = showAdjustSkew && skewLayerId !== null && layerDefs.some(l => l.id === skewLayerId);
-    const sourceIds = soloActive ? [skewLayerId as number] : activeLayers;
+    const sourceIds = soloActive ? [skewLayerId as number] : effectiveActiveIds;
     if (sourceIds.length === 0) return [];
     const row = 24 - selectedSegment.zIndex;
     const col = selectedSegment.xIndex;
@@ -207,7 +212,7 @@ export default function Home() {
     return entries
       .map(r => ({ ...r, pct: total > 0 ? Math.round(r.value / total * 100) : 0 }))
       .sort((a, b) => b.value - a.value);
-  }, [selectedSegment, activeLayers, layerDefs, showAdjustSkew, skewLayerId]);
+  }, [selectedSegment, effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId]);
 
   const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
     queryKey: ["/api/settings"],
@@ -994,8 +999,8 @@ export default function Home() {
                 })
               )}
               <p className="text-[10px] text-muted-foreground font-mono mt-1">
-                {activeLayers.length > 0 && effectiveValues
-                  ? `${activeLayers.length} layer${activeLayers.length > 1 ? 's' : ''} active · normalized 0–100`
+                {effectiveActiveIds.length > 0 && effectiveValues
+                  ? `${effectiveActiveIds.length} layer${effectiveActiveIds.length > 1 ? 's' : ''} active · normalized 0–100`
                   : 'No layers active — terrain zeroed'}
               </p>
             </div>
