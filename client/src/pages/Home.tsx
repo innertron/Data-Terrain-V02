@@ -161,12 +161,19 @@ export default function Home() {
     return computeLayerValues(activeGrids, allGrids);
   }, [activeLayers, layerDefs, showAdjustSkew, skewLayerId]);
 
-  // Raw (un-normalized) sum of active layer values per cell — used for People count display
+  // Raw (un-normalized) sum of active layer values per cell — used for People count display.
+  // During solo preview, counts reflect only the soloed layer (matching the terrain).
   const rawLayerValues = useMemo(() => {
-    if (layerDefs.length === 0 || activeLayers.length === 0) return undefined;
-    const activeGrids = activeLayers
-      .map(id => layerDefs.find(l => l.id === id)?.gridValues)
-      .filter((g): g is number[][] => !!g);
+    if (layerDefs.length === 0) return undefined;
+    const soloGrid = showAdjustSkew && skewLayerId !== null
+      ? layerDefs.find(l => l.id === skewLayerId)?.gridValues
+      : undefined;
+    if (!soloGrid && activeLayers.length === 0) return undefined;
+    const activeGrids = soloGrid
+      ? [soloGrid]
+      : activeLayers
+          .map(id => layerDefs.find(l => l.id === id)?.gridValues)
+          .filter((g): g is number[][] => !!g);
     if (activeGrids.length === 0) return undefined;
     const result = new Map<string, number>();
     for (let r = 0; r < 25; r++) {
@@ -177,17 +184,21 @@ export default function Home() {
       }
     }
     return result;
-  }, [activeLayers, layerDefs]);
+  }, [activeLayers, layerDefs, showAdjustSkew, skewLayerId]);
 
   const toggleLayer = (id: number) =>
     setActiveLayers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
   // Ranked layer values at the selected block — used in Results panel
   const layerResultsAtBlock = useMemo(() => {
-    if (!selectedSegment || activeLayers.length === 0 || layerDefs.length === 0) return [];
+    if (!selectedSegment || layerDefs.length === 0) return [];
+    // During solo preview, Results show only the soloed layer (matching the terrain)
+    const soloActive = showAdjustSkew && skewLayerId !== null && layerDefs.some(l => l.id === skewLayerId);
+    const sourceIds = soloActive ? [skewLayerId as number] : activeLayers;
+    if (sourceIds.length === 0) return [];
     const row = 24 - selectedSegment.zIndex;
     const col = selectedSegment.xIndex;
-    const entries = activeLayers.map(id => {
+    const entries = sourceIds.map(id => {
       const layer = layerDefs.find(l => l.id === id);
       if (!layer) return null;
       return { id, name: layer.name, name2: layer.name2 ?? null, description: layer.description ?? null, icon: layer.icon ?? null, rank: (layer as any).rank ?? null, affiliation: (layer as any).affiliation ?? null, value: layer.gridValues[row]?.[col] ?? 0 };
@@ -196,7 +207,7 @@ export default function Home() {
     return entries
       .map(r => ({ ...r, pct: total > 0 ? Math.round(r.value / total * 100) : 0 }))
       .sort((a, b) => b.value - a.value);
-  }, [selectedSegment, activeLayers, layerDefs]);
+  }, [selectedSegment, activeLayers, layerDefs, showAdjustSkew, skewLayerId]);
 
   const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
     queryKey: ["/api/settings"],
@@ -876,6 +887,7 @@ export default function Home() {
                             return;
                           }
                           setLayerDefs(prev => prev.filter(l => l.id !== skewLayerId));
+                          setActiveLayers(prev => prev.filter(id => id !== skewLayerId));
                           setSkewLayerId(null);
                           toast({ title: "Layer deleted", description: `"${layerName}" has been removed.` });
                         } catch {
