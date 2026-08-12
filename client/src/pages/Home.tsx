@@ -1047,12 +1047,9 @@ export default function Home() {
                             <img src={r.icon} alt="" className="w-16 h-16 rounded-full object-cover shrink-0" />
                           )}
                           <div className="flex flex-col min-w-0 flex-1 gap-1.5 pt-2">
-                            {/* Text row: name · affiliation · rank · pct */}
+                            {/* Text row: name · rank · pct */}
                             <div className="flex items-baseline gap-3 min-w-0">
                               <span className="text-xl font-semibold text-foreground truncate">{r.name}</span>
-                              {r.affiliation && (
-                                <span className="text-base font-semibold text-foreground/90 truncate shrink-0">{r.affiliation}</span>
-                              )}
                               <span className="flex-1" />
                               {r.rank != null && (
                                 <span className="text-sm font-mono text-foreground/50 shrink-0 whitespace-nowrap">Rank → {String(r.rank).padStart(2, '0')}</span>
@@ -1066,12 +1063,13 @@ export default function Home() {
                                 style={{ width: `${r.pct}%`, backgroundColor: blockBarColor }}
                               />
                             </div>
-                            {/* On/off switch — below the bar, right-aligned */}
-                            <div className="flex justify-end pt-0.5">
+                            {/* Below the bar: affiliation left · on/off switch right */}
+                            <div className="flex items-center justify-between pt-0.5 min-w-0">
+                              <span className="text-base font-semibold text-foreground/90 truncate">{r.affiliation ?? ''}</span>
                               <button
                                 onClick={() => toggleLayer(r.id)}
                                 title={r.active ? 'Turn layer off' : 'Turn layer on'}
-                                className={`w-10 h-5 rounded-full transition-colors flex items-center px-0.5 ${r.active ? '' : 'bg-muted'}`}
+                                className={`w-10 h-5 rounded-full transition-colors flex items-center px-0.5 shrink-0 ${r.active ? '' : 'bg-muted'}`}
                                 style={r.active ? { backgroundColor: '#a8d4d2' } : {}}
                               >
                                 <span className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${r.active ? 'translate-x-5' : 'translate-x-0'}`} />
