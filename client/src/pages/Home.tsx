@@ -684,7 +684,6 @@ export default function Home() {
                   <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Randomize <span className="normal-case font-normal opacity-60">(fraction · 0.05 = ±5%)</span></p>
                     <div className="border border-border rounded-md p-1.5 bg-background">
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-1.5">RANDBETWEEN</p>
                       <div className="flex items-center gap-2">
                         <div className="flex-1">
                           <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Bottom</Label>
