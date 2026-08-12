@@ -1017,7 +1017,7 @@ export default function Home() {
                 {layerResultsAtBlock.length === 0 ? (
                   <div className="text-sm text-muted-foreground italic">— no active layers —</div>
                 ) : (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto pr-1">
                     {layerResultsAtBlock.map((r, i) => (
                       <div key={r.id} className="rounded-lg border-[1.5px] border-black dark:border-zinc-300 px-3 py-3">
                         {/* Large icon spans name row + bar row */}
