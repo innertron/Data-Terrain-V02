@@ -210,7 +210,7 @@ export default function Home() {
     }).filter((r): r is { id: number; name: string; name2: string|null; description: string|null; icon: string|null; rank: number|null; affiliation: string|null; value: number } => !!r);
     const total = entries.reduce((s, r) => s + r.value, 0);
     return entries
-      .map(r => ({ ...r, pct: total > 0 ? Math.round(r.value / total * 100) : 0 }))
+      .map(r => ({ ...r, pct: total > 0 ? r.value / total * 100 : 0 }))
       .sort((a, b) => b.value - a.value);
   }, [selectedSegment, effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId]);
 
@@ -1027,13 +1027,13 @@ export default function Home() {
                             <div className="flex items-baseline gap-3 min-w-0">
                               <span className="text-xl font-semibold text-foreground truncate">{r.name}</span>
                               {r.affiliation && (
-                                <span className="text-lg font-semibold text-foreground/90 truncate shrink-0">{r.affiliation}</span>
+                                <span className="text-base font-semibold text-foreground/90 truncate shrink-0">{r.affiliation}</span>
                               )}
                               <span className="flex-1" />
                               {r.rank != null && (
                                 <span className="text-sm font-mono text-foreground/50 shrink-0 whitespace-nowrap">Rank → {String(r.rank).padStart(2, '0')}</span>
                               )}
-                              <span className="text-xl font-mono font-bold text-foreground shrink-0">{r.pct}%</span>
+                              <span className="text-xl font-mono font-bold text-foreground shrink-0">{r.pct.toFixed(2)}%</span>
                             </div>
                             {/* Percentage bar — starts at text indent */}
                             <div className="h-2 rounded-full bg-muted overflow-hidden">
