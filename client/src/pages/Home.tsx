@@ -1046,7 +1046,7 @@ export default function Home() {
                           {r.icon && (
                             <img src={r.icon} alt="" className="w-16 h-16 rounded-full object-cover shrink-0" />
                           )}
-                          <div className="flex flex-col min-w-0 flex-1 gap-1.5">
+                          <div className="flex flex-col min-w-0 flex-1 gap-1.5 -mt-1">
                             {/* Text row: name · rank · pct */}
                             <div className="flex items-baseline gap-3 min-w-0">
                               <span className="text-xl font-semibold text-foreground truncate">{r.name}</span>
