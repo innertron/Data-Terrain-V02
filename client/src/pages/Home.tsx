@@ -226,20 +226,22 @@ export default function Home() {
     if (!selectedSegment || layerDefs.length === 0) return [];
     // During solo preview, Results show only the soloed layer (matching the terrain)
     const soloActive = showAdjustSkew && skewLayerId !== null && layerDefs.some(l => l.id === skewLayerId);
-    const sourceIds = soloActive ? [skewLayerId as number] : effectiveActiveIds;
+    // Show all filter-visible layers; toggled-off ones appear dimmed with a switch to re-enable
+    const sourceIds = soloActive ? [skewLayerId as number] : visibleLayers.map(l => l.id);
     if (sourceIds.length === 0) return [];
     const row = 24 - selectedSegment.zIndex;
     const col = selectedSegment.xIndex;
     const entries = sourceIds.map(id => {
       const layer = layerDefs.find(l => l.id === id);
       if (!layer) return null;
-      return { id, name: layer.name, name2: layer.name2 ?? null, description: layer.description ?? null, icon: layer.icon ?? null, rank: (layer as any).rank ?? null, affiliation: (layer as any).affiliation ?? null, value: layer.gridValues[row]?.[col] ?? 0 };
-    }).filter((r): r is { id: number; name: string; name2: string|null; description: string|null; icon: string|null; rank: number|null; affiliation: string|null; value: number } => !!r);
-    const total = entries.reduce((s, r) => s + r.value, 0);
+      const active = soloActive || effectiveActiveIds.includes(id);
+      return { id, active, name: layer.name, name2: layer.name2 ?? null, description: layer.description ?? null, icon: layer.icon ?? null, rank: (layer as any).rank ?? null, affiliation: (layer as any).affiliation ?? null, value: active ? (layer.gridValues[row]?.[col] ?? 0) : 0 };
+    }).filter((r): r is { id: number; active: boolean; name: string; name2: string|null; description: string|null; icon: string|null; rank: number|null; affiliation: string|null; value: number } => !!r);
+    const total = entries.reduce((s, r) => s + (r.active ? r.value : 0), 0);
     return entries
-      .map(r => ({ ...r, pct: total > 0 ? r.value / total * 100 : 0 }))
-      .sort((a, b) => b.value - a.value);
-  }, [selectedSegment, effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId]);
+      .map(r => ({ ...r, pct: r.active && total > 0 ? r.value / total * 100 : 0 }))
+      .sort((a, b) => (Number(b.active) - Number(a.active)) || (b.value - a.value));
+  }, [selectedSegment, effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId, mediumFilter]);
 
   const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
     queryKey: ["/api/settings"],
@@ -1019,10 +1021,10 @@ export default function Home() {
                 ) : (
                   <div className="flex flex-col gap-2 flex-1 min-h-0 overflow-y-auto pr-1">
                     {layerResultsAtBlock.map((r, i) => (
-                      <div key={r.id} className="rounded-lg border-[1.5px] border-black dark:border-zinc-300 px-3 py-3">
+                      <div key={r.id} className={`rounded-lg border-[1.5px] border-black dark:border-zinc-300 px-3 py-3 transition-opacity ${r.active ? '' : 'opacity-40'}`}>
                         {/* Large icon spans name row + bar row */}
                         <div className="flex items-start gap-3">
-                          <span className="text-sm font-mono text-foreground/60 shrink-0 pt-4">{i + 1}.</span>
+                          <span className="text-sm font-mono text-foreground/60 shrink-0 pt-4">{r.active ? `${i + 1}.` : '—'}</span>
                           {r.icon && (
                             <img src={r.icon} alt="" className="w-16 h-16 rounded-full object-cover shrink-0" />
                           )}
@@ -1046,6 +1048,17 @@ export default function Home() {
                                 style={{ width: `${r.pct}%`, backgroundColor: blockBarColor }}
                               />
                             </div>
+                            {/* On/off switch — below the bar, right-aligned */}
+                            <div className="flex justify-end pt-0.5">
+                              <button
+                                onClick={() => toggleLayer(r.id)}
+                                title={r.active ? 'Turn layer off' : 'Turn layer on'}
+                                className={`w-10 h-5 rounded-full transition-colors flex items-center px-0.5 ${r.active ? '' : 'bg-muted'}`}
+                                style={r.active ? { backgroundColor: '#a8d4d2' } : {}}
+                              >
+                                <span className={`w-4 h-4 rounded-full bg-white shadow transition-transform ${r.active ? 'translate-x-5' : 'translate-x-0'}`} />
+                              </button>
+                            </div>
                           </div>
                         </div>
                         {/* Description — inside the card, below bar */}
@@ -1055,7 +1068,7 @@ export default function Home() {
                       </div>
                     ))}
                     <p className="text-xs text-muted-foreground font-mono mt-1">
-                      total · {layerResultsAtBlock.reduce((s, r) => s + r.value, 0).toFixed(4)}M · {layerResultsAtBlock.length} layer{layerResultsAtBlock.length > 1 ? 's' : ''}
+                      total · {layerResultsAtBlock.reduce((s, r) => s + r.value, 0).toFixed(4)}M · {layerResultsAtBlock.filter(r => r.active).length} layer{layerResultsAtBlock.filter(r => r.active).length !== 1 ? 's' : ''}
                     </p>
                   </div>
                 )}
