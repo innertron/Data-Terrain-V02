@@ -58,3 +58,5 @@ For each of the 74 personalities:
 3. Run RBF interpolation in CodeExecution
 4. Scale total to the personality's actual weekly viewers (in millions)
 5. POST to /api/layers
+
+**Partition-list data gaps:** user approved discretionary fixes ("fill in at your own discretion", Aug 2026): duplicate cells → assign to the higher band; missing cells → neighbor-majority fill. Always disclose what was filled and record it in the layer's trace-points `method` string.
