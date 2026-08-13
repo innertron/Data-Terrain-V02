@@ -103,6 +103,7 @@ export default function Home() {
   const [renameGender, setRenameGender] = useState("");
   const [mediumFilter, setMediumFilter] = useState<string[]>([]); // empty = show all
   const [genderFilter, setGenderFilter] = useState<string[]>([]); // empty = show all
+  const [nameSearch, setNameSearch] = useState("");
   const [surfMode, setSurfMode] = useState(false);
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('details');
   const [layerDefs, setLayerDefs] = useState<LayerDef[]>([]);
@@ -114,18 +115,42 @@ export default function Home() {
 
   const visibleLayers = layerDefs.filter(l =>
     (mediumFilter.length === 0 || (l.primaryMedium && mediumFilter.includes(l.primaryMedium))) &&
+    (genderFilter.length === 0 || ((l as any).gender && genderFilter.includes((l as any).gender))) &&
+    (nameSearch.trim() === "" || l.name.toLowerCase().includes(nameSearch.trim().toLowerCase()))
+  );
+  // Filters also zero out non-matching layers in the terrain (name search only narrows the list, not the terrain):
+  const filterMatchedLayers = layerDefs.filter(l =>
+    (mediumFilter.length === 0 || (l.primaryMedium && mediumFilter.includes(l.primaryMedium))) &&
     (genderFilter.length === 0 || ((l as any).gender && genderFilter.includes((l as any).gender)))
   );
-  // Filters also zero out non-matching layers in the terrain:
-  // effective actives = toggled-on layers that pass the current filters
   const effectiveActiveIds = (mediumFilter.length === 0 && genderFilter.length === 0)
     ? activeLayers
-    : activeLayers.filter(id => visibleLayers.some(l => l.id === id));
+    : activeLayers.filter(id => filterMatchedLayers.some(l => l.id === id));
   const isAdmin = import.meta.env.DEV;
 
   // Medium filter pills — shared between the Layers list and the Results panel
   const mediumFilterPills = layerDefs.some(l => l.primaryMedium) ? (
     <div className="flex flex-col gap-1">
+      <div className="relative px-1">
+        <Search className="w-3 h-3 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+        <input
+          type="text"
+          value={nameSearch}
+          onChange={e => setNameSearch(e.target.value)}
+          placeholder="Search by name…"
+          className="w-full pl-6 pr-6 py-1 rounded border border-border bg-transparent text-[11px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground/40"
+          data-testid="input-name-search"
+        />
+        {nameSearch && (
+          <button
+            onClick={() => setNameSearch("")}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            title="Clear search"
+          >
+            <X className="w-3 h-3" />
+          </button>
+        )}
+      </div>
       <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold px-1">Filter by medium</p>
       <div className="flex flex-wrap gap-1 px-1">
         {ALL_MEDIA.filter(m => layerDefs.some(l => l.primaryMedium === m)).map(m => {
