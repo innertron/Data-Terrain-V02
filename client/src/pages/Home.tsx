@@ -481,7 +481,7 @@ export default function Home() {
               {/* Row 4 — ID:SEG / People */}
               <div className="flex gap-1">
                 <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">ID:SEG {selectedSegment.id}:[{selectedSegment.xIndex},{selectedSegment.zIndex}]</Badge>
-                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">People:{rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value}</Badge>
+                <Badge variant="outline" className="font-mono text-[10px] px-1.5 py-0.5 flex-1 justify-center">ViewerScore© {parseFloat(Number(rawLayerValues?.get(`${selectedSegment.xIndex},${selectedSegment.zIndex}`) ?? selectedSegment.value).toFixed(3))}M</Badge>
               </div>
               {/* Row 5 — POS / CamPos (pinned bottom) */}
               <div className="flex gap-1">
