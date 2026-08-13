@@ -7,3 +7,10 @@ uri = "file://attached_assets/generated/hannity-new-partition.png"
 type = "image"
 title = "Hannity — new partition mapped"
 description = "25×25 band map of the new Sean Hannity partition file. Z25 (high income) at top, Z1 at bottom; X1 (DEM) left → X25 (GOP) right. Note the red 3.2 strip at X22/Z14–17 bordered by green 1.31/1.05 cells, with the orange 2.56 pocket separately at X24–25/Z7–14."
+
+[[outputs]]
+id = "3HZIV_SsxiwkJd8INiZJ5"
+uri = "file://attached_assets/generated/vittert-partition.png"
+type = "image"
+title = "Leland Vittert — band partition"
+description = "Visual map of the clean partition file (625 cells, 0 dups, 0 missing). Z25 at top, X1 left."
