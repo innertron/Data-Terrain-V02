@@ -385,7 +385,7 @@ function FloatingLabel({ data, maxValue, isDark = true, displayValue, peopleValu
         <div className="space-y-0.5 font-mono text-gray-300" style={{ fontSize: '11px' }}>
           <div className="flex justify-between gap-4"><span className="text-white font-bold">Domain:</span><span>{domainLabel}</span></div>
           <div className="flex justify-between gap-4"><span className="text-white font-bold">Income/Edu:</span><span>{incomeLabel}</span></div>
-          <div className="flex justify-between gap-4"><span className="text-white font-bold">People:</span><span>{(peopleValue ?? effectiveVal).toLocaleString()}</span></div>
+          <div className="flex justify-between gap-4"><span className="text-white font-bold">ViewerScore©</span><span>{parseFloat(Number(peopleValue ?? effectiveVal).toFixed(3))}M</span></div>
           <div className="flex justify-between gap-4"><span className="text-white font-bold">Segment:</span><span>[{data.xIndex},{data.zIndex}]</span></div>
         </div>
       </div>
