@@ -5,6 +5,8 @@ description: User paints band partitions as PNGs in Photoshop; how to extract th
 
 The user's preferred input for new layers (after 9 failed methodologies): a Photoshop-painted PNG of the 25×25 band partition, plus a circular icon PNG. **This is the confirmed working format — do not push back to text lists.**
 
+**User confirmed (Aug 14 2026) this format is PERMANENT and IDENTICAL for every remaining layer**: always these exact colors, always 7 bands + #EEEEEE zero cells, same template/layout. When a painted partition PNG arrives, run the extraction pipeline immediately — no need to re-ask about format, colors, or band count.
+
 **Template**: `attached_assets/generated/partition-template.png` (920×980, title space at top, unlabeled legend swatches, board all #EEEEEE). Titles are Helvetica Bold ~20px.
 
 **Canonical band colors (high→low)**: #7F0000, #D7301F, #FC8D59, #FDCC8A, #FFFFB2, #C7E9B4, #7FCDBB; zero/empty #EEEEEE.
