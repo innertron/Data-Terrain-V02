@@ -33,5 +33,5 @@ description = "Clean partition: 625 cells, 0 dups, 0 missing, all band counts ma
 id = "ch6iF1Anj3dgmXRgyC5cS"
 uri = "file://attached_assets/generated/partition-template.png"
 type = "image"
-title = "Blank partition template"
-description = "25×25 board all #EEEEEE with unlabeled legend swatches (7 bands, high→low) at top."
+title = "Blank partition template (with title space)"
+description = "25×25 board all #EEEEEE, unlabeled legend swatches, and blank space at top for a title line."
