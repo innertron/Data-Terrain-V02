@@ -9,3 +9,4 @@
 - [Production data sync](prod-data-sync.md) — prod has a separate DB; publish never copies layer data. Sync layers via the live app's API, not SQL.
 - [Axis data storage](axis-data.md) — X/Z labels+descriptions live in project_settings via /api/axis with defaults in axisData.ts; never re-hardcode; Z is HIGH→LOW.
 - [Hannity RBF contour grid](hannity-rbf-contour.md) — ONLY correct method: multiquadric RBF from extracted control points; never use polynomial/product approximations.
+- [Photoshop partition pipeline](photoshop-partition-pipeline.md) — user's confirmed working input format: painted PNG partitions; color-shift, bbox, and voting pitfalls solved.
