@@ -14,3 +14,10 @@ uri = "file://attached_assets/generated/vittert-partition.png"
 type = "image"
 title = "Leland Vittert — band partition"
 description = "Visual map of the clean partition file (625 cells, 0 dups, 0 missing). Z25 at top, X1 left."
+
+[[outputs]]
+id = "orMMVRtOtcRcz8A5kwoUc"
+uri = "file://attached_assets/generated/vittert-partition-v2.png"
+type = "image"
+title = "Leland Vittert v2 — band partition"
+description = "New old-system partition: 625 cells, 0 dups, 0 missing, all band counts match. Z25 top, X1 left."
