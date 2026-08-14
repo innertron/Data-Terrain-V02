@@ -677,10 +677,13 @@ export default function Home() {
                 </button>
               </div>
 
+              {/* Search + filter tools on top for quick find */}
+              {mediumFilterPills}
+
               {/* Shared layer list */}
-              <div className="flex flex-col gap-1 max-h-[140px] overflow-y-auto">
-                {layerDefs.length === 0 && <p className="text-[10px] text-muted-foreground font-mono px-1">No layers found.</p>}
-                {layerDefs.map(layer => {
+              <div className="flex flex-col gap-1 max-h-[45vh] overflow-y-auto">
+                {visibleLayers.length === 0 && <p className="text-[10px] text-muted-foreground font-mono px-1">No layers found.</p>}
+                {visibleLayers.map(layer => {
                   const selected = skewLayerId === layer.id;
                   return (
                     <button
@@ -996,8 +999,8 @@ export default function Home() {
             </div>
           )}
 
-          {/* Switching content */}
-          {layerMode === 'layers' ? (
+          {/* Switching content — hidden while Layer Tools is open to give the list more room */}
+          {!showAdjustSkew && (layerMode === 'layers' ? (
             <div className="flex flex-col gap-2">
               {/* Media type filter pills */}
               {mediumFilterPills}
@@ -1122,7 +1125,7 @@ export default function Home() {
                 <p className="text-center text-sm px-8">Select a segment in the 3D grid to view its details.</p>
               </div>
             )
-          )}
+          ))}
         </div>
 
       </div>
