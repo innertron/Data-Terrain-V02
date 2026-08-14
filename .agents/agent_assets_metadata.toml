@@ -28,3 +28,10 @@ uri = "file://attached_assets/generated/ingraham-partition.png"
 type = "image"
 title = "Laura Ingraham — band partition"
 description = "Clean partition: 625 cells, 0 dups, 0 missing, all band counts match. Z25 top, X1 left."
+
+[[outputs]]
+id = "ch6iF1Anj3dgmXRgyC5cS"
+uri = "file://attached_assets/generated/partition-template.png"
+type = "image"
+title = "Blank partition template"
+description = "25×25 board all #EEEEEE with unlabeled legend swatches (7 bands, high→low) at top."
