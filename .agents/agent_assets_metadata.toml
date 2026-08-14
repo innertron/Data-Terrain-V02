@@ -21,3 +21,10 @@ uri = "file://attached_assets/generated/vittert-partition-v2.png"
 type = "image"
 title = "Leland Vittert v2 — band partition"
 description = "New old-system partition: 625 cells, 0 dups, 0 missing, all band counts match. Z25 top, X1 left."
+
+[[outputs]]
+id = "jNg19wUq2bEAjm4WkKH5O"
+uri = "file://attached_assets/generated/ingraham-partition.png"
+type = "image"
+title = "Laura Ingraham — band partition"
+description = "Clean partition: 625 cells, 0 dups, 0 missing, all band counts match. Z25 top, X1 left."
