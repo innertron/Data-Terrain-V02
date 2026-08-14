@@ -35,3 +35,10 @@ uri = "file://attached_assets/generated/partition-template.png"
 type = "image"
 title = "Blank partition template (with title space)"
 description = "25×25 board all #EEEEEE, unlabeled legend swatches, and blank space at top for a title line."
+
+[[outputs]]
+id = "sk942kD07YeGiBfsn9qfr"
+uri = "file://attached_assets/generated/muir-partition.png"
+type = "image"
+title = "David Muir — extracted partition"
+description = "Read back from your Photoshop PNG: 625/625 cells, 0 ambiguous. Verify it matches what you painted."
