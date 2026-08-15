@@ -19,8 +19,8 @@ description = "Visual map of the clean partition file (625 cells, 0 dups, 0 miss
 id = "orMMVRtOtcRcz8A5kwoUc"
 uri = "file://attached_assets/generated/vittert-partition-v2.png"
 type = "image"
-title = "Leland Vittert v2 — band partition"
-description = "New old-system partition: 625 cells, 0 dups, 0 missing, all band counts match. Z25 top, X1 left."
+title = "Leland Vittert — band partition"
+description = "His approved v2 partition: 7 bands (5.64 high → 0.22 low), total 13.488264M."
 
 [[outputs]]
 id = "jNg19wUq2bEAjm4WkKH5O"
