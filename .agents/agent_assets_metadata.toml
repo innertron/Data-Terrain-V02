@@ -42,3 +42,10 @@ uri = "file://attached_assets/generated/muir-partition.png"
 type = "image"
 title = "David Muir — extracted partition"
 description = "Read back from your Photoshop PNG: 625/625 cells, 0 ambiguous. Verify it matches what you painted."
+
+[[outputs]]
+id = "RqZPKDGh3mgWewy9D0PlK"
+uri = "file://attached_assets/generated/dokoupil-partition.png"
+type = "image"
+title = "Tony Dokoupil — extracted partition"
+description = "Read back from your Photoshop PNG: 625/625 cells, 0 ambiguous. Verify against what you painted."
