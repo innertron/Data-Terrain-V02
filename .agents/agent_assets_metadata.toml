@@ -56,3 +56,10 @@ uri = "file://attached_assets/generated/maher-partition.png"
 type = "image"
 title = "Bill Maher — band partition"
 description = "Rendered from his stored trace points: 9 bands (3.2 high → 0.54 low), total 14.05M."
+
+[[outputs]]
+id = "-BA5DDggAKHipx5hbmUXR"
+uri = "file://attached_assets/generated/rogan-partition.png"
+type = "image"
+title = "Joe Rogan — band partition"
+description = "Rendered from his stored trace points: 8 bands (6.81 high → 0.38 low), total 14.9M."
