@@ -49,3 +49,10 @@ uri = "file://attached_assets/generated/dokoupil-partition.png"
 type = "image"
 title = "Tony Dokoupil — extracted partition"
 description = "Read back from your Photoshop PNG: 625/625 cells, 0 ambiguous. Verify against what you painted."
+
+[[outputs]]
+id = "cxgipcwvHBCe4ogIYRh9d"
+uri = "file://attached_assets/generated/maher-partition.png"
+type = "image"
+title = "Bill Maher — band partition"
+description = "Rendered from his stored trace points: 9 bands (3.2 high → 0.54 low), total 14.05M."
