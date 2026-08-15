@@ -2,7 +2,7 @@
  "name": "Leland Vittert",
  "rank": 6,
  "totalMillions": 13.488264,
- "method": "full band partition v2 (user old-system regen, clean: 625 unique, 0 dups, 0 missing, all band counts match); least-squares multiquadric RBF via generateGridFromTraces | v3: band remap 8.042/3.273/1.332/0.542/0.221/0.090/0.038 (0.01 floor kept) per user (Aug 15 2026) | v4: grey floor 0.01 -> 0 per user",
+ "method": "full band partition v2 (user old-system regen, clean: 625 unique, 0 dups, 0 missing, all band counts match); least-squares multiquadric RBF via generateGridFromTraces | v3: band remap 8.042/3.273/1.332/0.542/0.221/0.090/0.038 (0.01 floor kept) per user (Aug 15 2026) | v4: grey floor 0.01 -> 0 per user | v5: grey cells clamped to exact 0, rest rescaled to total",
  "points": [
   [
    10,
