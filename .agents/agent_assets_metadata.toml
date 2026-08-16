@@ -63,3 +63,10 @@ uri = "file://attached_assets/generated/rogan-partition.png"
 type = "image"
 title = "Joe Rogan — band partition"
 description = "Rendered from his stored trace points: 8 bands (6.81 high → 0.38 low), total 14.9M."
+
+[[outputs]]
+id = "8Kltb-a-SPjD1vcBsGx0P"
+uri = "file://attached_assets/generated/vittert-partition-v3.png"
+type = "image"
+title = "Leland Vittert — extracted partition (new chart)"
+description = "Extracted from your uploaded chart: bands 8.03/3.27/1.33/0.54/0.22/0.069/0.039, grey = 0. Visual diff against your painted file."
