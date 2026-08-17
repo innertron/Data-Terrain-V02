@@ -545,11 +545,11 @@ export default function Home() {
              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0 relative" style={detailBgStyle}>
                <button
                  onClick={() => setShowPoliticalPopup(true)}
-                 className="absolute top-1.5 right-1.5 p-0.5 text-muted-foreground hover:text-foreground transition-colors z-10"
+                 className="absolute top-1.5 right-1.5 p-1 text-foreground/70 hover:text-foreground transition-colors z-10"
                  title="Magnify political domain text"
                  data-testid="button-magnify-political"
                >
-                 <Search className="w-3 h-3" />
+                 <Search className="w-6 h-6" strokeWidth={2.5} />
                </button>
                <div className="text-xs leading-snug overflow-y-auto pr-4 mt-4" style={{ maxHeight: '80px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Political Domain (X)</span>{' '} 
@@ -559,11 +559,11 @@ export default function Home() {
              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0 relative" style={detailBgStyle}>
                <button
                  onClick={() => setShowIncomePopup(true)}
-                 className="absolute top-1.5 right-1.5 p-0.5 text-muted-foreground hover:text-foreground transition-colors z-10"
+                 className="absolute top-1.5 right-1.5 p-1 text-foreground/70 hover:text-foreground transition-colors z-10"
                  title="Magnify income/education text"
                  data-testid="button-magnify-income"
                >
-                 <Search className="w-3 h-3" />
+                 <Search className="w-6 h-6" strokeWidth={2.5} />
                </button>
                <div className="text-xs leading-snug overflow-y-auto pr-4 mt-4" style={{ maxHeight: '80px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Income / Education (Z)</span>{' '}
