@@ -105,3 +105,10 @@ uri = "file://attached_assets/generated/connell-mcshane-extracted-check.png"
 type = "image"
 title = "Connell McShane — extracted partition check"
 description = "Regenerated from the 625 extracted cells — compare against your painted PNG."
+
+[[outputs]]
+id = "dA4QGWpnqIb-WxZC46QCo"
+uri = "file://attached_assets/generated/michael-smerconish-extracted-check.png"
+type = "image"
+title = "Michael Smerconish — extracted partition check"
+description = "Regenerated from the 625 extracted cells — compare against your painted PNG."
