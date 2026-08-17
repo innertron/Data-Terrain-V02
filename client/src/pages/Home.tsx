@@ -1175,8 +1175,12 @@ export default function Home() {
                               />
                             </div>
                             {/* Below the bar: affiliation left · on/off switch right */}
-                            <div className="flex items-center justify-between pt-0.5 min-w-0">
+                            <div className="flex items-center justify-between pt-0.5 min-w-0 gap-2">
                               <span className="text-base font-semibold text-foreground/90 truncate">{r.affiliation ?? ''}</span>
+                              <span className="flex-1" />
+                              <span className="text-sm font-mono text-foreground/50 whitespace-nowrap shrink-0">
+                                ViewerScore<sup className="text-[9px]">©</sup> {(layerDefs.find(l => l.id === r.id)?.gridValues.flat().reduce((a, v) => a + v, 0) ?? 0).toFixed(4)}M
+                              </span>
                               <button
                                 onClick={() => toggleLayer(r.id)}
                                 title={r.active ? 'Turn layer off' : 'Turn layer on'}
