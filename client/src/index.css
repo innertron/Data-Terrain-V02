@@ -1,5 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 
+@keyframes glass-shimmer {
+  0%   { fill: rgba(96, 165, 250, 0.45); transform: translate(0px, 0px) scale(1); }
+  25%  { fill: rgba(219, 234, 254, 0.55); transform: translate(0.6px, -0.4px) scale(1.04); }
+  45%  { fill: rgba(147, 197, 253, 0.5);  transform: translate(-0.5px, 0.5px) scale(0.97); }
+  65%  { fill: rgba(134, 239, 172, 0.5);  transform: translate(0.4px, 0.4px) scale(1.03); }
+  85%  { fill: rgba(191, 219, 254, 0.55); transform: translate(-0.4px, -0.5px) scale(1); }
+  100% { fill: rgba(96, 165, 250, 0.45);  transform: translate(0px, 0px) scale(1); }
+}
+.glass-lens {
+  animation: glass-shimmer 4s ease-in-out infinite;
+  transform-origin: 11px 11px;
+}
+@keyframes glass-glint {
+  0%, 100% { opacity: 0.35; transform: translate(0px, 0px); }
+  50%      { opacity: 0.8;  transform: translate(1.2px, 1px); }
+}
+.glass-glint {
+  animation: glass-glint 4s ease-in-out infinite;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

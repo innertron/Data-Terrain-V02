@@ -48,6 +48,20 @@ function renderConverged(text: string) {
   );
 }
 
+function AnimatedMagnifier({ className = '' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      {/* animated translucent glass lens */}
+      <circle cx="11" cy="11" r="7" className="glass-lens" />
+      {/* moving glint highlight */}
+      <circle cx="8.5" cy="8.5" r="2" fill="white" className="glass-glint" />
+      {/* rim + handle */}
+      <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2.5" />
+      <line x1="16.2" y1="16.2" x2="21" y2="21" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function renderPolitical(text: string) {
   const phrases = ['Cluster Summary →', 'Key Identifiers →', 'Network Profile →'];
   const parts: React.ReactNode[] = [];
@@ -549,7 +563,7 @@ export default function Home() {
                  title="Magnify political domain text"
                  data-testid="button-magnify-political"
                >
-                 <Search className="w-6 h-6" strokeWidth={2.5} />
+                 <AnimatedMagnifier className="w-6 h-6" />
                </button>
                <div className="text-xs leading-snug overflow-y-auto pr-4 mt-4" style={{ maxHeight: '64px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Political Domain (X)</span>{' '} 
@@ -563,7 +577,7 @@ export default function Home() {
                  title="Magnify income/education text"
                  data-testid="button-magnify-income"
                >
-                 <Search className="w-6 h-6" strokeWidth={2.5} />
+                 <AnimatedMagnifier className="w-6 h-6" />
                </button>
                <div className="text-xs leading-snug overflow-y-auto pr-4 mt-4" style={{ maxHeight: '64px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Income / Education (Z)</span>{' '}
