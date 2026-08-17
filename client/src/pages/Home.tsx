@@ -1105,10 +1105,18 @@ export default function Home() {
                           ) : (
                             <span className="w-2 h-2 rounded-full shrink-0 mt-1" style={{ backgroundColor: '#a8d4d2' }} />
                           )}
-                          <span className="flex flex-col min-w-0 text-left">
-                            <span className="text-sm uppercase tracking-wider text-black dark:text-white truncate">{layer.name}</span>
+                          <span className="flex items-baseline gap-2 min-w-0 text-left">
+                            <span className="text-sm uppercase tracking-wider text-black dark:text-white truncate shrink-0">{layer.name}</span>
                             {layer.name2 && (
                               <span className="text-xs text-muted-foreground truncate">{layer.name2}</span>
+                            )}
+                            {(layer as any).rank != null && (
+                              <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">Rank {(layer as any).rank}</span>
+                            )}
+                            {selectedSegment && (
+                              <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">
+                                ViewerScore© {parseFloat((layer.gridValues[24 - selectedSegment.zIndex]?.[selectedSegment.xIndex] ?? 0).toFixed(3))}M
+                              </span>
                             )}
                           </span>
                         </span>
