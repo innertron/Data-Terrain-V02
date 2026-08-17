@@ -143,7 +143,13 @@ export default function Home() {
     (genderFilter.length === 0 || ((l as any).gender && genderFilter.includes((l as any).gender))) &&
     affilMatches(l) &&
     (nameSearch.trim() === "" || l.name.toLowerCase().includes(nameSearch.trim().toLowerCase()))
-  );
+  ).sort((a, b) => {
+    const ra = (a as any).rank, rb = (b as any).rank;
+    if (ra == null && rb == null) return 0;
+    if (ra == null) return 1;
+    if (rb == null) return -1;
+    return ra - rb;
+  });
   // Filters also zero out non-matching layers in the terrain (name search only narrows the list, not the terrain):
   const filterMatchedLayers = layerDefs.filter(l =>
     (mediumFilter.length === 0 || (l.primaryMedium && mediumFilter.includes(l.primaryMedium))) &&
