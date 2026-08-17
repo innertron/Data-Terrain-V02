@@ -27,3 +27,5 @@ Filename convention: rank prefix (e.g. `5_David_Muir_*.png`); viewership million
 ## RBF trench artifact + fix (Aug 17 2026)
 Least-squares RBF grids can carve narrow trenches (undershoot below the outer flat band) that render as visible dips even though the painted partition is monotone. Pit-filling fails because trenches drain to the grid edge.
 **Fix:** enforce radial monotonicity from the peak — iterate raising each cell to any 4-neighbor that is farther from the peak but higher, then rescale to the original total. Applied to Ezra Klein (dev SQL on grid_values + original_grid_values, then sync-prod). Run this check on future extractions if dips appear.
+
+**Warning (Aug 17 2026):** NEVER apply the radial-monotone fix to edge-peaked/asymmetric layers (Sean Hannity, peak at X25 ridge — hand-corrected 11-band remap). The fix carved a visible step across his terrain; restored by regenerating from data/sean-hannity-trace-points.json with generateGridFromTraces, no post-fix. Check peak location first; skip the fix when the peak is on/near the grid edge.
