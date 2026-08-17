@@ -166,31 +166,14 @@ export default function Home() {
       </div>
       <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold px-1">Filter by medium</p>
       <div className="flex flex-wrap gap-1 px-1">
-        {isAdmin && (() => {
-          const allRandActive = showAdjustSkew && skewLayerId === ALL_LAYERS_ID;
-          return (
-            <button
-              onClick={() => {
-                if (allRandActive) { setSkewLayerId(null); return; }
-                setShowAdjustSkew(true);
-                setSkewLayerId(ALL_LAYERS_ID);
-              }}
-              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${allRandActive ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
-              style={allRandActive ? { backgroundColor: '#a8d4d2' } : {}}
-              data-testid="button-all-rand"
-            >
-              All Rand
-            </button>
-          );
-        })()}
         {ALL_MEDIA.filter(m => layerDefs.some(l => l.primaryMedium === m)).map(m => {
           const active = mediumFilter.includes(m);
           return (
             <button
               key={m}
               onClick={() => setMediumFilter(prev => active ? prev.filter(x => x !== m) : [...prev, m])}
-              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${active ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
-              style={active ? { backgroundColor: '#a8d4d2' } : {}}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors text-black ${active ? 'border-transparent' : 'border-border'}`}
+              style={{ backgroundColor: active ? '#a8d4d2' : '#ede4f7' }}
             >
               {m}
             </button>
@@ -202,8 +185,8 @@ export default function Home() {
             <button
               key={g}
               onClick={() => setGenderFilter(prev => active ? prev.filter(x => x !== g) : [...prev, g])}
-              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${active ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
-              style={active ? { backgroundColor: '#a8d4d2' } : {}}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors text-black ${active ? 'border-transparent' : 'border-border'}`}
+              style={{ backgroundColor: active ? '#a8d4d2' : (g === 'Male' ? '#cfe6f9' : '#fbd9e4') }}
             >
               {g}
             </button>
@@ -215,16 +198,16 @@ export default function Home() {
             <button
               key={a}
               onClick={() => setAffiliationFilter(prev => active ? prev.filter(x => x !== a) : [...prev, a])}
-              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${active ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
-              style={active ? { backgroundColor: '#a8d4d2' } : {}}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors text-black ${active ? 'border-transparent' : 'border-border'}`}
+              style={{ backgroundColor: active ? '#a8d4d2' : '#d6f2d6' }}
             >
               {a}
             </button>
           );
         })}
         {(mediumFilter.length > 0 || genderFilter.length > 0 || affiliationFilter.length > 0) && (
-          <button onClick={() => { setMediumFilter([]); setGenderFilter([]); setAffiliationFilter([]); }} className="px-1.5 py-0.5 rounded text-[9px] text-muted-foreground hover:text-foreground border border-dashed border-border">
-            clear
+          <button onClick={() => { setMediumFilter([]); setGenderFilter([]); setAffiliationFilter([]); }} className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border border-dashed border-border" style={{ color: '#dc2626' }}>
+            CLEAR
           </button>
         )}
       </div>
