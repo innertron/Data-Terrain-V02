@@ -330,6 +330,13 @@ export default function Home() {
     return result;
   }, [effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId]);
 
+  // Per-layer ViewerScore totals — computed once per layerDefs update
+  const layerTotals = useMemo(() => {
+    const m = new Map<number, string>();
+    for (const l of layerDefs) m.set(l.id, l.gridValues.flat().reduce((a, v) => a + v, 0).toFixed(3));
+    return m;
+  }, [layerDefs]);
+
   const toggleLayer = (id: number) =>
     setActiveLayers(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
 
@@ -353,7 +360,7 @@ export default function Home() {
     return entries
       .map(r => ({ ...r, pct: r.active && total > 0 ? r.value / total * 100 : 0 }))
       .sort((a, b) => (Number(b.active) - Number(a.active)) || (b.value - a.value));
-  }, [selectedSegment, effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId, mediumFilter, genderFilter]);
+  }, [selectedSegment, effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId, mediumFilter, genderFilter, nameSearch, affiliationFilter]);
 
   const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
     queryKey: ["/api/settings"],
@@ -1111,8 +1118,8 @@ export default function Home() {
                           ) : (
                             <span className="w-2 h-2 rounded-full shrink-0 mt-1" style={{ backgroundColor: '#a8d4d2' }} />
                           )}
-                          <span className="flex items-baseline gap-2 min-w-0 text-left">
-                            <span className="text-sm uppercase tracking-wider text-black dark:text-white truncate shrink-0">{layer.name}</span>
+                          <span className="flex items-baseline gap-2 min-w-0 flex-1 text-left">
+                            <span className="text-sm uppercase tracking-wider text-black dark:text-white truncate min-w-0">{layer.name}</span>
                             {layer.name2 && (
                               <span className="text-xs text-muted-foreground truncate">{layer.name2}</span>
                             )}
@@ -1120,7 +1127,7 @@ export default function Home() {
                               <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">Rank {(layer as any).rank}</span>
                             )}
                             <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">
-                              ViewerScore<sup className="text-[8px]">©</sup> {layer.gridValues.flat().reduce((a, v) => a + v, 0).toFixed(3)}M
+                              ViewerScore<sup className="text-[8px]">©</sup> {layerTotals.get(layer.id) ?? '0.000'}M
                             </span>
                           </span>
                         </span>
@@ -1179,7 +1186,7 @@ export default function Home() {
                               <span className="text-base font-semibold text-foreground/90 truncate">{r.affiliation ?? ''}</span>
                               <span className="flex-1" />
                               <span className="text-sm font-mono text-foreground/50 whitespace-nowrap shrink-0">
-                                ViewerScore<sup className="text-[9px]">©</sup> {(layerDefs.find(l => l.id === r.id)?.gridValues.flat().reduce((a, v) => a + v, 0) ?? 0).toFixed(3)}M
+                                ViewerScore<sup className="text-[9px]">©</sup> {layerTotals.get(r.id) ?? '0.000'}M
                               </span>
                               <button
                                 onClick={() => toggleLayer(r.id)}
