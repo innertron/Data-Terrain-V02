@@ -1119,11 +1119,9 @@ export default function Home() {
                             {(layer as any).rank != null && (
                               <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">Rank {(layer as any).rank}</span>
                             )}
-                            {selectedSegment && (
-                              <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">
-                                ViewerScore<sup className="text-[8px]">©</sup> {parseFloat((layer.gridValues[24 - selectedSegment.zIndex]?.[selectedSegment.xIndex] ?? 0).toFixed(3))}M
-                              </span>
-                            )}
+                            <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">
+                              ViewerScore<sup className="text-[8px]">©</sup> {layer.gridValues.flat().reduce((a, v) => a + v, 0).toFixed(4)}M
+                            </span>
                           </span>
                         </span>
                         <span className={`w-8 h-4 rounded-full flex items-center px-0.5 transition-colors shrink-0 ml-2 ${on ? '' : 'bg-muted'}`} style={on ? { backgroundColor: '#a8d4d2' } : {}}>
