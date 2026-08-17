@@ -114,6 +114,7 @@ export default function Home() {
 
   const ALL_MEDIA = ["Cable TV", "Broadcast TV", "Podcast / YouTube", "Radio", "Print / Digital", "Digital Video", "Podcast / Social"] as const;
   const ALL_AFFILIATIONS = ["Fox News", "NewsNation", "CNN", "ABC", "NBC", "CBS"] as const;
+  const ALL_LAYERS_ID = -1; // sentinel skewLayerId: randomize applies to ALL layers
   // DB affiliation strings are inconsistent ("FOX" vs "Fox News", "NEWSNATION" vs "NewsNation") — normalize before matching
   const normAffil = (s: string) => {
     const k = s.toUpperCase().replace(/[^A-Z]/g, "");
@@ -166,15 +167,19 @@ export default function Home() {
       <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold px-1">Filter by medium</p>
       <div className="flex flex-wrap gap-1 px-1">
         {(() => {
-          const allActive = mediumFilter.length === 0 && genderFilter.length === 0 && affiliationFilter.length === 0;
+          const allRandActive = showAdjustSkew && skewLayerId === ALL_LAYERS_ID;
           return (
             <button
-              onClick={() => { setMediumFilter([]); setGenderFilter([]); setAffiliationFilter([]); }}
-              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${allActive ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
-              style={allActive ? { backgroundColor: '#a8d4d2' } : {}}
-              data-testid="button-filter-all"
+              onClick={() => {
+                if (allRandActive) { setSkewLayerId(null); return; }
+                setShowAdjustSkew(true);
+                setSkewLayerId(ALL_LAYERS_ID);
+              }}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${allRandActive ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
+              style={allRandActive ? { backgroundColor: '#a8d4d2' } : {}}
+              data-testid="button-all-rand"
             >
-              All
+              All Rand
             </button>
           );
         })()}
@@ -763,7 +768,7 @@ export default function Home() {
                 <div className="flex flex-col gap-2">
                   {/* Adjust Skew — full width */}
                   <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Randomize <span className="normal-case font-normal opacity-60">(fraction · 0.05 = ±5%)</span></p>
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Randomize{skewLayerId === ALL_LAYERS_ID ? " — ALL layers" : ""} <span className="normal-case font-normal opacity-60">(fraction · 0.05 = ±5%)</span></p>
                     <div className="border border-border rounded-md p-1.5 bg-background">
                       <div className="flex items-center gap-2">
                         <div className="flex-1">
@@ -784,10 +789,13 @@ export default function Home() {
                         onClick={async () => {
                           setSkewOutB(0.00); setSkewOutT(0.02);
                           if (skewLayerId === null) return;
-                          const res = await fetch(`/api/layers/${skewLayerId}/restore`, { method: 'POST' });
-                          if (res.ok) {
-                            const data = await res.json();
-                            setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, gridValues: data.gridValues } : l));
+                          const ids = skewLayerId === ALL_LAYERS_ID ? layerDefs.map(l => l.id) : [skewLayerId];
+                          for (const id of ids) {
+                            const res = await fetch(`/api/layers/${id}/restore`, { method: 'POST' });
+                            if (res.ok) {
+                              const data = await res.json();
+                              setLayerDefs(prev => prev.map(l => l.id === id ? { ...l, gridValues: data.gridValues } : l));
+                            }
                           }
                         }}
                       >
@@ -800,13 +808,18 @@ export default function Home() {
                         onClick={async () => {
                           setSkewApplying(true);
                           try {
-                            const res = await fetch(`/api/layers/${skewLayerId}/skew`, {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ insideBottom: skewOutB, insideTop: skewOutT, outsideBottom: skewOutB, outsideTop: skewOutT }),
-                            });
-                            const updated = await res.json();
-                            setLayerDefs(prev => prev.map(l => l.id === skewLayerId ? { ...l, gridValues: updated.gridValues } : l));
+                            const ids = skewLayerId === ALL_LAYERS_ID ? layerDefs.map(l => l.id) : [skewLayerId];
+                            for (const id of ids) {
+                              const res = await fetch(`/api/layers/${id}/skew`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ insideBottom: skewOutB, insideTop: skewOutT, outsideBottom: skewOutB, outsideTop: skewOutT }),
+                              });
+                              if (res.ok) {
+                                const updated = await res.json();
+                                setLayerDefs(prev => prev.map(l => l.id === id ? { ...l, gridValues: updated.gridValues } : l));
+                              }
+                            }
                           } finally {
                             setSkewApplying(false);
                           }
@@ -818,7 +831,8 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Rename Layer — full width, below */}
+                  {/* Rename Layer — full width, below (hidden in ALL mode) */}
+                  {skewLayerId !== ALL_LAYERS_ID && (
                   <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Rename Layer</p>
 
@@ -1017,6 +1031,7 @@ export default function Home() {
                       Delete This Layer
                     </Button>
                   </div>
+                  )}
                 </div>
               )}
               </>)}
