@@ -79,7 +79,16 @@ function generateGrid(cps, opts = {}) {
   const tot = norm.flat().reduce((a, v) => a + v, 0);
   const scaled = norm.map(row => row.map(v => Math.round(v * (totalMillions / tot) * 10000) / 10000));
   // Flip to storage convention: row 0 = Z1 (low income)
-  return scaled.reverse();
+  const raw = scaled.reverse();
+  // Automatically enforce radial monotonicity for interior-peaked grids.
+  // Edge/ridge layers (peak on grid boundary) are skipped — see applyRadialMonotonicityFix.
+  const { fixed, skipped, iters, violationsBefore } = applyRadialMonotonicityFix(raw);
+  if (skipped) {
+    console.error('[radial-monotonicity] generateGrid: edge-peaked grid — fix skipped (radial monotonicity does not apply to ridge/asymmetric layers)');
+  } else if (violationsBefore > 0) {
+    console.error(`[radial-monotonicity] generateGrid: fixed ${violationsBefore} violations in ${iters} iter(s)`);
+  }
+  return fixed;
 }
 
 /**
@@ -181,10 +190,159 @@ function generateGridFromTraces(data, opts = {}) {
   vals.flat().forEach(v => { mn = Math.min(mn, v); mx = Math.max(mx, v); });
   const norm = vals.map(row => row.map(v => (v - mn) / (mx - mn) * 10));
   const tot = norm.flat().reduce((a, v) => a + v, 0);
-  return norm.map(row => row.map(v => Math.round(v * (totalMillions / tot) * 10000) / 10000)).reverse();
+  const raw2 = norm.map(row => row.map(v => Math.round(v * (totalMillions / tot) * 10000) / 10000)).reverse();
+  // Automatically enforce radial monotonicity for interior-peaked grids.
+  // Edge/ridge layers (peak on grid boundary) are skipped — see applyRadialMonotonicityFix.
+  const { fixed: fixed2, skipped: skipped2, iters: iters2, violationsBefore: vb2 } = applyRadialMonotonicityFix(raw2);
+  if (skipped2) {
+    console.error('[radial-monotonicity] generateGridFromTraces: edge-peaked grid — fix skipped (radial monotonicity does not apply to ridge/asymmetric layers)');
+  } else if (vb2 > 0) {
+    console.error(`[radial-monotonicity] generateGridFromTraces: fixed ${vb2} violations in ${iters2} iter(s)`);
+  }
+  return fixed2;
 }
 
-module.exports = { generateGrid, generateGridFromTraces, validateGrid, C, SMOOTH, HANNITY_CONTROL_POINTS };
+// ---------------------------------------------------------------------------
+// Radial-monotonicity fix — applied automatically after every grid generation.
+// Extracted from fix-radial-monotonicity.cjs so new layers never need a
+// separate manual repair pass.
+// ---------------------------------------------------------------------------
+
+/** Find the peak cell (max value). Returns { r, c, v } (0-based). */
+function findPeak(grid) {
+  let peak = { r: 0, c: 0, v: -Infinity };
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      if (grid[r][c] > peak.v) peak = { r, c, v: grid[r][c] };
+    }
+  }
+  return peak;
+}
+
+/** Count cells where a 4-neighbor farther from the peak is strictly higher. */
+function countViolations(grid, pr, pc) {
+  const dirs = [[-1,0],[1,0],[0,-1],[0,1]];
+  let count = 0;
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      const myDist = Math.hypot(r - pr, c - pc);
+      for (const [dr, dc] of dirs) {
+        const nr = r + dr, nc = c + dc;
+        if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
+        if (Math.hypot(nr - pr, nc - pc) > myDist && grid[nr][nc] > grid[r][c] + 1e-9) {
+          count++;
+          break;
+        }
+      }
+    }
+  }
+  return count;
+}
+
+/**
+ * Run one pass of the inner fix loop against a given peak (pr, pc).
+ * Mutates `grid` in place. Returns the number of sweeps taken.
+ * Throws if the inner loop does not converge within 10 000 sweeps.
+ */
+function _innerFixPass(grid, pr, pc) {
+  const dirs = [[-1,0],[1,0],[0,-1],[0,1]];
+  let changed = true;
+  let iters = 0;
+  while (changed) {
+    changed = false;
+    iters++;
+    for (let r = 0; r < N; r++) {
+      for (let c = 0; c < N; c++) {
+        const myDist = Math.hypot(r - pr, c - pc);
+        for (const [dr, dc] of dirs) {
+          const nr = r + dr, nc = c + dc;
+          if (nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
+          if (Math.hypot(nr - pr, nc - pc) > myDist && grid[nr][nc] > grid[r][c] + 1e-9) {
+            grid[r][c] = grid[nr][nc];
+            changed = true;
+          }
+        }
+      }
+    }
+    if (iters > 10000) {
+      throw new Error('applyRadialMonotonicityFix: inner fix loop did not converge in 10 000 iterations');
+    }
+  }
+  return iters;
+}
+
+/**
+ * Enforce radial monotonicity from the peak:
+ * 1. Iteratively raise each cell to any 4-neighbor farther from the peak but higher.
+ * 2. Rescale to the original total, then round to 4 decimal places.
+ * 3. Re-check violations against the (possibly shifted) post-rounding peak.
+ * 4. If violations remain, repeat from step 1 against the new peak.
+ * This outer loop is needed because rounding can shift the canonical peak and
+ * create new violations relative to the updated peak location.
+ *
+ * ELIGIBILITY: radial monotonicity only makes physical sense for grids whose
+ * peak is in the grid interior. Edge/ridge layers (peak touching any grid
+ * boundary — row 0, row 24, col 0, or col 24) are skipped entirely:
+ * enforcing monotone decay from an edge peak carves artificial terrain steps.
+ * Returns { fixed, skipped, iters, violationsBefore, violationsAfter }.
+ * `skipped` is true when the grid is an edge-peaked layer and was not modified.
+ *
+ * Throws if the result is still not violation-free after 20 outer iterations.
+ */
+function applyRadialMonotonicityFix(grid) {
+  const { r: pr0, c: pc0 } = findPeak(grid);
+
+  // Skip for edge-peaked / ridge layers — radial monotonicity does not apply.
+  const isEdgePeaked = pr0 === 0 || pr0 === N - 1 || pc0 === 0 || pc0 === N - 1;
+  if (isEdgePeaked) {
+    return { fixed: grid.map(row => [...row]), skipped: true, iters: 0, violationsBefore: 0, violationsAfter: 0 };
+  }
+
+  const originalTotal = grid.flat().reduce((a, v) => a + v, 0);
+  const violationsBefore = countViolations(grid, pr0, pc0);
+
+  if (violationsBefore === 0) {
+    return { fixed: grid.map(row => [...row]), skipped: false, iters: 0, violationsBefore: 0, violationsAfter: 0 };
+  }
+
+  let current = grid.map(row => [...row]);
+  let totalIters = 0;
+
+  for (let outerPass = 0; outerPass < 20; outerPass++) {
+    // Find current canonical peak and fix against it
+    const { r: pr, c: pc } = findPeak(current);
+    totalIters += _innerFixPass(current, pr, pc);
+
+    // Rescale to original total, then round to 4 dp
+    const newTotal = current.flat().reduce((a, v) => a + v, 0);
+    if (newTotal > 1e-9) {
+      const scale = originalTotal / newTotal;
+      for (let r = 0; r < N; r++) {
+        for (let c = 0; c < N; c++) {
+          current[r][c] = Math.round(current[r][c] * scale * 10000) / 10000;
+        }
+      }
+    }
+
+    // Re-check against the post-rounding canonical peak
+    const { r: pr2, c: pc2 } = findPeak(current);
+    const remaining = countViolations(current, pr2, pc2);
+    if (remaining === 0) {
+      return { fixed: current, skipped: false, iters: totalIters, violationsBefore, violationsAfter: 0 };
+    }
+    // Otherwise loop again against the new peak
+  }
+
+  // Hard error: callers must not persist a grid with violations
+  const { r: pfr, c: pfc } = findPeak(current);
+  const finalViolations = countViolations(current, pfr, pfc);
+  throw new Error(
+    `applyRadialMonotonicityFix: grid still has ${finalViolations} violation(s) after 20 outer passes. ` +
+    'Do not save this grid — inspect the control points or trace data.'
+  );
+}
+
+module.exports = { generateGrid, generateGridFromTraces, validateGrid, applyRadialMonotonicityFix, findPeak, countViolations, C, SMOOTH, HANNITY_CONTROL_POINTS };
 
 if (require.main === module) {
   const [, , file, total] = process.argv;
