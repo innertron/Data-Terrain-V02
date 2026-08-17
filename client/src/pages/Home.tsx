@@ -228,7 +228,7 @@ export default function Home() {
           style={{ backgroundColor: '#f0f0f0', color: activeLayers.length === 0 ? '#16a34a' : '#dc2626' }}
           data-testid="button-clear-all"
         >
-          {activeLayers.length === 0 ? 'Turn All ON' : 'Clear All'}
+          {activeLayers.length === 0 ? 'Turn All ON' : 'Turn All OFF'}
         </button>
         {(mediumFilter.length > 0 || genderFilter.length > 0 || affiliationFilter.length > 0) && (
           <button onClick={() => { setMediumFilter([]); setGenderFilter([]); setAffiliationFilter([]); }} className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border border-dashed border-border" style={{ color: '#dc2626' }}>
