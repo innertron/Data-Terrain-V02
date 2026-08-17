@@ -166,7 +166,7 @@ export default function Home() {
       </div>
       <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold px-1">Filter by medium</p>
       <div className="flex flex-wrap gap-1 px-1">
-        {(() => {
+        {isAdmin && (() => {
           const allRandActive = showAdjustSkew && skewLayerId === ALL_LAYERS_ID;
           return (
             <button
