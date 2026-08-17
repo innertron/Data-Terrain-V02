@@ -165,6 +165,19 @@ export default function Home() {
       </div>
       <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold px-1">Filter by medium</p>
       <div className="flex flex-wrap gap-1 px-1">
+        {(() => {
+          const allActive = mediumFilter.length === 0 && genderFilter.length === 0 && affiliationFilter.length === 0;
+          return (
+            <button
+              onClick={() => { setMediumFilter([]); setGenderFilter([]); setAffiliationFilter([]); }}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${allActive ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
+              style={allActive ? { backgroundColor: '#a8d4d2' } : {}}
+              data-testid="button-filter-all"
+            >
+              All
+            </button>
+          );
+        })()}
         {ALL_MEDIA.filter(m => layerDefs.some(l => l.primaryMedium === m)).map(m => {
           const active = mediumFilter.includes(m);
           return (
