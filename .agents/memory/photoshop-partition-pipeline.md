@@ -18,6 +18,8 @@ The user's preferred input for new layers (after 9 failed methodologies): a Phot
 - Per cell: majority vote over a small sample block at cell center; flag any cell with split votes as ambiguous and STOP if any remain. Success = 625/625, 0 ambiguous.
 - After extraction, regenerate the partition plot from the extracted bands and present it so the user can visually diff against what they painted.
 
+**Extraction is now scripted**: `node scripts/extract-partition.cjs <png> <7 band values high->low, comma-sep>` → points JSON on stdout (exits nonzero on any ambiguous cell). Works on 2x retina screenshots; user re-confirmed the whole flow Aug 16 2026.
+
 **Then run the normal pipeline**: traces = all 625 cells [x, z, bandValue] → `generateGridFromTraces` (totalMillions from title) → peak-in-top-band check → POST layer → roundtrip verify → icon/meta patch → save `data/<name>-trace-points.json` → sync-prod.
 
 Filename convention: rank prefix (e.g. `5_David_Muir_*.png`); viewership millions in the painted title (typos like "13/854611M" mean 13.854611M — confirm with user if unclear).
