@@ -205,6 +205,14 @@ export default function Home() {
             </button>
           );
         })}
+        <button
+          onClick={() => setActiveLayers([])}
+          className="px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border border-border text-black transition-colors"
+          style={{ backgroundColor: '#f0f0f0' }}
+          data-testid="button-clear-all"
+        >
+          Clear All
+        </button>
         {(mediumFilter.length > 0 || genderFilter.length > 0 || affiliationFilter.length > 0) && (
           <button onClick={() => { setMediumFilter([]); setGenderFilter([]); setAffiliationFilter([]); }} className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border border-dashed border-border" style={{ color: '#dc2626' }}>
             CLEAR
