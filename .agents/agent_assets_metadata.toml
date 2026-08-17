@@ -98,3 +98,10 @@ uri = "file://attached_assets/generated/ezra-klein-extracted-check.png"
 type = "image"
 title = "Ezra Klein — extracted partition check"
 description = "Regenerated from the 625 extracted cells — compare against your painted PNG."
+
+[[outputs]]
+id = "vjWGUXEmwyBeZSKSt7aL4"
+uri = "file://attached_assets/generated/connell-mcshane-extracted-check.png"
+type = "image"
+title = "Connell McShane — extracted partition check"
+description = "Regenerated from the 625 extracted cells — compare against your painted PNG."
