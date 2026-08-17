@@ -23,3 +23,7 @@ The user's preferred input for new layers (after 9 failed methodologies): a Phot
 **Then run the normal pipeline**: traces = all 625 cells [x, z, bandValue] → `generateGridFromTraces` (totalMillions from title) → peak-in-top-band check → POST layer → roundtrip verify → icon/meta patch → save `data/<name>-trace-points.json` → sync-prod.
 
 Filename convention: rank prefix (e.g. `5_David_Muir_*.png`); viewership millions in the painted title (typos like "13/854611M" mean 13.854611M — confirm with user if unclear).
+
+## RBF trench artifact + fix (Aug 17 2026)
+Least-squares RBF grids can carve narrow trenches (undershoot below the outer flat band) that render as visible dips even though the painted partition is monotone. Pit-filling fails because trenches drain to the grid edge.
+**Fix:** enforce radial monotonicity from the peak — iterate raising each cell to any 4-neighbor that is farther from the peak but higher, then rescale to the original total. Applied to Ezra Klein (dev SQL on grid_values + original_grid_values, then sync-prod). Run this check on future extractions if dips appear.
