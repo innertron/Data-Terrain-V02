@@ -1120,7 +1120,7 @@ export default function Home() {
                               <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">Rank {(layer as any).rank}</span>
                             )}
                             <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">
-                              ViewerScore<sup className="text-[8px]">©</sup> {layer.gridValues.flat().reduce((a, v) => a + v, 0).toFixed(4)}M
+                              ViewerScore<sup className="text-[8px]">©</sup> {layer.gridValues.flat().reduce((a, v) => a + v, 0).toFixed(3)}M
                             </span>
                           </span>
                         </span>
@@ -1179,7 +1179,7 @@ export default function Home() {
                               <span className="text-base font-semibold text-foreground/90 truncate">{r.affiliation ?? ''}</span>
                               <span className="flex-1" />
                               <span className="text-sm font-mono text-foreground/50 whitespace-nowrap shrink-0">
-                                ViewerScore<sup className="text-[9px]">©</sup> {(layerDefs.find(l => l.id === r.id)?.gridValues.flat().reduce((a, v) => a + v, 0) ?? 0).toFixed(4)}M
+                                ViewerScore<sup className="text-[9px]">©</sup> {(layerDefs.find(l => l.id === r.id)?.gridValues.flat().reduce((a, v) => a + v, 0) ?? 0).toFixed(3)}M
                               </span>
                               <button
                                 onClick={() => toggleLayer(r.id)}
