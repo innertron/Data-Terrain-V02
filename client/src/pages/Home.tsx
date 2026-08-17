@@ -565,7 +565,7 @@ export default function Home() {
                >
                  <AnimatedMagnifier className="w-6 h-6" />
                </button>
-               <div className="text-xs leading-snug overflow-y-auto pr-4 mt-4" style={{ maxHeight: '64px' }}>
+               <div className="text-xs leading-snug overflow-y-auto pr-4" style={{ maxHeight: '64px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Political Domain (X)</span>{' '} 
                  <span className="text-foreground/80"><strong style={{ color: getXLabelColor(selectedSegment.xIndex) }}>{xLabels[selectedSegment.xIndex] || selectedSegment.xLabel}</strong>{' → '}{renderPolitical(xDescriptions[selectedSegment.xIndex] || '')}</span>
                </div>
@@ -579,7 +579,7 @@ export default function Home() {
                >
                  <AnimatedMagnifier className="w-6 h-6" />
                </button>
-               <div className="text-xs leading-snug overflow-y-auto pr-4 mt-4" style={{ maxHeight: '64px' }}>
+               <div className="text-xs leading-snug overflow-y-auto pr-4" style={{ maxHeight: '64px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Income / Education (Z)</span>{' '}
                  <span className="text-foreground/80">{renderConverged(zDescriptions[selectedSegment.zIndex] || '')}</span>
                </div>
