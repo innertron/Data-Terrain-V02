@@ -103,6 +103,7 @@ export default function Home() {
   const [renameGender, setRenameGender] = useState("");
   const [mediumFilter, setMediumFilter] = useState<string[]>([]); // empty = show all
   const [genderFilter, setGenderFilter] = useState<string[]>([]); // empty = show all
+  const [affiliationFilter, setAffiliationFilter] = useState<string[]>([]); // empty = show all
   const [nameSearch, setNameSearch] = useState("");
   const [surfMode, setSurfMode] = useState(false);
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('details');
@@ -112,18 +113,29 @@ export default function Home() {
   const { xLabels, xDescriptions, zLabels, zDescriptions } = useAxisData();
 
   const ALL_MEDIA = ["Cable TV", "Broadcast TV", "Podcast / YouTube", "Radio", "Print / Digital", "Digital Video", "Podcast / Social"] as const;
+  const ALL_AFFILIATIONS = ["Fox News", "NewsNation", "CNN", "ABC", "NBC", "CBS"] as const;
+  // DB affiliation strings are inconsistent ("FOX" vs "Fox News", "NEWSNATION" vs "NewsNation") — normalize before matching
+  const normAffil = (s: string) => {
+    const k = s.toUpperCase().replace(/[^A-Z]/g, "");
+    return k === "FOX" ? "FOXNEWS" : k;
+  };
+  const affilMatches = (l: LayerDef) =>
+    affiliationFilter.length === 0 ||
+    (!!(l as any).affiliation && affiliationFilter.some(a => normAffil(a) === normAffil((l as any).affiliation)));
 
   const visibleLayers = layerDefs.filter(l =>
     (mediumFilter.length === 0 || (l.primaryMedium && mediumFilter.includes(l.primaryMedium))) &&
     (genderFilter.length === 0 || ((l as any).gender && genderFilter.includes((l as any).gender))) &&
+    affilMatches(l) &&
     (nameSearch.trim() === "" || l.name.toLowerCase().includes(nameSearch.trim().toLowerCase()))
   );
   // Filters also zero out non-matching layers in the terrain (name search only narrows the list, not the terrain):
   const filterMatchedLayers = layerDefs.filter(l =>
     (mediumFilter.length === 0 || (l.primaryMedium && mediumFilter.includes(l.primaryMedium))) &&
-    (genderFilter.length === 0 || ((l as any).gender && genderFilter.includes((l as any).gender)))
+    (genderFilter.length === 0 || ((l as any).gender && genderFilter.includes((l as any).gender))) &&
+    affilMatches(l)
   );
-  const effectiveActiveIds = (mediumFilter.length === 0 && genderFilter.length === 0)
+  const effectiveActiveIds = (mediumFilter.length === 0 && genderFilter.length === 0 && affiliationFilter.length === 0)
     ? activeLayers
     : activeLayers.filter(id => filterMatchedLayers.some(l => l.id === id));
   const isAdmin = import.meta.env.DEV;
@@ -179,8 +191,21 @@ export default function Home() {
             </button>
           );
         })}
-        {(mediumFilter.length > 0 || genderFilter.length > 0) && (
-          <button onClick={() => { setMediumFilter([]); setGenderFilter([]); }} className="px-1.5 py-0.5 rounded text-[9px] text-muted-foreground hover:text-foreground border border-dashed border-border">
+        {ALL_AFFILIATIONS.filter(a => layerDefs.some(l => (l as any).affiliation && normAffil((l as any).affiliation) === normAffil(a))).map(a => {
+          const active = affiliationFilter.includes(a);
+          return (
+            <button
+              key={a}
+              onClick={() => setAffiliationFilter(prev => active ? prev.filter(x => x !== a) : [...prev, a])}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${active ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
+              style={active ? { backgroundColor: '#a8d4d2' } : {}}
+            >
+              {a}
+            </button>
+          );
+        })}
+        {(mediumFilter.length > 0 || genderFilter.length > 0 || affiliationFilter.length > 0) && (
+          <button onClick={() => { setMediumFilter([]); setGenderFilter([]); setAffiliationFilter([]); }} className="px-1.5 py-0.5 rounded text-[9px] text-muted-foreground hover:text-foreground border border-dashed border-border">
             clear
           </button>
         )}
