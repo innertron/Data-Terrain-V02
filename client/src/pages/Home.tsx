@@ -166,6 +166,23 @@ export default function Home() {
       </div>
       <p className="text-[9px] uppercase tracking-wider text-muted-foreground font-semibold px-1">Filter by medium</p>
       <div className="flex flex-wrap gap-1 px-1">
+        {isAdmin && showAdjustSkew && (() => {
+          const allRandActive = skewLayerId === ALL_LAYERS_ID;
+          return (
+            <button
+              onClick={() => {
+                if (allRandActive) { setSkewLayerId(null); return; }
+                setShowAdjustSkew(true);
+                setSkewLayerId(ALL_LAYERS_ID);
+              }}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors ${allRandActive ? 'border-transparent text-black' : 'border-border text-muted-foreground hover:text-foreground'}`}
+              style={allRandActive ? { backgroundColor: '#a8d4d2' } : {}}
+              data-testid="button-all-rand"
+            >
+              All Rand
+            </button>
+          );
+        })()}
         {ALL_MEDIA.filter(m => layerDefs.some(l => l.primaryMedium === m)).map(m => {
           const active = mediumFilter.includes(m);
           return (
