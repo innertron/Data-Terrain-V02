@@ -1121,7 +1121,7 @@ export default function Home() {
                             )}
                             {selectedSegment && (
                               <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">
-                                ViewerScore© {parseFloat((layer.gridValues[24 - selectedSegment.zIndex]?.[selectedSegment.xIndex] ?? 0).toFixed(3))}M
+                                ViewerScore<sup className="text-[8px]">©</sup> {parseFloat((layer.gridValues[24 - selectedSegment.zIndex]?.[selectedSegment.xIndex] ?? 0).toFixed(3))}M
                               </span>
                             )}
                           </span>
