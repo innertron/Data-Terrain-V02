@@ -551,7 +551,7 @@ export default function Home() {
                >
                  <Search className="w-3 h-3" />
                </button>
-               <div className="text-xs leading-snug overflow-y-auto pr-4" style={{ maxHeight: '80px' }}>
+               <div className="text-xs leading-snug overflow-y-auto pr-4 mt-4" style={{ maxHeight: '80px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Political Domain (X)</span>{' '} 
                  <span className="text-foreground/80"><strong style={{ color: getXLabelColor(selectedSegment.xIndex) }}>{xLabels[selectedSegment.xIndex] || selectedSegment.xLabel}</strong>{' → '}{renderPolitical(xDescriptions[selectedSegment.xIndex] || '')}</span>
                </div>
@@ -565,7 +565,7 @@ export default function Home() {
                >
                  <Search className="w-3 h-3" />
                </button>
-               <div className="text-xs leading-snug overflow-y-auto pr-4" style={{ maxHeight: '80px' }}>
+               <div className="text-xs leading-snug overflow-y-auto pr-4 mt-4" style={{ maxHeight: '80px' }}>
                  <span className="uppercase tracking-wider font-bold text-muted-foreground">Income / Education (Z)</span>{' '}
                  <span className="text-foreground/80">{renderConverged(zDescriptions[selectedSegment.zIndex] || '')}</span>
                </div>
