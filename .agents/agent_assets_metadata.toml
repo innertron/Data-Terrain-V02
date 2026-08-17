@@ -91,3 +91,10 @@ uri = "file://attached_assets/generated/will-cain-extracted-check.png"
 type = "image"
 title = "Will Cain — extracted partition check"
 description = "Regenerated from the extracted 25×25 bands — compare against your painted PNG."
+
+[[outputs]]
+id = "k6nCAZtIoQUiytYJ3kbWI"
+uri = "file://attached_assets/generated/ezra-klein-extracted-check.png"
+type = "image"
+title = "Ezra Klein — extracted partition check"
+description = "Regenerated from the 625 extracted cells — compare against your painted PNG."
