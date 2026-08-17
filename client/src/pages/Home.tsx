@@ -769,19 +769,15 @@ export default function Home() {
                   {/* Adjust Skew — full width */}
                   <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Randomize{skewLayerId === ALL_LAYERS_ID ? " — ALL layers" : ""} <span className="normal-case font-normal opacity-60">(fraction · 0.05 = ±5%)</span></p>
-                    <div className="border border-border rounded-md p-1.5 bg-background">
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1">
-                          <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Bottom</Label>
-                          <Input type="number" min={0} step="0.01" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
-                        </div>
-                        <div className="flex-1">
-                          <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Top</Label>
-                          <Input type="number" min={0} step="0.01" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
-                        </div>
+                    <div className="flex items-end gap-2">
+                      <div className="w-16">
+                        <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Bottom</Label>
+                        <Input type="number" min={0} step="0.01" value={skewOutB} onChange={e => setSkewOutB(Number(e.target.value))} className="h-7 text-xs font-mono" />
                       </div>
-                    </div>
-                    <div className="flex gap-2">
+                      <div className="w-16">
+                        <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Top</Label>
+                        <Input type="number" min={0} step="0.01" value={skewOutT} onChange={e => setSkewOutT(Number(e.target.value))} className="h-7 text-xs font-mono" />
+                      </div>
                       <Button
                         size="sm"
                         variant="outline"
