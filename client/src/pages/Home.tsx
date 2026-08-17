@@ -832,61 +832,54 @@ export default function Home() {
                   <div className="flex flex-col gap-2 border border-border rounded-lg p-2.5 bg-muted/30">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Rename Layer</p>
 
-                    {/* Icon toggle + upload */}
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-2">
-                        <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Icon</Label>
-                        <button
-                          type="button"
-                          onClick={() => setRenameIconOn(v => !v)}
-                          className={`relative inline-flex h-4 w-7 items-center rounded-full transition-colors ${renameIconOn ? 'bg-primary' : 'bg-muted-foreground/40'}`}
-                        >
-                          <span className={`inline-block h-3 w-3 rounded-full bg-white shadow transition-transform ${renameIconOn ? 'translate-x-3.5' : 'translate-x-0.5'}`} />
-                        </button>
-                      </div>
-                      {renameIconOn && (
-                        <div className="flex flex-col gap-1">
-                          <div className="flex items-center gap-2">
-                            <label className="flex flex-col items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-border bg-background cursor-pointer overflow-hidden shrink-0">
-                              {renameIcon
-                                ? <img src={renameIcon} className="w-full h-full object-cover rounded-full" />
-                                : <span className="text-[9px] text-muted-foreground text-center leading-tight">Upload</span>}
-                              <input type="file" accept="image/jpeg,image/png" className="hidden" onChange={e => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
-                                if (!['image/jpeg', 'image/png'].includes(file.type)) {
-                                  alert('Only JPG or PNG files are allowed.');
+                    {/* Icon + Name (1) + Name (2) — one line */}
+                    <div className="flex items-end gap-2">
+                      <div className="flex flex-col items-center gap-1 shrink-0">
+                        <div className="flex items-center gap-1.5">
+                          <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Icon</Label>
+                          <button
+                            type="button"
+                            onClick={() => setRenameIconOn(v => !v)}
+                            className={`relative inline-flex h-4 w-7 items-center rounded-full transition-colors ${renameIconOn ? 'bg-primary' : 'bg-muted-foreground/40'}`}
+                          >
+                            <span className={`inline-block h-3 w-3 rounded-full bg-white shadow transition-transform ${renameIconOn ? 'translate-x-3.5' : 'translate-x-0.5'}`} />
+                          </button>
+                        </div>
+                        {renameIconOn && (
+                          <label
+                            className="flex flex-col items-center justify-center w-12 h-12 rounded-full border-2 border-dashed border-border bg-background cursor-pointer overflow-hidden shrink-0"
+                            title="Click to upload — JPG or PNG only · max 300×300 px · square images work best"
+                          >
+                            {renameIcon
+                              ? <img src={renameIcon} className="w-full h-full object-cover rounded-full" />
+                              : <span className="text-[9px] text-muted-foreground text-center leading-tight">Upload</span>}
+                            <input type="file" accept="image/jpeg,image/png" className="hidden" onChange={e => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                                alert('Only JPG or PNG files are allowed.');
+                                e.target.value = '';
+                                return;
+                              }
+                              const img = new Image();
+                              const url = URL.createObjectURL(file);
+                              img.onload = () => {
+                                URL.revokeObjectURL(url);
+                                if (img.width > 300 || img.height > 300) {
+                                  alert(`Image must be 300×300 px or smaller (yours is ${img.width}×${img.height}).`);
                                   e.target.value = '';
                                   return;
                                 }
-                                const img = new Image();
-                                const url = URL.createObjectURL(file);
-                                img.onload = () => {
-                                  URL.revokeObjectURL(url);
-                                  if (img.width > 300 || img.height > 300) {
-                                    alert(`Image must be 300×300 px or smaller (yours is ${img.width}×${img.height}).`);
-                                    e.target.value = '';
-                                    return;
-                                  }
-                                  const reader = new FileReader();
-                                  reader.onload = ev => setRenameIcon(ev.target?.result as string);
-                                  reader.readAsDataURL(file);
-                                };
-                                img.src = url;
-                              }} />
-                            </label>
-                            <span className="text-[9px] text-muted-foreground">Click circle to upload</span>
-                          </div>
-                          <p className="text-[9px] font-semibold" style={{ color: '#8b0000' }}>
-                            JPG or PNG only · max 300×300 px · square images work best
-                          </p>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Name (1) · Name (2) — one line */}
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
+                                const reader = new FileReader();
+                                reader.onload = ev => setRenameIcon(ev.target?.result as string);
+                                reader.readAsDataURL(file);
+                              };
+                              img.src = url;
+                            }} />
+                          </label>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
                         <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Name (1) — Main</Label>
                         <Input
                           value={renameValue}
@@ -895,7 +888,7 @@ export default function Home() {
                           placeholder="LAYER NAME…"
                         />
                       </div>
-                      <div>
+                      <div className="flex-1 min-w-0">
                         <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Name (2) — Subtitle</Label>
                         <Input
                           value={renameName2}
@@ -906,9 +899,14 @@ export default function Home() {
                         />
                       </div>
                     </div>
+                    {renameIconOn && (
+                      <p className="text-[9px] font-semibold" style={{ color: '#8b0000' }}>
+                        JPG or PNG only · max 300×300 px · square images work best
+                      </p>
+                    )}
 
-                    {/* Rank · Affiliation · Gender · Primary Medium — two lines */}
-                    <div className="grid grid-cols-2 gap-2">
+                    {/* Rank · Affiliation · Gender · Primary Medium — one line */}
+                    <div className="grid grid-cols-4 gap-2">
                     <div>
                       <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Rank</Label>
                       <Input
@@ -959,12 +957,13 @@ export default function Home() {
                         {ALL_MEDIA.map(m => <option key={m} value={m}>{m}</option>)}
                       </select>
                     </div>
-                    </div>{/* end 2-col grid */}
+                    </div>{/* end 4-col grid */}
 
+                    <div className="flex gap-2">
                     <Button
                       size="sm"
                       disabled={renameApplying || !renameValue.trim()}
-                      className="w-full h-7 text-[10px] uppercase tracking-wider"
+                      className="flex-1 h-7 text-[10px] uppercase tracking-wider"
                       onClick={async () => {
                         setRenameApplying(true);
                         try {
@@ -1004,7 +1003,7 @@ export default function Home() {
                     <Button
                       size="sm"
                       variant="destructive"
-                      className="w-full h-7 text-[10px] uppercase tracking-wider"
+                      className="flex-1 h-7 text-[10px] uppercase tracking-wider"
                       onClick={async () => {
                         const layerName = layerDefs.find(l => l.id === skewLayerId)?.name ?? "this layer";
                         if (!window.confirm(`Delete "${layerName}"? This cannot be undone.`)) return;
@@ -1026,6 +1025,7 @@ export default function Home() {
                       <Trash2 className="w-3 h-3 mr-1" />
                       Delete This Layer
                     </Button>
+                    </div>
                   </div>
                   )}
                 </div>
