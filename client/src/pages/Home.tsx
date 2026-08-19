@@ -127,7 +127,7 @@ export default function Home() {
   const { xLabels, xDescriptions, zLabels, zDescriptions } = useAxisData();
 
   const ALL_MEDIA = ["Cable TV", "Broadcast TV", "Podcast / YouTube", "Radio", "Print / Digital", "Digital Video", "Podcast / Social"] as const;
-  const ALL_AFFILIATIONS = ["Fox News", "NewsNation", "CNN", "ABC", "NBC", "CBS", "NYT"] as const;
+  const ALL_AFFILIATIONS = ["Fox News", "NewsNation", "CNN", "MS NOW", "ABC", "NBC", "CBS", "NYT"] as const;
   const ALL_LAYERS_ID = -1; // sentinel skewLayerId: randomize applies to ALL layers
   // DB affiliation strings are inconsistent ("FOX" vs "Fox News", "NEWSNATION" vs "NewsNation") — normalize before matching
   const normAffil = (s: string) => {
