@@ -341,6 +341,7 @@ export async function registerRoutes(
         affiliation: r.affiliation ?? null,
         primaryMedium: r.primaryMedium ?? null,
         gender: r.gender ?? null,
+        demographic: r.demographic ?? null,
       }));
       res.json(result);
     } catch (err) {
@@ -358,11 +359,12 @@ export async function registerRoutes(
     affiliation: z.string().optional(),
     primaryMedium: z.string().optional(),
     gender: z.enum(["Male", "Female"]).optional(),
+    demographic: z.string().max(50).optional(),
   });
 
   app.post("/api/layers", async (req, res) => {
     try {
-      const { name, color, csv, rank, affiliation, primaryMedium, gender } = newLayerSchema.parse(req.body);
+      const { name, color, csv, rank, affiliation, primaryMedium, gender, demographic } = newLayerSchema.parse(req.body);
       const grid = parseCsvGrid(csv);
       if (grid.length !== 25 || grid.some(r => r.length !== 25)) {
         return res.status(400).json({ message: "CSV must be a 25×25 grid (header + 25 rows, 25 columns each)" });
@@ -378,8 +380,9 @@ export async function registerRoutes(
         ...(affiliation ? { affiliation } : {}),
         ...(primaryMedium ? { primaryMedium } : {}),
         ...(gender ? { gender } : {}),
+        ...(demographic ? { demographic } : {}),
       });
-      res.status(201).json({ id: layer.id, name: layer.name, color: layer.color, active: layer.active, gridValues: grid, rank: layer.rank, affiliation: layer.affiliation, primaryMedium: layer.primaryMedium, gender: layer.gender });
+      res.status(201).json({ id: layer.id, name: layer.name, color: layer.color, active: layer.active, gridValues: grid, rank: layer.rank, affiliation: layer.affiliation, primaryMedium: layer.primaryMedium, gender: layer.gender, demographic: layer.demographic });
     } catch (err) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
       console.error(err);
@@ -402,7 +405,7 @@ export async function registerRoutes(
     }
   });
 
-  // PATCH /api/layers/:id/rename — update layer meta (name, name2, description, icon, rank, affiliation, primaryMedium)
+  // PATCH /api/layers/:id/rename — update layer meta (name, name2, description, icon, rank, affiliation, primaryMedium, gender, demographic)
   app.patch("/api/layers/:id/rename", async (req, res) => {
     try {
       const id = Number(req.params.id);
@@ -418,9 +421,10 @@ export async function registerRoutes(
         affiliation: z.string().max(50).optional(),
         primaryMedium: z.string().max(50).optional(),
         gender: z.enum(["Male", "Female"]).optional(),
+        demographic: z.string().max(50).nullable().optional(),
       }).parse(req.body);
       const updated = await storage.updateLayerMeta(id, body);
-      res.json({ id: updated.id, name: updated.name, name2: updated.name2, description: updated.description, icon: updated.icon, rank: updated.rank, affiliation: updated.affiliation, primaryMedium: updated.primaryMedium, gender: updated.gender });
+      res.json({ id: updated.id, name: updated.name, name2: updated.name2, description: updated.description, icon: updated.icon, rank: updated.rank, affiliation: updated.affiliation, primaryMedium: updated.primaryMedium, gender: updated.gender, demographic: updated.demographic });
     } catch (err) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
       console.error(err);

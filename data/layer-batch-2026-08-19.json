@@ -1,0 +1,65 @@
+{
+  "layers": [
+    {
+      "name": "Stephen A. Smith",
+      "rank": 20,
+      "affiliation": "YOUTUBE",
+      "gender": "Male",
+      "primaryMedium": "Podcast / Digital",
+      "demographic": "African American",
+      "totalMillions": 10.921443,
+      "traceFile": "data/stephen-a-smith-trace-points.json",
+      "iconFile": "attached_assets/020_Stephen_A._Smith_1787170960239.png"
+    },
+    {
+      "name": "Maggie Haberman",
+      "rank": 30,
+      "affiliation": "NYT",
+      "gender": "Female",
+      "primaryMedium": "Print / Digital",
+      "totalMillions": 8.297442,
+      "traceFile": "data/maggie-haberman-trace-points.json",
+      "iconFile": "attached_assets/030_Maggie_Haberman_1787171132789.png"
+    },
+    {
+      "name": "Wolf Blitzer",
+      "rank": 35,
+      "affiliation": "CNN",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "totalMillions": 7.417757,
+      "traceFile": "data/wolf-blitzer-trace-points.json",
+      "iconFile": "attached_assets/035_Wolf_Blitzer_1787171167997.png"
+    },
+    {
+      "name": "Steve Inskeep",
+      "rank": 41,
+      "affiliation": "NPR",
+      "gender": "Male",
+      "primaryMedium": "Radio",
+      "totalMillions": 6.621499,
+      "traceFile": "data/steve-inskeep-trace-points.json",
+      "iconFile": "attached_assets/041_Steve_Inskeep_1787171207414.png"
+    },
+    {
+      "name": "John Dickerson",
+      "rank": 43,
+      "affiliation": "CBS",
+      "gender": "Male",
+      "primaryMedium": "Broadcast TV",
+      "totalMillions": 6.305151,
+      "traceFile": "data/john-dickerson-trace-points.json",
+      "iconFile": "attached_assets/043_John_Dickerson_1787171228712.png"
+    }
+  ],
+  "metadataUpdates": [
+    {
+      "name": "Lester Holt",
+      "demographic": "African American"
+    },
+    {
+      "name": "Abby Phillip",
+      "demographic": "African American"
+    }
+  ]
+}

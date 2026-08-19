@@ -115,8 +115,10 @@ export default function Home() {
   const [renameAffiliation, setRenameAffiliation] = useState("");
   const [renameMedium, setRenameMedium] = useState("");
   const [renameGender, setRenameGender] = useState("");
+  const [renameDemographic, setRenameDemographic] = useState("");
   const [mediumFilter, setMediumFilter] = useState<string[]>([]); // empty = show all
   const [genderFilter, setGenderFilter] = useState<string[]>([]); // empty = show all
+  const [demographicFilter, setDemographicFilter] = useState<string[]>([]); // empty = show all
   const [affiliationFilter, setAffiliationFilter] = useState<string[]>([]); // empty = show all
   const [nameSearch, setNameSearch] = useState("");
   const [surfMode, setSurfMode] = useState(false);
@@ -126,8 +128,9 @@ export default function Home() {
 
   const { xLabels, xDescriptions, zLabels, zDescriptions } = useAxisData();
 
-  const ALL_MEDIA = ["Cable TV", "Broadcast TV", "Podcast / YouTube", "Radio", "Print / Digital", "Digital Video", "Podcast / Social"] as const;
-  const ALL_AFFILIATIONS = ["Fox News", "NewsNation", "CNN", "MS NOW", "ABC", "NBC", "CBS", "NYT"] as const;
+  const ALL_MEDIA = ["Cable TV", "Broadcast TV", "Podcast / YouTube", "Podcast / Digital", "Radio", "Print / Digital", "Digital Video", "Podcast / Social"] as const;
+  const ALL_AFFILIATIONS = ["Fox News", "NewsNation", "CNN", "MS NOW", "ABC", "NBC", "CBS", "NYT", "NPR", "YouTube"] as const;
+  const ALL_DEMOGRAPHICS = ["African American"] as const;
   const ALL_LAYERS_ID = -1; // sentinel skewLayerId: randomize applies to ALL layers
   // DB affiliation strings are inconsistent ("FOX" vs "Fox News", "NEWSNATION" vs "NewsNation") — normalize before matching
   const normAffil = (s: string) => {
@@ -140,7 +143,8 @@ export default function Home() {
 
   const visibleLayers = layerDefs.filter(l =>
     (mediumFilter.length === 0 || (l.primaryMedium && mediumFilter.includes(l.primaryMedium))) &&
-    (genderFilter.length === 0 || ((l as any).gender && genderFilter.includes((l as any).gender))) &&
+    (genderFilter.length === 0 || (l.gender && genderFilter.includes(l.gender))) &&
+    (demographicFilter.length === 0 || (l.demographic && demographicFilter.includes(l.demographic))) &&
     affilMatches(l) &&
     (nameSearch.trim() === "" || l.name.toLowerCase().includes(nameSearch.trim().toLowerCase()))
   ).sort((a, b) => {
@@ -153,10 +157,11 @@ export default function Home() {
   // Filters also zero out non-matching layers in the terrain (name search only narrows the list, not the terrain):
   const filterMatchedLayers = layerDefs.filter(l =>
     (mediumFilter.length === 0 || (l.primaryMedium && mediumFilter.includes(l.primaryMedium))) &&
-    (genderFilter.length === 0 || ((l as any).gender && genderFilter.includes((l as any).gender))) &&
+    (genderFilter.length === 0 || (l.gender && genderFilter.includes(l.gender))) &&
+    (demographicFilter.length === 0 || (l.demographic && demographicFilter.includes(l.demographic))) &&
     affilMatches(l)
   );
-  const effectiveActiveIds = (mediumFilter.length === 0 && genderFilter.length === 0 && affiliationFilter.length === 0)
+  const effectiveActiveIds = (mediumFilter.length === 0 && genderFilter.length === 0 && demographicFilter.length === 0 && affiliationFilter.length === 0)
     ? activeLayers
     : activeLayers.filter(id => filterMatchedLayers.some(l => l.id === id));
   const isAdmin = import.meta.env.DEV;
@@ -229,6 +234,19 @@ export default function Home() {
             </button>
           );
         })}
+        {ALL_DEMOGRAPHICS.filter(d => layerDefs.some(l => l.demographic === d)).map(d => {
+          const active = demographicFilter.includes(d);
+          return (
+            <button
+              key={d}
+              onClick={() => setDemographicFilter(prev => active ? prev.filter(x => x !== d) : [...prev, d])}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors text-black ${active ? 'border-transparent' : 'border-border'}`}
+              style={{ backgroundColor: active ? '#a8d4d2' : '#f6e6c8' }}
+            >
+              {d}
+            </button>
+          );
+        })}
         {ALL_AFFILIATIONS.filter(a => layerDefs.some(l => (l as any).affiliation && normAffil((l as any).affiliation) === normAffil(a))).map(a => {
           const active = affiliationFilter.includes(a);
           return (
@@ -250,8 +268,8 @@ export default function Home() {
         >
           {activeLayers.length === 0 ? 'Turn All ON' : 'Turn All OFF'}
         </button>
-        {(mediumFilter.length > 0 || genderFilter.length > 0 || affiliationFilter.length > 0) && (
-          <button onClick={() => { setMediumFilter([]); setGenderFilter([]); setAffiliationFilter([]); }} className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border border-dashed border-border" style={{ color: '#dc2626' }}>
+        {(mediumFilter.length > 0 || genderFilter.length > 0 || demographicFilter.length > 0 || affiliationFilter.length > 0) && (
+          <button onClick={() => { setMediumFilter([]); setGenderFilter([]); setDemographicFilter([]); setAffiliationFilter([]); }} className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border border-dashed border-border" style={{ color: '#dc2626' }}>
             CLEAR
           </button>
         )}
@@ -360,7 +378,7 @@ export default function Home() {
     return entries
       .map(r => ({ ...r, pct: r.active && total > 0 ? r.value / total * 100 : 0 }))
       .sort((a, b) => (Number(b.active) - Number(a.active)) || (b.value - a.value));
-  }, [selectedSegment, effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId, mediumFilter, genderFilter, nameSearch, affiliationFilter]);
+  }, [selectedSegment, effectiveActiveIds, layerDefs, showAdjustSkew, skewLayerId, mediumFilter, genderFilter, demographicFilter, nameSearch, affiliationFilter]);
 
   const { data: projectSettingsData = {} } = useQuery<Record<string, string>>({
     queryKey: ["/api/settings"],
@@ -778,6 +796,7 @@ export default function Home() {
                         setRenameAffiliation((layer as any).affiliation ?? "");
                         setRenameMedium((layer as any).primaryMedium ?? "");
                         setRenameGender((layer as any).gender ?? "");
+                        setRenameDemographic(layer.demographic ?? "");
                         try {
                           const p = layer.params ? JSON.parse(layer.params) : null;
                           setSkewOutB(p?.outsideBottom ?? 0);
@@ -994,6 +1013,18 @@ export default function Home() {
                     </div>
                     </div>{/* end 4-col grid */}
 
+                    <div>
+                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Demographic</Label>
+                      <select
+                        value={renameDemographic}
+                        onChange={e => setRenameDemographic(e.target.value)}
+                        className="w-full h-7 rounded-md border border-input bg-background px-2 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-ring"
+                      >
+                        <option value="">— none —</option>
+                        {ALL_DEMOGRAPHICS.map(d => <option key={d} value={d}>{d}</option>)}
+                      </select>
+                    </div>
+
                     <div className="flex gap-2">
                     <Button
                       size="sm"
@@ -1014,6 +1045,7 @@ export default function Home() {
                               affiliation: renameAffiliation.trim() || undefined,
                               primaryMedium: renameMedium || undefined,
                               gender: renameGender || undefined,
+                              demographic: renameDemographic || null,
                             }),
                           });
                           const data = await res.json();
@@ -1021,7 +1053,7 @@ export default function Home() {
                             toast({ title: "Save failed", description: data.message ?? "Unknown error", variant: "destructive" });
                             return;
                           }
-                          setLayerDefs(prev => sortByRank(prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon, rank: data.rank, affiliation: data.affiliation, primaryMedium: data.primaryMedium, gender: data.gender } : l)));
+                          setLayerDefs(prev => sortByRank(prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon, rank: data.rank, affiliation: data.affiliation, primaryMedium: data.primaryMedium, gender: data.gender, demographic: data.demographic } : l)));
                           toast({ title: "Layer saved", description: `"${data.name}" updated successfully.` });
                         } catch (err) {
                           toast({ title: "Save failed", description: "Network error — check connection.", variant: "destructive" });

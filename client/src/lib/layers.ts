@@ -12,6 +12,7 @@ export type LayerDef = {
   affiliation?: string | null;  // e.g. FOX, NBC, NPR
   primaryMedium?: string | null;// Cable TV, Podcast / YouTube, Radio, etc.
   gender?: string | null;       // Male / Female
+  demographic?: string | null;  // e.g. African American
 };
 
 /** Fetch all layers (with grid data) from the API */
