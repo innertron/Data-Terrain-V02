@@ -15,6 +15,14 @@ curl -X POST http://localhost:5000/api/layers \
 
 Or generate the CSV inline with node and pipe directly.
 
+## Add a layer from painted partition (preferred, Aug 18 2026)
+```bash
+node scripts/extract-partition.cjs <png> <7 bands comma-sep> | tail -1 > /tmp/pts.json
+node scripts/new-layer.cjs /tmp/pts.json "Name" <totalM> <Affiliation> <Gender> "<Medium>" <rank> <iconPng> data/<slug>-trace-points.json "<method note>"
+node scripts/sync-prod.js
+```
+Generates grid (auto monotone fix), rescales to EXACT total, inserts layer, saves trace file, patches icon/meta.
+
 ## Delete a layer
 ```bash
 curl -X DELETE http://localhost:5000/api/layers/<id>
