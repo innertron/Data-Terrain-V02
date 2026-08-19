@@ -1,12 +1,22 @@
 {
   "layers": [
     {
+      "name": "Tom Llamas",
+      "rank": 10,
+      "affiliation": "NBC",
+      "gender": "Male",
+      "primaryMedium": "Broadcast TV",
+      "totalMillions": 12.908194,
+      "traceFile": "data/tom-llamas-trace-points.json",
+      "iconFile": "attached_assets/010_Tom_Llamas_1787172075805.png"
+    },
+    {
       "name": "Stephen A. Smith",
       "rank": 20,
       "affiliation": "YOUTUBE",
       "gender": "Male",
       "primaryMedium": "Podcast / Digital",
-      "demographic": "African American",
+      "isAfricanAmerican": true,
       "totalMillions": 10.921443,
       "traceFile": "data/stephen-a-smith-trace-points.json",
       "iconFile": "attached_assets/020_Stephen_A._Smith_1787170960239.png"
@@ -55,11 +65,11 @@
   "metadataUpdates": [
     {
       "name": "Lester Holt",
-      "demographic": "African American"
+      "isAfricanAmerican": true
     },
     {
       "name": "Abby Phillip",
-      "demographic": "African American"
+      "isAfricanAmerican": true
     }
   ]
 }

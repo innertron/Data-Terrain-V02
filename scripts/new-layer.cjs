@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { generateGridFromTraces, validateGrid } = require('./generate-layer-grid.cjs');
 const { Client } = require('pg');
-const [,, pointsFile, name, totalStr, affiliation, gender, medium, rankStr, iconFile, traceFile, methodStr, demographic] = process.argv;
+const [,, pointsFile, name, totalStr, affiliation, gender, medium, rankStr, iconFile, traceFile, methodStr, isAfricanAmericanArg] = process.argv;
 (async () => {
   const points = JSON.parse(fs.readFileSync(pointsFile, 'utf8'));
   const totalMillions = +totalStr;
@@ -29,7 +29,9 @@ const [,, pointsFile, name, totalStr, affiliation, gender, medium, rankStr, icon
   await client.end();
   fs.writeFileSync(traceFile, JSON.stringify({ name, totalMillions, method: methodStr, points }, null, 1));
   const meta = { gender, primaryMedium: medium, rank: +rankStr };
-  if (demographic && demographic !== '-') meta.demographic = demographic;
+  if (isAfricanAmericanArg && isAfricanAmericanArg !== '-') {
+    meta.isAfricanAmerican = ['true', '1', 'african american'].includes(isAfricanAmericanArg.trim().toLowerCase());
+  }
   if (iconFile && iconFile !== '-' && fs.existsSync(iconFile)) {
     meta.icon = 'data:image/png;base64,' + fs.readFileSync(iconFile).toString('base64');
   } else {

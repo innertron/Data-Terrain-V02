@@ -36,7 +36,7 @@ export const layers = pgTable("layers", {
   rank: integer("rank"),                     // 1-74 overall rank
   affiliation: text("affiliation"),          // e.g. FOX, NBC, NPR, SPOTIFY
   gender: text("gender"),                    // Male / Female
-  demographic: text("demographic"),          // e.g. African American
+  isAfricanAmerican: boolean("is_african_american").notNull().default(false),
   primaryMedium: text("primary_medium"),     // Cable TV, Podcast / YouTube, Radio, etc.
 });
 

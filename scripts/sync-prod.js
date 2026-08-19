@@ -2,7 +2,7 @@
 // Usage: node scripts/sync-prod.js
 // Reads all layers from the local dev server and replaces the production
 // layers with exact copies (grid values, rank, affiliation, medium, name2,
-// description, icon, demographic). Production ends up identical to dev.
+// description, icon, and demographic flags. Production ends up identical to dev.
 
 const DEV = "http://localhost:5000";
 const PROD = "https://data-terrain-v-02.replit.app";
@@ -39,7 +39,7 @@ async function main() {
       ...(l.affiliation ? { affiliation: l.affiliation } : {}),
       ...(l.primaryMedium ? { primaryMedium: l.primaryMedium } : {}),
       ...(l.gender ? { gender: l.gender } : {}),
-      ...(l.demographic ? { demographic: l.demographic } : {}),
+      ...(l.isAfricanAmerican ? { isAfricanAmerican: true } : {}),
     };
     const res = await fetch(`${PROD}/api/layers`, {
       method: "POST",
@@ -54,8 +54,8 @@ async function main() {
     const created = await res.json();
     console.log(`  created prod "${l.name}" (id ${created.id})`);
 
-    // 3. Copy secondary meta (name2, description, icon, demographic) if present
-    if (l.name2 || l.description || l.icon || l.demographic) {
+    // 3. Copy secondary meta (name2, description, icon, demographic flags) if present
+    if (l.name2 || l.description || l.icon || l.isAfricanAmerican) {
       const patch = await fetch(`${PROD}/api/layers/${created.id}/rename`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -64,7 +64,7 @@ async function main() {
           ...(l.name2 ? { name2: l.name2 } : {}),
           ...(l.description ? { description: l.description } : {}),
           ...(l.icon ? { icon: l.icon } : {}),
-          ...(l.demographic ? { demographic: l.demographic } : {}),
+          ...(l.isAfricanAmerican ? { isAfricanAmerican: true } : {}),
         }),
       });
       console.log(`    meta patch -> ${patch.status}`);

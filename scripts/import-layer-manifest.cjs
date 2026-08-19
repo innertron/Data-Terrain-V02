@@ -58,7 +58,7 @@ async function importLayer(client, definition) {
     definition.affiliation,
     definition.gender,
     definition.primaryMedium,
-    definition.demographic ?? null,
+    definition.isAfricanAmerican === true,
     definition.rank,
     icon,
   ];
@@ -69,7 +69,7 @@ async function importLayer(client, definition) {
     await client.query(
       `UPDATE layers
        SET name = $1, color = $2, grid_values = $3, original_grid_values = $3,
-           affiliation = $4, gender = $5, primary_medium = $6, demographic = $7,
+           affiliation = $4, gender = $5, primary_medium = $6, is_african_american = $7,
            rank = $8, icon = $9, active = true
        WHERE id = $10`,
       [...values, id],
@@ -78,7 +78,7 @@ async function importLayer(client, definition) {
     const inserted = await client.query(
       `INSERT INTO layers
          (name, color, grid_values, original_grid_values, affiliation, gender,
-          primary_medium, demographic, rank, icon, active)
+          primary_medium, is_african_american, rank, icon, active)
        VALUES ($1, $2, $3, $3, $4, $5, $6, $7, $8, $9, true)
        RETURNING id`,
       values,
@@ -100,13 +100,13 @@ async function main() {
     }
     for (const update of manifest.metadataUpdates ?? []) {
       const result = await client.query(
-        'UPDATE layers SET demographic = $1 WHERE name = $2 RETURNING id',
-        [update.demographic ?? null, update.name],
+        'UPDATE layers SET is_african_american = $1 WHERE name = $2 RETURNING id',
+        [update.isAfricanAmerican === true, update.name],
       );
       if (result.rowCount === 0) {
         console.warn(`metadata update skipped; layer not found: ${update.name}`);
       } else {
-        console.log(`updated ${update.name} demographic — ${update.demographic ?? 'none'}`);
+        console.log(`updated ${update.name} African American flag — ${update.isAfricanAmerican === true}`);
       }
     }
     await client.query('COMMIT');
