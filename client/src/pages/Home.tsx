@@ -1120,8 +1120,8 @@ export default function Home() {
                           )}
                           <span className="flex items-baseline gap-2 min-w-0 flex-1 text-left">
                             <span className="text-sm uppercase tracking-wider text-black dark:text-white truncate min-w-0">{layer.name}</span>
-                            {layer.name2 && (
-                              <span className="text-xs text-muted-foreground truncate">{layer.name2}</span>
+                            {(layer.name2 || (layer as any).affiliation) && (
+                              <span className="text-xs text-muted-foreground uppercase truncate">{layer.name2 || (layer as any).affiliation}</span>
                             )}
                             {(layer as any).rank != null && (
                               <span className="text-xs text-muted-foreground font-mono whitespace-nowrap shrink-0">Rank {(layer as any).rank}</span>
