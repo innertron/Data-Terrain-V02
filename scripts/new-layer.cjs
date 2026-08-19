@@ -28,10 +28,15 @@ const [,, pointsFile, name, totalStr, affiliation, gender, medium, rankStr, icon
   console.log('inserted layer id', id);
   await client.end();
   fs.writeFileSync(traceFile, JSON.stringify({ name, totalMillions, method: methodStr, points }, null, 1));
-  const icon = 'data:image/png;base64,' + fs.readFileSync(iconFile).toString('base64');
+  const meta = { gender, primaryMedium: medium, rank: +rankStr };
+  if (iconFile && iconFile !== '-' && fs.existsSync(iconFile)) {
+    meta.icon = 'data:image/png;base64,' + fs.readFileSync(iconFile).toString('base64');
+  } else {
+    console.log('no icon file provided/found — skipping icon');
+  }
   const r2 = await fetch(`http://localhost:5000/api/layers/${id}/rename`, {
     method: 'PATCH', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ icon, gender, primaryMedium: medium, rank: +rankStr }),
+    body: JSON.stringify(meta),
   });
   const j = await r2.json();
   console.log('meta patch', r2.status, j.name, j.affiliation, 'rank', j.rank, 'icon len', (j.icon||'').length);
