@@ -199,6 +199,17 @@ function generateGridFromTraces(data, opts = {}) {
   } else if (vb2 > 0) {
     console.error(`[radial-monotonicity] generateGridFromTraces: fixed ${vb2} violations in ${iters2} iter(s)`);
   }
+  // Painted white cells are explicit zero-value exclusions, not soft RBF
+  // samples. Reapply them after smoothing and monotonicity so interpolation
+  // cannot leak a positive contribution into excluded cells.
+  const zeroBasedCoordinates = data.some(([x, z]) => Number(x) === 0 || Number(z) === 0);
+  for (const [x, z, value] of data) {
+    if (value === 0) {
+      const row = zeroBasedCoordinates ? N - 1 - z : N - z;
+      const col = zeroBasedCoordinates ? x : x - 1;
+      fixed2[row][col] = 0;
+    }
+  }
   return fixed2;
 }
 

@@ -1,0 +1,14 @@
+{
+  "layers": [
+    {
+      "name": "Kaitlan Collins",
+      "rank": 61,
+      "affiliation": "CNN",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "totalMillions": 4.162971,
+      "traceFile": "data/kaitlan-collins-trace-points.json",
+      "iconFile": "attached_assets/61_Kaitlan_Collins_1786679304075.png"
+    }
+  ]
+}
