@@ -22,6 +22,12 @@ The user's preferred input for new layers (after 9 failed methodologies): a Phot
 
 **Then run the normal pipeline**: traces = all 625 cells [x, z, bandValue] → `generateGridFromTraces` (totalMillions from title) → peak-in-top-band check → POST layer → roundtrip verify → icon/meta patch → save `data/<name>-trace-points.json` → sync-prod.
 
+**Coordinate rule:** trace Z coordinates map directly to storage rows: one-based Z1 → row 0; legacy zero-based Z0 → row 0. Do not reverse Z when applying or auditing painted masks. The app performs its own HIGH→LOW display-index reversal later.
+
+**Why:** A mask repair once reversed trace Z a second time. Its audit repeated the same bad transform and falsely reported zero leaks, while visibly distorting Krystal Ball.
+
+**How to apply:** Validate masks using `row = z - 1` for one-based traces and `row = z` for zero-based traces. Independently assert that the regenerated peak remains inside the painted top-band coordinates.
+
 Filename convention: rank prefix (e.g. `5_David_Muir_*.png`); viewership millions in the painted title (typos like "13/854611M" mean 13.854611M — confirm with user if unclear).
 
 ## RBF trench artifact + fix (Aug 17 2026)

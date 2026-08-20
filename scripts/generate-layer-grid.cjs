@@ -205,7 +205,10 @@ function generateGridFromTraces(data, opts = {}) {
   const zeroBasedCoordinates = data.some(([x, z]) => Number(x) === 0 || Number(z) === 0);
   for (const [x, z, value] of data) {
     if (value === 0) {
-      const row = zeroBasedCoordinates ? N - 1 - z : N - z;
+      // Storage row 0 is Z1 for normal traces. Older zero-based traces use
+      // row 0 for Z0. The app reverses storage rows only when deriving its
+      // display zIndex, so the source mask itself must not be reversed here.
+      const row = zeroBasedCoordinates ? z : z - 1;
       const col = zeroBasedCoordinates ? x : x - 1;
       fixed2[row][col] = 0;
     }

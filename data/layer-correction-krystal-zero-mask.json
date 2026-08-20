@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Krystal Ball",
+      "totalMillions": 5.360159,
+      "affiliation": "Breaking Points",
+      "gender": "Female",
+      "primaryMedium": "Digital Video",
+      "isAfricanAmerican": false,
+      "rank": 52,
+      "iconFile": "attached_assets/52_Krystal_Ball_1786565730097.png",
+      "traceFile": "data/krystal-ball-trace-points.json"
+    }
+  ]
+}

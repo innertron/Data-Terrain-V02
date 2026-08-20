@@ -7,6 +7,9 @@ const { Client } = require('pg');
 const root = path.resolve(__dirname, '..');
 const repair = process.argv.includes('--repair');
 const traceOverrides = new Map([
+  ['Chris Cuomo', 'chris-cuomo-trace-points.json'],
+  ['Kaitlan Collins', 'kaitlan-collins-trace-points.json'],
+  ['Saagar Enjeti', 'saagar-enjeti-trace-points.json'],
   ['Sean Hannity', 'sean-hannity-trace-points.json'],
 ]);
 
@@ -36,7 +39,7 @@ function totalPrecision(total) {
 function gridCoordinate(point, zeroBased) {
   const x = Number(point[0]);
   const z = Number(point[1]);
-  return zeroBased ? [24 - z, x] : [25 - z, x - 1];
+  return zeroBased ? [z, x] : [z - 1, x - 1];
 }
 
 function applyMaskAndPreserveTotal(grid, zeroPoints, zeroBased) {
