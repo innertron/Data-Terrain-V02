@@ -22,6 +22,26 @@
       "iconFile": "attached_assets/020_Stephen_A._Smith_1787170960239.png"
     },
     {
+      "name": "Ari Shapiro",
+      "rank": 21,
+      "affiliation": "NPR",
+      "gender": "Male",
+      "primaryMedium": "Radio",
+      "totalMillions": 10.375766,
+      "traceFile": "data/ari-shapiro-trace-points.json",
+      "iconFile": "attached_assets/021_Ari_Shapiro_1787200056753.png"
+    },
+    {
+      "name": "Norah O'Donnell",
+      "rank": 24,
+      "affiliation": "CBS",
+      "gender": "Female",
+      "primaryMedium": "Broadcast TV",
+      "totalMillions": 9.764829,
+      "traceFile": "data/norah-odonnell-trace-points.json",
+      "iconFile": "attached_assets/024_Norah_O'Donnell_1787200056754.png"
+    },
+    {
       "name": "Maggie Haberman",
       "rank": 30,
       "affiliation": "NYT",
@@ -42,6 +62,16 @@
       "iconFile": "attached_assets/035_Wolf_Blitzer_1787171167997.png"
     },
     {
+      "name": "Jesse Weber",
+      "rank": 36,
+      "affiliation": "NEWSNATION",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "totalMillions": 7.272474,
+      "traceFile": "data/jesse-weber-trace-points.json",
+      "iconFile": "attached_assets/036_Jesse_Weber_1787200056754.png"
+    },
+    {
       "name": "Steve Inskeep",
       "rank": 41,
       "affiliation": "NPR",
@@ -60,6 +90,16 @@
       "totalMillions": 6.305151,
       "traceFile": "data/john-dickerson-trace-points.json",
       "iconFile": "attached_assets/043_John_Dickerson_1787171228712.png"
+    },
+    {
+      "name": "Bianna Golodryga",
+      "rank": 51,
+      "affiliation": "CNN",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "totalMillions": 0.5411375,
+      "traceFile": "data/bianna-golodryga-trace-points.json",
+      "iconFile": "attached_assets/051_Bianna_Golodryga_1787200056754.png"
     }
   ],
   "metadataUpdates": [

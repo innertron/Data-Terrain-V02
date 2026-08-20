@@ -5,17 +5,18 @@ const [,, pointsFile, name, totalStr, affiliation, gender, medium, rankStr, icon
 (async () => {
   const points = JSON.parse(fs.readFileSync(pointsFile, 'utf8'));
   const totalMillions = +totalStr;
+  const totalPrecision = Math.max(6, (totalStr.split('.')[1] || '').length);
   let grid = generateGridFromTraces(points, { totalMillions });
   const problems = validateGrid(grid);
   if (problems.length) console.warn('validation warnings:', JSON.stringify(problems));
   // rescale to exact total
   const s0 = grid.flat().reduce((a,v)=>a+v,0);
-  grid = grid.map(r => r.map(v => +(v*totalMillions/s0).toFixed(6)));
+  grid = grid.map(r => r.map(v => +(v*totalMillions/s0).toFixed(totalPrecision)));
   const s1 = grid.flat().reduce((a,v)=>a+v,0);
   let pr=0,pc=0; grid.forEach((r,ri)=>r.forEach((v,ci)=>{ if(v>grid[pr][pc]){pr=ri;pc=ci;} }));
-  grid[pr][pc] = +(grid[pr][pc] + (totalMillions - s1)).toFixed(6);
+  grid[pr][pc] = +(grid[pr][pc] + (totalMillions - s1)).toFixed(totalPrecision);
   const sum = grid.flat().reduce((a,v)=>a+v,0);
-  console.log(`${name}: sum=${sum.toFixed(6)}M peak=${grid[pr][pc].toFixed(3)} at X${pc+1} Z${pr+1}`);
+  console.log(`${name}: sum=${sum.toFixed(totalPrecision)}M peak=${grid[pr][pc].toFixed(3)} at X${pc+1} Z${pr+1}`);
   const client = new Client({ connectionString: process.env.DATABASE_URL });
   await client.connect();
   const g = JSON.stringify(grid);

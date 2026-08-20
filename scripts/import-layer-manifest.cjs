@@ -16,12 +16,13 @@ const resolveFromRoot = (file) => path.resolve(root, file);
 const manifest = JSON.parse(fs.readFileSync(resolveFromRoot(manifestArg), 'utf8'));
 
 function buildExactGrid(points, totalMillions) {
+  const totalPrecision = Math.max(6, (String(totalMillions).split('.')[1] || '').length);
   let grid = generateGridFromTraces(points, { totalMillions });
   const problems = validateGrid(grid);
   if (problems.length) throw new Error(`grid validation failed: ${JSON.stringify(problems)}`);
 
   const generatedTotal = grid.flat().reduce((sum, value) => sum + value, 0);
-  grid = grid.map((row) => row.map((value) => +(value * totalMillions / generatedTotal).toFixed(6)));
+  grid = grid.map((row) => row.map((value) => +(value * totalMillions / generatedTotal).toFixed(totalPrecision)));
 
   let peakRow = 0;
   let peakCol = 0;
@@ -33,7 +34,7 @@ function buildExactGrid(points, totalMillions) {
   }));
 
   const roundedTotal = grid.flat().reduce((sum, value) => sum + value, 0);
-  grid[peakRow][peakCol] = +(grid[peakRow][peakCol] + totalMillions - roundedTotal).toFixed(6);
+  grid[peakRow][peakCol] = +(grid[peakRow][peakCol] + totalMillions - roundedTotal).toFixed(totalPrecision);
   return grid;
 }
 
@@ -87,7 +88,8 @@ async function importLayer(client, definition) {
   }
 
   const total = grid.flat().reduce((sum, value) => sum + value, 0);
-  console.log(`${existing.rowCount ? 'updated' : 'inserted'} ${definition.name} (id ${id}) — ${total.toFixed(6)}M`);
+  const totalPrecision = Math.max(6, (String(definition.totalMillions).split('.')[1] || '').length);
+  console.log(`${existing.rowCount ? 'updated' : 'inserted'} ${definition.name} (id ${id}) — ${total.toFixed(totalPrecision)}M`);
 }
 
 async function main() {
