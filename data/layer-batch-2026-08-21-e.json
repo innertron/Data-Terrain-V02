@@ -1,0 +1,34 @@
+{
+  "layers": [
+    {
+      "name": "Bret Baier",
+      "rank": 23,
+      "affiliation": "FOX",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "totalMillions": 9.962958,
+      "traceFile": "data/bret-baier-trace-points.json",
+      "iconFile": "attached_assets/023_Bret_Baier_1787348009520.png"
+    },
+    {
+      "name": "Ross Douthat",
+      "rank": 26,
+      "affiliation": "NYT",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "totalMillions": 9.389332,
+      "traceFile": "data/ross-douthat-trace-points.json",
+      "iconFile": "attached_assets/026_Ross_Douthat_1787348009520.png"
+    },
+    {
+      "name": "Chris Stirewalt",
+      "rank": 34,
+      "affiliation": "NEWSNATION",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "totalMillions": 7.564156,
+      "traceFile": "data/chris-stirewalt-trace-points.json",
+      "iconFile": "attached_assets/034_Chris_Stirewalt_1787348009520.png"
+    }
+  ]
+}
