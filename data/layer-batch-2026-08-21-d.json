@@ -1,0 +1,55 @@
+{
+  "layers": [
+    {
+      "name": "Cenk Uygur",
+      "rank": 82,
+      "affiliation": "TYT",
+      "gender": "Male",
+      "primaryMedium": "Digital Video",
+      "totalMillions": 2.781019,
+      "traceFile": "data/cenk-uygur-trace-points.json",
+      "iconFile": "attached_assets/082_Cenk_Uygur_1787293536544.png"
+    },
+    {
+      "name": "Jen Psaki",
+      "rank": 106,
+      "affiliation": "MS NOW",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "totalMillions": 1.801322,
+      "traceFile": "data/jen-psaki-trace-points.json",
+      "iconFile": "attached_assets/106_Jen_Psaki_1787293536545.png"
+    },
+    {
+      "name": "Jamelle Bouie",
+      "rank": 130,
+      "affiliation": "NYT",
+      "gender": "Male",
+      "primaryMedium": "Print / Digital",
+      "isAfricanAmerican": true,
+      "totalMillions": 1.185102,
+      "traceFile": "data/jamelle-bouie-trace-points.json",
+      "iconFile": "attached_assets/130_Jamelle_Bouie_1787293536545.png"
+    },
+    {
+      "name": "Jon Stewart",
+      "rank": 131,
+      "affiliation": "SPOTIFY",
+      "gender": "Male",
+      "primaryMedium": "Podcast / YouTube",
+      "totalMillions": 1.159427,
+      "traceFile": "data/jon-stewart-trace-points.json",
+      "iconFile": "attached_assets/131_Jon_Stewart_1787293536545.png"
+    },
+    {
+      "name": "Hasan Piker",
+      "rank": 138,
+      "affiliation": "TWITCH",
+      "gender": "Male",
+      "primaryMedium": "Podcast / Digital",
+      "totalMillions": 0.979696,
+      "traceFile": "data/hasan-piker-trace-points.json",
+      "iconFile": "attached_assets/138_Hasan_Piker_1787293536546.png"
+    }
+  ]
+}
