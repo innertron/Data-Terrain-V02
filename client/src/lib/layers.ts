@@ -1,3 +1,5 @@
+import type { PrimaryMedium } from "@shared/mediaTaxonomy";
+
 export type LayerDef = {
   id: number;
   name: string;
