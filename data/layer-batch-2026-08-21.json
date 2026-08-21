@@ -1,0 +1,36 @@
+{
+  "layers": [
+    {
+      "name": "Nichole Berlie",
+      "rank": 22,
+      "affiliation": "NEWSNATION",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": true,
+      "totalMillions": 10.160644,
+      "traceFile": "data/nichole-berlie-trace-points.json",
+      "iconFile": "attached_assets/022_Nichole_Berlie_1787274747231.png"
+    },
+    {
+      "name": "Craig Melvin",
+      "rank": 38,
+      "affiliation": "NBC",
+      "gender": "Male",
+      "primaryMedium": "Broadcast TV",
+      "isAfricanAmerican": true,
+      "totalMillions": 6.993676,
+      "traceFile": "data/craig-melvin-trace-points.json",
+      "iconFile": "attached_assets/038_Craig_Melvin_1787274747231.png"
+    },
+    {
+      "name": "David Brooks",
+      "rank": 50,
+      "affiliation": "NYT / PBS",
+      "gender": "Male",
+      "primaryMedium": "Print / Digital",
+      "totalMillions": 5.437268,
+      "traceFile": "data/david-brooks-trace-points.json",
+      "iconFile": "attached_assets/050_David_Brooks_1787274747231.png"
+    }
+  ]
+}
