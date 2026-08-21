@@ -17,7 +17,7 @@ import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { PRIMARY_MEDIA } from "@shared/mediaTaxonomy";
+import { PRIMARY_MEDIA, type PrimaryMedium } from "@shared/mediaTaxonomy";
 
 // --- Types ---
 type GridSegment = {
@@ -117,7 +117,7 @@ export default function Home() {
   const [renameMedium, setRenameMedium] = useState("");
   const [renameGender, setRenameGender] = useState("");
   const [renameIsAfricanAmerican, setRenameIsAfricanAmerican] = useState(false);
-  const [mediumFilter, setMediumFilter] = useState<string[]>([]); // empty = show all
+  const [mediumFilter, setMediumFilter] = useState<PrimaryMedium[]>([]); // empty = show all
   const [genderFilter, setGenderFilter] = useState<string[]>([]); // empty = show all
   const [africanAmericanOnly, setAfricanAmericanOnly] = useState(false);
   const [affiliationFilter, setAffiliationFilter] = useState<string[]>([]); // empty = show all

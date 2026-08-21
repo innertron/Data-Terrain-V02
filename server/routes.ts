@@ -8,7 +8,8 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { pool } from "./db";
 import { registerLayerMetadataRoute } from "./layerMetadataRoute";
-import { PRIMARY_MEDIA, normalizePrimaryMedium } from "@shared/mediaTaxonomy";
+import { newLayerSchema } from "./layerCreationSchema";
+import { serializeLayerForApi } from "./layerApiResponse";
 
 // ── Layer helpers ────────────────────────────────────────────────────────────
 
@@ -329,22 +330,7 @@ export async function registerRoutes(
   app.get("/api/layers", async (_req, res) => {
     try {
       const rows = await storage.getLayers();
-      const result = rows.map(r => ({
-        id: r.id,
-        name: r.name,
-        name2: r.name2 ?? null,
-        description: r.description ?? null,
-        icon: r.icon ?? null,
-        color: r.color,
-        active: r.active,
-        gridValues: JSON.parse(r.gridValues) as number[][],
-        params: r.params ?? null,
-        rank: r.rank ?? null,
-        affiliation: r.affiliation ?? null,
-        primaryMedium: normalizePrimaryMedium(r.primaryMedium),
-        gender: r.gender ?? null,
-        isAfricanAmerican: r.isAfricanAmerican,
-      }));
+      const result = rows.map(serializeLayerForApi);
       res.json(result);
     } catch (err) {
       console.error(err);
@@ -353,17 +339,6 @@ export async function registerRoutes(
   });
 
   // POST /api/layers — add a new layer from CSV text
-  const newLayerSchema = z.object({
-    name: z.string().min(1),
-    color: z.string().min(1),
-    csv: z.string().min(1),
-    rank: z.number().int().min(1).max(200).optional(),
-    affiliation: z.string().optional(),
-    primaryMedium: z.enum(PRIMARY_MEDIA).optional(),
-    gender: z.enum(["Male", "Female"]).optional(),
-    isAfricanAmerican: z.boolean().optional(),
-  });
-
   app.post("/api/layers", async (req, res) => {
     try {
       const { name, color, csv, rank, affiliation, primaryMedium, gender, isAfricanAmerican } = newLayerSchema.parse(req.body);

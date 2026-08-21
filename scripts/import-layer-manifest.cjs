@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { Client } = require('pg');
 const { generateGridFromTraces, validateGrid } = require('./generate-layer-grid.cjs');
+const { assertPrimaryMedium } = require('./primary-media.cjs');
 
 const [, , manifestArg] = process.argv;
 if (!manifestArg) {
@@ -14,14 +15,6 @@ if (!manifestArg) {
 const root = path.resolve(__dirname, '..');
 const resolveFromRoot = (file) => path.resolve(root, file);
 const manifest = JSON.parse(fs.readFileSync(resolveFromRoot(manifestArg), 'utf8'));
-const PRIMARY_MEDIA = new Set([
-  'Cable TV',
-  'Broadcast TV',
-  'Radio',
-  'Print',
-  'Podcast',
-  'Digital Video',
-]);
 
 function buildExactGrid(points, totalMillions) {
   const totalPrecision = Math.max(6, (String(totalMillions).split('.')[1] || '').length);
@@ -47,12 +40,7 @@ function buildExactGrid(points, totalMillions) {
 }
 
 async function importLayer(client, definition) {
-  if (!PRIMARY_MEDIA.has(definition.primaryMedium)) {
-    throw new Error(
-      `invalid primaryMedium for "${definition.name}": "${definition.primaryMedium}". ` +
-      `Use one of: ${[...PRIMARY_MEDIA].join(', ')}`,
-    );
-  }
+  assertPrimaryMedium(definition.primaryMedium, definition.name || 'manifest layer');
   const trace = JSON.parse(fs.readFileSync(resolveFromRoot(definition.traceFile), 'utf8'));
   const grid = buildExactGrid(trace.points, definition.totalMillions);
   const gridJson = JSON.stringify(grid);

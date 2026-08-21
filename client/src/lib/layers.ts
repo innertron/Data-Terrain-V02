@@ -10,13 +10,13 @@ export type LayerDef = {
   params?: string | null;       // JSON: stored algorithm params incl. skew bounds
   rank?: number | null;         // 1-74 overall rank
   affiliation?: string | null;  // Outlet/platform, e.g. FOX, NPR, SPOTIFY
-  primaryMedium?: string | null;// One standardized primary format
+  primaryMedium?: PrimaryMedium | null; // One mutually exclusive primary format
   gender?: string | null;       // Male / Female
   isAfricanAmerican?: boolean;  // true when included in this demographic filter
 };
 
 export type LayerFilters = {
-  media: readonly string[];
+  media: readonly PrimaryMedium[];
   genders: readonly string[];
   africanAmericanOnly: boolean;
   affiliations: readonly string[];

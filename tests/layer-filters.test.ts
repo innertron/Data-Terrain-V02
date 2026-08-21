@@ -68,6 +68,50 @@ const layers: LayerDef[] = [
     active: true,
     gridValues,
   },
+  {
+    id: 6,
+    name: "Brooke Broadcast",
+    color: "#666666",
+    active: true,
+    gridValues,
+    affiliation: "ABC",
+    primaryMedium: "Broadcast TV",
+    gender: "Female",
+    isAfricanAmerican: false,
+  },
+  {
+    id: 7,
+    name: "Peter Print",
+    color: "#777777",
+    active: true,
+    gridValues,
+    affiliation: "NYT",
+    primaryMedium: "Print",
+    gender: "Male",
+    isAfricanAmerican: false,
+  },
+  {
+    id: 8,
+    name: "Priya Podcast",
+    color: "#888888",
+    active: true,
+    gridValues,
+    affiliation: "Spotify",
+    primaryMedium: "Podcast",
+    gender: "Female",
+    isAfricanAmerican: false,
+  },
+  {
+    id: 9,
+    name: "Diego Digital",
+    color: "#999999",
+    active: true,
+    gridValues,
+    affiliation: "YouTube",
+    primaryMedium: "Digital Video",
+    gender: "Male",
+    isAfricanAmerican: false,
+  },
 ];
 
 const clearFilters: LayerFilters = {
@@ -98,6 +142,28 @@ test("combined demographic, gender, medium, and affiliation filters keep list an
   assert.deepEqual(state.effectiveActiveIds, [1, 4]);
 });
 
+test("each primary-medium filter selects only its distinct content format", () => {
+  const activeIds = layers.filter(layer => layer.active).map(layer => layer.id);
+
+  for (const medium of PRIMARY_MEDIA) {
+    const state = getFilteredLayerState(layers, activeIds, {
+      ...clearFilters,
+      media: [medium],
+    });
+    const expectedLayers = layers.filter(layer => layer.primaryMedium === medium);
+
+    assert.deepEqual(
+      state.terrainLayers.map(layer => layer.id),
+      expectedLayers.map(layer => layer.id),
+      `${medium} should not overlap another primary format`,
+    );
+    assert(
+      state.terrainLayers.every(layer => layer.primaryMedium === medium),
+      `${medium} returned a layer from another primary format`,
+    );
+  }
+});
+
 test("clearing all terrain filters restores every active eligible layer", () => {
   const state = getFilteredLayerState(
     layers,
@@ -107,7 +173,7 @@ test("clearing all terrain filters restores every active eligible layer", () => 
 
   assert.deepEqual(
     state.terrainLayers.map(layer => layer.id),
-    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 5, 6, 7, 8, 9],
   );
   assert.deepEqual(state.effectiveActiveIds, [1, 2, 4, 5]);
 });

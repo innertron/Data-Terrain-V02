@@ -1,10 +1,12 @@
 ---
 name: Production data sync
-description: Why the published app looked "old" and how to sync layer data to prod
+description: Why production data is separate and when metadata-only sync is required
 ---
 
 Production has its OWN database, separate from dev. Publishing deploys code + schema only — layer data never transfers automatically.
 
-**Why:** On 2026-08-10 the user republished 6+ times believing publish was broken; every publish actually succeeded, but prod still showed old FANS test layers because Sean Hannity existed only in the dev DB.
+For primary-medium or affiliation corrections, use the metadata-only sync. Do not use the destructive full mirror when production terrain grids may intentionally differ.
 
-**How to apply:** After adding/changing layers in dev, run `node scripts/sync-prod.js` (dev server must be running). It mirrors ALL dev layers to prod via the live app's API — deletes stale prod layers, recreates from dev with grid, rank, affiliation, medium, name2/description/icon. Never run DDL/SQL writes against prod. Schema changes still require a republish; data changes never do.
+**Why:** Republish does not transfer data, and a full mirror replaces production layers and grids. Metadata-only corrections must not overwrite terrain, portraits, ranks, or demographic fields.
+
+**How to apply:** Run `node scripts/sync-prod.js --medium-only` for primary-medium/affiliation corrections; it uses the live API and verifies protected fields. Use the full sync only when an exact destructive mirror is explicitly intended. Never write production data with DDL/SQL.

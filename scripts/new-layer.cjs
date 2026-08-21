@@ -1,8 +1,10 @@
 const fs = require('fs');
 const { generateGridFromTraces, validateGrid } = require('./generate-layer-grid.cjs');
+const { assertPrimaryMedium } = require('./primary-media.cjs');
 const { Client } = require('pg');
 const [,, pointsFile, name, totalStr, affiliation, gender, medium, rankStr, iconFile, traceFile, methodStr, isAfricanAmericanArg] = process.argv;
 (async () => {
+  assertPrimaryMedium(medium, name || 'new layer');
   const points = JSON.parse(fs.readFileSync(pointsFile, 'utf8'));
   const totalMillions = +totalStr;
   const totalPrecision = Math.max(6, (totalStr.split('.')[1] || '').length);

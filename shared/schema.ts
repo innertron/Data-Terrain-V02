@@ -1,6 +1,7 @@
 import { pgTable, text, serial, integer, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { PRIMARY_MEDIA } from "./mediaTaxonomy";
 
 export const projectSettings = pgTable("project_settings", {
   key: text("key").primaryKey(),
@@ -40,7 +41,9 @@ export const layers = pgTable("layers", {
   primaryMedium: text("primary_medium"),     // One standardized primary format
 });
 
-export const insertLayerSchema = createInsertSchema(layers).omit({ id: true });
+export const insertLayerSchema = createInsertSchema(layers, {
+  primaryMedium: z.enum(PRIMARY_MEDIA).nullable().optional(),
+}).omit({ id: true });
 
 export type Layer = typeof layers.$inferSelect;
 export type InsertLayer = z.infer<typeof insertLayerSchema>;

@@ -8,6 +8,7 @@ import {
   type LayerMetadataStorage,
   type LayerMetadataUpdate,
 } from "../server/layerMetadataRoute.ts";
+import { PRIMARY_MEDIA } from "../shared/mediaTaxonomy.ts";
 
 function makeLayer(overrides: Partial<Layer> = {}): Layer {
   return {
@@ -30,7 +31,7 @@ function makeLayer(overrides: Partial<Layer> = {}): Layer {
   };
 }
 
-test("the metadata API saves and clears demographic metadata", async () => {
+test("the metadata API saves demographic metadata and canonical primary media", async () => {
   let storedLayer = makeLayer();
   const updates: LayerMetadataUpdate[] = [];
   const storage: LayerMetadataStorage = {
@@ -76,6 +77,29 @@ test("the metadata API saves and clears demographic metadata", async () => {
     };
     assert.equal(cleared.isAfricanAmerican, false);
     assert.deepEqual(updates[1], { isAfricanAmerican: false });
+
+    for (const primaryMedium of PRIMARY_MEDIA) {
+      const mediumResponse = await fetch(endpoint, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ primaryMedium }),
+      });
+      assert.equal(mediumResponse.status, 200);
+      const savedMedium = (await mediumResponse.json()) as {
+        primaryMedium: string;
+      };
+      assert.equal(savedMedium.primaryMedium, primaryMedium);
+      assert.deepEqual(updates.at(-1), { primaryMedium });
+    }
+
+    const updateCount = updates.length;
+    const legacyMediumResponse = await fetch(endpoint, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ primaryMedium: "Podcast / YouTube" }),
+    });
+    assert.equal(legacyMediumResponse.status, 400);
+    assert.equal(updates.length, updateCount);
   } finally {
     await new Promise<void>((resolve, reject) =>
       server.close(error => (error ? reject(error) : resolve())),

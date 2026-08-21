@@ -1,11 +1,43 @@
 // sync-prod.js — mirror the dev database layers to production.
-// Usage: node scripts/sync-prod.js
+// Usage:
+//   node scripts/sync-prod.js                 # full destructive mirror
+//   node scripts/sync-prod.js --medium-only   # primary-medium metadata only
 // Reads all layers from the local dev server and replaces the production
 // layers with exact copies (grid values, rank, affiliation, medium, name2,
 // description, icon, and demographic flags. Production ends up identical to dev.
 
+import primaryMedia from "./primary-media.cjs";
+import { pathToFileURL } from "node:url";
+
 const DEV = "http://localhost:5000";
 const PROD = "https://data-terrain-v-02.replit.app";
+const MEDIUM_ONLY = process.argv.includes("--medium-only");
+const PRIMARY_MEDIA = new Set(primaryMedia.PRIMARY_MEDIA);
+const ALL_METADATA_FIELDS = [
+  "name2",
+  "description",
+  "icon",
+  "rank",
+  "affiliation",
+  "primaryMedium",
+  "gender",
+  "isAfricanAmerican",
+];
+const MEDIUM_SYNC_FIELDS = ["affiliation", "primaryMedium"];
+const MEDIUM_SYNC_PROTECTED_FIELDS = [
+  "id",
+  "name",
+  "name2",
+  "description",
+  "icon",
+  "color",
+  "gridValues",
+  "active",
+  "params",
+  "rank",
+  "gender",
+  "isAfricanAmerican",
+];
 
 async function getJson(url) {
   const res = await fetch(url);
@@ -18,10 +50,115 @@ function gridToCsv(grid) {
   return header + "\n" + grid.map((r) => r.join(",")).join("\n");
 }
 
-async function main() {
-  const devLayers = await getJson(`${DEV}/api/layers`);
-  const prodLayers = await getJson(`${PROD}/api/layers`);
-  console.log(`Dev layers: ${devLayers.length} | Prod layers: ${prodLayers.length}`);
+function valuesMatch(left, right) {
+  return JSON.stringify(left ?? null) === JSON.stringify(right ?? null);
+}
+
+function indexLayersByName(layers, environment) {
+  const byName = new Map();
+  for (const layer of layers) {
+    if (byName.has(layer.name)) {
+      throw new Error(`${environment} contains duplicate layer name "${layer.name}"`);
+    }
+    byName.set(layer.name, layer);
+  }
+  return byName;
+}
+
+function assertSameLayerNames(devLayers, prodLayers) {
+  const devByName = indexLayersByName(devLayers, "Development");
+  const prodByName = indexLayersByName(prodLayers, "Production");
+  const missing = [...devByName.keys()].filter(name => !prodByName.has(name));
+  const extra = [...prodByName.keys()].filter(name => !devByName.has(name));
+  if (missing.length || extra.length) {
+    throw new Error(
+      `Layer names differ. Missing in production: ${missing.join(", ") || "none"}. ` +
+      `Only in production: ${extra.join(", ") || "none"}.`,
+    );
+  }
+  return { devByName, prodByName };
+}
+
+export function assertCanonicalMedia(layers, environment) {
+  const invalid = layers.filter(layer => !PRIMARY_MEDIA.has(layer.primaryMedium));
+  if (invalid.length) {
+    throw new Error(
+      `${environment} contains invalid primary media: ` +
+      invalid.map(layer => `${layer.name} (${layer.primaryMedium ?? "empty"})`).join(", "),
+    );
+  }
+}
+
+function assertMatchingFields(devLayers, prodLayers, fields, label) {
+  const { devByName, prodByName } = assertSameLayerNames(devLayers, prodLayers);
+  const mismatches = [];
+  for (const [name, devLayer] of devByName) {
+    const prodLayer = prodByName.get(name);
+    const changedFields = fields.filter(
+      field => !valuesMatch(devLayer[field], prodLayer[field]),
+    );
+    if (changedFields.length) {
+      mismatches.push(`${name}: ${changedFields.join(", ")}`);
+    }
+  }
+  if (mismatches.length) {
+    throw new Error(`${label} differ:\n  ${mismatches.join("\n  ")}`);
+  }
+}
+
+async function syncMediumMetadata(devLayers, prodLayers) {
+  assertCanonicalMedia(devLayers, "Development");
+  const { devByName, prodByName } = assertSameLayerNames(devLayers, prodLayers);
+
+  let updatedCount = 0;
+  for (const [name, devLayer] of devByName) {
+    const prodLayer = prodByName.get(name);
+    const body = {};
+    for (const field of MEDIUM_SYNC_FIELDS) {
+      if (!valuesMatch(devLayer[field], prodLayer[field])) {
+        if (devLayer[field] == null) {
+          throw new Error(`Cannot clear ${field} for "${name}" through the metadata API`);
+        }
+        body[field] = devLayer[field];
+      }
+    }
+    if (Object.keys(body).length === 0) continue;
+
+    const res = await fetch(`${PROD}/api/layers/${prodLayer.id}/rename`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      throw new Error(
+        `PATCH production metadata for "${name}" -> ${res.status} ${await res.text()}`,
+      );
+    }
+    updatedCount++;
+    console.log(`  updated "${name}": ${Object.keys(body).join(", ")}`);
+  }
+
+  const finalLayers = await getJson(`${PROD}/api/layers`);
+  assertCanonicalMedia(finalLayers, "Production");
+  assertMatchingFields(
+    prodLayers,
+    finalLayers,
+    MEDIUM_SYNC_PROTECTED_FIELDS,
+    "Protected production fields after medium-only sync",
+  );
+  assertMatchingFields(
+    devLayers,
+    finalLayers,
+    ALL_METADATA_FIELDS,
+    "Development and production metadata",
+  );
+  console.log(
+    `Done. Updated ${updatedCount} production layer(s); all metadata matches development.`,
+  );
+}
+
+async function syncFull(devLayers, prodLayers) {
+  assertCanonicalMedia(devLayers, "Development");
 
   // 1. Delete everything currently in prod (prod becomes an exact mirror of dev)
   for (const l of prodLayers) {
@@ -85,10 +222,31 @@ async function main() {
 
   // 5. Verify
   const final = await getJson(`${PROD}/api/layers`);
+  assertCanonicalMedia(final, "Production");
+  assertMatchingFields(
+    devLayers,
+    final,
+    ALL_METADATA_FIELDS,
+    "Development and production metadata",
+  );
   console.log(`Done. Prod now has ${final.length} layers: ${final.map((l) => l.name).join(", ")}`);
 }
 
-main().catch((err) => {
-  console.error("Sync failed:", err.message);
-  process.exit(1);
-});
+async function main() {
+  const devLayers = await getJson(`${DEV}/api/layers`);
+  const prodLayers = await getJson(`${PROD}/api/layers`);
+  console.log(`Dev layers: ${devLayers.length} | Prod layers: ${prodLayers.length}`);
+
+  if (MEDIUM_ONLY) {
+    await syncMediumMetadata(devLayers, prodLayers);
+    return;
+  }
+  await syncFull(devLayers, prodLayers);
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((err) => {
+    console.error("Sync failed:", err.message);
+    process.exit(1);
+  });
+}
