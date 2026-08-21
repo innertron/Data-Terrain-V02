@@ -1,0 +1,35 @@
+{
+  "layers": [
+    {
+      "name": "Kai Ryssdal",
+      "rank": 55,
+      "affiliation": "NPR / APM",
+      "gender": "Male",
+      "primaryMedium": "Radio",
+      "totalMillions": 4.752518,
+      "traceFile": "data/kai-ryssdal-trace-points.json",
+      "iconFile": "attached_assets/055_Kai_Ryssdal_1787277098613.png"
+    },
+    {
+      "name": "Deborah Roberts",
+      "rank": 72,
+      "affiliation": "ABC",
+      "gender": "Female",
+      "primaryMedium": "Broadcast TV",
+      "isAfricanAmerican": true,
+      "totalMillions": 3.271466,
+      "traceFile": "data/deborah-roberts-trace-points.json",
+      "iconFile": "attached_assets/072_Deborah_Roberts_1787277098614.png"
+    },
+    {
+      "name": "Chris Wallace",
+      "rank": 79,
+      "affiliation": "CNN",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "totalMillions": 2.731011,
+      "traceFile": "data/chris-wallace-trace-points.json",
+      "iconFile": "attached_assets/079_Chris_Wallace_1787277098614.png"
+    }
+  ]
+}
