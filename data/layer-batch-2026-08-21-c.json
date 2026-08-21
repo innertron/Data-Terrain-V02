@@ -30,6 +30,17 @@
       "totalMillions": 2.731011,
       "traceFile": "data/chris-wallace-trace-points.json",
       "iconFile": "attached_assets/079_Chris_Wallace_1787277098614.png"
+    },
+    {
+      "name": "Harris Faulkner",
+      "rank": 58,
+      "affiliation": "FOX",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": true,
+      "totalMillions": 4.423847,
+      "traceFile": "data/harris-faulkner-trace-points.json",
+      "iconFile": "attached_assets/058_Harris_Faulkner_1787277098614.png"
     }
   ]
 }
