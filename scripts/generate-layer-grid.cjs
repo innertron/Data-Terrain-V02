@@ -80,15 +80,9 @@ function generateGrid(cps, opts = {}) {
   const scaled = norm.map(row => row.map(v => Math.round(v * (totalMillions / tot) * 10000) / 10000));
   // Flip to storage convention: row 0 = Z1 (low income)
   const raw = scaled.reverse();
-  // Automatically enforce radial monotonicity for interior-peaked grids.
-  // Edge/ridge layers (peak on grid boundary) are skipped — see applyRadialMonotonicityFix.
-  const { fixed, skipped, iters, violationsBefore } = applyRadialMonotonicityFix(raw);
-  if (skipped) {
-    console.error('[radial-monotonicity] generateGrid: edge-peaked grid — fix skipped (radial monotonicity does not apply to ridge/asymmetric layers)');
-  } else if (violationsBefore > 0) {
-    console.error(`[radial-monotonicity] generateGrid: fixed ${violationsBefore} violations in ${iters} iter(s)`);
-  }
-  return fixed;
+  // Preserve the continuous RBF slopes. A radial monotonicity post-process
+  // copies neighbor heights and flattens these transitions into terraces.
+  return raw;
 }
 
 /**
@@ -153,6 +147,9 @@ const HANNITY_CONTROL_POINTS = [
  * contour traces ("0.54: X1Z23, X2Z23, ..."). Dense cell-snapped points make
  * exact interpolation ring, so this uses LEAST-SQUARES multiquadric instead:
  * basis centers on a coarse lattice, fitted to ALL trace cells.
+ * Explicit zero-mask cells are applied after the initial total scaling, so
+ * callers that require an exact final total must perform a final rescale (the
+ * rebuild and import pipelines do this).
  * Parameters LOCKED (tuned Aug 10 2026): C=4, ridge=1e-3, centers every 3 cells.
  * Cells listed under two contour values get the average.
  * Remember to add anchor/fill points for unconstrained corners and wide gaps
@@ -191,17 +188,9 @@ function generateGridFromTraces(data, opts = {}) {
   const norm = vals.map(row => row.map(v => (v - mn) / (mx - mn) * 10));
   const tot = norm.flat().reduce((a, v) => a + v, 0);
   const raw2 = norm.map(row => row.map(v => Math.round(v * (totalMillions / tot) * 10000) / 10000)).reverse();
-  // Automatically enforce radial monotonicity for interior-peaked grids.
-  // Edge/ridge layers (peak on grid boundary) are skipped — see applyRadialMonotonicityFix.
-  const { fixed: fixed2, skipped: skipped2, iters: iters2, violationsBefore: vb2 } = applyRadialMonotonicityFix(raw2);
-  if (skipped2) {
-    console.error('[radial-monotonicity] generateGridFromTraces: edge-peaked grid — fix skipped (radial monotonicity does not apply to ridge/asymmetric layers)');
-  } else if (vb2 > 0) {
-    console.error(`[radial-monotonicity] generateGridFromTraces: fixed ${vb2} violations in ${iters2} iter(s)`);
-  }
   // Painted white cells are explicit zero-value exclusions, not soft RBF
-  // samples. Reapply them after smoothing and monotonicity so interpolation
-  // cannot leak a positive contribution into excluded cells.
+  // samples. Reapply them after smoothing so interpolation cannot leak a
+  // positive contribution into excluded cells.
   const zeroBasedCoordinates = data.some(([x, z]) => Number(x) === 0 || Number(z) === 0);
   for (const [x, z, value] of data) {
     if (value === 0) {
@@ -210,16 +199,16 @@ function generateGridFromTraces(data, opts = {}) {
       // display zIndex, so the source mask itself must not be reversed here.
       const row = zeroBasedCoordinates ? z : z - 1;
       const col = zeroBasedCoordinates ? x : x - 1;
-      fixed2[row][col] = 0;
+      raw2[row][col] = 0;
     }
   }
-  return fixed2;
+  return raw2;
 }
 
 // ---------------------------------------------------------------------------
-// Radial-monotonicity fix — applied automatically after every grid generation.
-// Extracted from fix-radial-monotonicity.cjs so new layers never need a
-// separate manual repair pass.
+// Legacy radial-monotonicity helper.
+// Retained for diagnostics and historical comparisons only. Grid generation
+// must not apply it automatically because it creates artificial terraces.
 // ---------------------------------------------------------------------------
 
 /** Find the peak cell (max value). Returns { r, c, v } (0-based). */

@@ -23,7 +23,7 @@ const root = path.resolve(__dirname, '..');
 const apply = process.argv.includes('--apply');
 const dryRun = process.argv.includes('--dry-run');
 
-if (!apply && !dryRun) {
+if (require.main === module && !apply && !dryRun) {
   console.error('Choose --dry-run or --apply.');
   process.exit(1);
 }
@@ -99,11 +99,49 @@ function normalizedPoints(trace) {
     : trace.points.map(([x, z, value]) => [Number(x), Number(z), Number(value)]);
 }
 
+function unsupportedSignificantMaxima(problems, trace) {
+  if (problems.length === 0) return [];
+
+  const points = normalizedPoints(trace);
+  const sourceByCell = new Map(
+    points.map(([x, z, value]) => [`${x},${z}`, Number(value)]),
+  );
+  const sourcePeak = Math.max(...points.map(([, , value]) => value));
+  const positiveBands = [...new Set(points.map(([, , value]) => value).filter((value) => value > 0))]
+    .sort((a, b) => a - b);
+
+  return problems.filter(({ X, Z }) => {
+    const sourceValue = sourceByCell.get(`${X},${Z}`);
+    if (!(sourceValue > 0) || sourceValue / sourcePeak < 0.2) return true;
+
+    let localSourceMax = sourceValue;
+    for (let deltaX = -1; deltaX <= 1; deltaX++) {
+      for (let deltaZ = -1; deltaZ <= 1; deltaZ++) {
+        localSourceMax = Math.max(
+          localSourceMax,
+          sourceByCell.get(`${X + deltaX},${Z + deltaZ}`) ?? -Infinity,
+        );
+      }
+    }
+
+    const sourceBand = positiveBands.indexOf(sourceValue);
+    const localBand = positiveBands.indexOf(localSourceMax);
+    // RBF smoothing may move a lobe's crest by one cell into the adjacent
+    // painted band. Larger shifts indicate unsupported interpolation ringing.
+    return sourceBand < 0 || localBand - sourceBand > 1;
+  });
+}
+
 function buildExactGrid(trace, totalMillions) {
   const precision = precisionFor(totalMillions);
   let grid = generateGridFromTraces(normalizedPoints(trace), { totalMillions });
   const problems = validateGrid(grid);
-  if (problems.length) throw new Error(`grid validation failed: ${JSON.stringify(problems)}`);
+  const unsupportedMaxima = unsupportedSignificantMaxima(problems, trace);
+  if (unsupportedMaxima.length) {
+    throw new Error(
+      `unsupported significant maxima in ${trace.file}: ${JSON.stringify(unsupportedMaxima)}`,
+    );
+  }
 
   const generatedTotal = sumGrid(grid);
   grid = grid.map((row) => row.map((value) => +(value * totalMillions / generatedTotal).toFixed(precision)));
@@ -262,7 +300,20 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  buildExactGrid,
+  chooseTrace,
+  loadTraceGroups,
+  normalizedPoints,
+  precisionFor,
+  sumGrid,
+  unsupportedSignificantMaxima,
+  validateAgainstTrace,
+};

@@ -30,8 +30,9 @@ The user's preferred input for new layers (after 9 failed methodologies): a Phot
 
 Filename convention: rank prefix (e.g. `5_David_Muir_*.png`); viewership millions in the painted title (typos like "13/854611M" mean 13.854611M — confirm with user if unclear).
 
-## RBF trench artifact + fix (Aug 17 2026)
-Least-squares RBF grids can carve narrow trenches (undershoot below the outer flat band) that render as visible dips even though the painted partition is monotone. Pit-filling fails because trenches drain to the grid edge.
-**Fix:** enforce radial monotonicity from the peak — iterate raising each cell to any 4-neighbor that is farther from the peak but higher, then rescale to the original total. Applied to Ezra Klein (dev SQL on grid_values + original_grid_values, then sync-prod). Run this check on future extractions if dips appear.
+## RBF slope integration rule
+Preserve the continuous least-squares RBF output. Never apply blanket radial-monotonicity repair during generation or rebuilds.
 
-**Warning (Aug 17 2026):** NEVER apply the radial-monotone fix to edge-peaked/asymmetric layers (Sean Hannity, peak at X25 ridge — hand-corrected 11-band remap). The fix carved a visible step across his terrain; restored by regenerating from data/sean-hannity-trace-points.json with generateGridFromTraces, no post-fix. Check peak location first; skip the fix when the peak is on/near the grid edge.
+**Why:** The radial repair copies higher outward-neighbor values into inward cells. Across the full layer set this flattened smooth transitions into blocky terraces, including interior-peaked layers; edge/ridge exceptions were not sufficient.
+
+**How to apply:** Rebuild/import from the painted trace with RBF, then enforce the source zero mask and exact ViewerScore total. Validate the peak, orientation, and every significant secondary lobe against nearby painted source bands instead of forcing all layers into a single radial peak.
