@@ -98,6 +98,93 @@ export async function fetchLayers(): Promise<LayerDef[]> {
   return res.json();
 }
 
+const CLIFF_JUMP_THRESHOLD = 15;
+
+/**
+ * Integrate abrupt display-height transitions without changing stored layer
+ * values. A zero bordering positive terrain is lifted halfway toward that
+ * neighbor while the upper cell drops by one quarter of the gap. Larger tier
+ * jumps are then projected toward a maximum 15-point step, raising the low
+ * side and lowering the high side equally. Gradual slopes and distant zero
+ * regions are unchanged.
+ */
+export function blendTerrainTransitions(values: number[][]): number[][] {
+  const zeroEdgeProposals: number[][][] = Array.from(
+    { length: 25 },
+    () => Array.from({ length: 25 }, () => [] as number[]),
+  );
+
+  // First build the requested half-height transition at zero boundaries.
+  for (let row = 0; row < 25; row++) {
+    for (let col = 0; col < 25; col++) {
+      for (const [rowOffset, colOffset] of [[1, 0], [0, 1]]) {
+        const nextRow = row + rowOffset;
+        const nextCol = col + colOffset;
+        if (nextRow >= 25 || nextCol >= 25) continue;
+
+        const current = values[row][col];
+        const next = values[nextRow][nextCol];
+        if (current === next) continue;
+
+        const currentIsLow = current < next;
+        const low = currentIsLow ? current : next;
+        const high = currentIsLow ? next : current;
+        if (low !== 0 || high <= 0) continue;
+
+        const lowTarget = high * 0.5;
+        const highTarget = high * 0.75;
+        const lowRow = currentIsLow ? row : nextRow;
+        const lowCol = currentIsLow ? col : nextCol;
+        const highRow = currentIsLow ? nextRow : row;
+        const highCol = currentIsLow ? nextCol : col;
+        zeroEdgeProposals[lowRow][lowCol].push(lowTarget);
+        zeroEdgeProposals[highRow][highCol].push(highTarget);
+      }
+    }
+  }
+
+  const blended = values.map((line, row) => line.map((value, col) => {
+    const targets = zeroEdgeProposals[row][col];
+    if (targets.length === 0) return value;
+    return targets.reduce((sum, target) => sum + target, 0) / targets.length;
+  }));
+
+  // Project only abrupt shared edges toward the maximum permitted step.
+  // Alternating sweep direction avoids favoring one side of the grid.
+  const edges: Array<[number, number, number, number]> = [];
+  for (let row = 0; row < 25; row++) {
+    for (let col = 0; col < 25; col++) {
+      if (row < 24) edges.push([row, col, row + 1, col]);
+      if (col < 24) edges.push([row, col, row, col + 1]);
+    }
+  }
+
+  for (let pass = 0; pass < 100; pass++) {
+    let largestExcess = 0;
+    const orderedEdges = pass % 2 === 0 ? edges : [...edges].reverse();
+    for (const [rowA, colA, rowB, colB] of orderedEdges) {
+      const valueA = blended[rowA][colA];
+      const valueB = blended[rowB][colB];
+      const difference = valueA - valueB;
+      const excess = Math.abs(difference) - CLIFF_JUMP_THRESHOLD;
+      if (excess <= 0) continue;
+
+      const transfer = excess / 2;
+      largestExcess = Math.max(largestExcess, excess);
+      if (difference > 0) {
+        blended[rowA][colA] -= transfer;
+        blended[rowB][colB] += transfer;
+      } else {
+        blended[rowA][colA] += transfer;
+        blended[rowB][colB] -= transfer;
+      }
+    }
+    if (largestExcess < 0.01) break;
+  }
+
+  return blended.map((line) => line.map((value) => Math.round(value)));
+}
+
 // Sum active grids per cell, normalize 0-100 using the active layers' own bounds.
 // Returns undefined when no layers are loaded yet.
 export function computeLayerValues(
@@ -123,14 +210,17 @@ export function computeLayerValues(
 
   // Step 2: normalize 0-100 against the active-layer range
   const spread = globalMax - globalMin;
+  const normalizedGrid = sums.map((row) => row.map((sum) => (
+    spread > 0
+      ? Math.max(0, Math.round((sum - globalMin) / spread * 100))
+      : 50
+  )));
+  const displayGrid = blendTerrainTransitions(normalizedGrid);
   const result = new Map<string, number>();
   for (let r = 0; r < 25; r++) {
     const zIndex = 24 - r;
     for (let c = 0; c < 25; c++) {
-      const normalized = spread > 0
-        ? Math.max(0, Math.round((sums[r][c] - globalMin) / spread * 100))
-        : 50;
-      result.set(`${c},${zIndex}`, normalized);
+      result.set(`${c},${zIndex}`, displayGrid[r][c]);
     }
   }
   return result;
