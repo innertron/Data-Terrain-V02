@@ -232,12 +232,12 @@ async function syncFull(devLayers, prodLayers) {
   console.log(`Done. Prod now has ${final.length} layers: ${final.map((l) => l.name).join(", ")}`);
 }
 
-async function main() {
+export async function syncProduction({ mediumOnly = MEDIUM_ONLY } = {}) {
   const devLayers = await getJson(`${DEV}/api/layers`);
   const prodLayers = await getJson(`${PROD}/api/layers`);
   console.log(`Dev layers: ${devLayers.length} | Prod layers: ${prodLayers.length}`);
 
-  if (MEDIUM_ONLY) {
+  if (mediumOnly) {
     await syncMediumMetadata(devLayers, prodLayers);
     return;
   }
@@ -245,7 +245,7 @@ async function main() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  main().catch((err) => {
+  syncProduction().catch((err) => {
     console.error("Sync failed:", err.message);
     process.exit(1);
   });
