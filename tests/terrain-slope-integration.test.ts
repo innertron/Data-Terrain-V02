@@ -6,9 +6,9 @@ import test from "node:test";
 
 const require = createRequire(import.meta.url);
 const {
-  applyRadialMonotonicityFix,
+  countViolations,
+  findPeak,
   generateGrid,
-  generateGridFromTraces,
 } = require("../scripts/generate-layer-grid.cjs");
 const {
   buildExactGrid,
@@ -18,47 +18,7 @@ const {
   validateAgainstTrace,
 } = require("../scripts/rebuild-layer-grids-from-traces.cjs");
 
-function plateauEdgeRatio(grid: number[][]): number {
-  let equalEdges = 0;
-  let totalEdges = 0;
-
-  for (let row = 0; row < 25; row++) {
-    for (let col = 0; col < 25; col++) {
-      if (col < 24) {
-        totalEdges++;
-        if (grid[row][col] === grid[row][col + 1]) equalEdges++;
-      }
-      if (row < 24) {
-        totalEdges++;
-        if (grid[row][col] === grid[row + 1][col]) equalEdges++;
-      }
-    }
-  }
-
-  return equalEdges / totalEdges;
-}
-
-for (const traceFile of [
-  "data/scott-jennings-trace-points.json",
-  "data/ari-shapiro-trace-points.json",
-  "data/kai-ryssdal-trace-points.json",
-]) {
-  test(`preserves integrated RBF slopes for ${traceFile}`, () => {
-    const trace = JSON.parse(fs.readFileSync(traceFile, "utf8"));
-    const integratedGrid = generateGridFromTraces(trace.points, {
-      totalMillions: trace.totalMillions,
-    });
-    const flattenedGrid = applyRadialMonotonicityFix(integratedGrid).fixed;
-
-    assert.notDeepEqual(integratedGrid, flattenedGrid);
-    assert.ok(
-      plateauEdgeRatio(integratedGrid) + 0.1 <
-        plateauEdgeRatio(flattenedGrid),
-    );
-  });
-}
-
-test("the direct control-point generator does not auto-flatten its RBF output", () => {
+test("the direct control-point generator restores radial transitions", () => {
   const controlPoints = [
     [13, 13, 10],
     [7, 13, 7],
@@ -70,10 +30,10 @@ test("the direct control-point generator does not auto-flatten its RBF output", 
     [1, 25, 0],
     [25, 25, 0],
   ];
-  const integratedGrid = generateGrid(controlPoints, { totalMillions: 10 });
-  const flattenedGrid = applyRadialMonotonicityFix(integratedGrid).fixed;
+  const grid = generateGrid(controlPoints, { totalMillions: 10 });
+  const peak = findPeak(grid);
 
-  assert.notDeepEqual(integratedGrid, flattenedGrid);
+  assert.equal(countViolations(grid, peak.r, peak.c), 0);
 });
 
 test("all saved layer traces rebuild with exact source invariants", () => {

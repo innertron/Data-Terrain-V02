@@ -30,9 +30,9 @@ The user's preferred input for new layers (after 9 failed methodologies): a Phot
 
 Filename convention: rank prefix (e.g. `5_David_Muir_*.png`); viewership millions in the painted title (typos like "13/854611M" mean 13.854611M — confirm with user if unclear).
 
-## RBF slope integration rule
-Preserve the continuous least-squares RBF output. Never apply blanket radial-monotonicity repair during generation or rebuilds.
+## RBF radial transition rule
+Use the established radial transition treatment automatically for interior-peaked RBF grids. Apply it after RBF interpolation and before restoring explicit painted-zero cells. Skip edge/ridge layers.
 
-**Why:** The radial repair copies higher outward-neighbor values into inward cells. Across the full layer set this flattened smooth transitions into blocky terraces, including interior-peaked layers; edge/ridge exceptions were not sufficient.
+**Why:** Removing this treatment left abrupt high/low seams and introduced a visible unsupported trough in the rendered terrain. The user explicitly directed that the prior treatment be restored.
 
-**How to apply:** Rebuild/import from the painted trace with RBF, then enforce the source zero mask and exact ViewerScore total. Validate the peak, orientation, and every significant secondary lobe against nearby painted source bands instead of forcing all layers into a single radial peak.
+**How to apply:** Generate from the painted trace with RBF, apply the radial transition pass, restore every source-zero cell, then rescale to the exact ViewerScore total and validate orientation and peak placement. Do not remove this treatment based only on numeric plateau metrics; rendered terrain continuity must be checked.
