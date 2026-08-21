@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { Landscape3D } from "@/components/Landscape3D";
-import { type LayerDef, fetchLayers, computeLayerValues } from "@/lib/layers";
+import { type LayerDef, fetchLayers, computeLayerValues, getFilteredLayerState } from "@/lib/layers";
 import { useAxisData } from "@/lib/axisData";
 import { AxisTools } from "@/components/AxisTools";
 import { Card } from "@/components/ui/card";
@@ -136,33 +136,17 @@ export default function Home() {
     const k = s.toUpperCase().replace(/[^A-Z]/g, "");
     return k === "FOX" ? "FOXNEWS" : k;
   };
-  const affilMatches = (l: LayerDef) =>
-    affiliationFilter.length === 0 ||
-    (!!(l as any).affiliation && affiliationFilter.some(a => normAffil(a) === normAffil((l as any).affiliation)));
-
-  const visibleLayers = layerDefs.filter(l =>
-    (mediumFilter.length === 0 || (l.primaryMedium && mediumFilter.includes(l.primaryMedium))) &&
-    (genderFilter.length === 0 || (l.gender && genderFilter.includes(l.gender))) &&
-    (!africanAmericanOnly || l.isAfricanAmerican === true) &&
-    affilMatches(l) &&
-    (nameSearch.trim() === "" || l.name.toLowerCase().includes(nameSearch.trim().toLowerCase()))
-  ).sort((a, b) => {
-    const ra = (a as any).rank, rb = (b as any).rank;
-    if (ra == null && rb == null) return 0;
-    if (ra == null) return 1;
-    if (rb == null) return -1;
-    return ra - rb;
-  });
-  // Filters also zero out non-matching layers in the terrain (name search only narrows the list, not the terrain):
-  const filterMatchedLayers = layerDefs.filter(l =>
-    (mediumFilter.length === 0 || (l.primaryMedium && mediumFilter.includes(l.primaryMedium))) &&
-    (genderFilter.length === 0 || (l.gender && genderFilter.includes(l.gender))) &&
-    (!africanAmericanOnly || l.isAfricanAmerican === true) &&
-    affilMatches(l)
+  const { visibleLayers, effectiveActiveIds } = getFilteredLayerState(
+    layerDefs,
+    activeLayers,
+    {
+      media: mediumFilter,
+      genders: genderFilter,
+      africanAmericanOnly,
+      affiliations: affiliationFilter,
+      nameSearch,
+    },
   );
-  const effectiveActiveIds = (mediumFilter.length === 0 && genderFilter.length === 0 && !africanAmericanOnly && affiliationFilter.length === 0)
-    ? activeLayers
-    : activeLayers.filter(id => filterMatchedLayers.some(l => l.id === id));
   const isAdmin = import.meta.env.DEV;
 
   // Medium filter pills — shared between the Layers list and the Results panel
