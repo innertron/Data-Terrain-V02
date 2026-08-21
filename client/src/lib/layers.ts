@@ -99,6 +99,23 @@ export async function fetchLayers(): Promise<LayerDef[]> {
 }
 
 const CLIFF_JUMP_THRESHOLD = 15;
+const TERRAIN_DISPLAY_MAX_HEIGHT = 75;
+const TERRAIN_DISPLAY_GAMMA = 0.65;
+
+/**
+ * Compress normalized terrain heights for rendering only. The current peak
+ * (100) renders at 75 while smaller positive heights are gently lifted by a
+ * power curve. Zero remains zero so the geographic footprint is preserved.
+ */
+export function compressTerrainHeights(values: number[][]): number[][] {
+  return values.map(row => row.map(value => {
+    if (value <= 0) return 0;
+    return Math.round(
+      TERRAIN_DISPLAY_MAX_HEIGHT *
+      Math.pow(Math.min(value, 100) / 100, TERRAIN_DISPLAY_GAMMA),
+    );
+  }));
+}
 
 /**
  * Integrate abrupt display-height transitions without changing stored layer
@@ -215,7 +232,11 @@ export function computeLayerValues(
       ? Math.max(0, Math.round((sum - globalMin) / spread * 100))
       : 50
   )));
-  const displayGrid = blendTerrainTransitions(normalizedGrid);
+  // Rendering-only display pipeline: compress the overall height range, then
+  // preserve the approved zero-edge and steep-tier transition treatment.
+  const displayGrid = blendTerrainTransitions(
+    compressTerrainHeights(normalizedGrid),
+  );
   const result = new Map<string, number>();
   for (let r = 0; r < 25; r++) {
     const zIndex = 24 - r;

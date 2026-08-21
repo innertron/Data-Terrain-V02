@@ -1,11 +1,38 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { blendTerrainTransitions } from "../client/src/lib/layers";
+import {
+  blendTerrainTransitions,
+  compressTerrainHeights,
+  computeLayerValues,
+} from "../client/src/lib/layers";
 
 function filledGrid(value: number): number[][] {
   return Array.from({ length: 25 }, () => Array(25).fill(value));
 }
+
+test("compresses display height without lifting normalized zero", () => {
+  const grid = filledGrid(0);
+  grid[0].splice(0, 5, 0, 1, 10, 50, 100);
+
+  const compressed = compressTerrainHeights(grid);
+
+  assert.deepEqual(compressed[0].slice(0, 5), [0, 4, 17, 48, 75]);
+  assert.equal(grid[0][4], 100);
+  assert.equal(grid[1][0], 0);
+});
+
+test("applies compression only to a fresh display matrix", () => {
+  const rawGrid = filledGrid(0);
+  rawGrid[12][12] = 10;
+  const activeGrids = [rawGrid];
+  const snapshot = structuredClone(activeGrids);
+
+  const displayValues = computeLayerValues(activeGrids);
+
+  assert.ok(displayValues instanceof Map);
+  assert.deepEqual(activeGrids, snapshot);
+});
 
 test("raises a zero boundary halfway and lowers its upper neighbor", () => {
   const grid = filledGrid(8);
