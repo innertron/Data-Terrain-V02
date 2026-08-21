@@ -5,6 +5,10 @@ import {
   type LayerDef,
   type LayerFilters,
 } from "../client/src/lib/layers.ts";
+import {
+  PRIMARY_MEDIA,
+  normalizePrimaryMedium,
+} from "../shared/mediaTaxonomy.ts";
 
 const gridValues = [[1]];
 
@@ -128,4 +132,23 @@ test("name search narrows only the visible list and never changes terrain", () =
     searched.effectiveActiveIds,
     baseline.effectiveActiveIds,
   );
+});
+
+test("primary-medium categories are distinct and legacy labels normalize consistently", () => {
+  assert.deepEqual(PRIMARY_MEDIA, [
+    "Cable TV",
+    "Broadcast TV",
+    "Radio",
+    "Print",
+    "Podcast",
+    "Digital Video",
+  ]);
+  assert.equal(normalizePrimaryMedium("TV"), "Cable TV");
+  assert.equal(normalizePrimaryMedium("Print / Digital"), "Print");
+  assert.equal(normalizePrimaryMedium("Podcast / YouTube"), "Podcast");
+  assert.equal(normalizePrimaryMedium("Podcast / Digital"), "Podcast");
+  assert.equal(normalizePrimaryMedium("Podcast / Social"), "Podcast");
+  assert.equal(normalizePrimaryMedium("Podcast / Radio"), "Podcast");
+  assert.equal(normalizePrimaryMedium(""), null);
+  assert.equal(normalizePrimaryMedium("Unknown"), null);
 });

@@ -25,7 +25,7 @@
       "rank": 130,
       "affiliation": "NYT",
       "gender": "Male",
-      "primaryMedium": "Print / Digital",
+      "primaryMedium": "Print",
       "isAfricanAmerican": true,
       "totalMillions": 1.185102,
       "traceFile": "data/jamelle-bouie-trace-points.json",
@@ -36,7 +36,7 @@
       "rank": 131,
       "affiliation": "SPOTIFY",
       "gender": "Male",
-      "primaryMedium": "Podcast / YouTube",
+      "primaryMedium": "Podcast",
       "totalMillions": 1.159427,
       "traceFile": "data/jon-stewart-trace-points.json",
       "iconFile": "attached_assets/131_Jon_Stewart_1787293536545.png"
@@ -46,7 +46,7 @@
       "rank": 138,
       "affiliation": "TWITCH",
       "gender": "Male",
-      "primaryMedium": "Podcast / Digital",
+      "primaryMedium": "Podcast",
       "totalMillions": 0.979696,
       "traceFile": "data/hasan-piker-trace-points.json",
       "iconFile": "attached_assets/138_Hasan_Piker_1787293536546.png"

@@ -34,10 +34,10 @@ export const layers = pgTable("layers", {
   active: boolean("active").notNull().default(true),
   params: text("params"),                    // JSON: shape algorithm params (nullable)
   rank: integer("rank"),                     // 1-74 overall rank
-  affiliation: text("affiliation"),          // e.g. FOX, NBC, NPR, SPOTIFY
+  affiliation: text("affiliation"),          // Outlet/platform, e.g. FOX, NPR, SPOTIFY
   gender: text("gender"),                    // Male / Female
   isAfricanAmerican: boolean("is_african_american").notNull().default(false),
-  primaryMedium: text("primary_medium"),     // Cable TV, Podcast / YouTube, Radio, etc.
+  primaryMedium: text("primary_medium"),     // One standardized primary format
 });
 
 export const insertLayerSchema = createInsertSchema(layers).omit({ id: true });

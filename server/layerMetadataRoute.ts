@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { z } from "zod";
 import type { Layer } from "@shared/schema";
+import { PRIMARY_MEDIA } from "@shared/mediaTaxonomy";
 
 export const layerMetadataSchema = z.object({
   name: z.string().min(1).optional(),
@@ -17,7 +18,7 @@ export const layerMetadataSchema = z.object({
     .optional(),
   rank: z.number().int().min(1).max(200).optional(),
   affiliation: z.string().max(50).optional(),
-  primaryMedium: z.string().max(50).optional(),
+  primaryMedium: z.enum(PRIMARY_MEDIA).optional(),
   gender: z.enum(["Male", "Female"]).optional(),
   isAfricanAmerican: z.boolean().optional(),
 });

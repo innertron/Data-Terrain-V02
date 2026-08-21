@@ -9,8 +9,8 @@ export type LayerDef = {
   gridValues: number[][];
   params?: string | null;       // JSON: stored algorithm params incl. skew bounds
   rank?: number | null;         // 1-74 overall rank
-  affiliation?: string | null;  // e.g. FOX, NBC, NPR
-  primaryMedium?: string | null;// Cable TV, Podcast / YouTube, Radio, etc.
+  affiliation?: string | null;  // Outlet/platform, e.g. FOX, NPR, SPOTIFY
+  primaryMedium?: string | null;// One standardized primary format
   gender?: string | null;       // Male / Female
   isAfricanAmerican?: boolean;  // true when included in this demographic filter
 };

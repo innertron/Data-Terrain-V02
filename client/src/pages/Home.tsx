@@ -17,6 +17,7 @@ import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { api } from "@shared/routes";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { PRIMARY_MEDIA } from "@shared/mediaTaxonomy";
 
 // --- Types ---
 type GridSegment = {
@@ -128,7 +129,7 @@ export default function Home() {
 
   const { xLabels, xDescriptions, zLabels, zDescriptions } = useAxisData();
 
-  const ALL_MEDIA = ["Cable TV", "Broadcast TV", "Podcast / YouTube", "Podcast / Digital", "Radio", "Print / Digital", "Digital Video", "Podcast / Social"] as const;
+  const ALL_MEDIA = PRIMARY_MEDIA;
   const ALL_AFFILIATIONS = ["Fox News", "NewsNation", "CNN", "MS NOW", "ABC", "NBC", "CBS", "NYT", "NPR"] as const;
   const ALL_LAYERS_ID = -1; // sentinel skewLayerId: randomize applies to ALL layers
   // DB affiliation strings are inconsistent ("FOX" vs "Fox News", "NEWSNATION" vs "NewsNation") — normalize before matching
@@ -938,7 +939,7 @@ export default function Home() {
                       </p>
                     )}
 
-                    {/* Rank · Affiliation · Gender · Primary Medium — one line */}
+                    {/* Rank · Outlet/Platform · Gender · Primary Medium — one line */}
                     <div className="grid grid-cols-4 gap-2">
                     <div>
                       <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Rank</Label>
@@ -953,14 +954,14 @@ export default function Home() {
                       />
                     </div>
 
-                    {/* Affiliation */}
+                    {/* Outlet / Platform */}
                     <div>
-                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Affiliation</Label>
+                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Outlet / Platform</Label>
                       <Input
                         value={renameAffiliation}
                         onChange={e => setRenameAffiliation(e.target.value)}
                         className="h-7 text-xs font-mono uppercase"
-                        placeholder="e.g. FOX, NBC, NPR…"
+                        placeholder="e.g. FOX, NPR, SPOTIFY…"
                       />
                     </div>
 

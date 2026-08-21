@@ -8,6 +8,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { pool } from "./db";
 import { registerLayerMetadataRoute } from "./layerMetadataRoute";
+import { PRIMARY_MEDIA, normalizePrimaryMedium } from "@shared/mediaTaxonomy";
 
 // ── Layer helpers ────────────────────────────────────────────────────────────
 
@@ -340,7 +341,7 @@ export async function registerRoutes(
         params: r.params ?? null,
         rank: r.rank ?? null,
         affiliation: r.affiliation ?? null,
-        primaryMedium: r.primaryMedium ?? null,
+        primaryMedium: normalizePrimaryMedium(r.primaryMedium),
         gender: r.gender ?? null,
         isAfricanAmerican: r.isAfricanAmerican,
       }));
@@ -358,7 +359,7 @@ export async function registerRoutes(
     csv: z.string().min(1),
     rank: z.number().int().min(1).max(200).optional(),
     affiliation: z.string().optional(),
-    primaryMedium: z.string().optional(),
+    primaryMedium: z.enum(PRIMARY_MEDIA).optional(),
     gender: z.enum(["Male", "Female"]).optional(),
     isAfricanAmerican: z.boolean().optional(),
   });

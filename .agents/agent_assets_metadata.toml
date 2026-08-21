@@ -112,3 +112,10 @@ uri = "file://attached_assets/generated/michael-smerconish-extracted-check.png"
 type = "image"
 title = "Michael Smerconish — extracted partition check"
 description = "Regenerated from the 625 extracted cells — compare against your painted PNG."
+
+[[outputs]]
+id = "pD9OD3Ep9EGK9fDUkVQhz"
+uri = "file://exports/Media_Classification_Chart.csv"
+type = "table"
+title = "Standardized Media Classification Chart"
+description = "All 150 ranked personalities preserved. Primary Medium now uses only Cable TV, Broadcast TV, Radio, Print, Podcast, Digital Video, or a blank value when the source was unclassified."

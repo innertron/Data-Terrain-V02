@@ -11,3 +11,4 @@
 - [Hannity RBF contour grid](hannity-rbf-contour.md) — ONLY correct method: multiquadric RBF from extracted control points; never use polynomial/product approximations.
 - [Photoshop partition pipeline](photoshop-partition-pipeline.md) — user's confirmed working input format: painted PNG partitions; color-shift, bbox, and voting pitfalls solved.
 - [Terrain display transition lock](terrain-display-transition-lock.md) — approved visual seam treatment is display-only and must remain regression-tested.
+- [Media classification taxonomy](media-classification-taxonomy.md) — primary medium is one content format; keep outlets/platforms separate and never guess missing values.

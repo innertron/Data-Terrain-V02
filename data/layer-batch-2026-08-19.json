@@ -15,7 +15,7 @@
       "rank": 20,
       "affiliation": "YOUTUBE",
       "gender": "Male",
-      "primaryMedium": "Podcast / Digital",
+      "primaryMedium": "Podcast",
       "isAfricanAmerican": true,
       "totalMillions": 10.921443,
       "traceFile": "data/stephen-a-smith-trace-points.json",
@@ -46,7 +46,7 @@
       "rank": 30,
       "affiliation": "NYT",
       "gender": "Female",
-      "primaryMedium": "Print / Digital",
+      "primaryMedium": "Print",
       "totalMillions": 8.297442,
       "traceFile": "data/maggie-haberman-trace-points.json",
       "iconFile": "attached_assets/030_Maggie_Haberman_1787171132789.png"
