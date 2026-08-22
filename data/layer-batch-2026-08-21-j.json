@@ -1,0 +1,14 @@
+{
+  "layers": [
+    {
+      "name": "Tucker Carlson",
+      "rank": 121,
+      "affiliation": "TCN",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "totalMillions": 1.416185,
+      "traceFile": "data/tucker-carlson-trace-points.json",
+      "iconFile": "attached_assets/121_Tucker_Carlson_1787360520448.png"
+    }
+  ]
+}
