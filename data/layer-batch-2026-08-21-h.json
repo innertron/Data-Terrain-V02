@@ -1,0 +1,14 @@
+{
+  "layers": [
+    {
+      "name": "Kayleigh McEnany",
+      "rank": 92,
+      "affiliation": "FOX",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "totalMillions": 2.160784,
+      "traceFile": "data/kayleigh-mcenany-trace-points.json",
+      "iconFile": "attached_assets/092_Kayleigh_McEnany_1787359096473.png"
+    }
+  ]
+}
