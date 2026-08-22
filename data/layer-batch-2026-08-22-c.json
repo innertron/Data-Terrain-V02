@@ -1,0 +1,14 @@
+{
+  "layers": [
+    {
+      "name": "Rob Schmitt",
+      "rank": 140,
+      "affiliation": "Newsmax",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "totalMillions": 2.160784,
+      "traceFile": "data/rob-schmitt-trace-points.json",
+      "iconFile": "attached_assets/140_Rob_Schmitt_1787428954949.png"
+    }
+  ]
+}
