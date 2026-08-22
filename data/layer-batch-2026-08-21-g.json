@@ -1,0 +1,14 @@
+{
+  "layers": [
+    {
+      "name": "Dan Bongino",
+      "rank": 113,
+      "affiliation": "RUMBLE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "totalMillions": 2.160784,
+      "traceFile": "data/dan-bongino-trace-points.json",
+      "iconFile": "attached_assets/113_Dan_Bongino_1787357896910.png"
+    }
+  ]
+}

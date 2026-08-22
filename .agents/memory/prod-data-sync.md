@@ -22,3 +22,9 @@ Full-sync retries must treat duplicate layer names as resumable state, not an un
 **Why:** A transient failure while deleting old rows can leave verified replacements beside stale rows. Rejecting duplicates on retry strands production in a hybrid state.
 
 **How to apply:** If every development layer has an exact replacement candidate, keep one verified candidate per name and delete only stale rows. If staging was incomplete, remove only newer duplicates before restaging.
+
+After a task merge, compare development and production layer names before importing another layer. A merge can leave the development database behind production even when saved manifests and traces remain present.
+
+**Why:** Production retained three valid layers that the post-merge development database lacked, making the next import produce the wrong expected project count.
+
+**How to apply:** Re-import missing records from their saved manifests into development, validate exact source totals, and confirm the count before adding the next layer. Do not copy mutable production grids back into development.
