@@ -36,3 +36,10 @@ Use the established radial transition treatment automatically for interior-peake
 **Why:** Removing this treatment left abrupt high/low seams and introduced a visible unsupported trough in the rendered terrain. The user explicitly directed that the prior treatment be restored.
 
 **How to apply:** Generate from the painted trace with RBF, apply the radial transition pass, restore every source-zero cell, then rescale to the exact ViewerScore total and validate orientation and peak placement. Do not remove this treatment based only on numeric plateau metrics; rendered terrain continuity must be checked.
+
+## Tiny highest-band fitting
+If an unweighted least-squares fit places the generated peak outside a very small painted highest band, keep the immutable 625-cell trace unchanged and apply a trace-level highest-band fit weight. Use the smallest tested integer weight that moves the peak into the painted highest-band cells.
+
+**Why:** A two-cell highest band can be underrepresented by the other 623 fitting samples, shifting the smooth RBF peak into an adjacent lower band even though the source geometry is unambiguous.
+
+**How to apply:** Record the fit weight as trace metadata, use it consistently in both import and source-rebuild paths, require the final peak to be inside the painted highest band, and revalidate exact total, zero mask, orientation, and unsupported maxima.
