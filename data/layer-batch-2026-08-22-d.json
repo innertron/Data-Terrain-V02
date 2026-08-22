@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Whoopi Goldberg",
+      "rank": 128,
+      "affiliation": "The View",
+      "gender": "Female",
+      "primaryMedium": "Broadcast TV",
+      "isAfricanAmerican": true,
+      "totalMillions": 1.236454,
+      "traceFile": "data/whoopi-goldberg-trace-points.json",
+      "iconFile": "attached_assets/144_Whoopi_Goldberg_1787430351843.png"
+    }
+  ]
+}

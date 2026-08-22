@@ -218,6 +218,25 @@ function generateGridFromTraces(data, opts = {}) {
   return fixed2;
 }
 
+/**
+ * Repeat the painted highest-band cells when a very small top band needs extra
+ * influence in the least-squares fit. The immutable source trace remains
+ * unchanged; this only expands the in-memory fitting samples.
+ */
+function applyTopBandWeight(data, weight = 1) {
+  const normalizedWeight = Number(weight);
+  if (!Number.isInteger(normalizedWeight) || normalizedWeight < 1 || normalizedWeight > 100) {
+    throw new Error(`topBandWeight must be an integer from 1 to 100; received ${weight}`);
+  }
+  if (normalizedWeight === 1) return data;
+
+  const highestBand = Math.max(...data.map(([, , value]) => Number(value)));
+  const topBandPoints = data.filter(([, , value]) => Number(value) === highestBand);
+  return data.concat(
+    ...Array.from({ length: normalizedWeight - 1 }, () => topBandPoints),
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Radial-transition helper used by both terrain generation paths.
 // ---------------------------------------------------------------------------
@@ -356,7 +375,7 @@ function applyRadialMonotonicityFix(grid) {
   );
 }
 
-module.exports = { generateGrid, generateGridFromTraces, validateGrid, applyRadialMonotonicityFix, findPeak, countViolations, C, SMOOTH, HANNITY_CONTROL_POINTS };
+module.exports = { generateGrid, generateGridFromTraces, applyTopBandWeight, validateGrid, applyRadialMonotonicityFix, findPeak, countViolations, C, SMOOTH, HANNITY_CONTROL_POINTS };
 
 if (require.main === module) {
   const [, , file, total] = process.argv;

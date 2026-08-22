@@ -17,7 +17,11 @@
 const fs = require('fs');
 const path = require('path');
 const { Client } = require('pg');
-const { generateGridFromTraces, validateGrid } = require('./generate-layer-grid.cjs');
+const {
+  applyTopBandWeight,
+  generateGridFromTraces,
+  validateGrid,
+} = require('./generate-layer-grid.cjs');
 
 const root = path.resolve(__dirname, '..');
 const apply = process.argv.includes('--apply');
@@ -76,6 +80,8 @@ function loadTraceGroups(layerNames) {
       points,
       zeroBased,
       totalMillions: Array.isArray(document) ? null : Number(document.totalMillions),
+      topBandWeight: Array.isArray(document) ? 1 : Number(document.topBandWeight ?? 1),
+      requirePeakInTopBand: !Array.isArray(document) && document.requirePeakInTopBand === true,
     }]);
   }
 
@@ -134,7 +140,11 @@ function unsupportedSignificantMaxima(problems, trace) {
 
 function buildExactGrid(trace, totalMillions) {
   const precision = precisionFor(totalMillions);
-  let grid = generateGridFromTraces(normalizedPoints(trace), { totalMillions });
+  const fittingPoints = applyTopBandWeight(
+    normalizedPoints(trace),
+    trace.topBandWeight ?? 1,
+  );
+  let grid = generateGridFromTraces(fittingPoints, { totalMillions });
   const problems = validateGrid(grid);
   const unsupportedMaxima = unsupportedSignificantMaxima(problems, trace);
   if (unsupportedMaxima.length) {
@@ -220,7 +230,9 @@ function validateAgainstTrace(grid, trace, totalMillions) {
   const correctOrientationCorrelation = correlation(sourceValues, correctValues);
   const flippedOrientationCorrelation = correlation(sourceValues, flippedValues);
   const orientationMatches = correctOrientationCorrelation + 1e-9 >= flippedOrientationCorrelation;
-  const peakNearTopBand = peakDistance <= 1;
+  const peakNearTopBand = trace.requirePeakInTopBand
+    ? peakDistance === 0
+    : peakDistance <= 1;
 
   if (!totalMatches || zeroLeaks > 0 || !peakNearTopBand || !orientationMatches) {
     throw new Error(

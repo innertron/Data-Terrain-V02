@@ -3,7 +3,11 @@
 const fs = require('fs');
 const path = require('path');
 const { Client } = require('pg');
-const { generateGridFromTraces, validateGrid } = require('./generate-layer-grid.cjs');
+const {
+  applyTopBandWeight,
+  generateGridFromTraces,
+  validateGrid,
+} = require('./generate-layer-grid.cjs');
 const { assertPrimaryMedium } = require('./primary-media.cjs');
 
 const [, , manifestArg] = process.argv;
@@ -16,9 +20,10 @@ const root = path.resolve(__dirname, '..');
 const resolveFromRoot = (file) => path.resolve(root, file);
 const manifest = JSON.parse(fs.readFileSync(resolveFromRoot(manifestArg), 'utf8'));
 
-function buildExactGrid(points, totalMillions) {
+function buildExactGrid(trace, totalMillions) {
   const totalPrecision = Math.max(6, (String(totalMillions).split('.')[1] || '').length);
-  let grid = generateGridFromTraces(points, { totalMillions });
+  const fittingPoints = applyTopBandWeight(trace.points, trace.topBandWeight ?? 1);
+  let grid = generateGridFromTraces(fittingPoints, { totalMillions });
   const problems = validateGrid(grid);
   if (problems.length) throw new Error(`grid validation failed: ${JSON.stringify(problems)}`);
 
@@ -42,7 +47,7 @@ function buildExactGrid(points, totalMillions) {
 async function importLayer(client, definition) {
   assertPrimaryMedium(definition.primaryMedium, definition.name || 'manifest layer');
   const trace = JSON.parse(fs.readFileSync(resolveFromRoot(definition.traceFile), 'utf8'));
-  const grid = buildExactGrid(trace.points, definition.totalMillions);
+  const grid = buildExactGrid(trace, definition.totalMillions);
   const gridJson = JSON.stringify(grid);
   const icon = `data:image/png;base64,${fs.readFileSync(resolveFromRoot(definition.iconFile)).toString('base64')}`;
 
