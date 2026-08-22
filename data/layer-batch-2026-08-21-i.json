@@ -1,0 +1,14 @@
+{
+  "layers": [
+    {
+      "name": "Steven Crowder",
+      "rank": 105,
+      "affiliation": "RUMBLE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "totalMillions": 1.826998,
+      "traceFile": "data/steven-crowder-trace-points.json",
+      "iconFile": "attached_assets/105_Steven_Crowder_1787359986755.png"
+    }
+  ]
+}
