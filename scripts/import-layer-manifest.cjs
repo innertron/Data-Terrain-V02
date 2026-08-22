@@ -103,14 +103,30 @@ async function main() {
       await importLayer(client, definition);
     }
     for (const update of manifest.metadataUpdates ?? []) {
+      const assignments = [];
+      const values = [];
+      if ("isAfricanAmerican" in update) {
+        assignments.push(`is_african_american = $${values.length + 1}`);
+        values.push(update.isAfricanAmerican === true);
+      }
+      if (update.iconFile) {
+        assignments.push(`icon = $${values.length + 1}`);
+        values.push(
+          `data:image/png;base64,${fs.readFileSync(resolveFromRoot(update.iconFile)).toString("base64")}`,
+        );
+      }
+      if (assignments.length === 0) {
+        throw new Error(`metadata update for "${update.name}" has no supported fields`);
+      }
+      values.push(update.name);
       const result = await client.query(
-        'UPDATE layers SET is_african_american = $1 WHERE name = $2 RETURNING id',
-        [update.isAfricanAmerican === true, update.name],
+        `UPDATE layers SET ${assignments.join(", ")} WHERE name = $${values.length} RETURNING id`,
+        values,
       );
       if (result.rowCount === 0) {
         console.warn(`metadata update skipped; layer not found: ${update.name}`);
       } else {
-        console.log(`updated ${update.name} African American flag — ${update.isAfricanAmerican === true}`);
+        console.log(`updated ${update.name}: ${assignments.map(field => field.split(" = ")[0]).join(", ")}`);
       }
     }
     await client.query('COMMIT');

@@ -341,25 +341,51 @@ export async function registerRoutes(
   // POST /api/layers — add a new layer from CSV text
   app.post("/api/layers", async (req, res) => {
     try {
-      const { name, color, csv, rank, affiliation, primaryMedium, gender, isAfricanAmerican } = newLayerSchema.parse(req.body);
+      const {
+        name,
+        name2,
+        description,
+        icon,
+        color,
+        csv,
+        originalCsv,
+        active,
+        params,
+        rank,
+        affiliation,
+        primaryMedium,
+        gender,
+        isAfricanAmerican,
+      } = newLayerSchema.parse(req.body);
       const grid = parseCsvGrid(csv);
-      if (grid.length !== 25 || grid.some(r => r.length !== 25)) {
+      const originalGrid = originalCsv ? parseCsvGrid(originalCsv) : grid;
+      const isValidGrid = (candidate: number[][]) =>
+        candidate.length === 25 &&
+        candidate.every(
+          row => row.length === 25 && row.every(Number.isFinite),
+        );
+      if (!isValidGrid(grid) || !isValidGrid(originalGrid)) {
         return res.status(400).json({ message: "CSV must be a 25×25 grid (header + 25 rows, 25 columns each)" });
       }
       const gridJson = JSON.stringify(grid);
+      const originalGridJson = JSON.stringify(originalGrid);
       const layer = await storage.createLayer({
         name,
+        ...(name2 !== undefined ? { name2 } : {}),
+        ...(description !== undefined ? { description } : {}),
+        ...(icon !== undefined ? { icon } : {}),
         color,
         gridValues: gridJson,
-        originalGridValues: gridJson,  // permanent backup — never touched by skew
-        active: true,
+        originalGridValues: originalGridJson,  // permanent backup — never touched by skew
+        active: active ?? true,
+        ...(params !== undefined ? { params } : {}),
         ...(rank !== undefined ? { rank } : {}),
         ...(affiliation ? { affiliation } : {}),
         ...(primaryMedium ? { primaryMedium } : {}),
         ...(gender ? { gender } : {}),
         ...(isAfricanAmerican !== undefined ? { isAfricanAmerican } : {}),
       });
-      res.status(201).json({ id: layer.id, name: layer.name, color: layer.color, active: layer.active, gridValues: grid, rank: layer.rank, affiliation: layer.affiliation, primaryMedium: layer.primaryMedium, gender: layer.gender, isAfricanAmerican: layer.isAfricanAmerican });
+      res.status(201).json(serializeLayerForApi(layer));
     } catch (err) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
       console.error(err);

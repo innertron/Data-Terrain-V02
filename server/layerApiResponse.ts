@@ -15,6 +15,9 @@ export function serializeLayerForApi(layer: Layer) {
     color: layer.color,
     active: layer.active,
     gridValues: JSON.parse(layer.gridValues) as number[][],
+    originalGridValues: layer.originalGridValues
+      ? JSON.parse(layer.originalGridValues) as number[][]
+      : null,
     params: layer.params ?? null,
     rank: layer.rank ?? null,
     affiliation: layer.affiliation ?? null,

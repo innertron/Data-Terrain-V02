@@ -30,3 +30,18 @@ test("layer API serialization does not hide persisted legacy media", () => {
 
   assert.equal(response.primaryMedium, "Podcast / YouTube");
 });
+
+test("layer API serialization exposes the immutable original grid snapshot", () => {
+  const stored = makeStoredLayer("Podcast");
+  stored.gridValues = "[[0.75]]";
+  stored.originalGridValues = "[[1.234567]]";
+  stored.active = false;
+  stored.params = '{"shape":"circle","amplitude":2}';
+
+  const response = serializeLayerForApi(stored);
+
+  assert.deepEqual(response.gridValues, [[0.75]]);
+  assert.deepEqual(response.originalGridValues, [[1.234567]]);
+  assert.equal(response.active, false);
+  assert.equal(response.params, '{"shape":"circle","amplitude":2}');
+});

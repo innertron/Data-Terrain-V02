@@ -34,3 +34,19 @@ test("layer creation rejects legacy overlapping medium labels", () => {
     assert.equal(result.success, false, primaryMedium);
   }
 });
+
+test("layer creation accepts exact-sync state and rejects invalid params", () => {
+  const exactState = newLayerSchema.safeParse({
+    ...requiredLayerFields,
+    originalCsv: "x1\n1.234567",
+    active: false,
+    params: '{"shape":"circle","amplitude":2}',
+  });
+  assert.equal(exactState.success, true);
+
+  const invalidParams = newLayerSchema.safeParse({
+    ...requiredLayerFields,
+    params: "{not-json}",
+  });
+  assert.equal(invalidParams.success, false);
+});

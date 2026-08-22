@@ -7,11 +7,13 @@
 // description, icon, and demographic flags. Production ends up identical to dev.
 
 import primaryMedia from "./primary-media.cjs";
+import traceTools from "./rebuild-layer-grids-from-traces.cjs";
 import { pathToFileURL } from "node:url";
 
 const DEV = "http://localhost:5000";
 const PROD = "https://data-terrain-v-02.replit.app";
 const MEDIUM_ONLY = process.argv.includes("--medium-only");
+const TRACE_TOTAL_TOLERANCE = 1e-9;
 const PRIMARY_MEDIA = new Set(primaryMedia.PRIMARY_MEDIA);
 const ALL_METADATA_FIELDS = [
   "name2",
@@ -23,6 +25,14 @@ const ALL_METADATA_FIELDS = [
   "gender",
   "isAfricanAmerican",
 ];
+const FULL_SYNC_FIELDS = [
+  "color",
+  "gridValues",
+  "originalGridValues",
+  "active",
+  "params",
+  ...ALL_METADATA_FIELDS,
+];
 const MEDIUM_SYNC_FIELDS = ["affiliation", "primaryMedium"];
 const MEDIUM_SYNC_PROTECTED_FIELDS = [
   "id",
@@ -32,6 +42,7 @@ const MEDIUM_SYNC_PROTECTED_FIELDS = [
   "icon",
   "color",
   "gridValues",
+  "originalGridValues",
   "active",
   "params",
   "rank",
@@ -48,6 +59,88 @@ async function getJson(url) {
 function gridToCsv(grid) {
   const header = Array.from({ length: 25 }, (_, i) => `x${i + 1}`).join(",");
   return header + "\n" + grid.map((r) => r.join(",")).join("\n");
+}
+
+function assertGrid(grid, label) {
+  if (
+    !Array.isArray(grid) ||
+    grid.length !== 25 ||
+    grid.some(
+      row =>
+        !Array.isArray(row) ||
+        row.length !== 25 ||
+        row.some(value => !Number.isFinite(value)),
+    )
+  ) {
+    throw new Error(`${label} must be a finite 25x25 numeric grid`);
+  }
+}
+
+function assertTransferableLayerValues(layer, environment) {
+  if (!PRIMARY_MEDIA.has(layer.primaryMedium)) {
+    throw new Error(
+      `${environment} contains invalid primary media: ` +
+      `${layer.name} (${layer.primaryMedium ?? "empty"})`,
+    );
+  }
+  assertGrid(layer.gridValues, `${environment} "${layer.name}" gridValues`);
+  assertGrid(
+    layer.originalGridValues,
+    `${environment} "${layer.name}" originalGridValues`,
+  );
+  if (typeof layer.active !== "boolean") {
+    throw new Error(`${environment} "${layer.name}" active must be boolean`);
+  }
+  if (layer.params != null) {
+    if (typeof layer.params !== "string") {
+      throw new Error(`${environment} "${layer.name}" params must be JSON text or null`);
+    }
+    try {
+      JSON.parse(layer.params);
+    } catch {
+      throw new Error(`${environment} "${layer.name}" params contains invalid JSON`);
+    }
+  }
+}
+
+function sumGrid(grid) {
+  return grid.flat().reduce((sum, value) => sum + value, 0);
+}
+
+function loadTraceTotals(layerNames) {
+  const totals = new Map();
+  const groups = traceTools.loadTraceGroups(layerNames);
+  for (const name of layerNames) {
+    const candidates = groups.get(name) ?? [];
+    if (candidates.length === 0) continue;
+    const trace = traceTools.chooseTrace(name, candidates);
+    if (Number.isFinite(trace.totalMillions)) {
+      totals.set(name, trace.totalMillions);
+    }
+  }
+  return totals;
+}
+
+function assertTransferableLayers(layers, environment) {
+  indexLayersByName(layers, environment);
+  assertCanonicalMedia(layers, environment);
+  for (const layer of layers) {
+    assertTransferableLayerValues(layer, environment);
+  }
+}
+
+function assertTraceTotals(layers, traceTotals) {
+  for (const layer of layers) {
+    const expected = traceTotals.get(layer.name);
+    if (expected === undefined) continue;
+    const actual = sumGrid(layer.originalGridValues);
+    if (Math.abs(actual - expected) > TRACE_TOTAL_TOLERANCE) {
+      throw new Error(
+        `Development "${layer.name}" original grid total ${actual} ` +
+        `does not match trace total ${expected}`,
+      );
+    }
+  }
 }
 
 function valuesMatch(left, right) {
@@ -106,6 +199,151 @@ function assertMatchingFields(devLayers, prodLayers, fields, label) {
   }
 }
 
+function matchingFields(devLayers, prodLayers, fields) {
+  try {
+    assertMatchingFields(devLayers, prodLayers, fields, "Layer fields");
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function layerFieldsMatch(left, right, fields) {
+  return fields.every(field => valuesMatch(left[field], right[field]));
+}
+
+function groupLayersByName(layers) {
+  const groups = new Map();
+  for (const layer of layers) {
+    groups.set(layer.name, [...(groups.get(layer.name) ?? []), layer]);
+  }
+  return groups;
+}
+
+function createBody(layer) {
+  return {
+    name: layer.name,
+    color: layer.color,
+    csv: gridToCsv(layer.gridValues),
+    originalCsv: gridToCsv(layer.originalGridValues),
+    active: layer.active,
+    params: layer.params,
+    ...(layer.name2 ? { name2: layer.name2 } : {}),
+    ...(layer.description ? { description: layer.description } : {}),
+    ...(layer.icon ? { icon: layer.icon } : {}),
+    ...(layer.rank != null ? { rank: layer.rank } : {}),
+    ...(layer.affiliation ? { affiliation: layer.affiliation } : {}),
+    ...(layer.primaryMedium ? { primaryMedium: layer.primaryMedium } : {}),
+    ...(layer.gender ? { gender: layer.gender } : {}),
+    ...(layer.isAfricanAmerican ? { isAfricanAmerican: true } : {}),
+  };
+}
+
+async function deleteProductionLayer(layer, purpose) {
+  const res = await fetch(`${PROD}/api/layers/${layer.id}`, { method: "DELETE" });
+  if (!res.ok) {
+    throw new Error(
+      `${purpose} "${layer.name}" (id ${layer.id}) -> ${res.status} ${await res.text()}`,
+    );
+  }
+}
+
+async function cleanupStagedLayers(stagedLayers) {
+  const failures = [];
+  for (const layer of [...stagedLayers].reverse()) {
+    try {
+      await deleteProductionLayer(layer, "Cleanup failed for staged layer");
+    } catch (error) {
+      failures.push(error.message);
+    }
+  }
+  if (failures.length) {
+    throw new Error(failures.join("\n"));
+  }
+}
+
+async function reconcileInterruptedFullSync(devLayers, prodLayers) {
+  const groups = groupLayersByName(prodLayers);
+  const duplicateGroups = [...groups.values()].filter(group => group.length > 1);
+  if (duplicateGroups.length === 0) return prodLayers;
+
+  for (const layer of prodLayers) {
+    assertTransferableLayerValues(layer, "Production recovery");
+  }
+
+  const devByName = indexLayersByName(devLayers, "Development");
+  const selected = new Map();
+  let hasCompleteReplacementSet = true;
+  for (const [name, source] of devByName) {
+    const exactCandidates = (groups.get(name) ?? [])
+      .filter(candidate => layerFieldsMatch(source, candidate, FULL_SYNC_FIELDS))
+      .sort((left, right) => right.id - left.id);
+    if (exactCandidates.length === 0) {
+      hasCompleteReplacementSet = false;
+      break;
+    }
+    selected.set(name, exactCandidates[0]);
+  }
+
+  let staleLayers;
+  if (hasCompleteReplacementSet) {
+    const selectedIds = new Set([...selected.values()].map(layer => layer.id));
+    staleLayers = prodLayers.filter(layer => !selectedIds.has(layer.id));
+    console.log(
+      `Resuming interrupted full sync: keeping ${selectedIds.size} verified ` +
+      `replacement(s) and removing ${staleLayers.length} stale row(s).`,
+    );
+  } else {
+    staleLayers = duplicateGroups.flatMap(group =>
+      [...group].sort((left, right) => left.id - right.id).slice(1),
+    );
+    console.log(
+      `Rolling back incomplete staging: removing ${staleLayers.length} ` +
+      `duplicate replacement row(s) before retry.`,
+    );
+  }
+
+  for (const layer of staleLayers) {
+    await deleteProductionLayer(layer, "Recovery delete failed for");
+  }
+  return getJson(`${PROD}/api/layers`);
+}
+
+function assertAxisSettings(settings, environment) {
+  for (const key of ["axis_x", "axis_z"]) {
+    if (settings[key] != null && typeof settings[key] !== "string") {
+      throw new Error(`${environment} setting ${key} must be text`);
+    }
+  }
+}
+
+async function reconcileAxisSettings(devSettings, prodSettings) {
+  let changed = false;
+  for (const key of ["axis_x", "axis_z"]) {
+    const desired = devSettings[key];
+    if (desired == null || prodSettings[key] === desired) continue;
+    const res = await fetch(`${PROD}/api/settings/${key}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ value: desired }),
+    });
+    if (!res.ok) {
+      throw new Error(`Sync ${key} -> ${res.status} ${await res.text()}`);
+    }
+    changed = true;
+    console.log(`  synced ${key}`);
+  }
+  if (!changed) return;
+
+  const finalSettings = await getJson(`${PROD}/api/settings`);
+  for (const key of ["axis_x", "axis_z"]) {
+    const desired = devSettings[key];
+    if (desired != null && finalSettings[key] !== desired) {
+      throw new Error(`Production setting ${key} does not match development`);
+    }
+  }
+}
+
 async function syncMediumMetadata(devLayers, prodLayers) {
   assertCanonicalMedia(devLayers, "Development");
   const { devByName, prodByName } = assertSameLayerNames(devLayers, prodLayers);
@@ -157,82 +395,85 @@ async function syncMediumMetadata(devLayers, prodLayers) {
   );
 }
 
-async function syncFull(devLayers, prodLayers) {
-  assertCanonicalMedia(devLayers, "Development");
+async function syncFull(devLayers, prodLayers, traceTotals) {
+  // Complete every source and capability check before the first production write.
+  assertTransferableLayers(devLayers, "Development");
+  assertTraceTotals(devLayers, traceTotals);
+  prodLayers = await reconcileInterruptedFullSync(devLayers, prodLayers);
+  assertTransferableLayers(prodLayers, "Production");
+  const [devSettings, prodSettings] = await Promise.all([
+    getJson(`${DEV}/api/settings`),
+    getJson(`${PROD}/api/settings`),
+  ]);
+  assertAxisSettings(devSettings, "Development");
+  assertAxisSettings(prodSettings, "Production");
+  await reconcileAxisSettings(devSettings, prodSettings);
 
-  // 1. Delete everything currently in prod (prod becomes an exact mirror of dev)
-  for (const l of prodLayers) {
-    const res = await fetch(`${PROD}/api/layers/${l.id}`, { method: "DELETE" });
-    console.log(`  deleted prod "${l.name}" (id ${l.id}) -> ${res.status}`);
+  if (matchingFields(devLayers, prodLayers, FULL_SYNC_FIELDS)) {
+    console.log(`Done. Production already matches all ${devLayers.length} development layers.`);
+    return;
   }
 
-  // 2. Recreate every dev layer in prod
-  for (const l of devLayers) {
-    const body = {
-      name: l.name,
-      color: l.color,
-      csv: gridToCsv(l.gridValues),
-      ...(l.rank != null ? { rank: l.rank } : {}),
-      ...(l.affiliation ? { affiliation: l.affiliation } : {}),
-      ...(l.primaryMedium ? { primaryMedium: l.primaryMedium } : {}),
-      ...(l.gender ? { gender: l.gender } : {}),
-      ...(l.isAfricanAmerican ? { isAfricanAmerican: true } : {}),
-    };
-    const res = await fetch(`${PROD}/api/layers`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    if (!res.ok) {
-      console.error(`  FAILED to create "${l.name}": ${res.status} ${await res.text()}`);
-      process.exitCode = 1;
-      continue;
-    }
-    const created = await res.json();
-    console.log(`  created prod "${l.name}" (id ${created.id})`);
-
-    // 3. Copy secondary meta (name2, description, icon, demographic flags) if present
-    if (l.name2 || l.description || l.icon || l.isAfricanAmerican) {
-      const patch = await fetch(`${PROD}/api/layers/${created.id}/rename`, {
-        method: "PATCH",
+  // Stage and verify a complete replacement set while every old row still exists.
+  const stagedLayers = [];
+  try {
+    for (const layer of devLayers) {
+      const res = await fetch(`${PROD}/api/layers`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: l.name,
-          ...(l.name2 ? { name2: l.name2 } : {}),
-          ...(l.description ? { description: l.description } : {}),
-          ...(l.icon ? { icon: l.icon } : {}),
-          ...(l.isAfricanAmerican ? { isAfricanAmerican: true } : {}),
-        }),
+        body: JSON.stringify(createBody(layer)),
       });
-      console.log(`    meta patch -> ${patch.status}`);
+      if (!res.ok) {
+        throw new Error(
+          `Create staged layer "${layer.name}" -> ${res.status} ${await res.text()}`,
+        );
+      }
+      const created = await res.json();
+      if (!Number.isInteger(created.id)) {
+        throw new Error(`Create staged layer "${layer.name}" returned no numeric id`);
+      }
+      stagedLayers.push(created);
+      assertTransferableLayers([created], "Staged production");
+      assertMatchingFields(
+        [layer],
+        [created],
+        FULL_SYNC_FIELDS,
+        `Staged production layer "${layer.name}"`,
+      );
+      console.log(`  staged prod "${layer.name}" (id ${created.id})`);
     }
+  } catch (error) {
+    try {
+      await cleanupStagedLayers(stagedLayers);
+    } catch (cleanupError) {
+      throw new Error(`${error.message}\n${cleanupError.message}`);
+    }
+    throw error;
   }
 
-  // 4. Sync axis data (X/Z labels + descriptions) stored in project settings
-  const devSettings = await getJson(`${DEV}/api/settings`);
-  for (const key of ["axis_x", "axis_z"]) {
-    if (!devSettings[key]) continue;
-    const res = await fetch(`${PROD}/api/settings/${key}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ value: devSettings[key] }),
-    });
-    console.log(`  synced ${key} -> ${res.status}`);
+  // Replacements are complete and verified. Removing an old row can no longer
+  // make its layer disappear, because its staged replacement is already live.
+  for (const layer of prodLayers) {
+    await deleteProductionLayer(layer, "Delete old production layer failed for");
+    console.log(`  deleted old prod "${layer.name}" (id ${layer.id})`);
   }
 
-  // 5. Verify
+  // Verify the final name set and every transferable field.
   const final = await getJson(`${PROD}/api/layers`);
-  assertCanonicalMedia(final, "Production");
+  assertTransferableLayers(final, "Production");
   assertMatchingFields(
     devLayers,
     final,
-    ALL_METADATA_FIELDS,
-    "Development and production metadata",
+    FULL_SYNC_FIELDS,
+    "Development and production layers",
   );
   console.log(`Done. Prod now has ${final.length} layers: ${final.map((l) => l.name).join(", ")}`);
 }
 
-export async function syncProduction({ mediumOnly = MEDIUM_ONLY } = {}) {
+export async function syncProduction({
+  mediumOnly = MEDIUM_ONLY,
+  traceTotals = null,
+} = {}) {
   const devLayers = await getJson(`${DEV}/api/layers`);
   const prodLayers = await getJson(`${PROD}/api/layers`);
   console.log(`Dev layers: ${devLayers.length} | Prod layers: ${prodLayers.length}`);
@@ -241,7 +482,11 @@ export async function syncProduction({ mediumOnly = MEDIUM_ONLY } = {}) {
     await syncMediumMetadata(devLayers, prodLayers);
     return;
   }
-  await syncFull(devLayers, prodLayers);
+  await syncFull(
+    devLayers,
+    prodLayers,
+    traceTotals ?? loadTraceTotals(devLayers.map(layer => layer.name)),
+  );
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

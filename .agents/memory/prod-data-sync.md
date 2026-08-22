@@ -11,8 +11,14 @@ For primary-medium or affiliation corrections, use the metadata-only sync. Do no
 
 **How to apply:** Run `node scripts/sync-prod.js --medium-only` for primary-medium/affiliation corrections; it uses the live API and verifies protected fields. Use the full sync only when an exact destructive mirror is explicitly intended. Never write production data with DDL/SQL.
 
-Before a full layer sync, compare each trace-backed layer's current `gridValues` total with the exact `totalMillions` in its saved trace. The skew endpoint rounds working-grid cells to four decimals, while `originalGridValues` retains the exact imported grid; syncing the mutable working grid can therefore make live ViewerScore totals drift.
+Full layer syncs must treat each layer's immutable original grid as the authoritative snapshot, validate it against any saved trace total, and preserve the mutable working grid separately.
 
-**Why:** A full mirror copied rounded development working grids to production, causing exact imported totals to display incorrectly even though development's permanent originals were still correct.
+**Why:** Working grids can be rounded or skewed. Reusing one as the new original changes exact ViewerScore totals and destroys the restore point.
 
-**How to apply:** Restore affected development layers from their original snapshots, verify their exact totals, then replace only those live rows when possible. Create and verify each replacement before deleting its old production row so a failed repair cannot leave the layer missing.
+**How to apply:** Preflight dimensions, finite values, and trace totals; stage and verify complete replacements before deleting old rows; transfer original and working grids, active state, and shape parameters independently.
+
+Full-sync retries must treat duplicate layer names as resumable state, not an unrecoverable validation error.
+
+**Why:** A transient failure while deleting old rows can leave verified replacements beside stale rows. Rejecting duplicates on retry strands production in a hybrid state.
+
+**How to apply:** If every development layer has an exact replacement candidate, keep one verified candidate per name and delete only stale rows. If staging was incomplete, remove only newer duplicates before restaging.

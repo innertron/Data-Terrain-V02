@@ -1,0 +1,34 @@
+{
+  "layers": [
+    {
+      "name": "Lex Fridman",
+      "rank": 46,
+      "affiliation": "YOUTUBE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "totalMillions": 5.779149,
+      "traceFile": "data/lex-fridman-trace-points.json",
+      "iconFile": "attached_assets/046_Lex_Fridman_1787351072840.png"
+    },
+    {
+      "name": "Sarah Isgur",
+      "rank": 95,
+      "affiliation": "The Dispatch",
+      "gender": "Female",
+      "primaryMedium": "Podcast",
+      "totalMillions": 2.083756,
+      "traceFile": "data/sarah-isgur-trace-points.json",
+      "iconFile": "attached_assets/095_Sarah_Isgur_1787351072841.png"
+    },
+    {
+      "name": "Patrick Bet-David",
+      "rank": 120,
+      "affiliation": "VALUETAINMENT",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "totalMillions": 1.441861,
+      "traceFile": "data/patrick-bet-david-trace-points.json",
+      "iconFile": "attached_assets/120_Patrick_Bet-David_1787351072841.png"
+    }
+  ]
+}
