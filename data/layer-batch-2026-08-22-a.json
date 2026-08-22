@@ -1,0 +1,14 @@
+{
+  "layers": [
+    {
+      "name": "Alyssa Farah",
+      "rank": 115,
+      "affiliation": "The View",
+      "gender": "Female",
+      "primaryMedium": "Broadcast TV",
+      "totalMillions": 1.570240,
+      "traceFile": "data/alyssa-farah-trace-points.json",
+      "iconFile": "attached_assets/128_Alyssa_Farah_1787361410813.png"
+    }
+  ]
+}
