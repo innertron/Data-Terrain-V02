@@ -5,6 +5,7 @@
       "rank": 113,
       "affiliation": "RUMBLE",
       "gender": "Male",
+      "isAfricanAmerican": true,
       "primaryMedium": "Podcast",
       "totalMillions": 2.160784,
       "traceFile": "data/dan-bongino-trace-points.json",
