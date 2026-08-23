@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Glenn Beck",
+      "rank": 149,
+      "affiliation": "BLAZE",
+      "gender": "Male",
+      "primaryMedium": "Radio",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.416185,
+      "traceFile": "data/glenn-beck-trace-points.json",
+      "iconFile": "attached_assets/149_Glenn_Beck_1787454755436.png"
+    }
+  ]
+}
