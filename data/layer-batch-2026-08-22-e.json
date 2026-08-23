@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Brett Cooper",
+      "rank": 136,
+      "affiliation": "YOUTUBE",
+      "gender": "Female",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.031047,
+      "traceFile": "data/brett-cooper-trace-points.json",
+      "iconFile": "attached_assets/136_Brett_Cooper_1787454049111.png"
+    }
+  ]
+}
