@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Ben Shapiro",
+      "rank": 25,
+      "affiliation": "DAILYWIRE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 9.706126,
+      "traceFile": "data/ben-shapiro-trace-points.json",
+      "iconFile": "attached_assets/025_Ben_Shapiro_1787645125917.png"
+    }
+  ]
+}
