@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { Landscape3D } from "@/components/Landscape3D";
-import { type LayerDef, fetchLayers, computeLayerValues, getFilteredLayerState } from "@/lib/layers";
+import { type LayerDef, fetchLayers, computeLayerValues, getFilteredLayerState, normalizeAxisRange } from "@/lib/layers";
 import { useAxisData } from "@/lib/axisData";
 import { AxisTools } from "@/components/AxisTools";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useUpdateSegment } from "@/hooks/use-segments";
@@ -126,6 +127,9 @@ export default function Home() {
   const [layerMode, setLayerMode] = useState<'layers' | 'details'>('details');
   const [layerDefs, setLayerDefs] = useState<LayerDef[]>([]);
   const [activeLayers, setActiveLayers] = useState<number[]>([]);
+  // Local display lens: full range is intentionally neutral and preserves the terrain.
+  const [politicalRange, setPoliticalRange] = useState<[number, number]>([0, 24]);
+  const [incomeRange, setIncomeRange] = useState<[number, number]>([0, 24]);
 
   const { xLabels, xDescriptions, zLabels, zDescriptions } = useAxisData();
 
@@ -474,7 +478,7 @@ export default function Home() {
       {/* 3D Viewport - Takes dominant space */}
       <div className="flex-1 flex flex-col min-h-0 order-2 md:order-1">
        <div className="flex-1 relative min-h-0">
-        <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} effectiveValues={effectiveValues} rawLayerValues={rawLayerValues} onCameraChange={(x,y,z) => setCameraPos({x,y,z})} />
+         <Landscape3D onSelectSegment={handleSelect} isDark={theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)} surfMode={surfMode} effectiveValues={effectiveValues} rawLayerValues={rawLayerValues} xRange={politicalRange} zRange={incomeRange} onCameraChange={(x,y,z) => setCameraPos({x,y,z})} />
         
         {/* Header Overlay — left: minedICE logo, right: project title + dates */}
         <div className="absolute top-4 left-6 right-6 z-10 pointer-events-none flex items-start justify-between">
@@ -567,7 +571,27 @@ export default function Home() {
             </div>
            {/* Right: Political Domain + Income/Education */}
            <div className="flex flex-col gap-2 p-3 flex-1">
-             <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0 relative" style={detailBgStyle}>
+              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0 relative" style={detailBgStyle}>
+                <div className="mb-2 pr-7" data-testid="range-widget-political">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">X / political window</span>
+                    <div className="flex min-w-0 items-center gap-1.5">
+                      {(politicalRange[0] !== 0 || politicalRange[1] !== 24) && (
+                        <button type="button" onClick={() => setPoliticalRange([0, 24])} className="font-mono text-[8px] uppercase tracking-wider text-sky-600 hover:text-sky-500" data-testid="reset-political-range">Full</button>
+                      )}
+                      <span className="font-mono text-[9px] text-foreground/75 truncate">{xLabels[politicalRange[0]] || "—"} <span className="text-muted-foreground">→</span> {xLabels[politicalRange[1]] || "—"}</span>
+                    </div>
+                  </div>
+                  <Slider
+                    min={0}
+                    max={24}
+                    step={1}
+                    value={politicalRange}
+                    onValueChange={(value) => value.length === 2 && setPoliticalRange(normalizeAxisRange([value[0], value[1]]))}
+                    aria-label="Political domain range"
+                    className="h-4 [&_[data-slot=slider-track]]:h-1 [&_[data-slot=slider-range]]:bg-sky-500 [&_[data-slot=slider-thumb]]:h-4 [&_[data-slot=slider-thumb]]:w-4 [&_[data-slot=slider-thumb]]:border-sky-600 [&_[data-slot=slider-thumb]]:bg-background"
+                  />
+                </div>
                <button
                  onClick={() => setShowPoliticalPopup(true)}
                  className="absolute top-1.5 right-1.5 p-1 text-foreground/70 hover:text-foreground transition-colors z-10"
@@ -581,7 +605,27 @@ export default function Home() {
                  <span className="text-foreground/80"><strong style={{ color: getXLabelColor(selectedSegment.xIndex) }}>{xLabels[selectedSegment.xIndex] || selectedSegment.xLabel}</strong>{' → '}{renderPolitical(xDescriptions[selectedSegment.xIndex] || '')}</span>
                </div>
              </div>
-             <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0 relative" style={detailBgStyle}>
+              <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0 relative" style={detailBgStyle}>
+                <div className="mb-2 pr-7" data-testid="range-widget-income">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">Z / income + education window</span>
+                    <div className="flex min-w-0 items-center gap-1.5">
+                      {(incomeRange[0] !== 0 || incomeRange[1] !== 24) && (
+                        <button type="button" onClick={() => setIncomeRange([0, 24])} className="font-mono text-[8px] uppercase tracking-wider text-sky-600 hover:text-sky-500" data-testid="reset-income-range">Full</button>
+                      )}
+                      <span className="font-mono text-[9px] text-foreground/75 truncate">{zLabels[incomeRange[0]] || "—"} <span className="text-muted-foreground">→</span> {zLabels[incomeRange[1]] || "—"}</span>
+                    </div>
+                  </div>
+                  <Slider
+                    min={0}
+                    max={24}
+                    step={1}
+                    value={incomeRange}
+                    onValueChange={(value) => value.length === 2 && setIncomeRange(normalizeAxisRange([value[0], value[1]]))}
+                    aria-label="Income and education range"
+                    className="h-4 [&_[data-slot=slider-track]]:h-1 [&_[data-slot=slider-range]]:bg-sky-500 [&_[data-slot=slider-thumb]]:h-4 [&_[data-slot=slider-thumb]]:w-4 [&_[data-slot=slider-thumb]]:border-sky-600 [&_[data-slot=slider-thumb]]:bg-background"
+                  />
+                </div>
                <button
                  onClick={() => setShowIncomePopup(true)}
                  className="absolute top-1.5 right-1.5 p-1 text-foreground/70 hover:text-foreground transition-colors z-10"

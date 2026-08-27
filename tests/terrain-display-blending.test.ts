@@ -5,6 +5,8 @@ import {
   blendTerrainTransitions,
   compressTerrainHeights,
   computeLayerValues,
+  getRangeCellState,
+  normalizeAxisRange,
 } from "../client/src/lib/layers";
 
 function filledGrid(value: number): number[][] {
@@ -81,4 +83,34 @@ test("does not alter gradual nonzero slopes", () => {
     blended[12].slice(10, 13),
     [20, 30, 40],
   );
+});
+
+test("classifies range lens cells as intersection, strand, or outside", () => {
+  const x: [number, number] = [4, 8];
+  const z: [number, number] = [10, 14];
+  assert.equal(getRangeCellState(6, 12, x, z), "intersection");
+  assert.equal(getRangeCellState(6, 3, x, z), "x-only");
+  assert.equal(getRangeCellState(1, 12, x, z), "z-only");
+  assert.equal(getRangeCellState(1, 3, x, z), "outside");
+});
+
+test("full range keeps every cell in the normal intersection", () => {
+  for (let x = 0; x < 25; x++) {
+    for (let z = 0; z < 25; z++) {
+      assert.equal(getRangeCellState(x, z, [0, 24], [0, 24]), "intersection");
+    }
+  }
+});
+
+test("normalizes reversed, fractional, and invalid range endpoints", () => {
+  assert.deepEqual(normalizeAxisRange([14, 4]), [4, 14]);
+  assert.deepEqual(normalizeAxisRange([-3, 28]), [0, 24]);
+  assert.deepEqual(normalizeAxisRange([4.4, 9.7]), [4, 10]);
+  assert.deepEqual(normalizeAxisRange([Number.NaN, Number.POSITIVE_INFINITY]), [0, 0]);
+});
+
+test("range endpoints are inclusive after normalization", () => {
+  assert.equal(getRangeCellState(8, 14, [8, 4], [14, 10]), "intersection");
+  assert.equal(getRangeCellState(4, 10, [8, 4], [14, 10]), "intersection");
+  assert.equal(getRangeCellState(3, 10, [8, 4], [14, 10]), "z-only");
 });

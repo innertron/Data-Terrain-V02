@@ -4,6 +4,7 @@ import { OrbitControls, Text, Billboard, Stars, Environment, Html } from "@react
 import * as THREE from "three";
 import { useSegments } from "@/hooks/use-segments";
 import { useAxisData } from "@/lib/axisData";
+import { getRangeCellState, type AxisRange } from "@/lib/layers";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -42,6 +43,23 @@ function getBarColor(value: number, maxValue: number, xIndex: number, isDark: bo
   }
 }
 
+function getRangeColor(
+  value: number,
+  maxValue: number,
+  xIndex: number,
+  isDark: boolean,
+  xRange: AxisRange,
+  zRange: AxisRange,
+  zIndex: number,
+) {
+  const normal = new THREE.Color(getBarColor(value, maxValue, xIndex, isDark));
+  const state = getRangeCellState(xIndex, zIndex, xRange, zRange);
+  if (state === "intersection") return normal;
+  const gray = new THREE.Color(isDark ? "#687078" : "#9aa0a3");
+  if (state === "outside") return gray;
+  return normal.lerp(gray, 0.5);
+}
+
 // --- Components ---
 
 function Bar({ 
@@ -52,6 +70,8 @@ function Bar({
   isSelected,
   isDark = true,
   overrideValue,
+  xRange,
+  zRange,
 }: { 
   data: GridSegment; 
   maxValue: number; 
@@ -60,18 +80,21 @@ function Bar({
   isSelected: boolean;
   isDark?: boolean;
   overrideValue?: number;
+  xRange: AxisRange;
+  zRange: AxisRange;
 }) {
   const ref = useRef<THREE.Mesh>(null);
   const [hovered, setHover] = useState(false);
 
-  const effectiveVal = overrideValue ?? data.value;
+  const rangeState = getRangeCellState(data.xIndex, data.zIndex, xRange, zRange);
+  const effectiveVal = rangeState === "intersection" ? (overrideValue ?? data.value) : 0;
   const height = Math.max((effectiveVal / maxValue) * MAX_HEIGHT, 0.1); 
   
   const xPos = (data.xIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const zPos = (data.zIndex - GRID_SIZE / 2) * (BAR_SIZE + GAP);
   const yPos = height / 2;
 
-  const color = useMemo(() => getBarColor(effectiveVal, maxValue, data.xIndex, isDark), [effectiveVal, maxValue, data.xIndex, isDark]);
+  const color = useMemo(() => getRangeColor(overrideValue ?? data.value, maxValue, data.xIndex, isDark, xRange, zRange, data.zIndex), [overrideValue, data.xIndex, data.zIndex, maxValue, isDark, xRange, zRange]);
 
   useFrame((state) => {
     if (!ref.current) return;
@@ -181,13 +204,15 @@ function AxisLabels({ isDark = true, xLabels, zLabels }: { isDark?: boolean; xLa
   );
 }
 
-function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, effectiveValues }: {
+function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, effectiveValues, xRange, zRange }: {
   segments: GridSegment[];
   maxValue: number;
   isDark: boolean;
   onHover: (s: GridSegment | null) => void;
   onSelectSegment: (s: GridSegment) => void;
   effectiveValues?: Map<string, number>;
+  xRange: AxisRange;
+  zRange: AxisRange;
 }) {
   const segMap = useMemo(() => new Map(segments.map(s => [`${s.xIndex},${s.zIndex}`, s])), [segments]);
 
@@ -211,11 +236,11 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, 
         const effectiveVal = effectiveValues
           ? (effectiveValues.get(`${xi},${zi}`) ?? 0)
           : (seg?.value ?? 0);
-        const height = (effectiveVal / maxValue) * MAX_HEIGHT;
+        const state = getRangeCellState(xi, zi, xRange, zRange);
+        const height = (state === "intersection" ? effectiveVal : 0) / maxValue * MAX_HEIGHT;
         positions[vi * 3 + 2] = height;
 
-        const cssColor = getBarColor(effectiveVal, maxValue, xi, isDark);
-        const color = new THREE.Color(cssColor);
+        const color = getRangeColor(effectiveVal, maxValue, xi, isDark, xRange, zRange, zi);
         colorArr[vi * 3] = color.r;
         colorArr[vi * 3 + 1] = color.g;
         colorArr[vi * 3 + 2] = color.b;
@@ -226,7 +251,7 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, 
     geo.attributes.position.needsUpdate = true;
     geo.computeVertexNormals();
     return geo;
-  }, [segments, maxValue, isDark, segMap, effectiveValues]);
+  }, [segments, maxValue, isDark, segMap, effectiveValues, xRange, zRange]);
 
   // Edge walls — vertical quads dropping to y=0 on any perimeter edge with height > 0
   const wallGeometry = useMemo(() => {
@@ -236,14 +261,14 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, 
     const getH = (row: number, col: number) => {
       const seg = segMap.get(`${col},${row}`);
       const ev = effectiveValues ? (effectiveValues.get(`${col},${row}`) ?? 0) : (seg?.value ?? 0);
-      return (ev / maxValue) * MAX_HEIGHT;
+      return getRangeCellState(col, row, xRange, zRange) === "intersection" ? (ev / maxValue) * MAX_HEIGHT : 0;
     };
     const getWX = (col: number) => (col / (GRID_SIZE - 1) - 0.5) * totalSize;
     const getWZ = (row: number) => (row / (GRID_SIZE - 1) - 0.5) * totalSize;
     const getRGB = (row: number, col: number): [number, number, number] => {
       const seg = segMap.get(`${col},${row}`);
       const ev = effectiveValues ? (effectiveValues.get(`${col},${row}`) ?? 0) : (seg?.value ?? 0);
-      const c = new THREE.Color(getBarColor(ev, maxValue, col, isDark));
+      const c = getRangeColor(ev, maxValue, col, isDark, xRange, zRange, row);
       return [c.r, c.g, c.b];
     };
 
@@ -274,7 +299,7 @@ function SurfaceTerrain({ segments, maxValue, isDark, onHover, onSelectSegment, 
     geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(colors),    3));
     geo.computeVertexNormals();
     return geo;
-  }, [segments, maxValue, isDark, segMap, effectiveValues]);
+  }, [segments, maxValue, isDark, segMap, effectiveValues, xRange, zRange]);
 
   const faceGeoRef = useRef<THREE.BufferGeometry>(null!);
   const [showFace, setShowFace] = useState(false);
@@ -407,7 +432,7 @@ function CameraTracker({ onCameraChange }: { onCameraChange?: (x: number, y: num
   return null;
 }
 
-export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues, onCameraChange, rawLayerValues }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; onCameraChange?: (x: number, y: number, z: number) => void; rawLayerValues?: Map<string, number>; }) {
+export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, effectiveValues, onCameraChange, rawLayerValues, xRange = [0, 24], zRange = [0, 24] }: { onSelectSegment: (s: GridSegment) => void; isDark?: boolean; surfMode?: boolean; effectiveValues?: Map<string, number>; onCameraChange?: (x: number, y: number, z: number) => void; rawLayerValues?: Map<string, number>; xRange?: AxisRange; zRange?: AxisRange; }) {
   const { data: segments, isLoading, error } = useSegments();
   const { xLabels, zLabels } = useAxisData();
   const [hoveredSegment, setHoveredSegment] = useState<GridSegment | null>(null);
@@ -486,6 +511,8 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
               onHover={hoverSelect}
               onSelectSegment={clickSelect}
               effectiveValues={effectiveValues}
+               xRange={xRange}
+               zRange={zRange}
             />
           ) : (
             segments.map((seg) => (
@@ -498,6 +525,8 @@ export function Landscape3D({ onSelectSegment, isDark = true, surfMode = false, 
                 isSelected={hoveredSegment?.id === seg.id}
                 isDark={isDark}
                 overrideValue={effectiveValues?.get(`${seg.xIndex},${seg.zIndex}`)}
+                xRange={xRange}
+                zRange={zRange}
               />
             ))
           )}

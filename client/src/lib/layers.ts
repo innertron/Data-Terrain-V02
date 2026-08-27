@@ -25,6 +25,36 @@ export type LayerFilters = {
   nameSearch: string;
 };
 
+export type AxisRange = readonly [number, number];
+export type RangeCellState = "intersection" | "x-only" | "z-only" | "outside";
+
+export function normalizeAxisRange(range: AxisRange): [number, number] {
+  const normalize = (value: number) => Math.max(
+    0,
+    Math.min(24, Number.isFinite(value) ? Math.round(value) : 0),
+  );
+  const start = normalize(range[0]);
+  const end = normalize(range[1]);
+  return start <= end ? [start, end] : [end, start];
+}
+
+/** Pure classification used by the range lens in both render modes. */
+export function getRangeCellState(
+  xIndex: number,
+  zIndex: number,
+  xRange: AxisRange,
+  zRange: AxisRange,
+): RangeCellState {
+  const [xMin, xMax] = normalizeAxisRange(xRange);
+  const [zMin, zMax] = normalizeAxisRange(zRange);
+  const inX = xIndex >= xMin && xIndex <= xMax;
+  const inZ = zIndex >= zMin && zIndex <= zMax;
+  if (inX && inZ) return "intersection";
+  if (inX) return "x-only";
+  if (inZ) return "z-only";
+  return "outside";
+}
+
 export type FilteredLayerState = {
   visibleLayers: LayerDef[];
   terrainLayers: LayerDef[];
