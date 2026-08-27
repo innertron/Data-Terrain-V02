@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Bill O'Reilly",
+      "rank": 73,
+      "affiliation": "NEWSNATION",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 3.186283,
+      "traceFile": "data/bill-oreilly-trace-points.json",
+      "iconFile": "attached_assets/073_Bill_O'Reilly_1787796089429.png"
+    }
+  ]
+}
