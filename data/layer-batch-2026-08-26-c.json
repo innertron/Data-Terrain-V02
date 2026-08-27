@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Nicolle Wallace",
+      "rank": 102,
+      "affiliation": "MS NOW",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.26213,
+      "traceFile": "data/nicolle-wallace-trace-points.json",
+      "iconFile": "attached_assets/102_Nicolle_Wallace_1787797170220.png"
+    }
+  ]
+}
