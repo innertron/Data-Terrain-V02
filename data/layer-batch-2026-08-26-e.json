@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Katie Pavlich",
+      "rank": 124,
+      "affiliation": "NEWSNATION",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.339157,
+      "traceFile": "data/katie-pavlich-trace-points.json",
+      "iconFile": "attached_assets/124_Katie_Pavlich_1787806580810.png"
+    }
+  ]
+}
