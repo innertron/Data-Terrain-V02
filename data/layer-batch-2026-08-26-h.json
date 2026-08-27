@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Blake Burman",
+      "rank": 29,
+      "affiliation": "NEWSNATION",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 8.469303,
+      "traceFile": "data/blake-burman-trace-points.json",
+      "iconFile": "attached_assets/029_Blake_Burman_1787810410428.png"
+    }
+  ]
+}
