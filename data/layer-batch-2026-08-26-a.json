@@ -1,0 +1,37 @@
+{
+  "layers": [
+    {
+      "name": "Piers Morgan",
+      "rank": 27,
+      "affiliation": "YOUTUBE",
+      "gender": "Male",
+      "primaryMedium": "Digital Video",
+      "isAfricanAmerican": false,
+      "totalMillions": 9.316976,
+      "traceFile": "data/piers-morgan-trace-points.json",
+      "iconFile": "attached_assets/027_Piers_Morgan_1787795391265.png"
+    },
+    {
+      "name": "Mark Levin",
+      "rank": 32,
+      "affiliation": "FOX",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 7.954219,
+      "traceFile": "data/mark-levin-trace-points.json",
+      "iconFile": "attached_assets/032_Mark_Levin_1787795391266.png"
+    },
+    {
+      "name": "Marni Hughes",
+      "rank": 53,
+      "affiliation": "NEWSNATION",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 4.988797,
+      "traceFile": "data/marni-hughes-trace-points.json",
+      "iconFile": "attached_assets/053_Marni_Hughes_1787795391266.png"
+    }
+  ]
+}
