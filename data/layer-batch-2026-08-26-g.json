@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Mary Louise Kelly",
+      "rank": 65,
+      "affiliation": "NPR",
+      "gender": "Female",
+      "primaryMedium": "Radio",
+      "isAfricanAmerican": false,
+      "totalMillions": 3.778518,
+      "traceFile": "data/mary-louise-kelly-trace-points.json",
+      "iconFile": "attached_assets/065_Mary_Louise_Kelly_1787810089936.png"
+    }
+  ]
+}
