@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Jesse Watters",
+      "rank": 15,
+      "affiliation": "Fox News",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 12.096588,
+      "traceFile": "data/jesse-watters-trace-points.json",
+      "iconFile": "attached_assets/015_Jesse_Watters_1787001243106.png"
+    }
+  ]
+}
