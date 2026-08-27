@@ -1,0 +1,48 @@
+{
+  "layers": [
+    {
+      "name": "Dana Perino",
+      "rank": 28,
+      "affiliation": "FOX",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 9.152883,
+      "traceFile": "data/dana-perino-trace-points.json",
+      "iconFile": "attached_assets/028_Dana_Perino_1787809621086.png"
+    },
+    {
+      "name": "Terry Gross",
+      "rank": 62,
+      "affiliation": "NPR",
+      "gender": "Female",
+      "primaryMedium": "Radio",
+      "isAfricanAmerican": false,
+      "totalMillions": 4.027037,
+      "traceFile": "data/terry-gross-trace-points.json",
+      "iconFile": "attached_assets/062_Terry_Gross_1787809621086.png"
+    },
+    {
+      "name": "David French",
+      "rank": 97,
+      "affiliation": "The New York Times",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.032405,
+      "traceFile": "data/david-french-trace-points.json",
+      "iconFile": "attached_assets/097_David_French_1787809702669.png"
+    },
+    {
+      "name": "Shawn Ryan",
+      "rank": 48,
+      "affiliation": "YOUTUBE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 5.561204,
+      "traceFile": "data/shawn-ryan-trace-points.json",
+      "iconFile": "attached_assets/048_Shawn_Ryan_1787809621087.png"
+    }
+  ]
+}
