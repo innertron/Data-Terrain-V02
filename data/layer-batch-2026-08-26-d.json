@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Joy Behar",
+      "rank": 119,
+      "affiliation": "The View",
+      "gender": "Female",
+      "primaryMedium": "Broadcast TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.26213,
+      "traceFile": "data/joy-behar-trace-points.json",
+      "iconFile": "attached_assets/119_Joy_Behar_1787798430069.png"
+    }
+  ]
+}
