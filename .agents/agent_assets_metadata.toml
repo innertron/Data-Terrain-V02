@@ -119,3 +119,17 @@ uri = "file://exports/Media_Classification_Chart.csv"
 type = "table"
 title = "Standardized Media Classification Chart"
 description = "All 150 ranked personalities preserved. Primary Medium now uses only Cable TV, Broadcast TV, Radio, Print, Podcast, Digital Video, or a blank value when the source was unclassified."
+
+[[outputs]]
+id = "feFckP5oLZAiGhR5AcLsI"
+uri = "file://attached_assets/image_1787645091778.png"
+type = "image"
+title = "Unused Ben crop 1"
+description = "Unused local image; not referenced by the app or committed to GitHub."
+
+[[outputs]]
+id = "b5Vz7WPkUNzlj8-fldTAt"
+uri = "file://attached_assets/image_1787645118613.png"
+type = "image"
+title = "Unused Ben crop 2"
+description = "Unused local image; not referenced by the app or committed to GitHub."
