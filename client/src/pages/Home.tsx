@@ -573,13 +573,13 @@ export default function Home() {
            <div className="flex flex-col gap-2 p-3 flex-1">
               <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0 relative" style={detailBgStyle}>
                 <div className="mb-2 pr-7" data-testid="range-widget-political">
-                  <div className="flex items-center justify-between gap-2 mb-1">
+                  <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1 mb-1">
                     <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">X / political window</span>
-                    <div className="flex min-w-0 items-center gap-1.5">
+                    <div className="ml-auto flex min-w-0 items-center gap-1.5">
                       {(politicalRange[0] !== 0 || politicalRange[1] !== 24) && (
                         <button type="button" onClick={() => setPoliticalRange([0, 24])} className="font-mono text-[8px] uppercase tracking-wider text-sky-600 hover:text-sky-500" data-testid="reset-political-range">Full</button>
                       )}
-                      <span className="font-mono text-[9px] text-foreground/75 truncate">{xLabels[politicalRange[0]] || "—"} <span className="text-muted-foreground">→</span> {xLabels[politicalRange[1]] || "—"}</span>
+                      <span className="font-mono text-lg font-bold leading-tight text-blue-900 truncate">{xLabels[politicalRange[0]] || "—"} <span className="text-blue-900">→</span> {xLabels[politicalRange[1]] || "—"}</span>
                     </div>
                   </div>
                   <Slider
@@ -607,13 +607,13 @@ export default function Home() {
              </div>
               <div className="p-3 rounded-lg border border-border/40 flex-1 flex flex-col min-h-0 relative" style={detailBgStyle}>
                 <div className="mb-2 pr-7" data-testid="range-widget-income">
-                  <div className="flex items-center justify-between gap-2 mb-1">
+                  <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1 mb-1">
                     <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">Z / income + education window</span>
-                    <div className="flex min-w-0 items-center gap-1.5">
+                    <div className="ml-auto flex min-w-0 items-center gap-1.5">
                       {(incomeRange[0] !== 0 || incomeRange[1] !== 24) && (
                         <button type="button" onClick={() => setIncomeRange([0, 24])} className="font-mono text-[8px] uppercase tracking-wider text-sky-600 hover:text-sky-500" data-testid="reset-income-range">Full</button>
                       )}
-                      <span className="font-mono text-[9px] text-foreground/75 truncate">{zLabels[incomeRange[0]] || "—"} <span className="text-muted-foreground">→</span> {zLabels[incomeRange[1]] || "—"}</span>
+                      <span className="font-mono text-lg font-bold leading-tight text-blue-900 truncate">{zLabels[incomeRange[0]] || "—"} <span className="text-blue-900">→</span> {zLabels[incomeRange[1]] || "—"}</span>
                     </div>
                   </div>
                   <Slider
