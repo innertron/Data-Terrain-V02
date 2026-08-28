@@ -1,0 +1,81 @@
+{
+  "layers": [
+    {
+      "name": "Jessica Tarlov",
+      "rank": 37,
+      "affiliation": "FOX",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 7.151504,
+      "traceFile": "data/jessica-tarlov-trace-points.json",
+      "iconFile": "attached_assets/037_Jessica_Tarlov_1787894748974.png"
+    },
+    {
+      "name": "Maureen Dowd",
+      "rank": 60,
+      "affiliation": "NYT",
+      "gender": "Female",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 4.273458,
+      "traceFile": "data/maureen-dowd-trace-points.json",
+      "iconFile": "attached_assets/060_Maureen_Dowd_1787894748975.png"
+    },
+    {
+      "name": "Ana Kasparian",
+      "rank": 80,
+      "affiliation": "TYT",
+      "gender": "Female",
+      "primaryMedium": "Digital Video",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.722389,
+      "traceFile": "data/ana-kasparian-trace-points.json",
+      "iconFile": "attached_assets/080_Ana_Kasparian_1787894748975.png"
+    },
+    {
+      "name": "Chris Hayes",
+      "rank": 81,
+      "affiliation": "MS NOW",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.668285,
+      "traceFile": "data/chris-hayes-trace-points.json",
+      "iconFile": "attached_assets/081_Chris_Hayes_1787894748975.png"
+    },
+    {
+      "name": "Rachel Maddow",
+      "rank": 94,
+      "affiliation": "MS NOW",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.109432,
+      "traceFile": "data/rachel-maddow-trace-points.json",
+      "iconFile": "attached_assets/094_Rachel_Maddow_1787894748975.png"
+    },
+    {
+      "name": "Michelle Goldberg",
+      "rank": 104,
+      "affiliation": "NYT",
+      "gender": "Female",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.852674,
+      "traceFile": "data/michelle-goldberg-trace-points.json",
+      "iconFile": "attached_assets/104_Michelle_goldberg_1787894748976.png"
+    },
+    {
+      "name": "Dasha Burns",
+      "rank": 135,
+      "affiliation": "POLITICO",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.056723,
+      "traceFile": "data/dasha-burns-trace-points.json",
+      "iconFile": "attached_assets/135_Dasha_Burns_1787894748976.png"
+    }
+  ]
+}
