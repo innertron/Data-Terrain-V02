@@ -1,0 +1,81 @@
+{
+  "layers": [
+    {
+      "name": "Jane Pauley",
+      "rank": 107,
+      "affiliation": "CBS",
+      "gender": "Female",
+      "primaryMedium": "Broadcast TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.775646,
+      "traceFile": "data/jane-pauley-trace-points.json",
+      "iconFile": "attached_assets/107_Jane_Pauley_1788561865084.png"
+    },
+    {
+      "name": "Matt Taibbi",
+      "rank": 109,
+      "affiliation": "RACKET NEWS",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.724295,
+      "traceFile": "data/matt-taibbi-trace-points.json",
+      "iconFile": "attached_assets/109_Matt_Taibbi_1788561865084.png"
+    },
+    {
+      "name": "Reihan Salam",
+      "rank": 122,
+      "affiliation": "FREE PRESS",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.390509,
+      "traceFile": "data/reihan-salam-trace-points.json",
+      "iconFile": "attached_assets/122_Reihan_Salam_1788561865084.png"
+    },
+    {
+      "name": "Alex Thompson",
+      "rank": 123,
+      "affiliation": "AXIOS",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.364833,
+      "traceFile": "data/alex-thompson-trace-points.json",
+      "iconFile": "attached_assets/123_Alex_Thompson_1788561865084.png"
+    },
+    {
+      "name": "Jonah Goldberg",
+      "rank": 132,
+      "affiliation": "THE DISPATCH",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.133751,
+      "traceFile": "data/jonah-goldberg-trace-points.json",
+      "iconFile": "attached_assets/132_Jonah_Goldberg_1788561865084.png"
+    },
+    {
+      "name": "Tim Pool",
+      "rank": 134,
+      "affiliation": "TIMCAST",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.082399,
+      "traceFile": "data/tim-pool-trace-points.json",
+      "iconFile": "attached_assets/134_Tim_Pool_1788561865084.png"
+    },
+    {
+      "name": "Theo Von",
+      "rank": 141,
+      "affiliation": "YOUTUBE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.902668,
+      "traceFile": "data/theo-von-trace-points.json",
+      "iconFile": "attached_assets/141_Theo_Von_1788561865083.png"
+    }
+  ]
+}
