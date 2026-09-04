@@ -28,7 +28,7 @@
       "affiliation": "FREE PRESS",
       "gender": "Male",
       "primaryMedium": "Print",
-      "isAfricanAmerican": false,
+      "isAfricanAmerican": true,
       "totalMillions": 1.390509,
       "traceFile": "data/reihan-salam-trace-points.json",
       "iconFile": "attached_assets/122_Reihan_Salam_1788561865084.png"
