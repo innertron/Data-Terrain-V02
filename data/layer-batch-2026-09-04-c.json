@@ -1,0 +1,26 @@
+{
+  "layers": [
+    {
+      "name": "Glenn Greenwald",
+      "rank": 142,
+      "affiliation": "INDEPENDENT",
+      "gender": "Male",
+      "primaryMedium": "Digital Video",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.876992,
+      "traceFile": "data/glenn-greenwald-trace-points.json",
+      "iconFile": "attached_assets/142_Glenn_Greenwald_1788563398636.png"
+    },
+    {
+      "name": "Sarah Longwell",
+      "rank": 148,
+      "affiliation": "THE BULWARK",
+      "gender": "Female",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.876992,
+      "traceFile": "data/sarah-longwell-trace-points.json",
+      "iconFile": "attached_assets/148_Sarah_Longwell_1788563398636.png"
+    }
+  ]
+}
