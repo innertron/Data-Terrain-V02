@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Emily Jashinsky",
+      "rank": 129,
+      "affiliation": "MK MEDIA",
+      "gender": "Female",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.210778,
+      "traceFile": "data/emily-jashinsky-trace-points.json",
+      "iconFile": "attached_assets/129_Emily_Jashinsky_1788510571467.png"
+    }
+  ]
+}
