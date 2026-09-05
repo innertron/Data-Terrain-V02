@@ -1,0 +1,37 @@
+{
+  "layers": [
+    {
+      "name": "Benny Johnson",
+      "rank": 98,
+      "affiliation": "YOUTUBE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.006729,
+      "traceFile": "data/benny-johnson-trace-points.json",
+      "iconFile": "attached_assets/098_Benny_Johnson_1788570479897.png"
+    },
+    {
+      "name": "Allie Beth Stuckey",
+      "rank": 108,
+      "affiliation": "BLAZE",
+      "gender": "Female",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 10.921443,
+      "traceFile": "data/allie-beth-stuckey-trace-points.json",
+      "iconFile": "attached_assets/108_Allie_Beth_Stuckey_1788570479897.png"
+    },
+    {
+      "name": "Vivek Ramaswamy",
+      "rank": 112,
+      "affiliation": "YOUTUBE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.647267,
+      "traceFile": "data/vivek-ramaswamy-trace-points.json",
+      "iconFile": "attached_assets/112_Vivek_Ramaswamy_1788570479897.png"
+    }
+  ]
+}
