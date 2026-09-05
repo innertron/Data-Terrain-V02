@@ -209,6 +209,7 @@ function generateGridFromTraces(data, opts = {}) {
     } else if (violationsBefore > 0) {
       console.error(`[radial-monotonicity] generateGridFromTraces: fixed ${violationsBefore} violations in ${iters} iter(s)`);
     }
+    assertNoArtificialSameBandCliffs(data, raw2, fixed2);
   } else {
     console.error('[radial-monotonicity] generateGridFromTraces: fix disabled for asymmetric source geometry');
   }
@@ -227,6 +228,55 @@ function generateGridFromTraces(data, opts = {}) {
     }
   }
   return fixed2;
+}
+
+/**
+ * Reject cliffs introduced by radial post-processing between adjacent source
+ * cells painted in the same positive band. A broad painted band may still
+ * contain a gentle RBF gradient; this specifically catches cases where the
+ * radial pass turns a mild gradient into a greater-than-2x discontinuity.
+ */
+function assertNoArtificialSameBandCliffs(data, baseGrid, treatedGrid) {
+  const zeroBasedCoordinates = data.some(([x, z]) => Number(x) === 0 || Number(z) === 0);
+  const sourceByCell = new Map();
+  for (const [xValue, zValue, value] of data) {
+    const x = Number(xValue);
+    const z = Number(zValue);
+    sourceByCell.set(`${x},${z}`, Number(value));
+  }
+
+  for (const [key, sourceValue] of sourceByCell) {
+    if (!(sourceValue > 0)) continue;
+    const [x, z] = key.split(',').map(Number);
+    for (const [nextX, nextZ] of [[x + 1, z], [x, z + 1]]) {
+      if (sourceByCell.get(`${nextX},${nextZ}`) !== sourceValue) continue;
+      const row = zeroBasedCoordinates ? z : z - 1;
+      const col = zeroBasedCoordinates ? x : x - 1;
+      const nextRow = zeroBasedCoordinates ? nextZ : nextZ - 1;
+      const nextCol = zeroBasedCoordinates ? nextX : nextX - 1;
+      const baseA = baseGrid[row]?.[col];
+      const baseB = baseGrid[nextRow]?.[nextCol];
+      const treatedA = treatedGrid[row]?.[col];
+      const treatedB = treatedGrid[nextRow]?.[nextCol];
+      if (!(baseA > 0 && baseB > 0 && treatedA > 0 && treatedB > 0)) continue;
+
+      const baseRatio = Math.max(baseA, baseB) / Math.min(baseA, baseB);
+      const treatedRatio = Math.max(treatedA, treatedB) / Math.min(treatedA, treatedB);
+      const inflation = treatedRatio / baseRatio;
+      if (treatedRatio > 2 && baseRatio < 1.6 && inflation > 1.5) {
+        const displayX = zeroBasedCoordinates ? x + 1 : x;
+        const displayZ = zeroBasedCoordinates ? z + 1 : z;
+        const displayNextX = zeroBasedCoordinates ? nextX + 1 : nextX;
+        const displayNextZ = zeroBasedCoordinates ? nextZ + 1 : nextZ;
+        throw new Error(
+          `radial treatment introduced an artificial same-band cliff between ` +
+          `X${displayX}/Z${displayZ} and X${displayNextX}/Z${displayNextZ} ` +
+          `(base ${baseRatio.toFixed(3)}x, treated ${treatedRatio.toFixed(3)}x); ` +
+          `review the source geometry and set applyRadialTreatment=false when asymmetric`,
+        );
+      }
+    }
+  }
 }
 
 /**
@@ -386,7 +436,7 @@ function applyRadialMonotonicityFix(grid) {
   );
 }
 
-module.exports = { generateGrid, generateGridFromTraces, applyTopBandWeight, validateGrid, applyRadialMonotonicityFix, findPeak, countViolations, C, SMOOTH, HANNITY_CONTROL_POINTS };
+module.exports = { generateGrid, generateGridFromTraces, applyTopBandWeight, validateGrid, applyRadialMonotonicityFix, assertNoArtificialSameBandCliffs, findPeak, countViolations, C, SMOOTH, HANNITY_CONTROL_POINTS };
 
 if (require.main === module) {
   const [, , file, total] = process.argv;

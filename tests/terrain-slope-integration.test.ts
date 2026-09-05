@@ -6,9 +6,11 @@ import test from "node:test";
 
 const require = createRequire(import.meta.url);
 const {
+  applyTopBandWeight,
   countViolations,
   findPeak,
   generateGrid,
+  generateGridFromTraces,
 } = require("../scripts/generate-layer-grid.cjs");
 const {
   buildExactGrid,
@@ -77,5 +79,12 @@ test("Michael Knowles preserves the same-band transition between Z12 and Z13", (
   const z13 = grid[12][5];
 
   assert.equal(trace.applyRadialTreatment, false);
+  assert.throws(
+    () => generateGridFromTraces(
+      applyTopBandWeight(trace.points, trace.topBandWeight),
+      { totalMillions: trace.totalMillions, applyRadialTreatment: true },
+    ),
+    /artificial same-band cliff/,
+  );
   assert.ok(Math.max(z12, z13) / Math.min(z12, z13) < 1.5);
 });

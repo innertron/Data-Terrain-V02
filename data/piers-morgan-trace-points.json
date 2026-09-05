@@ -4,6 +4,7 @@
  "method": "painted 25x25 seven-band partition extracted from user-supplied PNG; multiquadric RBF with radial transition treatment; explicit painted zeros restored (Aug 26 2026)",
  "partitionFile": "attached_assets/027_Piers_Morgan_BAND_PART_1787795391266.png",
  "requirePeakInTopBand": true,
+ "applyRadialTreatment": false,
  "points": [
   [
    1,

@@ -13,3 +13,4 @@
 - [Terrain display transition lock](terrain-display-transition-lock.md) — approved visual seam treatment is display-only and must remain regression-tested.
 - [Media classification taxonomy](media-classification-taxonomy.md) — primary medium is one content format; keep outlets/platforms separate and never guess missing values.
 - [DemoScape visual references](demoscape-visual-references.md) — rough renderings are the preferred way to clarify new terrain interactions before implementation.
+- [Terrain generation cliff guard](terrain-generation-cliff-guard.md) — fail closed when radial processing creates abrupt transitions inside one painted source band.

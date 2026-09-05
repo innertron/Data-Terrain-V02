@@ -2,6 +2,7 @@
  "layer": "Bill Maher",
  "totalMillions": 14.05,
  "method": "band-partition least-squares multiquadric RBF (C=4, ridge=1e-3, centers every 3 cells) | v2: 0.67->0.0087, 0.54->0.0004 per user | v3: 0.84->0.084 per user",
+ "applyRadialTreatment": false,
  "points": [
   [
    1,

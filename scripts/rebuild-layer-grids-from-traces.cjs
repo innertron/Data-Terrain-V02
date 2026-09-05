@@ -82,6 +82,7 @@ function loadTraceGroups(layerNames) {
       totalMillions: Array.isArray(document) ? null : Number(document.totalMillions),
       topBandWeight: Array.isArray(document) ? 1 : Number(document.topBandWeight ?? 1),
       requirePeakInTopBand: !Array.isArray(document) && document.requirePeakInTopBand === true,
+      applyRadialTreatment: Array.isArray(document) || document.applyRadialTreatment !== false,
     }]);
   }
 
