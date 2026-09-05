@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Brian Kilmeade",
+      "rank": 44,
+      "affiliation": "FOX",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 6.024046,
+      "traceFile": "data/brian-kilmeade-trace-points.json",
+      "iconFile": "attached_assets/044_Brian_Kilmeade_1788569382665.png"
+    }
+  ]
+}
