@@ -195,11 +195,22 @@ function generateGridFromTraces(data, opts = {}) {
   const norm = vals.map(row => row.map(v => (v - mn) / (mx - mn) * 10));
   const tot = norm.flat().reduce((a, v) => a + v, 0);
   const raw2 = norm.map(row => row.map(v => Math.round(v * (totalMillions / tot) * 10000) / 10000)).reverse();
-  const { fixed: fixed2, skipped: skipped2, iters: iters2, violationsBefore: vb2 } = applyRadialMonotonicityFix(raw2);
-  if (skipped2) {
-    console.error('[radial-monotonicity] generateGridFromTraces: edge-peaked grid — fix skipped (radial monotonicity does not apply to ridge/asymmetric layers)');
-  } else if (vb2 > 0) {
-    console.error(`[radial-monotonicity] generateGridFromTraces: fixed ${vb2} violations in ${iters2} iter(s)`);
+  let fixed2 = raw2;
+  if (opts.applyRadialTreatment !== false) {
+    const {
+      fixed,
+      skipped,
+      iters,
+      violationsBefore,
+    } = applyRadialMonotonicityFix(raw2);
+    fixed2 = fixed;
+    if (skipped) {
+      console.error('[radial-monotonicity] generateGridFromTraces: edge-peaked grid — fix skipped (radial monotonicity does not apply to ridge/asymmetric layers)');
+    } else if (violationsBefore > 0) {
+      console.error(`[radial-monotonicity] generateGridFromTraces: fixed ${violationsBefore} violations in ${iters} iter(s)`);
+    }
+  } else {
+    console.error('[radial-monotonicity] generateGridFromTraces: fix disabled for asymmetric source geometry');
   }
   // Painted white cells are explicit zero-value exclusions, not soft RBF
   // samples. Reapply them after smoothing and radial treatment so neither

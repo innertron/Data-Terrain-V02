@@ -144,7 +144,10 @@ function buildExactGrid(trace, totalMillions) {
     normalizedPoints(trace),
     trace.topBandWeight ?? 1,
   );
-  let grid = generateGridFromTraces(fittingPoints, { totalMillions });
+  let grid = generateGridFromTraces(fittingPoints, {
+    totalMillions,
+    applyRadialTreatment: trace.applyRadialTreatment !== false,
+  });
   const problems = validateGrid(grid);
   const unsupportedMaxima = unsupportedSignificantMaxima(problems, trace);
   if (unsupportedMaxima.length) {

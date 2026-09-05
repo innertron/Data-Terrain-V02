@@ -66,3 +66,16 @@ test("all saved layer traces rebuild with exact source invariants", () => {
     assert.equal(validation.zeroCells, trace.points.filter((point: number[]) => point[2] === 0).length, name);
   }
 });
+
+test("Michael Knowles preserves the same-band transition between Z12 and Z13", () => {
+  const trace = JSON.parse(fs.readFileSync(
+    path.resolve("data/michael-knowles-trace-points.json"),
+    "utf8",
+  ));
+  const grid = buildExactGrid(trace, trace.totalMillions);
+  const z12 = grid[11][5];
+  const z13 = grid[12][5];
+
+  assert.equal(trace.applyRadialTreatment, false);
+  assert.ok(Math.max(z12, z13) / Math.min(z12, z13) < 1.5);
+});

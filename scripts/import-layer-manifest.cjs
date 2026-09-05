@@ -23,7 +23,10 @@ const manifest = JSON.parse(fs.readFileSync(resolveFromRoot(manifestArg), 'utf8'
 function buildExactGrid(trace, totalMillions) {
   const totalPrecision = Math.max(6, (String(totalMillions).split('.')[1] || '').length);
   const fittingPoints = applyTopBandWeight(trace.points, trace.topBandWeight ?? 1);
-  let grid = generateGridFromTraces(fittingPoints, { totalMillions });
+  let grid = generateGridFromTraces(fittingPoints, {
+    totalMillions,
+    applyRadialTreatment: trace.applyRadialTreatment !== false,
+  });
   const problems = validateGrid(grid);
   if (problems.length) throw new Error(`grid validation failed: ${JSON.stringify(problems)}`);
 
