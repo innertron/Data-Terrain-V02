@@ -579,7 +579,7 @@ export default function Home() {
                       {(politicalRange[0] !== 0 || politicalRange[1] !== 24) && (
                         <button type="button" onClick={() => setPoliticalRange([0, 24])} className="font-mono text-[8px] uppercase tracking-wider text-sky-600 hover:text-sky-500" data-testid="reset-political-range">Full</button>
                       )}
-                      <span className="font-mono text-lg font-bold leading-tight text-blue-900 truncate">{xLabels[politicalRange[0]] || "—"} <span className="text-blue-900">→</span> {xLabels[politicalRange[1]] || "—"}</span>
+                      <span className="font-mono text-lg font-bold leading-tight text-blue-900 truncate">{xLabels[selectedSegment.xIndex] || selectedSegment.xLabel || "—"}</span>
                     </div>
                   </div>
                   <Slider
@@ -613,7 +613,7 @@ export default function Home() {
                       {(incomeRange[0] !== 0 || incomeRange[1] !== 24) && (
                         <button type="button" onClick={() => setIncomeRange([0, 24])} className="font-mono text-[8px] uppercase tracking-wider text-sky-600 hover:text-sky-500" data-testid="reset-income-range">Full</button>
                       )}
-                      <span className="font-mono text-lg font-bold leading-tight text-blue-900 truncate">{zLabels[incomeRange[0]] || "—"} <span className="text-blue-900">→</span> {zLabels[incomeRange[1]] || "—"}</span>
+                      <span className="font-mono text-lg font-bold leading-tight text-blue-900 truncate">{zLabels[selectedSegment.zIndex] || selectedSegment.zLabel || "—"}</span>
                     </div>
                   </div>
                   <Slider
