@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Michael Knowles",
+      "rank": 39,
+      "affiliation": "DAILYWIRE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 6.974035,
+      "traceFile": "data/michael-knowles-trace-points.json",
+      "iconFile": "attached_assets/039_Michael_Knowles_1788568430620.png"
+    }
+  ]
+}
