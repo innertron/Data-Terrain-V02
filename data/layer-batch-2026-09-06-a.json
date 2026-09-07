@@ -1,0 +1,48 @@
+{
+  "layers": [
+    {
+      "name": "Brian Entin",
+      "rank": 40,
+      "affiliation": "NEWSNATION",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 6.700197,
+      "traceFile": "data/brian-entin-trace-points.json",
+      "iconFile": "attached_assets/040_Brian_Entin_1788746206965.png"
+    },
+    {
+      "name": "Nate Silver",
+      "rank": 66,
+      "affiliation": "SUBSTACK",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 3.750579,
+      "traceFile": "data/nate-silver-trace-points.json",
+      "iconFile": "attached_assets/066_Nate_Silver_1788746206966.png"
+    },
+    {
+      "name": "Kristen Welker",
+      "rank": 71,
+      "affiliation": "NBC",
+      "gender": "Female",
+      "primaryMedium": "Broadcast TV",
+      "isAfricanAmerican": true,
+      "totalMillions": 3.322237,
+      "traceFile": "data/kristen-welker-trace-points.json",
+      "iconFile": "attached_assets/071_Kristen_Welker_1788746206966.png"
+    },
+    {
+      "name": "John King",
+      "rank": 75,
+      "affiliation": "CNN",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.980582,
+      "traceFile": "data/john-king-trace-points.json",
+      "iconFile": "attached_assets/075_John_King_1788746206967.png"
+    }
+  ]
+}
