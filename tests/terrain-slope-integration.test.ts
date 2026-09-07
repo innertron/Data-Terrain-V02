@@ -53,7 +53,7 @@ test("all saved layer traces rebuild with exact source invariants", () => {
   ])];
   const groups = loadTraceGroups(layerNames);
 
-  assert.equal(groups.size, 109);
+  assert.equal(groups.size, 111);
   for (const name of layerNames) {
     const trace = chooseTrace(name, groups.get(name) ?? []);
     const totalMillions = Number.isFinite(trace.totalMillions)
