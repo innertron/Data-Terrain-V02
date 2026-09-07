@@ -194,3 +194,31 @@ mtime_ms = 1788815645651
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/b8228198-bcbf-4158-9076-990c999e99e6/cf8e4484-830a-4386-8cda-d9df43c6921a"
 storage_version_token = "1788815652111128"
 content_type = "text/csv"
+
+[[outputs]]
+id = "Wci814hXVtJsI6sJcUh-h"
+uri = "file://exports/Data2-synced.xlsx"
+type = "table"
+title = "Data2 — Synced Excel Workbook"
+description = "Original workbook structure with the final Done column filled with exactly 109 ones."
+logical_id = "6794e077-7c90-4e93-9219-b3969a602abb"
+content_hash = "sha256:7eafdb73ed3ae73e74246e5d974490262ab3c65472205e78ea8b0f6559f395ca"
+size = 56617
+mtime_ms = 1788822575537
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/6794e077-7c90-4e93-9219-b3969a602abb/0ea8bd42-221e-441f-94c9-09cea0fbd5a7"
+storage_version_token = "1788822581660086"
+content_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+[[outputs]]
+id = "0ExMp405ffNh1RHbRWsTQ"
+uri = "file://exports/Data2-synced.csv"
+type = "table"
+title = "Data2 — Synced CSV"
+description = "CSV version with the final Done column filled with exactly 109 ones."
+logical_id = "d69802be-37fe-4fa7-badd-2b5792cfc083"
+content_hash = "sha256:cc9e34e700b6506a1ea487e23526913aadb5e348d8b825f3c4866c70fcd9267d"
+size = 9051
+mtime_ms = 1788822575541
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/d69802be-37fe-4fa7-badd-2b5792cfc083/d5b5c371-2bdf-4167-a20c-0d4e0c258a48"
+storage_version_token = "1788822582230249"
+content_type = "text/csv"
