@@ -1,0 +1,110 @@
+In App,Rank,Person,Affiliation,Primary Medium,Gender,African American,ViewerScore Millions
+1,1,Joe Rogan,Podcast / YouTube,Podcast,Male,No,14.900000
+1,2,Sean Hannity,FOX,Cable TV,Male,No,14.500000
+1,3,Bill Maher,HBO,Cable TV,Male,No,14.050000
+1,4,Laura Ingraham,FOX,Cable TV,Female,No,13.927316
+1,5,David Muir,ABC,Broadcast TV,Male,No,14.275800
+1,6,Lester Holt,NBC,Broadcast TV,Male,Yes,13.588264
+1,7,Tony Dokoupil,CBS,Broadcast TV,Male,No,13.333800
+1,8,Leland Vittert,NewsNation,Cable TV,Male,No,13.155600
+1,9,Elizabeth Vargas,NEWSNATION,Cable TV,Female,No,13.062658
+1,10,Tom Llamas,NBC,Broadcast TV,Male,No,12.908194
+1,11,Megyn Kelly,SIRIUSXM,Podcast,Female,No,12.803872
+1,12,Scott Jennings,CNN,Cable TV,Male,No,12.672831
+1,13,Will Cain,Fox News,Cable TV,Male,No,12.439615
+1,14,Connell McShane,NewsNation,Cable TV,Male,No,12.098234
+1,15,Jesse Watters,Fox News,Cable TV,Male,No,12.096588
+1,16,George Stephanopoulos,ABC,Broadcast TV,Male,No,11.585786
+1,17,Margaret Brennan,CBS,Broadcast TV,Female,No,11.217609
+1,18,Martha MacCallum,Fox News,Cable TV,Female,No,10.983218
+1,19,Ezra Klein,NYT,Print,Male,No,10.075048
+1,20,Stephen A. Smith,YOUTUBE,Podcast,Male,Yes,10.921443
+1,21,Ari Shapiro,NPR,Radio,Male,No,10.375766
+1,22,Nichole Berlie,NEWSNATION,Cable TV,Female,Yes,10.160644
+1,23,Bret Baier,FOX,Cable TV,Male,No,9.962958
+1,24,Norah O'Donnell,CBS,Broadcast TV,Female,No,9.764829
+1,25,Ben Shapiro,DAILYWIRE,Podcast,Male,No,9.706126
+1,26,Ross Douthat,NYT,Print,Male,No,9.389332
+1,27,Piers Morgan,YOUTUBE,Digital Video,Male,No,9.316976
+1,28,Dana Perino,FOX,Cable TV,Female,No,9.152883
+1,29,Blake Burman,NEWSNATION,Cable TV,Male,No,8.469303
+1,30,Maggie Haberman,NYT,Print,Female,No,8.297442
+1,31,Michael Smerconish,CNN,Cable TV,Male,No,8.131629
+1,32,Mark Levin,FOX,Cable TV,Male,No,7.954219
+1,33,Chris Cuomo,NEWSNATION,Cable TV,Male,No,7.696559
+1,34,Chris Stirewalt,NEWSNATION,Cable TV,Male,No,7.564156
+1,35,Wolf Blitzer,CNN,Cable TV,Male,No,7.417757
+1,36,Jesse Weber,NEWSNATION,Cable TV,Male,No,7.272474
+1,37,Jessica Tarlov,FOX,Cable TV,Female,No,7.151504
+1,38,Craig Melvin,NBC,Broadcast TV,Male,Yes,6.993676
+1,39,Michael Knowles,DAILYWIRE,Podcast,Male,No,6.974035
+1,40,Brian Entin,NEWSNATION,Cable TV,Male,No,6.700197
+1,41,Steve Inskeep,NPR,Radio,Male,No,6.621499
+1,43,John Dickerson,CBS,Broadcast TV,Male,No,6.305151
+1,44,Brian Kilmeade,FOX,Cable TV,Male,No,6.024046
+1,45,Saagar Enjeti,BREAKINGPOINTS,Digital Video,Male,No,5.917407
+1,46,Lex Fridman,YOUTUBE,Podcast,Male,No,5.779149
+1,47,Anderson Cooper,CNN,Cable TV,Male,No,5.673335
+1,48,Shawn Ryan,YOUTUBE,Podcast,Male,No,5.561204
+1,49,Kasie Hunt,CNN,Cable TV,Female,No,5.485901
+1,50,David Brooks,NYT / PBS,Print,Male,No,5.437268
+1,51,Bianna Golodryga,CNN,Cable TV,Female,No,0.541137
+1,52,Krystal Ball,Breaking Points,Digital Video,Female,No,5.360159
+1,53,Marni Hughes,NEWSNATION,Cable TV,Female,No,4.988797
+1,54,Jake Tapper,CNN,Cable TV,Male,No,4.898002
+1,55,Kai Ryssdal,NPR / APM,Radio,Male,No,4.752518
+1,58,Harris Faulkner,FOX,Cable TV,Female,Yes,4.423847
+1,60,Maureen Dowd,NYT,Print,Female,No,4.273458
+1,61,Kaitlan Collins,CNN,Cable TV,Female,No,4.162971
+1,62,Terry Gross,NPR,Radio,Female,No,4.027037
+1,63,Dana Bash,CNN,Cable TV,Female,No,5.411375
+1,65,Mary Louise Kelly,NPR,Radio,Female,No,3.778518
+1,66,Nate Silver,SUBSTACK,Podcast,Male,No,3.750579
+1,71,Kristen Welker,NBC,Broadcast TV,Female,Yes,3.322237
+1,72,Deborah Roberts,ABC,Broadcast TV,Female,Yes,3.271466
+1,73,Bill O'Reilly,NEWSNATION,Cable TV,Male,No,3.186283
+1,75,John King,CNN,Cable TV,Male,No,2.980582
+1,79,Chris Wallace,CNN,Cable TV,Male,No,2.731011
+1,80,Ana Kasparian,TYT,Digital Video,Female,No,2.722389
+1,81,Chris Hayes,MS NOW,Cable TV,Male,No,2.668285
+1,82,Cenk Uygur,TYT,Digital Video,Male,No,2.781019
+1,83,Abby Phillip,CNN,Cable TV,Female,Yes,2.520634
+1,86,Lawrence O'Donnell,MS NOW,Cable TV,Male,No,2.342185
+1,88,Erin Burnett,CNN,Cable TV,Female,No,2.263487
+1,90,Joe Scarborough,MS NOW,Cable TV,Male,No,2.212136
+1,91,Mika Brzezinski,MS NOW,Cable TV,Female,No,4.162971
+1,92,Kayleigh McEnany,FOX,Cable TV,Female,No,2.160784
+1,94,Rachel Maddow,MS NOW,Cable TV,Female,No,2.109432
+1,95,Sarah Isgur,The Dispatch,Podcast,Female,No,2.083756
+1,97,David French,The New York Times,Print,Male,No,2.032405
+1,98,Benny Johnson,YOUTUBE,Podcast,Male,No,2.006729
+1,102,Nicolle Wallace,MS NOW,Cable TV,Female,No,1.262130
+1,104,Michelle Goldberg,NYT,Print,Female,No,1.852674
+1,105,Steven Crowder,RUMBLE,Podcast,Male,No,1.826998
+1,106,Jen Psaki,MS NOW,Cable TV,Female,No,1.801322
+1,107,Jane Pauley,CBS,Broadcast TV,Female,No,1.775646
+1,108,Allie Beth Stuckey,BLAZE,Podcast,Female,No,1.749971
+1,109,Matt Taibbi,RACKET NEWS,Print,Male,No,1.724295
+1,112,Vivek Ramaswamy,YOUTUBE,Podcast,Male,No,1.647267
+1,113,Dan Bongino,RUMBLE,Podcast,Male,Yes,2.160784
+1,115,Alyssa Farah,The View,Broadcast TV,Female,No,1.570240
+1,119,Joy Behar,The View,Broadcast TV,Female,No,1.262130
+1,120,Patrick Bet-David,VALUETAINMENT,Podcast,Male,No,1.441861
+1,121,Tucker Carlson,TCN,Podcast,Male,No,1.416185
+1,122,Reihan Salam,FREE PRESS,Print,Male,Yes,1.390509
+1,123,Alex Thompson,AXIOS,Print,Male,No,1.364833
+1,124,Katie Pavlich,NEWSNATION,Cable TV,Female,No,1.339157
+1,128,Whoopi Goldberg,The View,Broadcast TV,Female,Yes,1.236454
+1,129,Emily Jashinsky,MK MEDIA,Podcast,Female,No,1.210778
+1,130,Jamelle Bouie,NYT,Print,Male,Yes,1.185102
+1,131,Jon Stewart,SPOTIFY,Podcast,Male,No,1.159427
+1,132,Jonah Goldberg,THE DISPATCH,Podcast,Male,No,1.133751
+1,134,Tim Pool,TIMCAST,Podcast,Male,No,1.082399
+1,135,Dasha Burns,POLITICO,Print,Female,No,1.056723
+1,136,Brett Cooper,YOUTUBE,Podcast,Female,No,1.031047
+1,138,Hasan Piker,TWITCH,Podcast,Male,No,0.979696
+1,140,Rob Schmitt,Newsmax,Cable TV,Male,No,2.160784
+1,141,Theo Von,YOUTUBE,Podcast,Male,No,0.902668
+1,142,Glenn Greenwald,INDEPENDENT,Digital Video,Male,No,0.876992
+1,148,Sarah Longwell,THE BULWARK,Podcast,Female,No,0.876992
+1,149,Glenn Beck,BLAZE,Radio,Male,No,1.416185

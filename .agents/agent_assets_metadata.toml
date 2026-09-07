@@ -7,6 +7,7 @@ uri = "file://attached_assets/generated/hannity-new-partition.png"
 type = "image"
 title = "Hannity — new partition mapped"
 description = "25×25 band map of the new Sean Hannity partition file. Z25 (high income) at top, Z1 at bottom; X1 (DEM) left → X25 (GOP) right. Note the red 3.2 strip at X22/Z14–17 bordered by green 1.31/1.05 cells, with the orange 2.56 pocket separately at X24–25/Z7–14."
+logical_id = "aa6c71d3-499e-4011-a0a9-1ecfe62ab78e"
 
 [[outputs]]
 id = "3HZIV_SsxiwkJd8INiZJ5"
@@ -14,6 +15,7 @@ uri = "file://attached_assets/generated/vittert-partition.png"
 type = "image"
 title = "Leland Vittert — band partition"
 description = "Visual map of the clean partition file (625 cells, 0 dups, 0 missing). Z25 at top, X1 left."
+logical_id = "73c3992c-01fd-4a38-86ea-73421beb32b7"
 
 [[outputs]]
 id = "orMMVRtOtcRcz8A5kwoUc"
@@ -21,6 +23,7 @@ uri = "file://attached_assets/generated/vittert-partition-v2.png"
 type = "image"
 title = "Leland Vittert — band partition"
 description = "His approved v2 partition: 7 bands (5.64 high → 0.22 low), total 13.488264M."
+logical_id = "e7ed4be7-e48d-4663-8621-0c195fa5cfaa"
 
 [[outputs]]
 id = "jNg19wUq2bEAjm4WkKH5O"
@@ -28,6 +31,7 @@ uri = "file://attached_assets/generated/ingraham-partition.png"
 type = "image"
 title = "Laura Ingraham — band partition"
 description = "Clean partition: 625 cells, 0 dups, 0 missing, all band counts match. Z25 top, X1 left."
+logical_id = "c17be996-bffa-4f7d-b8d9-7049d4553b51"
 
 [[outputs]]
 id = "ch6iF1Anj3dgmXRgyC5cS"
@@ -35,6 +39,7 @@ uri = "file://attached_assets/generated/partition-template.png"
 type = "image"
 title = "Blank partition template (with title space)"
 description = "25×25 board all #EEEEEE, unlabeled legend swatches, and blank space at top for a title line."
+logical_id = "69790f92-a425-4c91-9258-acbb4e66b369"
 
 [[outputs]]
 id = "sk942kD07YeGiBfsn9qfr"
@@ -42,6 +47,7 @@ uri = "file://attached_assets/generated/muir-partition.png"
 type = "image"
 title = "David Muir — extracted partition"
 description = "Read back from your Photoshop PNG: 625/625 cells, 0 ambiguous. Verify it matches what you painted."
+logical_id = "0e364b18-8205-4f5d-8360-186b5e132e7d"
 
 [[outputs]]
 id = "RqZPKDGh3mgWewy9D0PlK"
@@ -49,6 +55,7 @@ uri = "file://attached_assets/generated/dokoupil-partition.png"
 type = "image"
 title = "Tony Dokoupil — extracted partition"
 description = "Read back from your Photoshop PNG: 625/625 cells, 0 ambiguous. Verify against what you painted."
+logical_id = "b4dcc11b-beae-41ca-9053-9a52c1141bfc"
 
 [[outputs]]
 id = "cxgipcwvHBCe4ogIYRh9d"
@@ -56,6 +63,7 @@ uri = "file://attached_assets/generated/maher-partition.png"
 type = "image"
 title = "Bill Maher — band partition"
 description = "Rendered from his stored trace points: 9 bands (3.2 high → 0.54 low), total 14.05M."
+logical_id = "48072bf8-89e1-4596-82de-e50ee4151c85"
 
 [[outputs]]
 id = "-BA5DDggAKHipx5hbmUXR"
@@ -63,6 +71,7 @@ uri = "file://attached_assets/generated/rogan-partition.png"
 type = "image"
 title = "Joe Rogan — band partition"
 description = "Rendered from his stored trace points: 8 bands (6.81 high → 0.38 low), total 14.9M."
+logical_id = "7d031a8b-12d5-404b-89c3-b6a4a0f4e4f1"
 
 [[outputs]]
 id = "8Kltb-a-SPjD1vcBsGx0P"
@@ -70,6 +79,7 @@ uri = "file://attached_assets/generated/vittert-partition-v3.png"
 type = "image"
 title = "Leland Vittert — extracted partition (new chart)"
 description = "Extracted from your uploaded chart: bands 8.03/3.27/1.33/0.54/0.22/0.069/0.039, grey = 0. Visual diff against your painted file."
+logical_id = "c22a6fff-b74e-4580-a3ae-01ac7d42f162"
 
 [[outputs]]
 id = "XG6hH0rsvtBResWHeLjfs"
@@ -77,6 +87,7 @@ uri = "file://attached_assets/generated/holt-partition.png"
 type = "image"
 title = "Lester Holt — extracted partition"
 description = "Extracted from your chart: bands 7.87/3.24/1.34/0.55/0.23/0.076/0.07, grey = 0. Visual diff against your painted file."
+logical_id = "04ffac08-4a5f-455f-a110-f7a73715a8de"
 
 [[outputs]]
 id = "9Cae6SzXZN5Byy-8gh3Z7"
@@ -84,6 +95,7 @@ uri = "file://attached_assets/generated/scott-jennings-extracted-check.png"
 type = "image"
 title = "Scott Jennings — extracted partition check"
 description = "Regenerated from the extracted 25×25 bands — compare against your painted PNG."
+logical_id = "f10b2717-9bcc-4d53-8a9c-e540deceba06"
 
 [[outputs]]
 id = "eLHj9uL8ig1xtlhrCFORf"
@@ -91,6 +103,7 @@ uri = "file://attached_assets/generated/will-cain-extracted-check.png"
 type = "image"
 title = "Will Cain — extracted partition check"
 description = "Regenerated from the extracted 25×25 bands — compare against your painted PNG."
+logical_id = "3795b22d-533b-40eb-bc03-9f0fa790c23d"
 
 [[outputs]]
 id = "k6nCAZtIoQUiytYJ3kbWI"
@@ -98,6 +111,7 @@ uri = "file://attached_assets/generated/ezra-klein-extracted-check.png"
 type = "image"
 title = "Ezra Klein — extracted partition check"
 description = "Regenerated from the 625 extracted cells — compare against your painted PNG."
+logical_id = "3c73666e-f9a9-4044-8551-a4b0d33085c9"
 
 [[outputs]]
 id = "vjWGUXEmwyBeZSKSt7aL4"
@@ -105,6 +119,7 @@ uri = "file://attached_assets/generated/connell-mcshane-extracted-check.png"
 type = "image"
 title = "Connell McShane — extracted partition check"
 description = "Regenerated from the 625 extracted cells — compare against your painted PNG."
+logical_id = "cf177f95-3f77-4c6a-aff4-39ac91983385"
 
 [[outputs]]
 id = "dA4QGWpnqIb-WxZC46QCo"
@@ -112,6 +127,7 @@ uri = "file://attached_assets/generated/michael-smerconish-extracted-check.png"
 type = "image"
 title = "Michael Smerconish — extracted partition check"
 description = "Regenerated from the 625 extracted cells — compare against your painted PNG."
+logical_id = "14b1ab7f-824d-4895-beec-46f5bfc8ccb7"
 
 [[outputs]]
 id = "pD9OD3Ep9EGK9fDUkVQhz"
@@ -119,6 +135,7 @@ uri = "file://exports/Media_Classification_Chart.csv"
 type = "table"
 title = "Standardized Media Classification Chart"
 description = "All 150 ranked personalities preserved. Primary Medium now uses only Cable TV, Broadcast TV, Radio, Print, Podcast, Digital Video, or a blank value when the source was unclassified."
+logical_id = "a89e8828-6dea-4270-a9ed-664424d885da"
 
 [[outputs]]
 id = "feFckP5oLZAiGhR5AcLsI"
@@ -126,6 +143,7 @@ uri = "file://attached_assets/image_1787645091778.png"
 type = "image"
 title = "Unused Ben crop 1"
 description = "Unused local image; not referenced by the app or committed to GitHub."
+logical_id = "dc81fe4d-7232-45bb-b714-d01c800e18f7"
 
 [[outputs]]
 id = "b5Vz7WPkUNzlj8-fldTAt"
@@ -133,3 +151,18 @@ uri = "file://attached_assets/image_1787645118613.png"
 type = "image"
 title = "Unused Ben crop 2"
 description = "Unused local image; not referenced by the app or committed to GitHub."
+logical_id = "66ef5ef5-124f-4f36-8ab0-53f463a6dcc6"
+
+[[outputs]]
+id = "QeKfsNKuh4EFg_WrYLVjk"
+uri = "file://exports/completed-layers.csv"
+type = "table"
+title = "Completed App Layers"
+description = "CSV export of all 109 completed layers, ordered by rank, including affiliation, medium, demographics, and exact ViewerScore totals."
+logical_id = "95849f9f-1d5e-41d6-bb43-5cb6096e67dc"
+content_hash = "sha256:71cbee55b0e82601c7f5d6aac9bec9b4dbb33ccb721f52ca77b4e0a8ab1e7108"
+size = 5905
+mtime_ms = 1788814996451
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/95849f9f-1d5e-41d6-bb43-5cb6096e67dc/2cf8b01f-953c-4e74-bed7-008d3cb1b59c"
+storage_version_token = "1788815001466658"
+content_type = "text/csv"
