@@ -166,3 +166,31 @@ mtime_ms = 1788814996451
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/95849f9f-1d5e-41d6-bb43-5cb6096e67dc/2cf8b01f-953c-4e74-bed7-008d3cb1b59c"
 storage_version_token = "1788815001466658"
 content_type = "text/csv"
+
+[[outputs]]
+id = "Ys-mtw9KL89JVtoCHgEff"
+uri = "file://exports/data-14-synchronized.csv"
+type = "table"
+title = "Data 14 — Synchronized"
+description = "Clean 160-person master list with the in App column corrected to exactly match all 109 current app layers."
+logical_id = "13bb0b6e-c7b7-4935-ad6d-611aa211a073"
+content_hash = "sha256:71a3f7b288d75e2990b7338be994efea24a6210b84c574c9298500d68da3fc60"
+size = 13637
+mtime_ms = 1788815645651
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/13bb0b6e-c7b7-4935-ad6d-611aa211a073/bad0c61f-c32a-4361-aefc-026e30ffc0f1"
+storage_version_token = "1788815651472326"
+content_type = "text/csv"
+
+[[outputs]]
+id = "ylBxZNK8okYvBT-_BRePU"
+uri = "file://exports/data-14-discrepancies.csv"
+type = "table"
+title = "Data 14 — Discrepancies"
+description = "Three rows whose previous done status differed from the authoritative app layer list."
+logical_id = "b8228198-bcbf-4158-9076-990c999e99e6"
+content_hash = "sha256:2195f7a86e6c644244662c39a03719b0ef96193bcfef3afd5fa73d6cef539e82"
+size = 537
+mtime_ms = 1788815645651
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/b8228198-bcbf-4158-9076-990c999e99e6/cf8e4484-830a-4386-8cda-d9df43c6921a"
+storage_version_token = "1788815652111128"
+content_type = "text/csv"
