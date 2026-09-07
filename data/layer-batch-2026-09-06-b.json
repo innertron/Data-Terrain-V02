@@ -1,0 +1,37 @@
+{
+  "layers": [
+    {
+      "name": "Erin Burnett",
+      "rank": 88,
+      "affiliation": "CNN",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.263487,
+      "traceFile": "data/erin-burnett-trace-points.json",
+      "iconFile": "attached_assets/088_Erin_Burnett_1788749985475.png"
+    },
+    {
+      "name": "Joe Scarborough",
+      "rank": 90,
+      "affiliation": "MS NOW",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.212136,
+      "traceFile": "data/joe-scarborough-trace-points.json",
+      "iconFile": "attached_assets/090_Joe_Scarborough_1788750080891.png"
+    },
+    {
+      "name": "Mika Brzezinski",
+      "rank": 91,
+      "affiliation": "MS NOW",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 4.162971,
+      "traceFile": "data/mika-brzezinski-trace-points.json",
+      "iconFile": "attached_assets/091_Mika_Brzezinski_1788750080892.png"
+    }
+  ]
+}
