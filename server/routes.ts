@@ -10,6 +10,7 @@ import { pool } from "./db";
 import { registerLayerMetadataRoute } from "./layerMetadataRoute";
 import { newLayerSchema } from "./layerCreationSchema";
 import { serializeLayerForApi } from "./layerApiResponse";
+import { addZeroEdgeRandomBumps } from "./terrainRandomness";
 
 // ── Layer helpers ────────────────────────────────────────────────────────────
 
@@ -469,12 +470,20 @@ export async function registerRoutes(
         // of each cell's existing value.  outsideBottom/Top are treated as fractional
         // multipliers (e.g. 0.05 = ±5% variation) so decimal grids are not destroyed.
         const existing = JSON.parse(layer.gridValues) as number[][];
+        const source = JSON.parse(layer.originalGridValues ?? layer.gridValues) as number[][];
         grid = existing.map((rowArr, r) =>
           rowArr.map((val, c) => {
             const frac = outsideBottom + cellHash(r, c, id * 0x9e3779b9, 0) * (outsideTop - outsideBottom);
             const sign = cellHash(r, c, id * 0x9e3779b9, 1) > 0.5 ? 1 : -1;
             return Math.max(0, Math.round((val * (1 + sign * frac)) * 10000) / 10000);
           })
+        );
+        grid = addZeroEdgeRandomBumps(
+          grid,
+          source,
+          outsideBottom,
+          outsideTop,
+          (row, col, channel) => cellHash(row, col, layerSeed, channel + 2),
         );
         newParams = undefined; // RBF layers: never overwrite params — it would break the next skew
       } else {
