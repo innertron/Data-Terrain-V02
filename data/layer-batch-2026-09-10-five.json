@@ -1,0 +1,59 @@
+{
+  "layers": [
+    {
+      "name": "Shannon Bream",
+      "rank": 69,
+      "affiliation": "FOX",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 13.1556,
+      "traceFile": "data/shannon-bream-trace-points.json",
+      "iconFile": "attached_assets/069_Shannon_Bream_1789086436808.png"
+    },
+    {
+      "name": "Hena Doba",
+      "rank": 74,
+      "affiliation": "NEWSNATION",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 3.129862,
+      "traceFile": "data/hena-doba-trace-points.json",
+      "iconFile": "attached_assets/074_Hena_Doba_1789086436808.png"
+    },
+    {
+      "name": "George F. Will",
+      "rank": 84,
+      "affiliation": "The Washington Post",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.484696,
+      "traceFile": "data/george-f-will-trace-points.json",
+      "iconFile": "attached_assets/084_George_F._Will_1789086436809.png"
+    },
+    {
+      "name": "Coleman Hughes",
+      "rank": 157,
+      "affiliation": "THE FREE PRESS",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": true,
+      "totalMillions": 0.662391,
+      "traceFile": "data/coleman-hughes-trace-points.json",
+      "iconFile": "attached_assets/157_Coleman_Hughes_1789086436809.png"
+    },
+    {
+      "name": "Andrew Huberman",
+      "rank": 160,
+      "affiliation": "YOUTUBE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.580719,
+      "traceFile": "data/andrew-huberman-trace-points.json",
+      "iconFile": "attached_assets/160_Andrew_Huberman_1789086436809.png"
+    }
+  ]
+}
