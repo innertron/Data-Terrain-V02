@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Matt Walsh",
+      "rank": 59,
+      "affiliation": "DAILYWIRE",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 4.349649,
+      "traceFile": "data/matt-walsh-trace-points.json",
+      "iconFile": "attached_assets/059_Matt_Walsh_1789232912744.png"
+    }
+  ]
+}
