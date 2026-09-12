@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Scott Galloway",
+      "rank": 63,
+      "affiliation": "Pivot",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 4.000261,
+      "traceFile": "data/scott-galloway-trace-points.json",
+      "iconFile": "attached_assets/063_Scott_Galloway_1789232240861.png"
+    }
+  ]
+}
