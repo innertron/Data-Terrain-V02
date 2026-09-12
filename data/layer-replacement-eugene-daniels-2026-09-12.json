@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Eugene Daniels",
+      "rank": 162,
+      "affiliation": "POLITICO",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.521174,
+      "traceFile": "data/eugene-daniels-trace-points.json",
+      "iconFile": "attached_assets/151_Eugene_Daniels_1788829302346.png"
+    }
+  ]
+}
