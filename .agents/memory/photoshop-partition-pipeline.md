@@ -43,3 +43,9 @@ If an unweighted least-squares fit places the generated peak outside a very smal
 **Why:** A two-cell highest band can be underrepresented by the other 623 fitting samples, shifting the smooth RBF peak into an adjacent lower band even though the source geometry is unambiguous.
 
 **How to apply:** Record the fit weight as trace metadata, use it consistently in both import and source-rebuild paths, require the final peak to be inside the painted highest band, and revalidate exact total, zero mask, orientation, and unsupported maxima.
+
+If repetition weighting reaches its limit but neighboring-band RBF overshoot still owns the peak, use the smallest hundredth-step fit-only top-band amplitude that restores peak membership. Never change the saved painted values.
+
+**Why:** A narrow top strip can remain below an interpolated overshoot even when repeated fitting samples fully constrain the strip.
+
+**How to apply:** Record `topBandAmplitude` in trace metadata and apply it only to in-memory fitting points in both import and rebuild paths.

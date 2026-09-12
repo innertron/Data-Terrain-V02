@@ -298,6 +298,26 @@ function applyTopBandWeight(data, weight = 1) {
   );
 }
 
+/**
+ * Increase only the highest-band target values during fitting when repetition
+ * alone cannot prevent RBF overshoot in a neighboring lower band. The saved
+ * source trace remains unchanged.
+ */
+function applyTopBandAmplitude(data, multiplier = 1) {
+  const normalizedMultiplier = Number(multiplier);
+  if (!Number.isFinite(normalizedMultiplier) || normalizedMultiplier < 1 || normalizedMultiplier > 100) {
+    throw new Error(`topBandAmplitude must be from 1 to 100; received ${multiplier}`);
+  }
+  if (normalizedMultiplier === 1) return data;
+
+  const highestBand = Math.max(...data.map(([, , value]) => Number(value)));
+  return data.map(([x, z, value]) => [
+    x,
+    z,
+    Number(value) === highestBand ? Number(value) * normalizedMultiplier : Number(value),
+  ]);
+}
+
 // ---------------------------------------------------------------------------
 // Radial-transition helper used by both terrain generation paths.
 // ---------------------------------------------------------------------------
@@ -436,7 +456,7 @@ function applyRadialMonotonicityFix(grid) {
   );
 }
 
-module.exports = { generateGrid, generateGridFromTraces, applyTopBandWeight, validateGrid, applyRadialMonotonicityFix, assertNoArtificialSameBandCliffs, findPeak, countViolations, C, SMOOTH, HANNITY_CONTROL_POINTS };
+module.exports = { generateGrid, generateGridFromTraces, applyTopBandWeight, applyTopBandAmplitude, validateGrid, applyRadialMonotonicityFix, assertNoArtificialSameBandCliffs, findPeak, countViolations, C, SMOOTH, HANNITY_CONTROL_POINTS };
 
 if (require.main === module) {
   const [, , file, total] = process.argv;

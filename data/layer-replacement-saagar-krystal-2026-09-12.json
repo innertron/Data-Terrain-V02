@@ -1,6 +1,17 @@
 {
   "layers": [
     {
+      "name": "Saagar Enjeti",
+      "totalMillions": 0.681427,
+      "affiliation": "BREAKINGPOINTS",
+      "gender": "Male",
+      "primaryMedium": "Digital Video",
+      "isAfricanAmerican": false,
+      "rank": 151,
+      "iconFile": "attached_assets/45_Saagar_1786561933168.png",
+      "traceFile": "data/saagar-enjeti-trace-points.json"
+    },
+    {
       "name": "Krystal Ball",
       "totalMillions": 0.667814,
       "affiliation": "Breaking Points",

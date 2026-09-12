@@ -5,6 +5,7 @@ const path = require('path');
 const { Client } = require('pg');
 const {
   applyTopBandWeight,
+  applyTopBandAmplitude,
   generateGridFromTraces,
   validateGrid,
 } = require('./generate-layer-grid.cjs');
@@ -22,7 +23,8 @@ const manifest = JSON.parse(fs.readFileSync(resolveFromRoot(manifestArg), 'utf8'
 
 function buildExactGrid(trace, totalMillions) {
   const totalPrecision = Math.max(6, (String(totalMillions).split('.')[1] || '').length);
-  const fittingPoints = applyTopBandWeight(trace.points, trace.topBandWeight ?? 1);
+  const amplitudeAdjusted = applyTopBandAmplitude(trace.points, trace.topBandAmplitude ?? 1);
+  const fittingPoints = applyTopBandWeight(amplitudeAdjusted, trace.topBandWeight ?? 1);
   let grid = generateGridFromTraces(fittingPoints, {
     totalMillions,
     applyRadialTreatment: trace.applyRadialTreatment !== false,

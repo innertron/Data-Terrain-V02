@@ -19,6 +19,7 @@ const path = require('path');
 const { Client } = require('pg');
 const {
   applyTopBandWeight,
+  applyTopBandAmplitude,
   generateGridFromTraces,
   validateGrid,
 } = require('./generate-layer-grid.cjs');
@@ -81,6 +82,7 @@ function loadTraceGroups(layerNames) {
       zeroBased,
       totalMillions: Array.isArray(document) ? null : Number(document.totalMillions),
       topBandWeight: Array.isArray(document) ? 1 : Number(document.topBandWeight ?? 1),
+      topBandAmplitude: Array.isArray(document) ? 1 : Number(document.topBandAmplitude ?? 1),
       requirePeakInTopBand: !Array.isArray(document) && document.requirePeakInTopBand === true,
       applyRadialTreatment: Array.isArray(document) || document.applyRadialTreatment !== false,
     }]);
@@ -141,8 +143,12 @@ function unsupportedSignificantMaxima(problems, trace) {
 
 function buildExactGrid(trace, totalMillions) {
   const precision = precisionFor(totalMillions);
-  const fittingPoints = applyTopBandWeight(
+  const amplitudeAdjusted = applyTopBandAmplitude(
     normalizedPoints(trace),
+    trace.topBandAmplitude ?? 1,
+  );
+  const fittingPoints = applyTopBandWeight(
+    amplitudeAdjusted,
     trace.topBandWeight ?? 1,
   );
   let grid = generateGridFromTraces(fittingPoints, {
