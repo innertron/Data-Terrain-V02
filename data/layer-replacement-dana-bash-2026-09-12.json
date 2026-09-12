@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Dana Bash",
+      "rank": 45,
+      "affiliation": "CNN",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 5.917407,
+      "traceFile": "data/dana-bash-trace-points.json",
+      "iconFile": "attached_assets/051_Dana_Bash_1787105881579.png"
+    }
+  ]
+}
