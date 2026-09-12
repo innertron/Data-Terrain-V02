@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Nellie Bowles",
+      "rank": 153,
+      "affiliation": "THE FREE PRESS",
+      "gender": "Female",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.694802,
+      "traceFile": "data/nellie-bowles-trace-points.json",
+      "iconFile": "attached_assets/153_Nellie_Bowles_1789060746850.png"
+    }
+  ]
+}
