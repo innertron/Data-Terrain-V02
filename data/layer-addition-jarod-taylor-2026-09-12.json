@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Jarod Taylor",
+      "rank": 155,
+      "affiliation": "American Renaissance",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.681925,
+      "traceFile": "data/jarod-taylor-trace-points.json",
+      "iconFile": "attached_assets/155_Jarod_Taylor_1789231804939.png"
+    }
+  ]
+}
