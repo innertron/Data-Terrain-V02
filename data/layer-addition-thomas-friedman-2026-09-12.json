@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Thomas Friedman",
+      "rank": 52,
+      "affiliation": "The New York Times",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 5.360159,
+      "traceFile": "data/thomas-friedman-trace-points.json",
+      "iconFile": "attached_assets/052_Thomas_Friedman_1789231324153.png"
+    }
+  ]
+}
