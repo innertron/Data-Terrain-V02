@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Amna Nawaz",
+      "rank": 126,
+      "affiliation": "PBS",
+      "gender": "Female",
+      "primaryMedium": "Broadcast TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.287806,
+      "traceFile": "data/amna-nawaz-trace-points.json",
+      "iconFile": "attached_assets/126_Amna_Nawaz_1789359818021.png",
+      "partitionFile": "attached_assets/126_Amna_Nawaz_BAND_PART_1789359818021.png"
+    }
+  ]
+}
