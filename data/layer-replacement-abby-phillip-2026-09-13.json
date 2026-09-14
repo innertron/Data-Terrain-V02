@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Abby Phillip",
+      "rank": 101,
+      "affiliation": "CNN",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": true,
+      "totalMillions": 1.929701,
+      "traceFile": "data/abby-phillip-trace-points.json",
+      "partitionFile": "attached_assets/101_Abby_Phillip_Band_Part_1789346766667.png",
+      "photo": "Preserved from the previous Abby Phillip layer"
+    }
+  ]
+}
