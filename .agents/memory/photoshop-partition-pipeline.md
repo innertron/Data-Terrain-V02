@@ -15,6 +15,7 @@ The user's preferred input for new layers (after 9 failed methodologies): a Phot
 - Photoshop color-profile conversion SHIFTS some hexes (e.g. #FC8D59→#F8B191, #C7E9B4→#D6EBC9). Never exact-match; take the image's dominant colors, map 1:1 to bands by known correspondence, then nearest-match per cell. Beware: shifted colors can be *closer to a different canonical band* than their own.
 - White #FFFFFF is only ~29 RGB-distance from #EEEEEE — board-bbox detection must use a tight threshold (<15) or the whole white canvas is "board".
 - Screenshots have non-square outer bboxes (axis labels leak in). Derive cell height from cell width (cells are square); verify with a pixel-column scan across a known color transition.
+- Stray band-colored pixels outside the board can pull automatic bbox detection to an image edge. If the detected board does not match the standard grid bounds, remove only the out-of-grid artifact in a temporary copy and keep the authoritative upload unchanged.
 - Per cell: majority vote over a small sample block at cell center; flag any cell with split votes as ambiguous and STOP if any remain. Success = 625/625, 0 ambiguous.
 - After extraction, regenerate the partition plot from the extracted bands and present it so the user can visually diff against what they painted.
 
