@@ -1,0 +1,28 @@
+{
+  "layers": [
+    {
+      "name": "Harold Ford Jr.",
+      "rank": 77,
+      "affiliation": "FOX",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": true,
+      "totalMillions": 2.834305,
+      "traceFile": "data/harold-ford-jr-trace-points.json",
+      "iconFile": "attached_assets/077_Harold_Ford_Jr_1789358702015.png",
+      "partitionFile": "attached_assets/077_Harold_Ford_Jr_BAND_PART_1789358702016.png"
+    },
+    {
+      "name": "Michael Barbaro",
+      "rank": 159,
+      "affiliation": "The Daily",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.591913,
+      "traceFile": "data/michael-barbaro-trace-points.json",
+      "iconFile": "attached_assets/159_Michael_Barbaro_1789358702016.png",
+      "partitionFile": "attached_assets/159_Michael_Barbaro_BAND_PART_1789358702016.png"
+    }
+  ]
+}
