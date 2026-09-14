@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "Derek Thompson",
+      "rank": 111,
+      "affiliation": "The Atlantic",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.672943,
+      "traceFile": "data/derek-thompson-trace-points.json",
+      "iconFile": "attached_assets/111_Derek_Thompson_1789344159527.png"
+    }
+  ]
+}
