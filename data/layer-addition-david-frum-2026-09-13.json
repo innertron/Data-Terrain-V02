@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "David Frum",
+      "rank": 161,
+      "affiliation": "The Atlantic",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.578077,
+      "traceFile": "data/david-frum-trace-points.json",
+      "iconFile": "attached_assets/161_David_Frum_1789344565190.png"
+    }
+  ]
+}
