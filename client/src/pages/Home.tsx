@@ -226,6 +226,19 @@ export default function Home() {
             </button>
           );
         })}
+        {ALL_AFFILIATIONS.filter(a => layerDefs.some(l => (l as any).affiliation && normAffil((l as any).affiliation) === normAffil(a))).map(a => {
+          const active = affiliationFilter.includes(a);
+          return (
+            <button
+              key={a}
+              onClick={() => setAffiliationFilter(prev => active ? prev.filter(x => x !== a) : [...prev, a])}
+              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors text-black ${active ? 'border-transparent' : 'border-border'}`}
+              style={{ backgroundColor: active ? '#a8d4d2' : '#d6f2d6' }}
+            >
+              {a}
+            </button>
+          );
+        })}
         {["Male", "Female"].map(g => {
           const active = genderFilter.includes(g);
           return (
@@ -248,19 +261,6 @@ export default function Home() {
             African American
           </button>
         )}
-        {ALL_AFFILIATIONS.filter(a => layerDefs.some(l => (l as any).affiliation && normAffil((l as any).affiliation) === normAffil(a))).map(a => {
-          const active = affiliationFilter.includes(a);
-          return (
-            <button
-              key={a}
-              onClick={() => setAffiliationFilter(prev => active ? prev.filter(x => x !== a) : [...prev, a])}
-              className={`px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider border transition-colors text-black ${active ? 'border-transparent' : 'border-border'}`}
-              style={{ backgroundColor: active ? '#a8d4d2' : '#d6f2d6' }}
-            >
-              {a}
-            </button>
-          );
-        })}
         <button
           onClick={() => setActiveLayers(activeLayers.length === 0 ? layerDefs.map(l => l.id) : [])}
           className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider border border-border transition-colors"
