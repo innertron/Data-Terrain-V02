@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Fareed Zakaria",
+      "rank": 99,
+      "affiliation": "CNN",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.981053,
+      "traceFile": "data/fareed-zakaria-trace-points.json",
+      "iconFile": "attached_assets/099_Fareed_Zakaria_1789359441093.png",
+      "partitionFile": "attached_assets/099_Fareed_Zakaria_BAND_PART_1789359441093.png"
+    }
+  ]
+}
