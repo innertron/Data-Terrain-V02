@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Kimberley Strassel",
+      "rank": 127,
+      "affiliation": "The Wall Street Journal",
+      "gender": "Female",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.274026,
+      "traceFile": "data/kimberley-strassel-trace-points.json",
+      "iconFile": "attached_assets/127_Kimberley_Strassel_1789411138217.png",
+      "partitionFile": "attached_assets/127_Kimberley_Strassel_BAND_PART__1789411138216.png"
+    }
+  ]
+}
