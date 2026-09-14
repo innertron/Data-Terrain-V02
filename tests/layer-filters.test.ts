@@ -142,6 +142,33 @@ test("combined demographic, gender, medium, and affiliation filters keep list an
   assert.deepEqual(state.effectiveActiveIds, [1, 4]);
 });
 
+test("print outlet aliases resolve to one affiliation filter", () => {
+  const printLayers = [
+    "NYT",
+    "The New York Times",
+    "FREE PRESS",
+    "The Free Press",
+  ].map((affiliation, index): LayerDef => ({
+    ...layers[0],
+    id: index + 10,
+    name: `Print entity ${index + 1}`,
+    affiliation,
+    primaryMedium: "Print",
+  }));
+
+  const nyt = getFilteredLayerState(printLayers, printLayers.map(item => item.id), {
+    ...clearFilters,
+    affiliations: ["NYT"],
+  });
+  const freePress = getFilteredLayerState(printLayers, printLayers.map(item => item.id), {
+    ...clearFilters,
+    affiliations: ["Free Press"],
+  });
+
+  assert.deepEqual(nyt.visibleLayers.map(item => item.id), [10, 11]);
+  assert.deepEqual(freePress.visibleLayers.map(item => item.id), [12, 13]);
+});
+
 test("each primary-medium filter selects only its distinct content format", () => {
   const activeIds = layers.filter(layer => layer.active).map(layer => layer.id);
 

@@ -134,12 +134,34 @@ export default function Home() {
   const { xLabels, xDescriptions, zLabels, zDescriptions } = useAxisData();
 
   const ALL_MEDIA = PRIMARY_MEDIA;
-  const ALL_AFFILIATIONS = ["Fox News", "NewsNation", "CNN", "MS NOW", "ABC", "NBC", "CBS", "NYT", "NPR"] as const;
+  const ALL_AFFILIATIONS = [
+    "Fox News",
+    "NewsNation",
+    "CNN",
+    "MS NOW",
+    "ABC",
+    "NBC",
+    "CBS",
+    "NYT",
+    "NYT / PBS",
+    "NPR",
+    "Axios",
+    "American Renaissance",
+    "Free Press",
+    "Politico",
+    "Racket News",
+    "The Atlantic",
+    "The Wall Street Journal",
+    "The Washington Post",
+  ] as const;
   const ALL_LAYERS_ID = -1; // sentinel skewLayerId: randomize applies to ALL layers
   // DB affiliation strings are inconsistent ("FOX" vs "Fox News", "NEWSNATION" vs "NewsNation") — normalize before matching
   const normAffil = (s: string) => {
     const k = s.toUpperCase().replace(/[^A-Z]/g, "");
-    return k === "FOX" ? "FOXNEWS" : k;
+    if (k === "FOX") return "FOXNEWS";
+    if (k === "THENEWYORKTIMES") return "NYT";
+    if (k === "THEFREEPRESS") return "FREEPRESS";
+    return k;
   };
   const { visibleLayers, effectiveActiveIds } = getFilteredLayerState(
     layerDefs,

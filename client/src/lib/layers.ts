@@ -63,7 +63,10 @@ export type FilteredLayerState = {
 
 function normalizeAffiliation(value: string): string {
   const normalized = value.toUpperCase().replace(/[^A-Z]/g, "");
-  return normalized === "FOX" ? "FOXNEWS" : normalized;
+  if (normalized === "FOX") return "FOXNEWS";
+  if (normalized === "THENEWYORKTIMES") return "NYT";
+  if (normalized === "THEFREEPRESS") return "FREEPRESS";
+  return normalized;
 }
 
 function matchesTerrainFilters(layer: LayerDef, filters: LayerFilters): boolean {
