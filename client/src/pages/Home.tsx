@@ -143,15 +143,10 @@ export default function Home() {
     "NBC",
     "CBS",
     "NYT",
-    "NYT / PBS",
     "NPR",
-    "Axios",
-    "American Renaissance",
     "Free Press",
     "Politico",
-    "Racket News",
     "The Atlantic",
-    "The Wall Street Journal",
     "The Washington Post",
   ] as const;
   const ALL_LAYERS_ID = -1; // sentinel skewLayerId: randomize applies to ALL layers
