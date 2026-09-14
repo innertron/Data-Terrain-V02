@@ -1,0 +1,15 @@
+{
+  "layers": [
+    {
+      "name": "George Packer",
+      "rank": 163,
+      "affiliation": "The Atlantic",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.159427,
+      "traceFile": "data/george-packer-trace-points.json",
+      "iconFile": "attached_assets/163_George_Packer_1789345101199.png"
+    }
+  ]
+}
