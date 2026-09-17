@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Anderson Cooper",
+      "rank": 47,
+      "affiliation": "CNN",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 5.673335,
+      "traceFile": "data/anderson-cooper-trace-points.json",
+      "iconFile": "attached_assets/47_Anderson_Cooper_1787100825341.png",
+      "partitionFile": "attached_assets/047_Anderson_Cooper_Band_Part_1789683811042.png"
+    }
+  ]
+}
