@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Byron Pitts",
+      "rank": 80,
+      "affiliation": "ABC",
+      "gender": "Male",
+      "primaryMedium": "Broadcast TV",
+      "isAfricanAmerican": true,
+      "totalMillions": 2.722389,
+      "traceFile": "data/byron-pitts-trace-points.json",
+      "iconFile": "attached_assets/80_Byron_Pitts_1789686264168.png",
+      "partitionFile": "attached_assets/80_Byron_Pitts_BAND_PART_1789686264168.png"
+    }
+  ]
+}
