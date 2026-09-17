@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Ana Kasparian",
+      "rank": 156,
+      "affiliation": "TYT",
+      "gender": "Female",
+      "primaryMedium": "Digital Video",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.672483,
+      "traceFile": "data/ana-kasparian-trace-points.json",
+      "iconFile": "attached_assets/080_Ana_Kasparian_1787894748975.png",
+      "partitionFile": "attached_assets/156_Ana_Kasparian_BAND_PART_1789687417387.png"
+    }
+  ]
+}
