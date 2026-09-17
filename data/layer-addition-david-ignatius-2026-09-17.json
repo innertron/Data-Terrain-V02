@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "David Ignatius",
+      "rank": 83,
+      "affiliation": "The Washington Post",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.520634,
+      "traceFile": "data/david-ignatius-trace-points.json",
+      "iconFile": "attached_assets/083_David_Ignatius_1789687636431.png",
+      "partitionFile": "attached_assets/083_David_Ignatius_BAND_PART_1789687636431.png"
+    }
+  ]
+}
