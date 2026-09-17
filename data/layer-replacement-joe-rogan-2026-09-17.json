@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Joe Rogan",
+      "rank": 1,
+      "affiliation": "Podcast / YouTube",
+      "gender": "Male",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 14.559814,
+      "traceFile": "data/rogan-trace-points.json",
+      "iconFile": "attached_assets/001_Joe_Rogan_1787278927259.png",
+      "partitionFile": "attached_assets/001_Joe_Rogan_1789684557904.png"
+    }
+  ]
+}
