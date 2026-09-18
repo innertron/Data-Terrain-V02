@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Geoff Bennett",
+      "rank": 152,
+      "affiliation": "PBS",
+      "gender": "Male",
+      "primaryMedium": "Broadcast TV",
+      "isAfricanAmerican": true,
+      "totalMillions": 0.689116,
+      "traceFile": "data/geoff-bennett-trace-points.json",
+      "iconFile": "attached_assets/152_Geoff_Bennett_1789762643607.png",
+      "partitionFile": "attached_assets/152_Geoff_Bennett_BAND_PART_1789762643607.png"
+    }
+  ]
+}
