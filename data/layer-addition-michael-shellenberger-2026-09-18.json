@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Michael Shellenberger",
+      "rank": 133,
+      "affiliation": "PUBLIC",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.108075,
+      "traceFile": "data/michael-shellenberger-trace-points.json",
+      "iconFile": "attached_assets/133_Michael_Shellenberger_1789761306076.png",
+      "partitionFile": "attached_assets/133_Michael_Shellenberger_BAND_PART_1789761306077.png"
+    }
+  ]
+}
