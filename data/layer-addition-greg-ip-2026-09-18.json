@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Greg Ip",
+      "rank": 145,
+      "affiliation": "The Wall Street Journal",
+      "gender": "Male",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.783926,
+      "traceFile": "data/greg-ip-trace-points.json",
+      "iconFile": "attached_assets/145_Greg_Ip_1789761866805.png",
+      "partitionFile": "attached_assets/145_Greg_Ip_BAND_PART_1789761866805.png"
+    }
+  ]
+}
