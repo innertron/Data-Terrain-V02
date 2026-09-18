@@ -1,0 +1,16 @@
+{
+  "layers": [
+    {
+      "name": "Pamela Brown",
+      "rank": 61,
+      "affiliation": "CNN",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 4.162971,
+      "traceFile": "data/pamela-brown-trace-points.json",
+      "iconFile": "attached_assets/061_Pamela_Brown_1789755237295.png",
+      "partitionFile": "attached_assets/061_Pamela_Brown_BAND_PART_1789755237295.png"
+    }
+  ]
+}
