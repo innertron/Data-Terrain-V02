@@ -355,6 +355,7 @@ export async function registerRoutes(
         rank,
         affiliation,
         primaryMedium,
+        additionalMedia,
         gender,
         isAfricanAmerican,
       } = newLayerSchema.parse(req.body);
@@ -383,6 +384,7 @@ export async function registerRoutes(
         ...(rank !== undefined ? { rank } : {}),
         ...(affiliation ? { affiliation } : {}),
         ...(primaryMedium ? { primaryMedium } : {}),
+        ...(additionalMedia !== undefined ? { additionalMedia } : {}),
         ...(gender ? { gender } : {}),
         ...(isAfricanAmerican !== undefined ? { isAfricanAmerican } : {}),
       });

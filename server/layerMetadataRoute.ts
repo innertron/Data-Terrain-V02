@@ -19,6 +19,10 @@ export const layerMetadataSchema = z.object({
   rank: z.number().int().min(1).max(200).optional(),
   affiliation: z.string().max(50).optional(),
   primaryMedium: z.enum(PRIMARY_MEDIA).optional(),
+  additionalMedia: z.array(z.enum(PRIMARY_MEDIA))
+    .max(PRIMARY_MEDIA.length - 1)
+    .refine(values => new Set(values).size === values.length, "Additional media must be unique")
+    .optional(),
   gender: z.enum(["Male", "Female"]).optional(),
   isAfricanAmerican: z.boolean().optional(),
 });
@@ -26,6 +30,7 @@ export const layerMetadataSchema = z.object({
 export type LayerMetadataUpdate = z.infer<typeof layerMetadataSchema>;
 
 export type LayerMetadataStorage = {
+  getLayer(id: number): Promise<Layer | undefined>;
   updateLayerMeta(id: number, fields: LayerMetadataUpdate): Promise<Layer>;
 };
 
@@ -37,6 +42,11 @@ export function registerLayerMetadataRoute(
     try {
       const id = Number(req.params.id);
       const body = layerMetadataSchema.parse(req.body);
+      const current = await layerStorage.getLayer(id);
+      if (!current) return res.status(404).json({ message: "Layer not found" });
+      if ((body.additionalMedia ?? current.additionalMedia).includes(body.primaryMedium ?? current.primaryMedium ?? "")) {
+        return res.status(400).json({ message: "Primary medium cannot also be additional" });
+      }
       const updated = await layerStorage.updateLayerMeta(id, body);
       res.json({
         id: updated.id,
@@ -47,6 +57,7 @@ export function registerLayerMetadataRoute(
         rank: updated.rank,
         affiliation: updated.affiliation,
         primaryMedium: updated.primaryMedium,
+        additionalMedia: updated.additionalMedia,
         gender: updated.gender,
         isAfricanAmerican: updated.isAfricanAmerican,
       });

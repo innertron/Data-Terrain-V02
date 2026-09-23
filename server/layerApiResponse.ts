@@ -22,6 +22,7 @@ export function serializeLayerForApi(layer: Layer) {
     rank: layer.rank ?? null,
     affiliation: layer.affiliation ?? null,
     primaryMedium: layer.primaryMedium ?? null,
+    additionalMedia: layer.additionalMedia,
     gender: layer.gender ?? null,
     isAfricanAmerican: layer.isAfricanAmerican,
   };

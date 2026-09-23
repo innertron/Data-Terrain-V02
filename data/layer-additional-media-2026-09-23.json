@@ -1,0 +1,15 @@
+{
+  "metadataUpdates": [
+    { "name": "Megyn Kelly", "additionalMedia": ["Radio"] },
+    { "name": "Ari Shapiro", "additionalMedia": ["Podcast"] },
+    { "name": "Michael Smerconish", "additionalMedia": ["Radio"] },
+    { "name": "Mark Levin", "additionalMedia": ["Radio"] },
+    { "name": "Steve Inskeep", "additionalMedia": ["Podcast"] },
+    { "name": "Brian Kilmeade", "additionalMedia": ["Radio"] },
+    { "name": "Kai Ryssdal", "additionalMedia": ["Podcast"] },
+    { "name": "Terry Gross", "additionalMedia": ["Podcast"] },
+    { "name": "Mary Louise Kelly", "additionalMedia": ["Podcast"] },
+    { "name": "Michel Martin", "additionalMedia": ["Podcast"] },
+    { "name": "Glenn Beck", "additionalMedia": ["Podcast"] }
+  ]
+}

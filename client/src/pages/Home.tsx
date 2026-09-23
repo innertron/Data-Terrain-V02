@@ -116,6 +116,7 @@ export default function Home() {
   const [renameRank, setRenameRank] = useState<number | "">("");
   const [renameAffiliation, setRenameAffiliation] = useState("");
   const [renameMedium, setRenameMedium] = useState("");
+  const [renameAdditionalMedia, setRenameAdditionalMedia] = useState<PrimaryMedium[]>([]);
   const [renameGender, setRenameGender] = useState("");
   const [renameIsAfricanAmerican, setRenameIsAfricanAmerican] = useState(false);
   const [mediumFilter, setMediumFilter] = useState<PrimaryMedium[]>([]); // empty = show all
@@ -213,7 +214,7 @@ export default function Home() {
             </button>
           );
         })()}
-        {ALL_MEDIA.filter(m => layerDefs.some(l => l.primaryMedium === m)).map(m => {
+        {ALL_MEDIA.filter(m => layerDefs.some(l => l.primaryMedium === m || l.additionalMedia?.includes(m))).map(m => {
           const active = mediumFilter.includes(m);
           return (
             <button
@@ -836,6 +837,7 @@ export default function Home() {
                         setRenameRank((layer as any).rank ?? "");
                         setRenameAffiliation((layer as any).affiliation ?? "");
                         setRenameMedium((layer as any).primaryMedium ?? "");
+                        setRenameAdditionalMedia(layer.additionalMedia ?? []);
                         setRenameGender((layer as any).gender ?? "");
                         setRenameIsAfricanAmerican(layer.isAfricanAmerican === true);
                         try {
@@ -1054,6 +1056,19 @@ export default function Home() {
                     </div>
                     </div>{/* end 4-col grid */}
 
+                    <div>
+                      <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">Additional searchable media</Label>
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {ALL_MEDIA.filter(m => m !== renameMedium).map(m => (
+                          <label key={m} className="flex items-center gap-1 text-[10px]">
+                            <input type="checkbox" checked={renameAdditionalMedia.includes(m)}
+                              onChange={e => setRenameAdditionalMedia(prev => e.target.checked ? [...prev, m] : prev.filter(x => x !== m))} />
+                            {m}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
                     <div className="flex items-center justify-between rounded-md border border-input bg-background px-2 h-8">
                       <Label className="text-[9px] text-zinc-700 dark:text-zinc-300 uppercase">African American</Label>
                       <button
@@ -1086,6 +1101,7 @@ export default function Home() {
                               rank: renameRank !== "" ? Number(renameRank) : undefined,
                               affiliation: renameAffiliation.trim() || undefined,
                               primaryMedium: renameMedium || undefined,
+                              additionalMedia: renameAdditionalMedia.filter(m => m !== renameMedium),
                               gender: renameGender || undefined,
                               isAfricanAmerican: renameIsAfricanAmerican,
                             }),
@@ -1095,7 +1111,7 @@ export default function Home() {
                             toast({ title: "Save failed", description: data.message ?? "Unknown error", variant: "destructive" });
                             return;
                           }
-                          setLayerDefs(prev => sortByRank(prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon, rank: data.rank, affiliation: data.affiliation, primaryMedium: data.primaryMedium, gender: data.gender, isAfricanAmerican: data.isAfricanAmerican } : l)));
+                          setLayerDefs(prev => sortByRank(prev.map(l => l.id === skewLayerId ? { ...l, name: data.name, name2: data.name2, description: data.description, icon: data.icon, rank: data.rank, affiliation: data.affiliation, primaryMedium: data.primaryMedium, additionalMedia: data.additionalMedia, gender: data.gender, isAfricanAmerican: data.isAfricanAmerican } : l)));
                           toast({ title: "Layer saved", description: `"${data.name}" updated successfully.` });
                         } catch (err) {
                           toast({ title: "Save failed", description: "Network error — check connection.", variant: "destructive" });

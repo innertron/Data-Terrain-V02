@@ -122,6 +122,19 @@ const clearFilters: LayerFilters = {
   nameSearch: "",
 };
 
+test("secondary formats match either medium filter without changing primary medium", () => {
+  const people: LayerDef[] = [
+    { ...layers[0], additionalMedia: ["Radio"] },
+    { ...layers[7], additionalMedia: ["Radio"] },
+    { ...layers[2], additionalMedia: ["Podcast"] },
+  ];
+  const radio = getFilteredLayerState(people, [1, 8, 3], { ...clearFilters, media: ["Radio"] });
+  assert.deepEqual(radio.visibleLayers.map(layer => layer.id), [1, 3, 8]);
+  const podcast = getFilteredLayerState(people, [1, 8, 3], { ...clearFilters, media: ["Podcast"] });
+  assert.deepEqual(podcast.visibleLayers.map(layer => layer.id), [3, 8]);
+  assert.equal(people[0].primaryMedium, "Cable TV");
+});
+
 test("combined demographic, gender, medium, and affiliation filters keep list and terrain aligned", () => {
   const state = getFilteredLayerState(layers, [1, 2, 4, 5], {
     ...clearFilters,

@@ -1,7 +1,7 @@
 // sync-prod.js — mirror the dev database layers to production.
 // Usage:
 //   node scripts/sync-prod.js                 # full destructive mirror
-//   node scripts/sync-prod.js --medium-only   # primary-medium metadata only
+//   node scripts/sync-prod.js --medium-only   # affiliation and media metadata
 // Reads all layers from the local dev server and replaces the production
 // layers with exact copies (grid values, rank, affiliation, medium, name2,
 // description, icon, and demographic flags. Production ends up identical to dev.
@@ -22,6 +22,7 @@ const ALL_METADATA_FIELDS = [
   "rank",
   "affiliation",
   "primaryMedium",
+  "additionalMedia",
   "gender",
   "isAfricanAmerican",
 ];
@@ -33,7 +34,7 @@ const FULL_SYNC_FIELDS = [
   "params",
   ...ALL_METADATA_FIELDS,
 ];
-const MEDIUM_SYNC_FIELDS = ["affiliation", "primaryMedium"];
+const MEDIUM_SYNC_FIELDS = ["affiliation", "primaryMedium", "additionalMedia"];
 const MEDIUM_SYNC_PROTECTED_FIELDS = [
   "id",
   "name",
@@ -234,6 +235,7 @@ function createBody(layer) {
     ...(layer.rank != null ? { rank: layer.rank } : {}),
     ...(layer.affiliation ? { affiliation: layer.affiliation } : {}),
     ...(layer.primaryMedium ? { primaryMedium: layer.primaryMedium } : {}),
+    additionalMedia: layer.additionalMedia ?? [],
     ...(layer.gender ? { gender: layer.gender } : {}),
     ...(layer.isAfricanAmerican ? { isAfricanAmerican: true } : {}),
   };

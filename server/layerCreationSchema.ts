@@ -28,6 +28,13 @@ export const newLayerSchema = z.object({
   rank: z.number().int().min(1).max(200).optional(),
   affiliation: z.string().max(50).optional(),
   primaryMedium: z.enum(PRIMARY_MEDIA).optional(),
+  additionalMedia: z.array(z.enum(PRIMARY_MEDIA))
+    .max(PRIMARY_MEDIA.length - 1)
+    .refine(values => new Set(values).size === values.length, "Additional media must be unique")
+    .optional(),
   gender: z.enum(["Male", "Female"]).optional(),
   isAfricanAmerican: z.boolean().optional(),
-});
+}).refine(
+  layer => !layer.primaryMedium || !layer.additionalMedia?.includes(layer.primaryMedium),
+  { message: "Primary medium cannot also be additional" },
+);

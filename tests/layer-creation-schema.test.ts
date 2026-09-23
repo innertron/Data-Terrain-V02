@@ -19,6 +19,18 @@ test("layer creation accepts every canonical primary medium", () => {
   }
 });
 
+test("layer creation accepts distinct additional formats only", () => {
+  assert.equal(newLayerSchema.safeParse({
+    ...requiredLayerFields, primaryMedium: "Radio", additionalMedia: ["Podcast"],
+  }).success, true);
+  assert.equal(newLayerSchema.safeParse({
+    ...requiredLayerFields, primaryMedium: "Radio", additionalMedia: ["Radio"],
+  }).success, false);
+  assert.equal(newLayerSchema.safeParse({
+    ...requiredLayerFields, primaryMedium: "Radio", additionalMedia: ["Podcast", "Podcast"],
+  }).success, false);
+});
+
 test("layer creation rejects legacy overlapping medium labels", () => {
   for (const primaryMedium of [
     "TV",

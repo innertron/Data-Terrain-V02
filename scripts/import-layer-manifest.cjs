@@ -115,6 +115,16 @@ async function main() {
     for (const update of manifest.metadataUpdates ?? []) {
       const assignments = [];
       const values = [];
+      if ("additionalMedia" in update) {
+        const allowed = new Set(require('./primary-media.cjs').PRIMARY_MEDIA);
+        if (!Array.isArray(update.additionalMedia) ||
+            new Set(update.additionalMedia).size !== update.additionalMedia.length ||
+            update.additionalMedia.some(medium => !allowed.has(medium))) {
+          throw new Error(`invalid additional media for "${update.name}"`);
+        }
+        assignments.push(`additional_media = $${values.length + 1}`);
+        values.push(update.additionalMedia);
+      }
       if ("rank" in update) {
         if (!Number.isInteger(update.rank) || update.rank < 1 || update.rank > 200) {
           throw new Error(`invalid rank for "${update.name}"`);

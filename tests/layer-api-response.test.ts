@@ -20,6 +20,7 @@ function makeStoredLayer(primaryMedium: string): Layer {
     gender: "Male",
     isAfricanAmerican: false,
     primaryMedium,
+    additionalMedia: [],
   };
 }
 

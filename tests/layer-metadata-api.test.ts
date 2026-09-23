@@ -27,6 +27,7 @@ function makeLayer(overrides: Partial<Layer> = {}): Layer {
     gender: null,
     isAfricanAmerican: false,
     primaryMedium: null,
+    additionalMedia: [],
     ...overrides,
   };
 }
@@ -35,6 +36,9 @@ test("the metadata API saves demographic metadata and canonical primary media", 
   let storedLayer = makeLayer();
   const updates: LayerMetadataUpdate[] = [];
   const storage: LayerMetadataStorage = {
+    async getLayer(id) {
+      return id === storedLayer.id ? storedLayer : undefined;
+    },
     async updateLayerMeta(id, fields) {
       assert.equal(id, storedLayer.id);
       updates.push(fields);
@@ -91,6 +95,29 @@ test("the metadata API saves demographic metadata and canonical primary media", 
       assert.equal(savedMedium.primaryMedium, primaryMedium);
       assert.deepEqual(updates.at(-1), { primaryMedium });
     }
+
+    const additionalResponse = await fetch(endpoint, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ additionalMedia: ["Radio"] }),
+    });
+    assert.equal(additionalResponse.status, 200);
+    assert.deepEqual((await additionalResponse.json()).additionalMedia, ["Radio"]);
+    assert.deepEqual(updates.at(-1), { additionalMedia: ["Radio"] });
+
+    const overlappingResponse = await fetch(endpoint, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ primaryMedium: "Radio" }),
+    });
+    assert.equal(overlappingResponse.status, 400);
+    const duplicateResponse = await fetch(endpoint, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ additionalMedia: ["Radio", "Radio"] }),
+    });
+    assert.equal(duplicateResponse.status, 400);
+    assert.deepEqual(updates.at(-1), { additionalMedia: ["Radio"] });
 
     const updateCount = updates.length;
     const legacyMediumResponse = await fetch(endpoint, {

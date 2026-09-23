@@ -1,6 +1,7 @@
 import { pgTable, text, serial, integer, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { sql } from "drizzle-orm";
 import { PRIMARY_MEDIA } from "./mediaTaxonomy";
 
 export const projectSettings = pgTable("project_settings", {
@@ -39,10 +40,12 @@ export const layers = pgTable("layers", {
   gender: text("gender"),                    // Male / Female
   isAfricanAmerican: boolean("is_african_american").notNull().default(false),
   primaryMedium: text("primary_medium"),     // One standardized primary format
+  additionalMedia: text("additional_media").array().notNull().default(sql`ARRAY[]::text[]`),
 });
 
 export const insertLayerSchema = createInsertSchema(layers, {
   primaryMedium: z.enum(PRIMARY_MEDIA).nullable().optional(),
+  additionalMedia: z.array(z.enum(PRIMARY_MEDIA)).optional(),
 }).omit({ id: true });
 
 export type Layer = typeof layers.$inferSelect;

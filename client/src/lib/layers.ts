@@ -13,6 +13,7 @@ export type LayerDef = {
   rank?: number | null;         // 1-74 overall rank
   affiliation?: string | null;  // Outlet/platform, e.g. FOX, NPR, SPOTIFY
   primaryMedium?: PrimaryMedium | null; // One mutually exclusive primary format
+  additionalMedia?: PrimaryMedium[]; // Other searchable formats
   gender?: string | null;       // Male / Female
   isAfricanAmerican?: boolean;  // true when included in this demographic filter
 };
@@ -81,7 +82,8 @@ function matchesTerrainFilters(layer: LayerDef, filters: LayerFilters): boolean 
 
   return (
     (filters.media.length === 0 ||
-      (!!layer.primaryMedium && filters.media.includes(layer.primaryMedium))) &&
+      ((!!layer.primaryMedium && filters.media.includes(layer.primaryMedium)) ||
+        (layer.additionalMedia ?? []).some(medium => filters.media.includes(medium)))) &&
     (filters.genders.length === 0 ||
       (!!layer.gender && filters.genders.includes(layer.gender))) &&
     (!filters.africanAmericanOnly || layer.isAfricanAmerican === true) &&
