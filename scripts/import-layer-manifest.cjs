@@ -115,6 +115,13 @@ async function main() {
     for (const update of manifest.metadataUpdates ?? []) {
       const assignments = [];
       const values = [];
+      if ("rank" in update) {
+        if (!Number.isInteger(update.rank) || update.rank < 1 || update.rank > 200) {
+          throw new Error(`invalid rank for "${update.name}"`);
+        }
+        assignments.push(`rank = $${values.length + 1}`);
+        values.push(update.rank);
+      }
       if ("isAfricanAmerican" in update) {
         assignments.push(`is_african_american = $${values.length + 1}`);
         values.push(update.isAfricanAmerican === true);

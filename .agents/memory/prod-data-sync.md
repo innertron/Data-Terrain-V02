@@ -11,6 +11,12 @@ For primary-medium or affiliation corrections, use the metadata-only sync. Do no
 
 **How to apply:** Run `node scripts/sync-prod.js --medium-only` for primary-medium/affiliation corrections; it uses the live API and verifies protected fields. Use the full sync only when an exact destructive mirror is explicitly intended. Never write production data with DDL/SQL.
 
+For rank-only corrections, patch only the rank via the layer metadata API in both environments, rather than running either sync mode. Record the corrections in a replayable metadata-update manifest.
+
+**Why:** Medium-only sync does not transfer rank, while full sync replaces entire layers and risks changing grids, portraits, or other metadata that the user explicitly wanted left alone.
+
+**How to apply:** Snapshot each affected API record excluding its ID and rank, apply only the requested rank to development and production, then compare all excluded fields and the final rank in both environments.
+
 Full layer syncs must treat each layer's immutable original grid as the authoritative snapshot, validate it against any saved trace total, and preserve the mutable working grid separately.
 
 **Why:** Working grids can be rounded or skewed. Reusing one as the new original changes exact ViewerScore totals and destroys the restore point.
