@@ -1,0 +1,29 @@
+{
+  "layers": [
+    {
+      "name": "Howard Stern",
+      "rank": 167,
+      "affiliation": "SIRIUSXM",
+      "gender": "Male",
+      "primaryMedium": "Radio",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.506003,
+      "traceFile": "data/howard-stern-trace-points.json",
+      "iconFile": "attached_assets/167_Howard_Stern_1790230481359.png"
+    },
+    {
+      "name": "Natalie Kitroeff",
+      "rank": 168,
+      "affiliation": "NYT",
+      "gender": "Female",
+      "primaryMedium": "Podcast",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.5059,
+      "traceFile": "data/natalie-kitroeff-trace-points.json",
+      "iconFile": "attached_assets/168_Natalie_Kitroeff_1790230481360.png"
+    }
+  ],
+  "metadataUpdates": [
+    { "name": "Howard Stern", "additionalMedia": ["Podcast"] }
+  ]
+}

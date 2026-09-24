@@ -53,7 +53,7 @@ test("all saved layer traces rebuild with exact source invariants", () => {
   ])];
   const groups = loadTraceGroups(layerNames);
 
-  assert.ok(groups.size >= 160, "saved source-trace coverage must not shrink");
+  assert.ok(groups.size >= 162, "saved source-trace coverage must not shrink");
   assert.equal(groups.size, layerNames.length);
   for (const name of layerNames) {
     const trace = chooseTrace(name, groups.get(name) ?? []);

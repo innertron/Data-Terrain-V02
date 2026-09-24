@@ -1,6 +1,6 @@
 // Run only after publishing the additional_media schema and API change.
 // Usage: node scripts/sync-additional-media.mjs <published-app-url>
-// Updates only the names listed in the two manifests; never mirrors terrains.
+// Updates only the names listed in the manifests; never mirrors terrains.
 import fs from "node:fs/promises";
 
 const base = process.argv[2]?.replace(/\/$/, "");
@@ -11,6 +11,7 @@ if (!base || !/^https:\/\//.test(base)) {
 const manifestFiles = [
   "../data/layer-additional-media-2026-09-23.json",
   "../data/layer-batch-2026-09-24-radio-podcasts.json",
+  "../data/layer-batch-2026-09-24-howard-natalie.json",
 ];
 const metadataUpdates = (await Promise.all(manifestFiles.map(async file => {
   const manifest = JSON.parse(await fs.readFile(new URL(file, import.meta.url), "utf8"));
