@@ -1,0 +1,37 @@
+{
+  "layers": [
+    {
+      "name": "John Berman",
+      "rank": 93,
+      "affiliation": "CNN",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.135108,
+      "traceFile": "data/john-berman-trace-points.json",
+      "iconFile": "attached_assets/093_John_Berman_1790290536181.jpg"
+    },
+    {
+      "name": "Laura Ingle",
+      "rank": 96,
+      "affiliation": "NEWSNATION",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.058081,
+      "traceFile": "data/laura-ingle-trace-points.json",
+      "iconFile": "attached_assets/096_Laura_Ingle_1790290536182.jpg"
+    },
+    {
+      "name": "Megan McArdle",
+      "rank": 125,
+      "affiliation": "The Washington Post",
+      "gender": "Female",
+      "primaryMedium": "Print",
+      "isAfricanAmerican": false,
+      "totalMillions": 1.313482,
+      "traceFile": "data/megan-mcardle-trace-points.json",
+      "iconFile": "attached_assets/125_Megan_McArdle_1790290536182.jpg"
+    }
+  ]
+}

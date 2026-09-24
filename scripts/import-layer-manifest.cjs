@@ -54,7 +54,13 @@ async function importLayer(client, definition) {
   const trace = JSON.parse(fs.readFileSync(resolveFromRoot(definition.traceFile), 'utf8'));
   const grid = buildExactGrid(trace, definition.totalMillions);
   const gridJson = JSON.stringify(grid);
-  const icon = `data:image/png;base64,${fs.readFileSync(resolveFromRoot(definition.iconFile)).toString('base64')}`;
+  const iconMime = {
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+  }[path.extname(definition.iconFile).toLowerCase()];
+  if (!iconMime) throw new Error(`Unsupported icon format for ${definition.name}: ${definition.iconFile}`);
+  const icon = `data:${iconMime};base64,${fs.readFileSync(resolveFromRoot(definition.iconFile)).toString('base64')}`;
 
   const existing = await client.query(
     'SELECT id FROM layers WHERE name = $1 ORDER BY id',

@@ -14,3 +14,4 @@
 - [Media classification taxonomy](media-classification-taxonomy.md) — one primary format plus confirmed searchable secondary formats; keep platforms separate.
 - [DemoScape visual references](demoscape-visual-references.md) — rough renderings are the preferred way to clarify new terrain interactions before implementation.
 - [Terrain generation cliff guard](terrain-generation-cliff-guard.md) — fail closed when radial processing creates abrupt transitions inside one painted source band.
+- [Published layer-list size limit](published-layer-list-size.md) — inline base64 portraits can push the live layer list past ~32 MiB and cause opaque HTTP 500s.
