@@ -1,0 +1,37 @@
+{
+  "layers": [
+    {
+      "name": "Greg Gutfeld",
+      "rank": 76,
+      "affiliation": "FOX",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.939691,
+      "traceFile": "data/greg-gutfeld-trace-points.json",
+      "iconFile": "attached_assets/076_Greg_Gutfeld_1790288402020.png"
+    },
+    {
+      "name": "Maria Bartiromo",
+      "rank": 85,
+      "affiliation": "FOX",
+      "gender": "Female",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.44666,
+      "traceFile": "data/maria-bartiromo-trace-points.json",
+      "iconFile": "attached_assets/085_Maria_Bartiromo_1790288402020.png"
+    },
+    {
+      "name": "Neil Cavuto",
+      "rank": 87,
+      "affiliation": "FOX",
+      "gender": "Male",
+      "primaryMedium": "Cable TV",
+      "isAfricanAmerican": false,
+      "totalMillions": 2.289163,
+      "traceFile": "data/neil-cavuto-trace-points.json",
+      "iconFile": "attached_assets/087_Neil_Cavuto_1790288402021.png"
+    }
+  ]
+}
