@@ -1,0 +1,54 @@
+{
+  "layers": [
+    {
+      "name": "Clay Travis",
+      "rank": 158,
+      "affiliation": "PREMIERE / iHEART",
+      "gender": "Male",
+      "primaryMedium": "Radio",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.662001,
+      "traceFile": "data/clay-travis-trace-points.json",
+      "iconFile": "attached_assets/158_Clay_Travis_1790230167785.png"
+    },
+    {
+      "name": "Buck Sexton",
+      "rank": 159,
+      "affiliation": "PREMIERE / iHEART",
+      "gender": "Male",
+      "primaryMedium": "Radio",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.661885,
+      "traceFile": "data/buck-sexton-trace-points.json",
+      "iconFile": "attached_assets/159_Buck_Sexton_1790230167784.png"
+    },
+    {
+      "name": "Shankar Vedantam",
+      "rank": 165,
+      "affiliation": "NPR",
+      "gender": "Male",
+      "primaryMedium": "Radio",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.50955,
+      "traceFile": "data/shankar-vedantam-trace-points.json",
+      "iconFile": "attached_assets/165_Shankar_Vedantam_1790230167786.png"
+    },
+    {
+      "name": "Dave Ramsey",
+      "rank": 166,
+      "affiliation": "RAMSEY NETWORK",
+      "gender": "Male",
+      "primaryMedium": "Radio",
+      "isAfricanAmerican": false,
+      "totalMillions": 0.506974,
+      "traceFile": "data/dave-ramsey-trace-points.json",
+      "iconFile": "attached_assets/166_Dave_Ramsey_1790230167786.png"
+    }
+  ],
+  "metadataUpdates": [
+    { "name": "Clay Travis", "additionalMedia": ["Podcast"] },
+    { "name": "Buck Sexton", "additionalMedia": ["Podcast"] },
+    { "name": "Shankar Vedantam", "additionalMedia": ["Podcast"] },
+    { "name": "Dave Ramsey", "additionalMedia": ["Podcast"] }
+  ]
+}

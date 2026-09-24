@@ -1,6 +1,6 @@
 // Run only after publishing the additional_media schema and API change.
 // Usage: node scripts/sync-additional-media.mjs <published-app-url>
-// Updates only the 11 names listed in the manifest; never mirrors terrains.
+// Updates only the names listed in the two manifests; never mirrors terrains.
 import fs from "node:fs/promises";
 
 const base = process.argv[2]?.replace(/\/$/, "");
@@ -8,9 +8,17 @@ if (!base || !/^https:\/\//.test(base)) {
   throw new Error("Provide the published app's HTTPS URL");
 }
 
-const { metadataUpdates } = JSON.parse(
-  await fs.readFile(new URL("../data/layer-additional-media-2026-09-23.json", import.meta.url), "utf8"),
-);
+const manifestFiles = [
+  "../data/layer-additional-media-2026-09-23.json",
+  "../data/layer-batch-2026-09-24-radio-podcasts.json",
+];
+const metadataUpdates = (await Promise.all(manifestFiles.map(async file => {
+  const manifest = JSON.parse(await fs.readFile(new URL(file, import.meta.url), "utf8"));
+  return manifest.metadataUpdates;
+}))).flat();
+if (new Set(metadataUpdates.map(update => update.name)).size !== metadataUpdates.length) {
+  throw new Error("Duplicate name across additional-media manifests");
+}
 const getLayers = async () => {
   const response = await fetch(`${base}/api/layers`, { cache: "no-store" });
   if (!response.ok) throw new Error(`GET layers: ${response.status}`);
