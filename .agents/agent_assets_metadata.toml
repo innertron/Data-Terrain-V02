@@ -222,3 +222,73 @@ mtime_ms = 1788822575541
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/d69802be-37fe-4fa7-badd-2b5792cfc083/d5b5c371-2bdf-4167-a20c-0d4e0c258a48"
 storage_version_token = "1788822582230249"
 content_type = "text/csv"
+
+[[outputs]]
+id = "JyxfGnnhXQ1J_FkjUcaMp"
+uri = "file://exports/band-partitions/sean-hannity-current.png"
+type = "image"
+title = "Sean Hannity — saved band partition"
+description = "Current saved 25×25 source bands; Z25 at top, Z1 at bottom. Gray cells are outside the partition."
+logical_id = "8fad77b0-6bca-4243-90eb-94052b8aafe6"
+content_hash = "sha256:ccfa5e1b54087f7665e9546f902a9b490c125dfc01b53abde24a73ed6d285c93"
+size = 265894
+mtime_ms = 1790372416593
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/8fad77b0-6bca-4243-90eb-94052b8aafe6/69029cfe-f5b4-4e5b-8324-61235154de1a"
+storage_version_token = "1790372434594568"
+content_type = "image/png"
+
+[[outputs]]
+id = "qeIGZOPjdM5F-RU2VegKo"
+uri = "file://exports/band-partitions/maher-current.png"
+type = "image"
+title = "Bill Maher — saved band partition"
+description = "Current saved 25×25 source bands; Z25 at top, Z1 at bottom. Gray cells are outside the partition."
+logical_id = "52a15a45-4658-464d-9633-4c35697a76ef"
+content_hash = "sha256:b5ceaa99f3ea99f260ecddd2a24ea56242b0b5ea312ab5d3bdae65a5e6ad3c1c"
+size = 259810
+mtime_ms = 1790372417173
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/52a15a45-4658-464d-9633-4c35697a76ef/bd24a4d0-716c-4746-aec3-c83df613bbca"
+storage_version_token = "1790372435353293"
+content_type = "image/png"
+
+[[outputs]]
+id = "CvoWmQ9keof261OwJJDUO"
+uri = "file://exports/band-partitions/laura-ingraham-current.png"
+type = "image"
+title = "Laura Ingraham — saved band partition"
+description = "Current saved 25×25 source bands; Z25 at top, Z1 at bottom. Gray cells are outside the partition."
+logical_id = "cdc32cdf-82f8-413d-a815-3a9ad47a2cad"
+content_hash = "sha256:36d4b56f02507292dcf13f43c7957764320450b84f31ae25174d713f335c49a3"
+size = 252657
+mtime_ms = 1790372417881
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/cdc32cdf-82f8-413d-a815-3a9ad47a2cad/df6a0036-45c2-4657-a901-460d04dd6c46"
+storage_version_token = "1790372436076972"
+content_type = "image/png"
+
+[[outputs]]
+id = "RvWwfOjJGYJbKJik-biW-"
+uri = "file://exports/band-partitions/david-muir-current.png"
+type = "image"
+title = "David Muir — saved band partition"
+description = "Current saved 25×25 source bands; Z25 at top, Z1 at bottom. Gray cells are outside the partition."
+logical_id = "17164954-4592-4d75-ac3a-33ddeced8c16"
+content_hash = "sha256:a9cb75355e3653f199744071bc2ab947b7f3743ba5c3c0737bca2e3da391f537"
+size = 234669
+mtime_ms = 1790372418393
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/17164954-4592-4d75-ac3a-33ddeced8c16/a9871247-0475-4820-bf32-3c4d0aad5e2c"
+storage_version_token = "1790372436680574"
+content_type = "image/png"
+
+[[outputs]]
+id = "130V18l1lGzQ9ZUxNWQHG"
+uri = "file://exports/band-partitions/lester-holt-current.png"
+type = "image"
+title = "Lester Holt — saved band partition"
+description = "Current saved 25×25 source bands; Z25 at top, Z1 at bottom. Gray cells are outside the partition."
+logical_id = "fb7443c8-772a-4385-9455-1ddd7780a0c9"
+content_hash = "sha256:60a898e7ece9e9e1ce4a25751a554b5327c1d0d10a3405b47bff821fbd3dea14"
+size = 242333
+mtime_ms = 1790372418893
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/fb7443c8-772a-4385-9455-1ddd7780a0c9/bf1c8508-b8be-467e-b4b5-eb2e0b427c02"
+storage_version_token = "1790372437313354"
+content_type = "image/png"
