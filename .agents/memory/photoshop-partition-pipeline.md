@@ -31,6 +31,13 @@ The user's preferred input for new layers (after 9 failed methodologies): a Phot
 
 Filename convention: rank prefix (e.g. `5_David_Muir_*.png`); viewership millions in the painted title (typos like "13/854611M" mean 13.854611M — confirm with user if unclear).
 
+## Band-value-only revisions
+The user may supply seven numbers high-to-low for an existing layer and say the partition chart stays the same. Treat this as a value remap of the seven positive source bands, not a new cell extraction: preserve every cell's coordinates and band membership, leave painted-zero cells at zero, and retain the existing source total unless the user gives a new one.
+
+**Why:** Repainting or re-extracting an unchanged chart adds risk and work; the seven ordered values unambiguously identify the replacement levels. New levels can make a formerly safe radial treatment create an artificial same-band cliff.
+
+**How to apply:** Verify exactly seven positive bands before remapping, save the new values in the replayable trace, regenerate both live grids, and recheck the exact total, zero mask, orientation, peak, and radial cliff guard. If that guard fails, disable radial treatment for that trace rather than accepting the cliff.
+
 ## RBF radial transition rule
 Use the established radial transition treatment automatically for interior-peaked RBF grids. Apply it after RBF interpolation and before restoring explicit painted-zero cells. Skip edge/ridge layers.
 
