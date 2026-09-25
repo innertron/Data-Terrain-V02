@@ -334,3 +334,17 @@ mtime_ms = 1790375193212
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/f97160cb-32a7-44d2-899e-603e13d0ad16/c14fe422-663c-444e-8170-7ad4641462c7"
 storage_version_token = "1790375262285591"
 content_type = "image/png"
+
+[[outputs]]
+id = "M2TNuOJs1q71ODLiA7l5j"
+uri = "file://exports/band-partitions/sean-hannity-002-reconstructed.png"
+type = "image"
+title = "Sean Hannity — reconstructed band grid"
+description = "The 25×25 cells extracted from the new painted partition, for comparison with the uploaded image."
+logical_id = "4910987e-f4bf-4104-82d5-d9af8c24537e"
+content_hash = "sha256:831e2512d09af49c94cf65d3972bba397c0eaed6e9bcad4d5fc56c10e08a16e6"
+size = 9233
+mtime_ms = 1790376002093
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/4910987e-f4bf-4104-82d5-d9af8c24537e/75586c01-4dec-4cbe-9591-2de6bb409917"
+storage_version_token = "1790376080327350"
+content_type = "image/png"
