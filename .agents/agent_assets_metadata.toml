@@ -362,3 +362,17 @@ mtime_ms = 1790377230640
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/d827ff5d-0b57-4508-90f0-6255eec7f4f6/8f8b0f77-ac3b-47d0-a05d-a87c269c6966"
 storage_version_token = "1790377292450039"
 content_type = "image/png"
+
+[[outputs]]
+id = "rB7UB7gsiCg2CQqNVYBFp"
+uri = "file://exports/band-partitions/tony-dokoupil-007-reconstructed.png"
+type = "image"
+title = "Tony Dokoupil — reconstructed band grid"
+description = "The 25×25 cells extracted from the new painted partition, for comparison with the uploaded image."
+logical_id = "2dd3d28d-8ece-4666-9294-41f64f41936a"
+content_hash = "sha256:537a6a9e4d6379376840802df9177a1a83faec4353526847dc0262569bff20f5"
+size = 9253
+mtime_ms = 1790378785897
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/2dd3d28d-8ece-4666-9294-41f64f41936a/7f5adb30-cc56-4d24-8da9-a47c83ee5cc8"
+storage_version_token = "1790378846870900"
+content_type = "image/png"
