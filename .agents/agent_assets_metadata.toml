@@ -376,3 +376,17 @@ mtime_ms = 1790378785897
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/2dd3d28d-8ece-4666-9294-41f64f41936a/7f5adb30-cc56-4d24-8da9-a47c83ee5cc8"
 storage_version_token = "1790378846870900"
 content_type = "image/png"
+
+[[outputs]]
+id = "0Cv8Sr0cSphvgMrjQwFsX"
+uri = "file://exports/band-partitions/elizabeth-vargas-009-reconstructed.png"
+type = "image"
+title = "Elizabeth Vargas — reconstructed band grid"
+description = "The 25×25 painted partition extracted from the new layer 009 image."
+logical_id = "02e3fe5f-a6df-4255-99a7-fda8a889cac7"
+content_hash = "sha256:e00550a82d4d1db8b6724f85dc7a61a13d4e72c8bd8989c4812747a9fcac6600"
+size = 9330
+mtime_ms = 1790379396165
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/02e3fe5f-a6df-4255-99a7-fda8a889cac7/93e25377-9470-49d8-8b0f-69f1bfc2a2da"
+storage_version_token = "1790379448637902"
+content_type = "image/png"
