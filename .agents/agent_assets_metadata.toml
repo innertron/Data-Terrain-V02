@@ -306,3 +306,17 @@ mtime_ms = 1790372892920
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/a2eb269a-23ed-4062-9b02-a74994f4c419/4a4cd8cc-d4fb-4a86-9a1a-64b7b517d8ca"
 storage_version_token = "1790372898446344"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "w3SRgtcHebK4FEJlm9K09"
+uri = "file://exports/band-partitions/laura-ingraham-004-reconstructed.png"
+type = "image"
+title = "Laura Ingraham — reconstructed band grid"
+description = "The 25×25 cells extracted from the new painted partition. Compare this grid with your uploaded image; the colors and zero-cell shape are preserved."
+logical_id = "6e50ac3d-4528-400d-9ba9-36658ca1ac3e"
+content_hash = "sha256:28fcbb60faf7c5e5d905bb3133ea2e3097c6b3f36840f436fff587f0cdb4f60a"
+size = 9450
+mtime_ms = 1790374617401
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/6e50ac3d-4528-400d-9ba9-36658ca1ac3e/b5d16f7c-3412-4095-8264-884f7a00f0a6"
+storage_version_token = "1790374688516871"
+content_type = "image/png"
