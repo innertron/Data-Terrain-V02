@@ -390,3 +390,17 @@ mtime_ms = 1790379396165
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/02e3fe5f-a6df-4255-99a7-fda8a889cac7/93e25377-9470-49d8-8b0f-69f1bfc2a2da"
 storage_version_token = "1790379448637902"
 content_type = "image/png"
+
+[[outputs]]
+id = "xnUB592XxtjT8X0N4yh_M"
+uri = "file://exports/band-partitions/tom-llamas-010-reconstructed.png"
+type = "image"
+title = "Tom Llamas — reconstructed band grid"
+description = "The 25×25 painted partition extracted from the new rank-010 image."
+logical_id = "85aaf63e-506b-4cf1-8a42-8bbcae0cfeeb"
+content_hash = "sha256:76379bfc19de3e3ae423e88fdded84a49df0a9ab9818664a418fd39f1b00bc40"
+size = 9304
+mtime_ms = 1790379935638
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/85aaf63e-506b-4cf1-8a42-8bbcae0cfeeb/b7a9b8c3-6b5b-4985-8eec-6fc1ea230e1f"
+storage_version_token = "1790379983414654"
+content_type = "image/png"
