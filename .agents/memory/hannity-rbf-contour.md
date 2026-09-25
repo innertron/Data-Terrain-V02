@@ -8,6 +8,8 @@ Generate layer grids using **multiquadric RBF interpolation** from control point
 
 **Why:** The contour charts encode the actual research data. Any smooth polynomial approximation diverges immediately from the contour line shapes. The user's own Python code (scipy Rbf, multiquadric, smooth=0.2) is the reference implementation.
 
+For a newer full painted partition, use all 625 painted cells from the current saved trace directly with the project's least-squares multiquadric RBF generator. The contour control points and fixed 14.5M total documented below describe historical versions, not the current source. Take the total from the newly supplied partition title.
+
 ## Coordinate System Mapping
 - Python/chart: X=1–25 (DEM→GOP), Z=1–25 (LOW income=1 at bottom, HIGH income=25 at top)
 - My CSV grid: row r=0…24, col c=0…24
@@ -29,7 +31,7 @@ Generate layer grids using **multiquadric RBF interpolation** from control point
 # anchors: 2.00 at (25,1),(23,1)                — kills RBF corner-overshoot bump
 ```
 
-**FINAL working config (Aug 10 2026):** multiquadric φ=sqrt(r²+c²) with **c=2.5, smooth=0.1** (NOT c=1/0.2 — that rings badly on the steep 3.2→1.64 cliff at right edge Z12-15, producing spurious back-side bumps at Z15-17). Control points = list above PLUS interior bridges 2.30@(23.2,7.2), 2.35@(23.2,9), 2.30@(23,8), PLUS top-right flat anchors 0.45@(25,25), 0.45@(22,25), 0.47@(25,24.5) — corners above the outermost contour must be pinned low or RBF drifts upward there. Do NOT densify contour polylines — dense exact-interpolation points ring worse. Validate every generated grid with: (1) local-maxima scan (only one peak allowed besides low corner mounds), (2) monotonic descent along right edge above the peak, (3) monotonic rise along rows approaching the peak.
+**Historical working config (Aug 10 2026):** multiquadric φ=sqrt(r²+c²) with **c=2.5, smooth=0.1** (NOT c=1/0.2 — that rings badly on the steep 3.2→1.64 cliff at right edge Z12-15, producing spurious back-side bumps at Z15-17). Control points = list above PLUS interior bridges 2.30@(23.2,7.2), 2.35@(23.2,9), 2.30@(23,8), PLUS top-right flat anchors 0.45@(25,25), 0.45@(22,25), 0.47@(25,24.5) — corners above the outermost contour must be pinned low or RBF drifts upward there. Do NOT densify contour polylines — dense exact-interpolation points ring worse. Validate every generated grid with: (1) local-maxima scan (only one peak allowed besides low corner mounds), (2) monotonic descent along right edge above the peak, (3) monotonic rise along rows approaching the peak.
 
 **FINAL preferred input format (Aug 10 2026): full band partition.** User assigns EVERY cell (all 625) to a contour-band value, with a validation line (sums to 625, no dupes/missing). Parse and feed all 625 points straight into `generateGridFromTraces` — no anchors, no fill points needed. Fit quality ~0.05 contour units mean; smooth surface rounds the sharp peak band (expected). Hand-drawn line images proved unreliable to trace (off-kilter strokes, merging components) — do not trace images; ask for the partition list instead.
 
@@ -43,7 +45,7 @@ Generate layer grids using **multiquadric RBF interpolation** from control point
 - Basis: φ(r) = sqrt(r² + 1²)  (multiquadric, ε=1)
 - Smoothing: add 0.2 to diagonal before solve
 - Solve NxN system with Gaussian elimination + partial pivoting
-- Normalize heights 0–10 (same as Python), then scale total to 14.5M
+- Normalize heights 0–10 (same as Python), then scale to the source total (historically 14.5M)
 
 ## Key Shape Insight for Hannity
 - Peak at LOW income (r=17-24, ~$35K-$200K) + far GOP (c=24)
