@@ -292,3 +292,17 @@ mtime_ms = 1790372418893
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/fb7443c8-772a-4385-9455-1ddd7780a0c9/bf1c8508-b8be-467e-b4b5-eb2e0b427c02"
 storage_version_token = "1790372437313354"
 content_type = "image/png"
+
+[[outputs]]
+id = "toETLua5mw_WxSWupgdW7"
+uri = "file://exports/band-partitions/five-band-partitions.zip"
+type = "unspecified"
+title = "Download all five band partitions (ZIP)"
+description = "Sean Hannity, Bill Maher, Laura Ingraham, David Muir, and Lester Holt — five PNG files."
+logical_id = "a2eb269a-23ed-4062-9b02-a74994f4c419"
+content_hash = "sha256:1b385c316abd3210a094c4ac90aad719729f511c29c1982e59c58421af447e66"
+size = 1168186
+mtime_ms = 1790372892920
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/a2eb269a-23ed-4062-9b02-a74994f4c419/4a4cd8cc-d4fb-4a86-9a1a-64b7b517d8ca"
+storage_version_token = "1790372898446344"
+content_type = "application/octet-stream"
