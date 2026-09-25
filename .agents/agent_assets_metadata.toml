@@ -348,3 +348,17 @@ mtime_ms = 1790376002093
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/4910987e-f4bf-4104-82d5-d9af8c24537e/75586c01-4dec-4cbe-9591-2de6bb409917"
 storage_version_token = "1790376080327350"
 content_type = "image/png"
+
+[[outputs]]
+id = "w1S6H_HXZAIqMwdeJGZ5U"
+uri = "file://exports/band-partitions/david-muir-005-reconstructed.png"
+type = "image"
+title = "David Muir — reconstructed band grid"
+description = "The 25×25 cells extracted from the new painted partition, for comparison with the uploaded image."
+logical_id = "d827ff5d-0b57-4508-90f0-6255eec7f4f6"
+content_hash = "sha256:ae33e2bdefc25d9cc61b6631d42961b306876975956106fee0609392fd2097a1"
+size = 9108
+mtime_ms = 1790377230640
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/d827ff5d-0b57-4508-90f0-6255eec7f4f6/8f8b0f77-ac3b-47d0-a05d-a87c269c6966"
+storage_version_token = "1790377292450039"
+content_type = "image/png"
