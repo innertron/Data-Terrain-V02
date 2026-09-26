@@ -404,3 +404,17 @@ mtime_ms = 1790379935638
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/85aaf63e-506b-4cf1-8a42-8bbcae0cfeeb/b7a9b8c3-6b5b-4985-8eec-6fc1ea230e1f"
 storage_version_token = "1790379983414654"
 content_type = "image/png"
+
+[[outputs]]
+id = "vaBh596icAF2YeIN7WXqP"
+uri = "file://exports/band-partitions/megyn-kelly-011-reconstructed.png"
+type = "image"
+title = "Megyn Kelly — reconstructed band grid"
+description = "The 25×25 painted partition extracted from the new rank-011 image."
+logical_id = "482bf5c8-18ca-4ba0-b0b3-ef83d1b54f96"
+content_hash = "sha256:5fb9c1673e6034073b6b4614fa234c93b70195c0ee4d7daca68bda9ae3400d2e"
+size = 9399
+mtime_ms = 1790380867037
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/482bf5c8-18ca-4ba0-b0b3-ef83d1b54f96/17739649-f909-4e02-8551-4c7d11223667"
+storage_version_token = "1790380917443233"
+content_type = "image/png"
