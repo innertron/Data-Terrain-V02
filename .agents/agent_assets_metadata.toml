@@ -432,3 +432,17 @@ mtime_ms = 1790381583661
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/a8ed525a-e14e-43aa-be38-b2d404edbf95/16eba567-1a1a-480d-913b-4ebdac658887"
 storage_version_token = "1790381639102709"
 content_type = "image/png"
+
+[[outputs]]
+id = "b6ePILJQpPh1S0nF_Mfoa"
+uri = "file://exports/band-partitions/will-cain-013-remapped.png"
+type = "image"
+title = "Will Cain — remapped band grid"
+description = "The existing painted 25×25 partition with the seven newly supplied band values."
+logical_id = "af55b11a-5e68-49a9-ad94-6d768f7249b9"
+content_hash = "sha256:6b9da8a2dfbaea5f7e029d5ac9edc1d0d90ec523052ef194f70c0368f9c9a6e8"
+size = 9488
+mtime_ms = 1790381715208
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/af55b11a-5e68-49a9-ad94-6d768f7249b9/66c709bd-d40a-47ee-bbe7-59078581d334"
+storage_version_token = "1790381757889227"
+content_type = "image/png"
