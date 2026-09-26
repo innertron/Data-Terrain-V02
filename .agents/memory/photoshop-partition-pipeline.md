@@ -38,6 +38,10 @@ The user may supply seven numbers high-to-low for an existing layer and say the 
 
 **How to apply:** Verify exactly seven positive bands before remapping, save the new values in the replayable trace, regenerate both live grids, and recheck the exact total, zero mask, orientation, peak, and radial cliff guard. If that guard fails, disable radial treatment for that trace rather than accepting the cliff.
 
+For a bulk CSV that supplies both seven ordered distributions and ViewerScore totals, use each row's supplied total rather than silently retaining a mismatched saved total. **Why:** A prior bulk update exposed stale totals whose magnitudes contradicted the supplied bands. **How to apply:** Compare totals before writing, call out mismatches, and validate the regenerated grid against the CSV total.
+
+If a saved trace has fewer than seven distinct positive values, do not force its six levels into seven ordered CSV slots. Re-extract the original painted image with the new seven values, even if one color was never painted. **Why:** Two colors can have shared an old numeric value, so numeric traces alone cannot recover their separate memberships. **How to apply:** Verify all 625 image cells, preserve the exact zero mask, and validate the re-extracted trace before updating either database.
+
 ## RBF radial transition rule
 Use the established radial transition treatment automatically for interior-peaked RBF grids. Apply it after RBF interpolation and before restoring explicit painted-zero cells. Skip edge/ridge layers.
 
