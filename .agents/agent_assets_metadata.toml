@@ -418,3 +418,17 @@ mtime_ms = 1790380867037
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/482bf5c8-18ca-4ba0-b0b3-ef83d1b54f96/17739649-f909-4e02-8551-4c7d11223667"
 storage_version_token = "1790380917443233"
 content_type = "image/png"
+
+[[outputs]]
+id = "WZ7wlz4DSKoRmyHmyZbp9"
+uri = "file://exports/band-partitions/scott-jennings-012-reconstructed.png"
+type = "image"
+title = "Scott Jennings — reconstructed band grid"
+description = "The 25×25 painted partition extracted from the new rank-012 image."
+logical_id = "a8ed525a-e14e-43aa-be38-b2d404edbf95"
+content_hash = "sha256:41f0c3a5ac943982caa3865a20604fbc14dea57ac94e3f668ebdf071f5dc992e"
+size = 9356
+mtime_ms = 1790381583661
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:540882f3-7d71-44ec-bcac-75497d74395d/a8ed525a-e14e-43aa-be38-b2d404edbf95/16eba567-1a1a-480d-913b-4ebdac658887"
+storage_version_token = "1790381639102709"
+content_type = "image/png"
